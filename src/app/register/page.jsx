@@ -11,7 +11,6 @@ const RegisterPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleRegister = async (data) => {
-        console.log(data);
         const { name, image, email, password } = data;
         try {
             console.log({
@@ -28,6 +27,7 @@ const RegisterPage = () => {
     const handleGoogleLogin = () => {
         console.log("Google Login")
     }
+
     return (
         <div className='flex justify-center items-center min-h-[calc(100vh-100px)]'>
             <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-white  text-black shadow-lg border'>
