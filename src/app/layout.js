@@ -1,5 +1,7 @@
+import Navbar from "@/components/Navbar";
 import localFont from "next/font/local";
 import "./globals.css";
+import Footer from "./../components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -13,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "JobSphere",
-  description: "JobSphere is a hiring platform.",
+  title: "Job Sphere",
+  description: "Job Sphere is a hiring platform. Find your dream job here.",
 };
 
 export default function RootLayout({ children }) {
@@ -23,7 +25,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Navbar />
+        <div>{children}</div>
+        <Footer />
       </body>
     </html>
   );
