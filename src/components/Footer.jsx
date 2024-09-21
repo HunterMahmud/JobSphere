@@ -17,6 +17,9 @@ const Footer = () => {
                     <p className="font-bold">
                         We aims to revolutionize the hiring and job-seeking experience by offering a streamlined,
                     </p>
+                    <p className="font-bold">
+                        Sahidul ,
+                    </p>
 
 
                 </aside>
