@@ -5,7 +5,7 @@ import 'react-awesome-slider/dist/styles.css';
 
 const Banner = () => (
   <>
-    <div className='mx-1 lg:mx-10'>
+    <div className='mx-1'>
       <AwesomeSlider className="h-[400px] md:h-[550px] w-full my-10">
         <div className='h-full w-full'>
           <img className='h-full w-full object-cover' src="https://i.ibb.co/smSN6Vw/DALL-E-2024-09-19-17-59-24-A-professional-website-banner-for-a-hiring-agency-and-communication-platf.webp" alt="Professional website banner" />
