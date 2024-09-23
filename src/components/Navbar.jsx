@@ -42,7 +42,7 @@ const links = [
   },
   {
     title: "Contact",
-    path: "/aboutus",
+    path: "/contact",
   }
 ];
 
@@ -70,17 +70,14 @@ const Navbar = () => {
               />
             </DisclosureButton>
           </div>
-
-
           {/* Logo for all screens */}
           <Link href="/" className="ml-[60px] md:ml-0  flex flex-shrink-0 items-center">
             <button className="text-2xl font-bold text-white">Job<span className="text-sky-600">Sphere</span></button>
           </Link>
 
-
           {/* Centered Navigation Links for larger screens */}
           <div className="hidden sm:flex sm:items-center sm:justify-center flex-1">
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 lg:space-x-4">
               {links.map((link) => (
                 <Link
                   key={link.path}
@@ -96,10 +93,8 @@ const Navbar = () => {
             </div>
           </div>
 
-
-          {/* Right Section (Search, Profile, Notifications) */}
+          {/* Right Section ( Profile, Notifications) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {/* Search Section */}
             {/* Notifications */}
             <button
               type="button"
@@ -124,72 +119,98 @@ const Navbar = () => {
                 </MenuButton>
               </div>
               <MenuItems className="absolute right-0 z-10 mt-2 w-[300px] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {/* <MenuItem>
-                  <a
-                    href="/dashboard"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                  >
-                    My Dashboards
-                  </a>
-                </MenuItem> */}
-                {/* Users */}
-                <MenuItem>
-                  <div className="flex gap-2 py-2">
-                    <div className="w-[80px] flex justify-end">
-                      <div className="bg-[#68aa47] rounded-full w-12 h-12 flex justify-center items-center">
-                        <MdWorkOutline className="text-2xl text-white" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <h1 className="text-sm font-medium">My Jobs</h1>
-                      <p className="text-[13px]">
-                        Sign in or create your account to manage your profile
-                      </p>
-                      <div className="flex gap-2 mt-1">
-                        <button className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Sign in</button>
-                        <button className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</button>
-                      </div>
-                    </div>
-                  </div>
-                </MenuItem>
-                 {/* Divider */}
-                 <div className="border-t border-gray-200"></div>
-                {/* Employers */}
-                <MenuItem>
-                  <div className="flex gap-2 py-2">
-                    <div className="w-[80px] flex justify-end">
-                      <div className="bg-blue-500 rounded-full w-12 h-12 flex justify-center items-center">
-                        <FaRegUser className="text-2xl text-white" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <h1 className="text-sm font-medium">Employers</h1>
-                      <p className="text-[13px]">
-                        Sign in or create your account find the best candidates in the fastest way
-                      </p>
-                      <div className="flex gap-2 mt-1">
-                        <button className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Sign in</button>
-                        <button className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</button>
-                      </div>
-                    </div>
-                  </div>
-                </MenuItem>
 
-               
-                {/* Divider */}
-                <div className="border-t border-gray-200"></div>
-                {/* <MenuItem>
-                  {user  && (
-                    <>
+                {/* If there are no users*/}
+                {
+                  !user && <>
+                    {/* User */}
+                    < MenuItem >
+                      <div className="flex gap-2 py-2">
+                        <div className="w-[80px] flex justify-end">
+                          <div className="bg-[#68aa47] rounded-full w-12 h-12 flex justify-center items-center">
+                            <MdWorkOutline className="text-2xl text-white" />
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <h1 className="text-sm font-medium">My Jobs</h1>
+                          <p className="text-[13px]">
+                            Login in or create your account to manage your profile
+                          </p>
+                          <div className="flex gap-2 mt-1">
+                            <a href={"/login"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Login</a>
+                            <a href={"/user-register"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
+                          </div>
+                        </div>
+                      </div>
+                    </MenuItem>
+                    {/* Divider */}
+                    <div className="border-t border-gray-200"></div>
+                    {/* Employers */}
+                    <MenuItem>
+                      <div className="flex gap-2 py-2">
+                        <div className="w-[80px] flex justify-end">
+                          <div className="bg-primary rounded-full w-12 h-12 flex justify-center items-center">
+                            <FaRegUser className="text-2xl text-white" />
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <h1 className="text-sm font-medium">Employers</h1>
+                          <p className="text-[13px]">
+                            Login in or create your account find the best candidates in the fastest way
+                          </p>
+                          <div className="flex gap-2 mt-1">
+                            <a href={"/login"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Login</a>
+                            <a href={"/employers-register"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
+                          </div>
+                        </div>
+                      </div>
+                    </MenuItem>
+                  </>
+                }
+                {/* If there is user */}
+                {user && <>
+                  <MenuItem>
+                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">User Name</p>
+                  </MenuItem>
+                  {/* Divider */}
+                  <div className="border-t border-gray-200"></div>
+                  <MenuItem>
+                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">user@gmail.com</p>
+                  </MenuItem>
+                  {/* Divider */}
+                  <div className="border-t border-gray-200"></div>
+                  <MenuItem>
                     <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition-colors duration-200"
+                      href="/dashboard"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                     >
-                      Sign out
+                      My Dashboards
                     </a>
+                  </MenuItem>
+                  {/* Divider */}
+                  <div className="border-t border-gray-200"></div>
+                  <MenuItem>
+                    <a
+                      href="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      My Profile
+                    </a>
+                  </MenuItem>
+                  {/* Divider */}
+                  <div className="border-t border-gray-200"></div>
+                  <MenuItem>
+                    <>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition-colors duration-200"
+                      >
+                        Logout
+                      </a>
                     </>
-                  ) }
-                </MenuItem> */}
+                  </MenuItem>
+                </>
+                }
               </MenuItems>
             </Menu>
           </div>
@@ -214,7 +235,7 @@ const Navbar = () => {
           ))}
         </div>
       </DisclosurePanel>
-    </Disclosure>
+    </Disclosure >
   );
 };
 
