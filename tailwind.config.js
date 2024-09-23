@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: '#2557a7', // Customize your primary color
+        secondary: '#FF5733', // Customize your secondary color
+        hoverColor: '#0d2d5e', // Customize your hover color
       },
     },
   },
