@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "./../components/Footer";
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
         <div className="bg-[#1f2937] text-white bg-cover bg-no-repeat">
           <Footer />
         </div>
+        <Toaster />
       </body>
     </html>
   );
