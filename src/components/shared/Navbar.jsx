@@ -39,10 +39,6 @@ const links = [
   {
     title: "About Us",
     path: "/aboutus",
-  },
-  {
-    title: "Contact",
-    path: "/contact",
   }
 ];
 
