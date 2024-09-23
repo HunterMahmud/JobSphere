@@ -1,7 +1,7 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/shared/Navbar";
 import localFont from "next/font/local";
 import "./globals.css";
-import Footer from "./../components/Footer";
+import Footer from "../components/shared/Footer";
 import AuthProvider from "@/services/AuthProvider";
 import { Toaster } from "react-hot-toast";
 
