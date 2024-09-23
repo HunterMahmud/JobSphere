@@ -237,7 +237,7 @@ const countryOptions = [
 
 
 
-const RegisterPage = () => {
+const RegisterUser = () => {
     const [show, setShow] = useState(false);
     const [country, setCountry] = useState('');
     const [skill, setSkill] = useState()
@@ -542,4 +542,4 @@ const RegisterPage = () => {
     )
 }
 
-export default RegisterPage;
+export default RegisterUser;
