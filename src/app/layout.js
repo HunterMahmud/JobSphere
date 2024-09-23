@@ -2,6 +2,8 @@ import Navbar from "@/components/Navbar";
 import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "./../components/Footer";
+import AuthProvider from "@/services/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,19 +27,23 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
-        <div>
-          <div className="bg-gray-800">
-            <div className="md:w-[90%] lg:w-[80%] mx-auto max-w-[1440px]">
-              <Navbar />
+        <AuthProvider>
+          <div>
+            <div className="bg-gray-800">
+              <div className="md:w-[90%] lg:w-[80%] mx-auto max-w-[1440px]">
+                <Navbar />
+              </div>
+            </div>
+            <div className="min-h-[calc(100vh-381px)] w-[90%] md:w-[90%] lg:w-[80%] mx-auto max-w-[1440px]">
+              {children}
             </div>
           </div>
-          <div className="min-h-[calc(100vh-381px)] w-[90%] md:w-[90%] lg:w-[80%] mx-auto max-w-[1440px]">
-            {children}
+          <div className="bg-[#1f2937] text-white bg-cover bg-no-repeat">
+            <Footer />
           </div>
-        </div>
-        <div className="bg-[#1f2937] text-white bg-cover bg-no-repeat">
-          <Footer />
-        </div>
+        </AuthProvider>
+        
+        <Toaster />
       </body>
     </html>
   );
