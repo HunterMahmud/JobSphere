@@ -1,10 +1,10 @@
-export const dynamic = "force-dynamic"
-import Banner from "@/components/Banner";
+export const dynamic = "force-dynamic";
+import Homepage from "@/components/Homepage/Homepage";
 
 export default function Home() {
   return (
-   <div>
-      <Banner/>
-   </div>
+    <div>
+      <Homepage />
+    </div>
   );
 }
