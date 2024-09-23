@@ -244,7 +244,7 @@ const companyServices = [
 
 
 
-const EmployersRegister = () => {
+const RegisterRecruter = () => {
   const [show, setShow] = useState(false);
   const [country, setCountry] = useState('');
   const [companyType, setCompanyType] = useState('');
@@ -603,4 +603,4 @@ const EmployersRegister = () => {
   )
 }
 
-export default EmployersRegister;
+export default RegisterRecruter;
