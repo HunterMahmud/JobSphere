@@ -280,7 +280,7 @@ const RegisterRecruter = () => {
     <div className='flex justify-center items-center'>
       <div className='flex flex-col p-3 rounded-md sm:p-10 bg-white  text-black shadow-lg border my-5 w-full lg:w-[90%]'>
         <div className='mb-8 text-center'>
-          <h1 className='my-3 text-2xl font-medium'>Register - Employers</h1>
+          <h1 className='my-3 text-2xl font-medium'>Register as a Recruter</h1>
         </div>
         <form
           onSubmit={handleSubmit(handleRegister)}
