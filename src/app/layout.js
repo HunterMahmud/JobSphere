@@ -42,9 +42,7 @@ export default function RootLayout({ children }) {
             <Footer />
           </div>
         </AuthProvider>
-        <div className="bg-[#1f2937] text-white bg-cover bg-no-repeat">
-          <Footer />
-        </div>
+        
         <Toaster />
       </body>
     </html>
