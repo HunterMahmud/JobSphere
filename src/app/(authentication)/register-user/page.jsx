@@ -242,9 +242,10 @@ const RegisterUser = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleRegister = async (data) => {
-        
+
         const { name, email, cityName, education, mobileNumber, image, password, confirmPassword, acceptTerms } = data;
         const img = image[0];
+        console.log(image)
 
         const formData = new FormData();
         formData.append('image', img);
@@ -360,7 +361,7 @@ const RegisterUser = () => {
                                 placeholder='Enter City Name'
                                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                             />
-                            {errors?.email?.message && (
+                            {errors?.cityName?.message && (
                                 <span className='text-red-500'>{errors.email.message}</span>
                             )}
                         </div>
@@ -380,7 +381,7 @@ const RegisterUser = () => {
                                 placeholder='Enter Your Education level'
                                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                             />
-                            {errors?.email?.message && (
+                            {errors?.education?.message && (
                                 <span className='text-red-500'>{errors.email.message}</span>
                             )}
                         </div>
@@ -415,7 +416,7 @@ const RegisterUser = () => {
                                 placeholder='Enter Your Number'
                                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
                             />
-                            {errors?.email?.message && (
+                            {errors?.mobileNumber?.message && (
                                 <span className='text-red-500'>{errors.email.message}</span>
                             )}
                         </div>
@@ -438,7 +439,7 @@ const RegisterUser = () => {
                                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
 
                             />
-                            {errors?.name?.message && (
+                            {errors?.image?.message && (
                                 <span className="block text-red-500">{errors.name.message}</span>
                             )}
                         </div>
@@ -496,7 +497,7 @@ const RegisterUser = () => {
                                     type={show ? 'text' : 'password'}
                                     placeholder='Enter Confirm password '
                                 />
-                                {errors?.password?.message && (
+                                {errors?.confirmPassword?.message && (
                                     <span className='text-red-500'>{errors.password.message}</span>
                                 )}
                                 <div onClick={() => setShow(!show)} className="absolute top-[30%] right-3 cursor-pointer">

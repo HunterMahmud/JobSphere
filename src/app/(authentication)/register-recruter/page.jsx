@@ -1,9 +1,9 @@
 "use client"
+import axios from 'axios';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { FcGoogle } from 'react-icons/fc';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import Select from 'react-select';
 
@@ -242,8 +242,6 @@ const companyServices = [
 ];
 
 
-
-
 const RegisterRecruter = () => {
   const [show, setShow] = useState(false);
   const [country, setCountry] = useState('');
@@ -253,7 +251,15 @@ const RegisterRecruter = () => {
 
   const handleRegister = async (data) => {
     const { userName, email, password, confirmPassword, cityName, companyName, contactNumber, companyLogo, websiteURL, bsinessDescription, acceptTerms } = data;
+    const img = companyLogo[0];
+    const formData = new FormData();
+    formData.append('image', img);
+
     try {
+      // upload img in imgBB
+      const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, formData);
+      const companyLogoUrl = data.data.display_url;
+      console.log(companyLogoUrl);
       console.log({
         userName,
         email,
@@ -265,14 +271,14 @@ const RegisterRecruter = () => {
         companyType,
         companyService,
         contactNumber,
-        companyLogo,
+        companyLogoUrl,
         websiteURL,
         bsinessDescription,
         acceptTerms
       })
-      toast.success('Success')
+      toast.success('Success');
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message);
     }
   }
 
@@ -381,7 +387,7 @@ const RegisterRecruter = () => {
                   type={show ? 'text' : 'password'}
                   placeholder='Enter Confirm password '
                 />
-                {errors?.password?.message && (
+                {errors?.confirmPassword?.message && (
                   <span className='text-red-500'>{errors.password.message}</span>
                 )}
                 <div onClick={() => setShow(!show)} className="absolute top-[30%] right-3 cursor-pointer">
@@ -421,7 +427,7 @@ const RegisterRecruter = () => {
                 placeholder='Enter City Name'
                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
               />
-              {errors?.email?.message && (
+              {errors?.cityName?.message && (
                 <span className='text-red-500'>{errors.email.message}</span>
               )}
             </div>
@@ -441,7 +447,7 @@ const RegisterRecruter = () => {
                 placeholder='Enter Company Name'
                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
               />
-              {errors?.email?.message && (
+              {errors?.companyName?.message && (
                 <span className='text-red-500'>{errors.email.message}</span>
               )}
             </div>
@@ -490,7 +496,7 @@ const RegisterRecruter = () => {
                 placeholder='Enter Contact Number'
                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
               />
-              {errors?.email?.message && (
+              {errors?.contactNumber?.message && (
                 <span className='text-red-500'>{errors.email.message}</span>
               )}
             </div>
@@ -507,13 +513,11 @@ const RegisterRecruter = () => {
                   },
                 })}
                 type='file'
-                id='image'
-                name='image'
                 accept='image/*'
                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
 
               />
-              {errors?.name?.message && (
+              {errors?.companyLogo?.message && (
                 <span className="block text-red-500">{errors.name.message}</span>
               )}
             </div>
@@ -533,7 +537,7 @@ const RegisterRecruter = () => {
                 placeholder='Enter Website URL'
                 className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
               />
-              {errors?.email?.message && (
+              {errors?.websiteURL?.message && (
                 <span className='text-red-500'>{errors.email.message}</span>
               )}
             </div>
@@ -555,7 +559,7 @@ const RegisterRecruter = () => {
               placeholder='Write Business Description'
               className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
             />
-            {errors?.email?.message && (
+            {errors?.bsinessDescription?.message && (
               <span className='text-red-500'>{errors.email.message}</span>
             )}
           </div>
