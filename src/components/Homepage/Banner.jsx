@@ -12,8 +12,6 @@ import "swiper/css/autoplay";
 // import required modules
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
-
-
 const Banner = () => {
   const [location, setLocation] = useState("Location");
   const [jobTitle, setJobTitle] = useState('');

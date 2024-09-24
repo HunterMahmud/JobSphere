@@ -1,9 +1,9 @@
 "use client"
+import axios from 'axios';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { FcGoogle } from 'react-icons/fc';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import Select from 'react-select';
 
@@ -235,8 +235,6 @@ const countryOptions = [
     { value: 'Zimbabwe', label: 'Zimbabwe' },
 ];
 
-
-
 const RegisterUser = () => {
     const [show, setShow] = useState(false);
     const [country, setCountry] = useState('');
@@ -244,9 +242,17 @@ const RegisterUser = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleRegister = async (data) => {
-
+        
         const { name, email, cityName, education, mobileNumber, image, password, confirmPassword, acceptTerms } = data;
+        const img = image[0];
+
+        const formData = new FormData();
+        formData.append('image', img);
+
         try {
+            // upload img in imgBB
+            const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`, formData);
+            const userIMG = data.data.display_url
             console.log({
                 name,
                 email,
@@ -255,13 +261,14 @@ const RegisterUser = () => {
                 education,
                 skill,
                 mobileNumber,
-                image,
+                userIMG,
                 email,
                 password,
                 confirmPassword,
                 acceptTerms
             })
-            
+
+
             toast.success('Success')
         } catch (err) {
             console.log(err.message)
@@ -529,7 +536,7 @@ const RegisterUser = () => {
                         </button>
                     </div>
                 </form>
-                
+
                 <p className='px-6 mt-3  text-sm text-center text-black'>
                     Already have an account?{' '}
                     <Link
