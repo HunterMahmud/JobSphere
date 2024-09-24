@@ -259,7 +259,7 @@ const EmployersRegister = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, }, setError,
+    formState: { errors, }, setError,reset,
   } = useForm();
 
 
@@ -309,7 +309,7 @@ const EmployersRegister = () => {
   
       if (result.status === 201) {
         toast.success("User created successfully");
-        event.target.reset();
+       reset();
         router.push('/');
       }
     } catch (err) {

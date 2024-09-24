@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/router';
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -264,6 +265,7 @@ const countryOptions = [
 ];
 
 const RegisterPage = () => {
+    // const router = useRouter();
   const [show, setShow] = useState(false);
   const [country, setCountry] = useState("");
   const [skill, setSkill] = useState();
@@ -271,6 +273,7 @@ const RegisterPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const handleRegister = async (data) => {
@@ -297,10 +300,20 @@ const RegisterPage = () => {
     }||{};
     console.log(newUser);
     try {
-      axios.post("http://localhost:3000/api/registration", newUser)
-      toast.success(message);
+      const result = await axios.post("http://localhost:3000/api/registration", newUser);
+  
+      if (result.status === 201) {
+        toast.success("User created successfully");
+        reset();
+        router.push('/');
+      }
     } catch (err) {
-      console.log(err.message);
+      if (err.response && err.response.status === 409) {
+        toast.error("User already exists");
+      } else if (err.response && err.response.status === 500){
+        toast.error(err.message);
+        console.log(err.message);
+      }
     }
   };
 
