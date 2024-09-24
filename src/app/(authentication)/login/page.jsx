@@ -42,11 +42,11 @@ const LoginPage = () => {
 
                 <div className='w-full px-3 py-8 lg:px-8 md:w-1/2'>
                     <div className='flex justify-center mx-auto'>
-                        <img
+                        {/* <img
                             className='w-auto h-7 sm:h-8'
                             src={''}
                             alt=''
-                        />
+                        /> */}
                     </div>
 
                     <p className='mt-3 text-2xl text-center text-gray-600 '>
