@@ -40,10 +40,6 @@ const links = [
   {
     title: "About Us",
     path: "/aboutus",
-  },
-  {
-    title: "Contact",
-    path: "/contact",
   }
 ];
 
@@ -141,14 +137,14 @@ const Navbar = () => {
                           </p>
                           <div className="flex gap-2 mt-1">
                             <a href={"/login"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Login</a>
-                            <a href={"/user-register"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
+                            <a href={"/register-user"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
                           </div>
                         </div>
                       </div>
                     </MenuItem>
                     {/* Divider */}
                     <div className="border-t border-gray-200"></div>
-                    {/* Employers */}
+                    {/* Recruter */}
                     <MenuItem>
                       <div className="flex gap-2 py-2">
                         <div className="w-[80px] flex justify-end">
@@ -157,13 +153,13 @@ const Navbar = () => {
                           </div>
                         </div>
                         <div className="flex-1">
-                          <h1 className="text-sm font-medium">Employers</h1>
+                          <h1 className="text-sm font-medium">Recruter</h1>
                           <p className="text-[13px]">
                             Login in or create your account find the best candidates in the fastest way
                           </p>
                           <div className="flex gap-2 mt-1">
                             <a href={"/login"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Login</a>
-                            <a href={"/employers-register"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
+                            <a href={"/register-recruter"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
                           </div>
                         </div>
                       </div>
