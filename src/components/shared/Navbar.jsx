@@ -21,6 +21,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { signOut, useSession } from "next-auth/react";
 
 const links = [
   {
@@ -50,6 +51,8 @@ const links = [
 const Navbar = () => {
   const pathName = usePathname();
   const router = useRouter();
+  const session = useSession()
+  console.log(session)
   const user = false;
 
   return (
@@ -122,7 +125,7 @@ const Navbar = () => {
 
                 {/* If there are no users*/}
                 {
-                  !user && <>
+                  session?.status === 'unauthenticated' && <>
                     {/* User */}
                     < MenuItem >
                       <div className="flex gap-2 py-2">
@@ -168,14 +171,14 @@ const Navbar = () => {
                   </>
                 }
                 {/* If there is user */}
-                {user && <>
+                { session?.status === 'authenticated' && <>
                   <MenuItem>
-                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">User Name</p>
+                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">{session?.data?.user?.name}</p>
                   </MenuItem>
                   {/* Divider */}
                   <div className="border-t border-gray-200"></div>
                   <MenuItem>
-                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">user@gmail.com</p>
+                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">{session?.data?.user?.email}</p>
                   </MenuItem>
                   {/* Divider */}
                   <div className="border-t border-gray-200"></div>
@@ -201,12 +204,8 @@ const Navbar = () => {
                   <div className="border-t border-gray-200"></div>
                   <MenuItem>
                     <>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition-colors duration-200"
-                      >
-                        Logout
-                      </a>
+                      
+                       <button className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition-colors duration-200" onClick={()=>signOut()}>Logout</button>
                     </>
                   </MenuItem>
                 </>

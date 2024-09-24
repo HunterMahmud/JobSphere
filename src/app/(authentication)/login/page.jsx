@@ -4,22 +4,38 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { signIn, useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [show, setShow] = useState(false);
+    const router = useRouter();
+    const session = useSession();
+    const searchParams = useSearchParams();
+    const path = searchParams.get("redirect");
 
     const handleLogIn = async (data) => {
         const { email, password } = data;
-
+    
         try {
-            console.log(email, password)
-            toast.success('SignIn Successful')
-        }
-        catch (err) {
-            toast.error(err?.message)
+            const resp = await signIn("credentials", {
+                email,
+                password,
+                redirect: false, 
+            });
+    
+            if (resp?.error) {
+                toast.error("Enter correct email or password"); 
+            } else {
+                toast.success('SignIn Successful');
+                router.push(path ? path : "/");
+            }
+        } catch (err) {
+            toast.error(err?.message);
         }
     }
+    
     const handlesignInWithGoogle = async () => {
         try {
             // 
