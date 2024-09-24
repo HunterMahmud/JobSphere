@@ -7,6 +7,7 @@ export const connectDB = async () => {
   try {
     // Create a MongoClient with a MongoClientOptions object to set the Stable API version
     const uri = process.env.NEXT_PUBLIC_MONGODB_URI;
+    console.log(uri);
     const client = new MongoClient(uri, {
       serverApi: {
         version: ServerApiVersion.v1,
@@ -14,7 +15,7 @@ export const connectDB = async () => {
         deprecationErrors: true,
       },
     });
-    db = client.db('JobSphereDB');
+    db = client.db("JobSphereDB");
     return db;
   } catch (error) {
     console.log(error);
