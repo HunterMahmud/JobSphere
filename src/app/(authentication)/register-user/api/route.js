@@ -7,8 +7,6 @@ export const POST = async (request) => {
     const db = await connectDB();
     const userCollection = db.collection("users");
     const isExists = await userCollection.findOne({ email });
-    console.log(isExists);
-    console.log("connected 2");
     if (isExists) {
       return Response.json({ message: "user already exists" }, { status: 304 });
     }
