@@ -244,6 +244,7 @@ const RegisterUser = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleRegister = async (data) => {
+
         const { name, email, cityName, education, mobileNumber, image, password, confirmPassword, acceptTerms } = data;
         try {
             console.log({
@@ -260,6 +261,7 @@ const RegisterUser = () => {
                 confirmPassword,
                 acceptTerms
             })
+            
             toast.success('Success')
         } catch (err) {
             console.log(err.message)
