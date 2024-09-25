@@ -37,6 +37,10 @@ const links = [
     path: "/companies"
   },
   {
+    title: "Blogs",
+    path: "/blogs"
+  },
+  {
     title: "About Us",
     path: "/aboutus",
   }
