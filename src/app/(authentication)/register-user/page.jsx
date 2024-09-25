@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import Select from "react-select";
-import  axios  from "axios";
+import axios from "axios";
 
 const skillOptions = [
   { value: "Select", label: "Select" },
@@ -284,8 +284,8 @@ const RegisterUser = () => {
       education,
       mobileNumber,
       image,
-      password, 
-      acceptTerms
+      password,
+      acceptTerms,
     } = data;
     const formData = new FormData();
     formData.append("image", image[0]);
@@ -303,11 +303,11 @@ const RegisterUser = () => {
           cityName,
           education,
           mobileNumber,
-          userIMG:data?.data?.display_url,
+          userIMG: data?.data?.display_url,
           password,
           role: "seeker",
         } || {};
-      console.log(newUser);
+
       const result = await axios.post(
         "http://localhost:3000/register-user/api",
         newUser
@@ -317,17 +317,14 @@ const RegisterUser = () => {
         reset();
         router.push("/");
       }
-
     } catch (err) {
       console.log(err);
       if (err.response && err?.response?.status === 409) {
         toast.error("User already exists");
       } else if (err.response && err?.response?.status === 500) {
         toast.error(err.message);
-        console.log(err.message);
       }
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -593,11 +590,11 @@ const RegisterUser = () => {
           {/* Submit button */}
           <div>
             <button
-            disabled={loading}
+              disabled={loading}
               type="submit"
               className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
             >
-             {loading===true?'Loading...': " Register"}
+              {loading === true ? "Loading..." : " Register"}
             </button>
           </div>
         </form>

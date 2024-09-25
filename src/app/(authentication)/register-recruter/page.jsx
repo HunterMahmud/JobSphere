@@ -270,20 +270,20 @@ const RegisterRecruter = () => {
       cityName,
       companyName,
       contactNumber,
-      companyLogo,
+      image,
       websiteURL,
       businessDescription,
     } = data;
 
-
-
     const formData = new FormData();
-    formData.append("image", companyLogo[0]);
+    formData.append("image", image[0]);
+
     try {
       const { data } = await axios.post(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         formData
       );
+
       const newUser = {
         userName,
         email,
@@ -291,25 +291,22 @@ const RegisterRecruter = () => {
         cityName,
         companyName,
         contactNumber,
-        companyLogoUrl:data?.data?.display_url,
+        companyLogoUrl: data?.data?.display_url,
         websiteURL,
         businessDescription,
         role: "recruiter",
       };
-      console.log(newUser);
 
       const result = await axios.post(
         "http://localhost:3000/register-recruter/api/",
         newUser
       );
-console.log(result);
+
       if (result.status === 200) {
         toast.success("User created successfully");
         reset();
         router.push("/");
       }
-
-      toast.success("Success");
     } catch (err) {
       if (err.response && err.response.status === 409) {
         toast.error("User already exists");
@@ -317,9 +314,7 @@ console.log(result);
         toast.error(err.message);
         // console.log(err.message);
       }
-
-    }
-    finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -552,7 +547,7 @@ console.log(result);
                 Company Image/Logo:
               </label>
               <input
-                {...register("companyLogo", {
+                {...register("image", {
                   required: {
                     value: true,
                     message: "This field is required.",
@@ -635,11 +630,11 @@ console.log(result);
           {/* Submit button */}
           <div>
             <button
-               disabled={loading}
+              disabled={loading}
               type="submit"
               className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
             >
-         {loading===true?'Loading...': " Register"}
+              {loading === true ? "Loading..." : " Register"}
             </button>
           </div>
         </form>
