@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import Select from "react-select";
-import { axios } from "axios";
+import  axios  from "axios";
 
 const skillOptions = [
   { value: "Select", label: "Select" },
@@ -267,6 +267,7 @@ const RegisterUser = () => {
   const [show, setShow] = useState(false);
   const [country, setCountry] = useState("");
   const [skill, setSkill] = useState();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -275,6 +276,7 @@ const RegisterUser = () => {
   } = useForm();
 
   const handleRegister = async (data) => {
+    setLoading(true);
     const {
       name,
       email,
@@ -282,9 +284,8 @@ const RegisterUser = () => {
       education,
       mobileNumber,
       image,
-      password,
-      confirmPassword,
-      acceptTerms,
+      password, 
+      acceptTerms
     } = data;
     const formData = new FormData();
     formData.append("image", image[0]);
@@ -306,26 +307,28 @@ const RegisterUser = () => {
           password,
           role: "seeker",
         } || {};
-      console.log(newUser);
+      
       const result = await axios.post(
         "http://localhost:3000/register-user/api",
         newUser
       );
-
-      if (result.status === 201) {
+      if (result?.status === 200) {
         toast.success("User created successfully");
         reset();
         router.push("/");
       }
 
-      toast.success("Success");
     } catch (err) {
-      if (err.response && err.response.status === 409) {
+      console.log(err);
+      if (err.response && err?.response?.status === 409) {
         toast.error("User already exists");
-      } else if (err.response && err.response.status === 500) {
+      } else if (err.response && err?.response?.status === 500) {
         toast.error(err.message);
         console.log(err.message);
       }
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -579,7 +582,7 @@ const RegisterUser = () => {
               className="mt-1"
             />
             {errors?.acceptTerms?.message && (
-              <span className="text-red-500">{errors.password.message}</span>
+              <span className="text-red-500">{errors?.password?.message}</span>
             )}
             <label for="acceptTerms" className="text-sm">
               By clicking 'Continue', you acknowledge that you have read and
@@ -590,10 +593,11 @@ const RegisterUser = () => {
           {/* Submit button */}
           <div>
             <button
+            disabled={loading}
               type="submit"
               className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
             >
-              Register
+             {loading===true?'Loading...': " Register"}
             </button>
           </div>
         </form>
