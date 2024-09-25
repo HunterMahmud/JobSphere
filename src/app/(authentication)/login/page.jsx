@@ -4,31 +4,50 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { signIn, useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 
 const LoginPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [show, setShow] = useState(false);
+    const router = useRouter();
+    const session = useSession();
+    const searchParams = useSearchParams();
+    const path = searchParams.get("redirect");
+
 
     const handleLogIn = async (data) => {
         const { email, password } = data;
-
+   
         try {
-            console.log(email, password)
-            toast.success('SignIn Successful')
-        }
-        catch (err) {
-            toast.error(err?.message)
+            const resp = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
+            });
+   
+            if (resp?.error) {
+                toast.error("Enter correct email or password");
+            } else {
+                toast.success('SignIn Successful');
+                router.push(path ? path : "/");
+            }
+        } catch (err) {
+            toast.error(err?.message);
         }
     }
+   
     const handlesignInWithGoogle = async () => {
         try {
-            // 
+            //
         }
         catch (err) {
             console.log(err);
             toast.error(err?.message)
         }
     }
+
 
     return (
         <div className='flex justify-center items-center my-10'>
@@ -40,25 +59,30 @@ const LoginPage = () => {
                     }}
                 ></div>
 
+
                 <div className='w-full px-3 py-8 lg:px-8 md:w-1/2'>
                     <div className='flex justify-center mx-auto'>
-                        <img
+                        {/* <img
                             className='w-auto h-7 sm:h-8'
                             src={''}
                             alt=''
-                        />
+                        /> */}
                     </div>
+
 
                     <p className='mt-3 text-2xl text-center text-gray-600 '>
                         Welcome back!
                     </p>
 
+
                     <div className='flex items-center justify-between mt-4'>
                         <span className='w-1/5 border-b  lg:w-1/4'></span>
+
 
                         <div className='text-xs text-center text-gray-500 uppercase  hover:underline'>
                             login with email
                         </div>
+
 
                         <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
                     </div>
@@ -84,6 +108,7 @@ const LoginPage = () => {
                                 <span className='text-red-500'>{errors.email.message}</span>
                             )}
                         </div>
+
 
                         <div className='mt-4'>
                             <div className='flex justify-between'>
@@ -126,8 +151,10 @@ const LoginPage = () => {
                         </div>
                     </form>
 
+
                     <div className='flex items-center justify-between mt-4'>
                         <span className='w-1/5 border-b  md:w-1/4'></span>
+
 
                         <Link
                             href={"/user-register"}
@@ -135,6 +162,7 @@ const LoginPage = () => {
                         >
                             or Register
                         </Link>
+
 
                         <span className='w-1/5 border-b  md:w-1/4'></span>
                     </div>
@@ -144,4 +172,8 @@ const LoginPage = () => {
     )
 }
 
+
 export default LoginPage;
+
+
+
