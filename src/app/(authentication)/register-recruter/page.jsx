@@ -250,6 +250,7 @@ const RegisterRecruter = () => {
   const [country, setCountry] = useState("");
   const [companyType, setCompanyType] = useState("");
   const [companyService, setCompanyService] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -261,6 +262,7 @@ const RegisterRecruter = () => {
   } = useForm();
 
   const handleRegister = async (data) => {
+    setLoading(true);
     const {
       userName,
       email,
@@ -300,8 +302,8 @@ const RegisterRecruter = () => {
         "http://localhost:3000/register-recruter/api/",
         newUser
       );
-
-      if (result.status === 201) {
+console.log(result);
+      if (result.status === 200) {
         toast.success("User created successfully");
         reset();
         router.push("/");
@@ -316,6 +318,9 @@ const RegisterRecruter = () => {
         // console.log(err.message);
       }
 
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -500,7 +505,7 @@ const RegisterRecruter = () => {
                 className="w-full"
               />
               {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
+                <span className="text-red-500">{errors?.email.message}</span>
               )}
             </div>
             {/* Company services */}
@@ -514,7 +519,7 @@ const RegisterRecruter = () => {
                 className="w-full"
               />
               {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
+                <span className="text-red-500">{errors?.email?.message}</span>
               )}
             </div>
 
@@ -535,7 +540,7 @@ const RegisterRecruter = () => {
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
               {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
+                <span className="text-red-500">{errors?.email?.message}</span>
               )}
             </div>
             {/* Image */}
@@ -561,7 +566,7 @@ const RegisterRecruter = () => {
               />
               {errors?.name?.message && (
                 <span className="block text-red-500">
-                  {errors.name.message}
+                  {errors?.name?.message}
                 </span>
               )}
             </div>
@@ -582,7 +587,7 @@ const RegisterRecruter = () => {
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
               {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
+                <span className="text-red-500">{errors?.email?.message}</span>
               )}
             </div>
           </div>
@@ -603,7 +608,7 @@ const RegisterRecruter = () => {
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
             />
             {errors?.email?.message && (
-              <span className="text-red-500">{errors.email.message}</span>
+              <span className="text-red-500">{errors?.email?.message}</span>
             )}
           </div>
           <div className="flex items-start md:justify-center gap-1">
@@ -619,7 +624,7 @@ const RegisterRecruter = () => {
               className="mt-1"
             />
             {errors?.acceptTerms?.message && (
-              <span className="text-red-500">{errors.password.message}</span>
+              <span className="text-red-500">{errors?.password?.message}</span>
             )}
             <label for="acceptTerms" className="text-sm">
               By clicking 'Continue', you acknowledge that you have read and
@@ -630,10 +635,11 @@ const RegisterRecruter = () => {
           {/* Submit button */}
           <div>
             <button
+               disabled={loading}
               type="submit"
               className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
             >
-              Register
+         {loading===true?'Loading...': " Register"}
             </button>
           </div>
         </form>

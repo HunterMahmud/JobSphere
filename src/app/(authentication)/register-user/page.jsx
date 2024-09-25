@@ -295,7 +295,7 @@ const RegisterUser = () => {
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         formData
       );
-      const userIMG = data.data.display_url;
+
       const newUser =
         {
           name,
@@ -303,11 +303,11 @@ const RegisterUser = () => {
           cityName,
           education,
           mobileNumber,
-          userIMG,
+          userIMG:data?.data?.display_url,
           password,
           role: "seeker",
         } || {};
-      
+      console.log(newUser);
       const result = await axios.post(
         "http://localhost:3000/register-user/api",
         newUser
