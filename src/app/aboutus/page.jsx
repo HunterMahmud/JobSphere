@@ -8,7 +8,7 @@ const AboutUsPage = () => {
             {/* Hero Section */}
             <div className="hero-content flex flex-col md:flex-row p-10 bg-white shadow-md rounded-lg">
                 {/* Image Section */}
-                <div className="lg:w-1/2 relative">
+                <div className="lg:w-1/2 relative ">
                     {/* First Image */}
                     <img
                         src="/images/img2.jpg"
@@ -24,7 +24,7 @@ const AboutUsPage = () => {
                 </div>
 
                 {/* Text Section */}
-                <div className="lg:w-1/2 space-y-5 p-4">
+                <div className="lg:w-1/2 space-y-5 p-4 pt-14">
                     <h2 className="lg:text-5xl text-2xl text-black lg:text-left font-bold pt-5">
                         Our Mission <span className="text-indigo-600">and Vision</span>
                     </h2>
@@ -124,7 +124,7 @@ const AboutUsPage = () => {
                 </div>
             </div>
 
-            <div>
+            <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
               <ContactUs/>
             </div>
         </div>
