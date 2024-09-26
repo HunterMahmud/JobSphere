@@ -4,11 +4,10 @@ const JobDetails = () => {
    const jobDetails = [
       {
          summary: {
-            jobTitile: "Full Stack Developer",
+            jobTitle: "Full Stack Developer",
             vacancy: 5,
             location: "New York, USA",
-            salary: "$50,000 - $70,000",
-            scale: "Mid-level",
+            salaryScale: "$50,000 - $70,000",
             experienceNeed: "3-5 years",
          },
          requirement: {
@@ -45,9 +44,25 @@ const JobDetails = () => {
    ];
 
    return (
-      <div className='border-2 border-sky-400 rounded-lg p-2 my-8 h-screen'>
-         <h1 className="text-3xl font-bold underline text-center mb-8">Job Details</h1>
-        <h1 className=''> Job Title: {jobDetails[0].summary.jobTitile}</h1>
+      <div className='border-2 border-sky-400 rounded-lg p-1 md:p-2 my-8 min-h-screen'>
+         <h1 className="text-3xl font-bold underline text-center my-6">Job Details</h1>
+         <h1 className='text-2xl font-semibold text-center lg:max-w-[400px] mx-auto border-b-2 border-sky-700 rounded-xl'> <span className='text-2xl font-bold'>Job Title:</span> {jobDetails[0].summary.jobTitle}</h1>
+
+         {/* Summary */}
+         <div className='md:mx-8 mx-2 border-l-2 p-2 rounded-lg border-sky-600 bg-sky-50 my-4'>
+            <h1 className='text-xl font-semibold underline mb-3'>Summary:</h1>
+            <div className='md:grid md:grid-cols-2 md:justify-between'>
+               <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Title:</span> {jobDetails[0].summary.jobTitle}</h4>
+               <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Vacancy:</span> {jobDetails[0].summary.vacancy}</h4>
+            </div>
+            <h4 className='text-lg font-semibold my-2'> <span className='text-xl font-bold'>Location:</span> {jobDetails[0].summary.location}</h4>
+            <div className="md:grid md:grid-cols-2 md:justify-between">
+               <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Salary Scale:</span> {jobDetails[0].summary.salaryScale}</h4>
+               <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>experienceNeed:</span> {jobDetails[0].summary.experienceNeed}</h4>
+            </div>
+         </div>
+
+        
       </div>
    );
 };
