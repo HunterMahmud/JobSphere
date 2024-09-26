@@ -75,7 +75,24 @@ const JobDetails = () => {
             <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Benefits:</span> {jobDetails[0].requirement.benefits}</h4>
          </div>
 
-         
+         {/* Company Details */}
+         <div className='md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4'>
+            <h1 className='text-2xl font-semibold underline mb-3'>Company Details:</h1>
+            <h4 className='text-xl font-semibold'> <span className='text-xl font-bold'>Company Name:</span> {jobDetails[0].companyDetails.companyName}</h4>
+            <h4 className='text-lg font-semibold my-2'> <span className='text-xl font-bold'>Company Type:</span> {jobDetails[0].companyDetails.type}</h4>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Head Office:</span> {jobDetails[0].companyDetails.headOffice}</h4>
+            <h4 className='text-lg font-semibold my-2'> <span className='text-xl font-bold'>Work Area:</span> {jobDetails[0].companyDetails.workArea}</h4>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Contact Number:</span> {jobDetails[0].companyDetails.contact.mobileNo}</h4>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Email:</span> {jobDetails[0].companyDetails.contact.email}</h4>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Website:</span> {jobDetails[0].companyDetails.contact.website}</h4>
+         </div>
+
+         {/* Apply Process */}
+         <div className='md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4'>
+            <h1 className='text-2xl font-semibold underline mb-3'>Apply Process:</h1>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Need To Do For Apply:</span> {jobDetails[0].applyProcess.needToDoForApply}</h4>
+            <h4 className='text-lg font-semibold my-2'> <span className='text-xl font-bold'>Others:</span> {jobDetails[0].applyProcess.others}</h4>
+         </div>
       </div>
    );
 };
