@@ -622,7 +622,7 @@ const RegisterRecruter = () => {
               <span className="text-red-500">{errors?.password?.message}</span>
             )}
             <label for="acceptTerms" className="text-sm">
-              By clicking 'Continue', you acknowledge that you have read and
+              By clicking &apos;Continue&apos;, you acknowledge that you have read and
               accept the <span className="font-medium">Terms of Service</span>{" "}
               and <span className="font-medium">Privacy Policy</span>.
             </label>
