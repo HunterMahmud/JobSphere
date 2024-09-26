@@ -45,7 +45,7 @@ const BlogsCard = ({ Blog }) => {
 
                         <div className ="sm:flex sm:items-end sm:justify-end">
                             <Link
-                                href={`blogs/${idgi}`}
+                                href={`blogs/${id}`}
                                 className ="block bg-blue-600 px-5 py-3 text-center text-xs font-bold uppercase text-slate-100 transition hover:bg-blue-800 rounded-md"
                             >
                                 Read Blog
