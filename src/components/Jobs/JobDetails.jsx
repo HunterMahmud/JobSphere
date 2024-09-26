@@ -7,6 +7,7 @@ const JobDetails = () => {
             jobTitle: "Full Stack Developer",
             vacancy: 5,
             location: "New York, USA",
+            jobType: "Full-time",
             salaryScale: "$50,000 - $70,000",
             experienceNeed: "3-5 years",
          },
@@ -22,7 +23,6 @@ const JobDetails = () => {
                "Paid time off"
             ],
             salaryReview: "Annually based on performance",
-            jobType: "Full-time",
             jobLocation: "New York, USA",
          },
          companyDetails: {
@@ -49,20 +49,33 @@ const JobDetails = () => {
          <h1 className='text-2xl font-semibold text-center lg:max-w-[400px] mx-auto border-b-2 border-sky-700 rounded-xl'> <span className='text-2xl font-bold'>Job Title:</span> {jobDetails[0].summary.jobTitle}</h1>
 
          {/* Summary */}
-         <div className='md:mx-8 mx-2 border-l-2 p-2 rounded-lg border-sky-600 bg-sky-50 my-4'>
-            <h1 className='text-xl font-semibold underline mb-3'>Summary:</h1>
+         <div className='md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4'>
+            <h1 className='text-2xl font-semibold underline mb-3'>Summary:</h1>
             <div className='md:grid md:grid-cols-2 md:justify-between'>
                <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Title:</span> {jobDetails[0].summary.jobTitle}</h4>
                <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Vacancy:</span> {jobDetails[0].summary.vacancy}</h4>
             </div>
-            <h4 className='text-lg font-semibold my-2'> <span className='text-xl font-bold'>Location:</span> {jobDetails[0].summary.location}</h4>
+            <div className='md:grid md:grid-cols-2 md:justify-between'>
+               <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Location:</span> {jobDetails[0].summary.location}</h4>
+               <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Job Type:</span> {jobDetails[0].summary.jobType}</h4>
+            </div>
             <div className="md:grid md:grid-cols-2 md:justify-between">
                <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Salary Scale:</span> {jobDetails[0].summary.salaryScale}</h4>
                <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>experienceNeed:</span> {jobDetails[0].summary.experienceNeed}</h4>
             </div>
          </div>
 
-        
+         {/* Requirement */}
+         <div className='md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4'>
+            <h1 className='text-2xl font-semibold underline mb-3'>Requirements:</h1>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Education:</span> {jobDetails[0].requirement.education}</h4>
+            <h4 className='text-lg font-semibold my-2'> <span className='text-xl font-bold'>Experience:</span> {jobDetails[0].requirement.experience}</h4>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Additional Requirements:</span> {jobDetails[0].requirement.additionalRequirements}</h4>
+            <h4 className='text-lg font-semibold my-2'> <span className='text-xl font-bold'>Responsibility:</span> {jobDetails[0].requirement.responsibility}</h4>
+            <h4 className='text-lg font-semibold'> <span className='text-xl font-bold'>Benefits:</span> {jobDetails[0].requirement.benefits}</h4>
+         </div>
+
+         
       </div>
    );
 };
