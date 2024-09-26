@@ -8,9 +8,10 @@ const ContactUs = () => {
     email: '',
     message: ''
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -19,22 +20,43 @@ const ContactUs = () => {
     });
   };
 
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate form submission process
+    setTimeout(() => {
+      alert("Form submitted successfully!");
+      setIsSubmitting(false);
+      // Clear the form fields after submission
+      setFormData({
+        name: '',
+        email: '',
+        message: ''
+      });
+    }, 1000);
+  };
+
   return (
     <div className="flex flex-col md:flex-row md:p-10 bg-white shadow-md rounded-lg">
       <div className='md:w-1/2'>
         <Image
-          src="/images/img10.jpg"
+          src="/images/img10.jpg" // Ensure the image exists at this path
           alt="Team Member 1"
-          width={600} // Specify width
-          height={400} // Specify height
+          width={600} 
+          height={400} 
           className="w-10/12 mb-4 shadow-lg"
         />
       </div>
       <div>
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-          <p className="text-lg text-gray-600 mb-8">We'd love to hear from you! Please fill out the form below.</p>
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg w-full">
+          <p className="text-lg text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
+          <form 
+            onSubmit={handleSubmit}  // Adding submit handler
+            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg w-full"
+          >
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
                 Name
@@ -76,7 +98,7 @@ const ContactUs = () => {
                 placeholder="Write your message"
                 rows="5"
                 value={formData.message}
-                onChange={handleChange} // missing handler here
+                onChange={handleChange}
                 required
               />
             </div>
@@ -84,8 +106,9 @@ const ContactUs = () => {
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
+                disabled={isSubmitting} // Disable button while submitting
               >
-                Submit
+                {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
             </div>
           </form>

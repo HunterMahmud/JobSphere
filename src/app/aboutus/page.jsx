@@ -67,35 +67,61 @@ const AboutUsPage = () => {
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     
                     <div className="text-center">
-                        <img src="/images/team1.jpg" alt="Team Member 1" className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image 
+                        src="/images/team1.jpg" 
+                        alt="Team Member 1"
+                        width={600} 
+                        height={400} 
+                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
                         <h3 className="text-2xl font-semibold">Shafaet Hossain</h3>
                         <p className="text-gray-600">Design & Analysis</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
 
                     <div className="text-center">
-                        <img src="/images/team5.jpg" alt="Team Member 4" className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image 
+                        src="/images/team5.jpg"
+                        width={600} 
+                        height={400} 
+                        alt="Team Member 4" 
+                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
                         <h3 className="text-2xl font-semibold">Tanvir Ahamed</h3>
                         <p className="text-gray-600">Design & Analysis</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
 
                     <div className="text-center">
-                        <img src="/images/team4.jpg" alt="Team Member 4" className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image 
+                        src="/images/team4.jpg"
+                        width={600} 
+                        height={400}  
+                        alt="Team Member 4" 
+                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
                         <h3 className="text-2xl font-semibold">Hasan Al Mahmud</h3>
                         <p className="text-gray-600">Backend Developer</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
                  
                     <div className="text-center">
-                        <img src="/images/team2.jpg" alt="Team Member 2" className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image
+                         src="/images/team2.jpg" 
+                         alt="Team Member 2"
+                         width={600} 
+                         height={400} 
+                         className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
                         <h3 className="text-2xl font-semibold">Md Shamim</h3>
                         <p className="text-gray-600">Backend Developer</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
               
                     <div className="text-center">
-                        <img src="/images/team3.jpg" alt="Team Member 3" className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image 
+                        src="/images/team3.jpg"
+                        alt="Team Member 3"
+                        width={600} 
+                        height={400} 
+                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+
                         <h3 className="text-2xl font-semibold">MD Sahidul Islam</h3>
                         <p className="text-gray-600">Frontend Developer</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
@@ -103,7 +129,12 @@ const AboutUsPage = () => {
 
                  
                     <div className="text-center">
-                        <img src="/images/team6.jpg" alt="Team Member 4" className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image 
+                        src="/images/team6.jpg" 
+                        alt="Team Member 4"
+                        width={600} 
+                        height={400} 
+                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
                         <h3 className="text-2xl font-semibold">Rafizul Islam Rafiz</h3>
                         <p className="text-gray-600">Frontend Developer</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
