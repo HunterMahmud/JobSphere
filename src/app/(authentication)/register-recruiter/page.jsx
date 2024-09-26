@@ -1,6 +1,7 @@
 "use client";
 import axios from "axios";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -246,6 +247,7 @@ const companyServices = [
 ];
 
 const RegisterRecruter = () => {
+  const pathName = usePathname()
   const [show, setShow] = useState(false);
   const [country, setCountry] = useState("");
   const [companyType, setCompanyType] = useState("");
@@ -318,12 +320,14 @@ const RegisterRecruter = () => {
       setLoading(false);
     }
   };
+  console.log(pathName)
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center custom-container">
       <div className="flex flex-col p-3 rounded-md sm:p-10 bg-white  text-black shadow-lg border my-5 w-full lg:w-[90%]">
-        <div className="mb-8 text-center">
-          <h1 className="my-3 text-2xl font-medium">Register as a Recruter</h1>
+        <div className="mb-8 flex justify-center items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap dark:bg-gray-100 dark:text-gray-800">
+          <a rel="noopener noreferrer" href="register-user" className="flex items-center flex-shrink-0 px-5 py-2 border-b-4  dark:text-gray-600">Job Seeker</a>
+          <a rel="noopener noreferrer" href="register-recruiter" className={`${pathName === '/register-recruiter' && "border-b-primary"} flex items-center flex-shrink-0 px-5 py-2 border-b-4  dark:text-gray-600`}>Recruiter</a>
         </div>
         <form onSubmit={handleSubmit(handleRegister)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5">
