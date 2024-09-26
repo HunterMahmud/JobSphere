@@ -157,7 +157,7 @@ const LoginPage = () => {
 
 
                         <Link
-                            href={"/user-register"}
+                            href={"/register-user"}
                             className='text-xs text-gray-500 uppercase  hover:underline'
                         >
                             or Register

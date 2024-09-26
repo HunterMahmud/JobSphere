@@ -30,11 +30,11 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <div>
             <div className="bg-gray-800">
-              <div className="md:w-[90%] lg:w-[80%] mx-auto max-w-[1440px]">
+              <div className="custom-container">
                 <Navbar />
               </div>
             </div>
-            <div className="min-h-[calc(100vh-381px)] w-[90%] md:w-[90%] lg:w-[80%] mx-auto max-w-[1440px]">
+            <div className="min-h-[calc(100vh-386px)]">
               {children}
             </div>
           </div>
@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
             <Footer />
           </div>
         </AuthProvider>
-        
+
         <Toaster />
       </body>
     </html>
