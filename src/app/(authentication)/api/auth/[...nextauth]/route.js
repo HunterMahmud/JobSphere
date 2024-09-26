@@ -23,7 +23,10 @@ const handler = NextAuth({
           return null;
         }
         const db = await connectDB();
-        const currentUser = await db.collection("users").findOne({ email });
+        let currentUser = await db.collection("users").findOne({ email });
+        if (!currentUser) {
+          currentUser = await db.collection("recruiter").findOne({ email });
+        }
         if (!currentUser) {
           return null;
         }
