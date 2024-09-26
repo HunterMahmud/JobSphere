@@ -4,7 +4,7 @@ const JobsCard = ({job}) => {
    const { title, company, jobType, education, experience, postedDate, deadline, skills } = job
    return (
       <div>
-         <div className="card bg-blue-100 shadow-2xl p-6 rounded-xl border-l-4 border-slate-800 flex flex-col justify-between hover:border-2 box-border ">
+         <div className="card bg-blue-100 shadow-2xl p-6 rounded-xl border-l-4 border-slate-800 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-[350px]">
 
 
             <div className="card-body">
