@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GrLogout } from 'react-icons/gr'
 import { FcSettings } from 'react-icons/fc'
 import { AiOutlineBars } from 'react-icons/ai'
@@ -18,6 +18,20 @@ const Sidebar = () => {
     const handleToggle = () => {
         setActive(!isActive)
     }
+
+    const handleClickOutside = (event) => {
+        if (!event.target.closest('.navbar')) {
+            setActive(!isActive);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <>
             {/* Small Screen Navbar */}
