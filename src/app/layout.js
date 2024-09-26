@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
                 <Navbar />
               </div>
             </div>
-            <div className="min-h-[calc(100vh-381px)]">
+            <div className="min-h-[calc(100vh-386px)]">
               {children}
             </div>
           </div>
