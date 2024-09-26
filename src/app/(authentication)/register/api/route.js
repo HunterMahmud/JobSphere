@@ -14,7 +14,7 @@ export const POST = async (request) => {
     //hashed the password
     const hashedPassword = bcrypt.hashSync(newUser?.password, 14);
 
-    // check the user is registered as a job seeker or as a recuiter
+    // check the user is registered as a job seeker or as a recruiter
     if (newUser?.role === "seeker") {
       //check the user is already exists or not
       const isExist = await userCollection.findOne({ email: newUser?.email });
@@ -26,7 +26,7 @@ export const POST = async (request) => {
         ...newUser,
         password: hashedPassword,
       });
-    } else if (newUser?.role === "recuiter") {
+    } else if (newUser?.role === "recruiter") {
       //check the recruiter is already exists or not
       const isExist = await recruiterCollection.findOne({email: newUser?.email});
 
