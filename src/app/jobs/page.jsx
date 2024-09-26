@@ -104,15 +104,15 @@ const JobPage = () => {
                 ))}
             </div>
             <div className='mt-16 flex justify-center gap-6'>
-                <button className='btn px-4 py-2 border-2 text-lg font-semibold bg-sky-300 hover:bg-sky-400 rounded-lg'>Previous</button>
+                <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>Previous</button>
                 <div className='space-x-2'>
-                    <button className='btn px-4 py-2 border-2 text-lg font-semibold bg-sky-300 hover:bg-sky-400 rounded-lg'>1</button>
-                    <button className='btn px-4 py-2 border-2 text-lg font-semibold bg-sky-300 hover:bg-sky-400 rounded-lg'>2</button>
-                    <button className='btn px-4 py-2 border-2 text-lg font-semibold bg-sky-300 hover:bg-sky-400 rounded-lg'>3</button>
-                    <button className='btn px-4 py-2 border-2 text-lg font-semibold bg-sky-300 hover:bg-sky-400 rounded-lg'>...</button>
-                    <button className='btn px-4 py-2 border-2 text-lg font-semibold bg-sky-300 hover:bg-sky-400 rounded-lg'>8</button>
+                    <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>1</button>
+                    <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>2</button>
+                    <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>3</button>
+                    <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>...</button>
+                    <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>8</button>
                 </div>
-                <button className='btn px-4 py-2 border-2 text-lg font-semibold bg-sky-300 hover:bg-sky-400 rounded-lg'>Next</button>
+                <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>Next</button>
             </div>
 
         </div>
