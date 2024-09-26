@@ -50,14 +50,14 @@ const links = [
 const Navbar = () => {
   const pathName = usePathname();
   const router = useRouter();
-  const user = true;
+  const user = false;
 
-  if(pathName.includes('dashboard')) return
+  if (pathName.includes('dashboard')) return
 
   return (
     <Disclosure as="nav">
       <div className="mx-auto">
-        <div className="relative flex h-16 items-center justify-between">
+        <div className="relative flex h-[70px] items-center justify-between">
           {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -98,122 +98,81 @@ const Navbar = () => {
           {/* Right Section ( Profile, Notifications) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Notifications */}
-            <button
-              type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              <span className="sr-only">View notifications</span>
-              <BellIcon aria-hidden="true" className="h-6 w-6" />
-            </button>
-
+            {user && <>
+              <button
+                type="button"
+                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <span className="sr-only">View notifications</span>
+                <BellIcon aria-hidden="true" className="h-6 w-6" />
+              </button>
+            </>}
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
-              <div>
-                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-[1px] focus:ring-offset-gray-800">
-                  <span className="sr-only">Open user menu</span>
-                  <Image
-                    alt="Profile"
-                    src={user ? 'https://i.ibb.co.com/3BY9Fks/profile.png' : 'https://i.ibb.co.com/3BY9Fks/profile.png'}
-                    className="rounded-full"
-                    height={40}
-                    width={40}
-                  />
-                </MenuButton>
-              </div>
-              <MenuItems className="absolute right-0 z-10 mt-2 w-[300px] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-
-                {/* If there are no users*/}
-                {
-                  !user && <>
-                    {/* User */}
-                    < MenuItem >
-                      <div className="flex gap-2 py-2">
-                        <div className="w-[80px] flex justify-end">
-                          <div className="bg-[#68aa47] rounded-full w-12 h-12 flex justify-center items-center">
-                            <MdWorkOutline className="text-2xl text-white" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h1 className="text-sm font-medium">My Jobs</h1>
-                          <p className="text-[13px]">
-                            Login in or create your account to manage your profile
-                          </p>
-                          <div className="flex gap-2 mt-1">
-                            <a href={"/login"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Login</a>
-                            <a href={"/register-user"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
-                          </div>
-                        </div>
-                      </div>
-                    </MenuItem>
-                    {/* Divider */}
-                    <div className="border-t border-gray-200"></div>
-                    {/* Recruter */}
-                    <MenuItem>
-                      <div className="flex gap-2 py-2">
-                        <div className="w-[80px] flex justify-end">
-                          <div className="bg-primary rounded-full w-12 h-12 flex justify-center items-center">
-                            <FaRegUser className="text-2xl text-white" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h1 className="text-sm font-medium">Recruter</h1>
-                          <p className="text-[13px]">
-                            Login in or create your account find the best candidates in the fastest way
-                          </p>
-                          <div className="flex gap-2 mt-1">
-                            <a href={"/login"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Login</a>
-                            <a href={"/register-recruter"} className="border text-xs text-blue-500 shadow-xl px-2 py-[2px] rounded">Create Account</a>
-                          </div>
-                        </div>
-                      </div>
-                    </MenuItem>
-                  </>
-                }
-                {/* If there is user */}
-                {user && <>
-                  <MenuItem>
-                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">User Name</p>
-                  </MenuItem>
-                  {/* Divider */}
-                  <div className="border-t border-gray-200"></div>
-                  <MenuItem>
-                    <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">user@gmail.com</p>
-                  </MenuItem>
-                  {/* Divider */}
-                  <div className="border-t border-gray-200"></div>
-                  <MenuItem>
-                    <a
-                      href="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                    >
-                      My Dashboards
-                    </a>
-                  </MenuItem>
-                  {/* Divider */}
-                  <div className="border-t border-gray-200"></div>
-                  <MenuItem>
-                    <a
-                      href="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                    >
-                      My Profile
-                    </a>
-                  </MenuItem>
-                  {/* Divider */}
-                  <div className="border-t border-gray-200"></div>
-                  <MenuItem>
-                    <>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition-colors duration-200"
-                      >
-                        Logout
-                      </a>
+              {
+                user ? <>
+                  <div>
+                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-[1px] focus:ring-offset-gray-800">
+                      <span className="sr-only">Open user menu</span>
+                      <Image
+                        alt="Profile"
+                        src={user ? 'https://i.ibb.co.com/3BY9Fks/profile.png' : 'https://i.ibb.co.com/3BY9Fks/profile.png'}
+                        className="rounded-full"
+                        height={40}
+                        width={40}
+                      />
+                    </MenuButton>
+                  </div>
+                  <MenuItems className="absolute right-0 z-10 mt-2 w-[300px] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    {/* If there is user */}
+                    {user && <>
+                      <MenuItem>
+                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">User Name</p>
+                      </MenuItem>
+                      {/* Divider */}
+                      <div className="border-t border-gray-200"></div>
+                      <MenuItem>
+                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">user@gmail.com</p>
+                      </MenuItem>
+                      {/* Divider */}
+                      <div className="border-t border-gray-200"></div>
+                      <MenuItem>
+                        <a
+                          href="/dashboard"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                        >
+                          My Dashboards
+                        </a>
+                      </MenuItem>
+                      {/* Divider */}
+                      <div className="border-t border-gray-200"></div>
+                      <MenuItem>
+                        <a
+                          href="/profile"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                        >
+                          My Profile
+                        </a>
+                      </MenuItem>
+                      {/* Divider */}
+                      <div className="border-t border-gray-200"></div>
+                      <MenuItem>
+                        <>
+                          <a
+                            href="#"
+                            className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition-colors duration-200"
+                          >
+                            Logout
+                          </a>
+                        </>
+                      </MenuItem>
                     </>
-                  </MenuItem>
+                    }
+                  </MenuItems>
+                </> : <>
+                  <Link href={"/login"} className="px-3 md:px-6 py-2 brder bg-primary text-white rounded-full">Login</Link>
                 </>
-                }
-              </MenuItems>
+              }
             </Menu>
           </div>
         </div>
