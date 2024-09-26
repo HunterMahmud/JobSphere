@@ -98,16 +98,16 @@ const JobPage = () => {
 
     return (
         <div className="container mx-auto my-12">
-            {/* <h1 className="text-3xl font-bold text-center mb-8">Jobs</h1> */}
+            <h1 className="text-3xl font-bold text-center mb-8">Jobs</h1>
             {/* Card */}
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                 {jobs.map((job, index) => (
                     <JobsCard key={index} job={job} />
                 ))}
-            </div> */}
+            </div>
 
             {/* Pagination */}
-            {/* <div className='mt-16 flex justify-center gap-6'>
+            <div className='mt-16 flex justify-center gap-6'>
                 <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>Previous</button>
                 <div className='space-x-2'>
                     <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>1</button>
@@ -117,7 +117,7 @@ const JobPage = () => {
                     <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>8</button>
                 </div>
                 <button className='btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg'>Next</button>
-            </div> */}
+            </div>
 
             {/* Job Details will move to Dynamic */}
                 <JobDetails></JobDetails>
