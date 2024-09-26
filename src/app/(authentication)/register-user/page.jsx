@@ -310,7 +310,7 @@ const RegisterUser = () => {
         } || {};
 
       const result = await axios.post(
-        "http://localhost:3000/register-user/api",
+        "http://localhost:3000/register/api",
         newUser
       );
       if (result?.status === 200) {
