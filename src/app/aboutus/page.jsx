@@ -1,5 +1,6 @@
 "use client";
 import ContactUs from '@/components/shared/ContactUs';
+import Image from 'next/image';
 import React from 'react';
 
 const AboutUsPage = () => {
@@ -10,15 +11,19 @@ const AboutUsPage = () => {
                 {/* Image Section */}
                 <div className="lg:w-1/2 relative ">
                     {/* First Image */}
-                    <img
+                    <Image
                         src="/images/img2.jpg"
                         alt="Our Mission"
+                        width={600} 
+                        height={400} 
                         className="w-3/4 rounded-lg shadow-xl"
                     />
                     {/* Second Image */}
-                    <img
+                    <Image
                         src="/images/img1.jpg"
                         alt="Our Vision"
+                        width={600} 
+                        height={400} 
                         className="w-1/2 absolute right-5 top-1/3 rounded-lg border-8 border-white shadow-xl"
                     />
                 </div>
