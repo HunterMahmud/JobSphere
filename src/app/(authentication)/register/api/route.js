@@ -7,29 +7,45 @@ export const POST = async (request) => {
 
   try {
     const db = await connectDB();
+    //create two collection for user and recruiter
     const userCollection = db.collection("users");
     const recruiterCollection = db.collection("recruiter");
 
-    const exist = await userCollection.findOne({ email: newUser.email });
-    console.log("Existing User:", exist);
+    //hashed the password
+    const hashedPassword = bcrypt.hashSync(newUser?.password, 14);
 
-    if (exist) {
-      return NextResponse.json({ message: "User Exists" }, { status: 409 });
+    // check the user is registered as a job seeker or as a recuiter
+    if (newUser?.role === "seeker") {
+      //check the user is already exists or not
+      const isExist = await userCollection.findOne({ email: newUser?.email });
+
+      if (isExist) {
+        return NextResponse.json({ message: "User Exists" }, { status: 409 });
+      }
+      const res = await userCollection.insertOne({
+        ...newUser,
+        password: hashedPassword,
+      });
+    } else if (newUser?.role === "recuiter") {
+      //check the recruiter is already exists or not
+      const isExist = await recruiterCollection.findOne({email: newUser?.email});
+
+      if (isExist) {
+        return NextResponse.json({ message: "User Exists" }, { status: 409 });
+      }
+      const res = await recruiterCollection.insertOne({
+        ...newUser,
+        password: hashedPassword,
+      });
     }
 
-    const hashedPassword = bcrypt.hashSync(newUser.password, 14);
-
-    const res = await userCollection.insertOne({
-      ...newUser,
-      password: hashedPassword,
-    });
-
-    return NextResponse.json({ message: "User Created" }, { status: 201 });
+    return NextResponse.json({ message: "User Created" }, { status: 200 });
   } catch (error) {
-    console.error("Error while creating user:", error);
+
+    // console.error("Error while creating user:", error);
 
     return NextResponse.json(
-      { message: "Something Went Wrong", error: error.message },
+      { message: "Something Went Wrong", error: error?.message },
       { status: 500 }
     );
   }
