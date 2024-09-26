@@ -51,7 +51,7 @@ const links = [
 const Navbar = () => {
   const pathName = usePathname();
   const router = useRouter();
-  const user = false;
+  const user = true;
 
   if (pathName.includes('dashboard')) return
 
