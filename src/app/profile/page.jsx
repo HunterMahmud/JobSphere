@@ -1,3 +1,4 @@
+
 'use client'
 import * as React from 'react';
 import PropTypes from 'prop-types';
@@ -167,3 +168,5 @@ export default function VerticalTabs() {
         </div>
     );
 }
+
+
