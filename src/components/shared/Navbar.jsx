@@ -40,6 +40,7 @@ const links = [
     title: "Blogs",
     path: "/blogs"
   },
+
   {
     title: "About Us",
     path: "/aboutus",
