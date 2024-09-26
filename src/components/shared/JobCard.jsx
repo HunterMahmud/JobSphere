@@ -27,8 +27,8 @@ const JobCard = ({ job }) => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end mt-3">
-                <button className="bg-purple-600 btn hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg w-auto">
+            <div className="flex justify-center mt-3">
+                <button className="bg-purple-600 btn hover:bg-purple-700 text-white   font-semibold py-2 px-6 rounded-lg w-auto">
                     View Details
                 </button>
 
