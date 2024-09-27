@@ -144,9 +144,9 @@ export default function VerticalTabs() {
     const [edit, setEdit] = React.useState(false)
     const [value, setValue] = React.useState(0);
     // Define state for workExperience, education, and certifications
-    const [workExperience, setWorkExperience] = useState([{ jobTitle: '', companyName: '', description: '' }]);
-    const [education, setEducation] = useState([{ degree: '', institution: '', description: '' }]);
-    const [certifications, setCertifications] = useState([{ certificationName: '', issuingOrganization: '', year: '' }])
+    const [workExperience, setWorkExperience] = useState([...profile.workExperience, { jobTitle: '', companyName: '', description: '' }]);
+    const [education, setEducation] = useState([...profile.education, { degree: '', institution: '', description: '' }]);
+    const [certifications, setCertifications] = useState([...profile.certifications, { certificationName: '', issuingOrganization: '', year: '' }])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -172,15 +172,15 @@ export default function VerticalTabs() {
     };
     // -------------
     const handleAddWorkExperience = () => {
-        setWorkExperience([...workExperience, { jobTitle: '', companyName: '', description: '' }]);
+        setWorkExperience([...profile.workExperience, { jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
     };
 
     const handleAddEducation = () => {
-        setEducation([...education, { degree: '', institution: '', description: '' }]);
+        setEducation([...profile.education, { degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
     };
 
     const handleAddCertification = () => {
-        setCertifications([...certifications, { certificationName: '', issuingOrganization: '', year: '' }]);
+        setCertifications([...profile.certifications, { certificationName: '', issuingOrganization: '', year: '' }]);
     };
 
     const {
@@ -193,9 +193,10 @@ export default function VerticalTabs() {
     const handleSave = async data => {
         const { } = data;
     }
+    console.log(education)
 
     return (
-        <div className='custom-container border-l-2'>
+        <div className='custom-container lg:w-[65%] border-l-2'>
             <Box
                 sx={{ flexGrow: 1, bgcolor: 'background.paper', }}
                 className="flex flex-col md:flex-row relative mt-6 mb-24 md:my-6 "
@@ -327,7 +328,7 @@ export default function VerticalTabs() {
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                     />
                                 </div>
-                                <div className='col-span-2'>
+                                <div className='md:col-span-2'>
                                     <h1 className='font-medium'>Social Links</h1>
                                 </div>
                                 {/* linkedin */}
@@ -499,20 +500,33 @@ export default function VerticalTabs() {
                                         <input
                                             type="text"
                                             placeholder="Job Title"
-                                            value={experience.jobTitle}
+                                            defaultValue={experience.jobTitle}
                                             className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                         />
                                         <input
                                             type="text"
                                             placeholder="Company Name"
-                                            value={experience.companyName}
+                                            defaultValue={experience.companyName}
                                             className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                         />
-                                        <textarea
-                                            placeholder="Description"
-                                            value={experience.description}
+                                        <input
+                                            type="text"
+                                            placeholder="Company Name"
+                                            defaultValue={experience.startDate}
                                             className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
-                                            rows="3"
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Company Name"
+                                            defaultValue={experience.endDate}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                        />
+                                        <input
+                                            key={index}
+                                            type="text"
+                                            placeholder="Job Title"
+                                            defaultValue={experience.responsibilities}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                         />
                                     </div>
                                 ))}
@@ -533,7 +547,7 @@ export default function VerticalTabs() {
                                         </h4>
                                         <p>{experience.startDate} - {experience.endDate}</p>
                                         <ul className="list-disc ml-6">
-                                            {experience.responsibilities.map((responsibility, idx) => (
+                                            {experience.responsibilities?.map((responsibility, idx) => (
                                                 <li key={idx}>{responsibility}</li>
                                             ))}
                                         </ul>
@@ -549,25 +563,37 @@ export default function VerticalTabs() {
                             edit ? <>
                                 <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
                                     <h3 className="text-xl font-semibold mb-4">Education</h3>
-                                    {education.map((edu, index) => (
+                                    {education?.map((edu, index) => (
                                         <div key={index} className="mb-6">
                                             <input
                                                 type="text"
                                                 placeholder="Degree"
-                                                value={edu.degree}
+                                                defaultValue={edu?.degree}
                                                 className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                             />
                                             <input
                                                 type="text"
                                                 placeholder="Institution"
-                                                value={edu.institution}
+                                                defaultValue={edu?.institution}
                                                 className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                             />
-                                            <textarea
-                                                placeholder="Description"
-                                                value={edu.description}
+                                            <input
+                                                type="text"
+                                                placeholder="Institution"
+                                                defaultValue={edu?.startDate}
                                                 className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
-                                                rows="3"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Institution"
+                                                defaultValue={edu?.endDate}
+                                                className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Institution"
+                                                defaultValue={edu?.fieldOfStudy}
+                                                className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                             />
                                         </div>
                                     ))}
@@ -581,11 +607,11 @@ export default function VerticalTabs() {
                             </> : <>
                                 <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
                                     <h3 className="text-xl font-semibold mb-4">Education</h3>
-                                    {profile.education.map((edu, index) => (
+                                    {profile.education?.map((edu, index) => (
                                         <div key={index}>
-                                            <h4 className="font-semibold">{edu.degree} | {edu.institution}</h4>
-                                            <p>{edu.startDate} - {edu.endDate}</p>
-                                            <p>{edu.fieldOfStudy}</p>
+                                            <h4 className="font-semibold">{edu?.degree} | {edu?.institution}</h4>
+                                            <p>{edu?.startDate} - {edu?.endDate}</p>
+                                            <p>{edu?.fieldOfStudy}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -598,24 +624,24 @@ export default function VerticalTabs() {
                         {edit ? <>
                             <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
                                 <h3 className="text-xl font-semibold mb-4">Certifications</h3>
-                                {certifications.map((cert, index) => (
+                                {certifications?.map((cert, index) => (
                                     <div key={index} className="mb-6">
                                         <input
                                             type="text"
                                             placeholder="Certification Name"
-                                            value={cert.certificationName}
+                                            defaultValue={cert?.certificationName}
                                             className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                         />
                                         <input
                                             type="text"
                                             placeholder="Issuing Organization"
-                                            value={cert.issuingOrganization}
+                                            defaultValue={cert?.issuingOrganization}
                                             className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                         />
                                         <input
                                             type="text"
                                             placeholder="Year"
-                                            value={cert.year}
+                                            defaultValue={cert?.year}
                                             className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
                                         />
                                     </div>
@@ -631,8 +657,8 @@ export default function VerticalTabs() {
                             <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
                                 <h3 className="text-xl font-semibold mb-4">Certifications</h3>
                                 <ul className="list-disc ml-6">
-                                    {profile.certifications.map((cert, index) => (
-                                        <li key={index}>{cert.certificationName} - {cert.issuingOrganization} ({cert.year})</li>
+                                    {profile.certifications?.map((cert, index) => (
+                                        <li key={index}>{cert?.certificationName} - {cert?.issuingOrganization} ({cert?.year})</li>
                                     ))}
                                 </ul>
                             </div>
