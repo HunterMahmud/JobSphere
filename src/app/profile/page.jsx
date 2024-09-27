@@ -14,7 +14,7 @@ const profile = {
         "fullName": "John Doe",
         "profilePicture": "https://i.ibb.co.com/Swccb1r/Customer-Satisfaction.png",
         "professionalTitle": "Frontend Developer",
-        "location": "Dhaka, Bangladesh",
+        "linkedin": "Dhaka, Bangladesh",
         "resumeLink": "/resume.pdf"
     },
     "personalInformation": {
@@ -189,9 +189,8 @@ export default function VerticalTabs() {
                     {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
                 </div>
                 <form onSubmit={handleSubmit(handleRegister)} className="space-y-6">
-
+                    {/* Profile Overview */}
                     <TabPanel value={value} index={0}>
-                        {/* Profile Overview */}
                         {!edit ? <>
                             <div className="max-w-3xl bg-white shadow-lg border rounded-lg p-8 mb-6">
                                 <div className="flex  items-center space-x-4">
@@ -222,7 +221,7 @@ export default function VerticalTabs() {
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                     />
                                 </div>
-                                {/* Professional Title */}
+                                {/* phoneNumber */}
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-600 ">
                                         Professional Title
@@ -266,7 +265,108 @@ export default function VerticalTabs() {
                             </div>
                         </>}
                     </TabPanel>
-
+                    {/* Personal Information */}
+                    <TabPanel value={value} index={1}>
+                        {edit ? <>
+                            <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5">
+                                {/* Email */}
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                        Email
+                                    </label>
+                                    <input
+                                        {...register("email")}
+                                        defaultValue={profile.personalInformation.email}
+                                        type="email"
+                                        placeholder="Enter Your Email"
+                                        className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    />
+                                </div>
+                                {/* phoneNumber */}
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        {...register("phoneNumber")}
+                                        defaultValue={profile?.personalInformation?.phoneNumber}
+                                        type="text"
+                                        placeholder="Enter Your Phone Number"
+                                        className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    />
+                                </div>
+                                <div className='col-span-2'>
+                                    <h1 className='font-medium'>Social Links</h1>
+                                </div>
+                                {/* linkedin */}
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                        Linkedin
+                                    </label>
+                                    <input
+                                        {...register("linkedin")}
+                                        defaultValue={profile.personalInformation.socialLinks.linkedin}
+                                        type="text"
+                                        placeholder="Enter Your linkedin account link"
+                                        className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    />
+                                </div>
+                                {/* github */}
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                        Github
+                                    </label>
+                                    <input
+                                        {...register("github")}
+                                        defaultValue={profile.personalInformation.socialLinks.github}
+                                        type="text"
+                                        placeholder="Enter Your github account link"
+                                        className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    />
+                                </div>
+                                {/* portfolio */}
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                        Portfolio
+                                    </label>
+                                    <input
+                                        {...register("portfolio")}
+                                        defaultValue={profile.personalInformation.socialLinks.portfolio}
+                                        type="text"
+                                        placeholder="Enter Your portfolio account link"
+                                        className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    />
+                                </div>
+                            </div>
+                        </> : <>
+                            <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 border mb-6">
+                                <p><strong>Email:</strong> {profile.personalInformation.email}</p>
+                                <p><strong>Phone Number:</strong> {profile.personalInformation.phoneNumber}</p>
+                                <div className="mt-4">
+                                    <a
+                                        href={profile.personalInformation.socialLinks.linkedin}
+                                        className="text-blue-500 hover:underline"
+                                    >
+                                        LinkedIn
+                                    </a>{" "}
+                                    |{" "}
+                                    <a
+                                        href={profile.personalInformation.socialLinks.github}
+                                        className="text-blue-500 hover:underline"
+                                    >
+                                        GitHub
+                                    </a>{" "}
+                                    |{" "}
+                                    <a
+                                        href={profile.personalInformation.socialLinks.portfolio}
+                                        className="text-blue-500 hover:underline"
+                                    >
+                                        Portfolio
+                                    </a>
+                                </div>
+                            </div>
+                        </>}
+                    </TabPanel>
                     {/* Submit button */}
                     {
                         edit && <>
