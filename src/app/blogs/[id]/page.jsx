@@ -1,11 +1,19 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import Image from 'next/image';
 
-const BlogsCard = ({ Blog }) => {
+const BlogDetails = () => {
+    // Load the blog According to id & remove it 
+    const Blog = {
+        id: 1,
+        picture: "https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+        subject: "The Future of Web Development",
+        details: "This blog explores the latest trends in web development, including the rise of frameworks like Next.js and serverless architecture.",
+        date: "2024-09-26"
+      }
     const {id ,picture ,subject, details, date}=Blog
     return (
-        <div>
+        <div className='container mx-auto my-10'>
             <article className =" bg-slate-100 transition hover:shadow-xl dark:bg-gray-900 dark:shadow-gray-800/25 rounded-lg border-2 p-3">
                 <div className =" p-2 ">
                     <time
@@ -25,10 +33,9 @@ const BlogsCard = ({ Blog }) => {
                         <Image
                             alt="pic"
                             src={picture}
-                            className ="aspect-square h-full w-full object-cover"
+                            width={600}
                             height={500}
-                            width={500}
-                            priority 
+                            className ="aspect-square h-full w-full object-cover"
                         />
                     </div>
 
@@ -43,16 +50,16 @@ const BlogsCard = ({ Blog }) => {
                             </Link>
 
                             <p className ="mt-2 line-clamp-3 text-sm/relaxed text-gray-700 dark:text-gray-200">
-                               {details.split(" ").slice(0, 30).join(" ")}
+                               {details}
                             </p>
                         </div>
 
                         <div className ="sm:flex sm:items-end sm:justify-end">
                             <Link
-                                href={`blogs/${id}`}
+                                href="#"
                                 className ="block bg-blue-600 px-5 py-3 text-center text-xs font-bold uppercase text-slate-100 transition hover:bg-blue-800 rounded-md"
                             >
-                                Read Blog
+                                Done
                             </Link>
                         </div>
                     </div>
@@ -62,4 +69,4 @@ const BlogsCard = ({ Blog }) => {
     );
 };
 
-export default BlogsCard;
+export default BlogDetails;
