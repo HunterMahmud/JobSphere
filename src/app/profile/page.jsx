@@ -11,6 +11,7 @@ import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useState } from 'react';
 import { WithContext as ReactTagInput } from 'react-tag-input';
+import Image from 'next/image';
 
 const profile = {
     "profileOverview": {
@@ -227,10 +228,12 @@ export default function VerticalTabs() {
                         {!edit ? <>
                             <div className="max-w-3xl bg-white shadow-lg border rounded-lg p-8 mb-6">
                                 <div className="flex  items-center space-x-4">
-                                    <img
+                                    <Image
                                         src={profile?.profileOverview?.profilePicture}
                                         alt="Profile"
                                         className="w-24 h-24 rounded-full"
+                                        height={500}
+                                        width={500}
                                     />
                                     <div>
                                         <h2 className="text-2xl font-bold">{profile?.profileOverview?.fullName}</h2>
