@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import Image from 'next/image';
 
 const BlogDetails = () => {
     // Load the blog According to id & remove it 
@@ -29,9 +30,11 @@ const BlogDetails = () => {
 
                 <div className ="flex flex-col md:flex-row">
                     <div className ="block basis-2 md:basis-72">
-                        <img
-                            alt=""
+                        <Image
+                            alt="pic"
                             src={picture}
+                            width={600}
+                            height={500}
                             className ="aspect-square h-full w-full object-cover"
                         />
                     </div>
