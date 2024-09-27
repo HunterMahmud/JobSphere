@@ -11,7 +11,7 @@ const JobPage = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3000/jobs/api");
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api`);
         setJobs(data.jobs);
       } catch (error) {
         console.error("Error fetching data: ", error);
