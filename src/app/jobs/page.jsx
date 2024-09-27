@@ -1,9 +1,9 @@
-"use client"
-import JobDetails from '@/components/Jobs/JobDetails';
-import JobsCard from '@/components/Jobs/JobsCard';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
+"use client";
+import JobDetails from "@/components/Jobs/JobDetails";
+import JobsCard from "@/components/Jobs/JobsCard";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import JobCard from "@/components/Jobs/JobCard";
 const JobPage = () => {
   const [jobs, setJobs] = useState([]); // Initialize as an array
   const [error, setError] = useState(null);
@@ -11,22 +11,18 @@ const JobPage = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3000/jobs/api');
-        setJobs(data.jobs)
-        
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api`);
+        setJobs(data.jobs);
       } catch (error) {
-        console.error('Error fetching data: ', error);
-        setError('Failed to fetch jobs');
+        console.error("Error fetching data: ", error);
+        setError("Failed to fetch jobs");
       }
     };
 
     fetchJobs();
   }, []);
 
-  console.log(jobs)
-
-
-
+  console.log(jobs);
 
   return (
     <div className="container mx-auto my-12">
@@ -35,9 +31,7 @@ const JobPage = () => {
       {/* Job Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {Array.isArray(jobs) && jobs.length > 0 ? (
-          jobs.map((job, index) => (
-            <JobsCard key={index} job={job} />
-          ))
+          jobs.map((job, index) => <JobCard key={index} job={job} />)
         ) : (
           <p>No jobs found</p>
         )}

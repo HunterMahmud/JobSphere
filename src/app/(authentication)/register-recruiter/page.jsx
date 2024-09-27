@@ -300,7 +300,7 @@ const RegisterRecruter = () => {
       };
 
       const result = await axios.post(
-        "http://localhost:3000/register/api",
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/register/api`,
         newUser
       );
 
