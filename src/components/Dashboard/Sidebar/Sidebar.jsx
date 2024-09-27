@@ -23,20 +23,11 @@ const Sidebar = () => {
       }
     };
 
-<<<<<<< HEAD
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [handleClickOutside]);
-=======
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []); // Empty dependency array to run once on mount
->>>>>>> a293a197e1aa922c90ff45ecc985b2518aef8ee4
 
   return (
     <>
