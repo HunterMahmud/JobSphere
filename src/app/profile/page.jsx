@@ -143,7 +143,11 @@ function a11yProps(index) {
 export default function VerticalTabs() {
     const [edit, setEdit] = React.useState(false)
     const [value, setValue] = React.useState(0);
-    const width = false;
+    // Define state for workExperience, education, and certifications
+    const [workExperience, setWorkExperience] = useState([{ jobTitle: '', companyName: '', description: '' }]);
+    const [education, setEducation] = useState([{ degree: '', institution: '', description: '' }]);
+    const [certifications, setCertifications] = useState([{ certificationName: '', issuingOrganization: '', year: '' }])
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -166,6 +170,18 @@ export default function VerticalTabs() {
             [type]: [...skills[type], tag.text]
         });
     };
+    // -------------
+    const handleAddWorkExperience = () => {
+        setWorkExperience([...workExperience, { jobTitle: '', companyName: '', description: '' }]);
+    };
+
+    const handleAddEducation = () => {
+        setEducation([...education, { degree: '', institution: '', description: '' }]);
+    };
+
+    const handleAddCertification = () => {
+        setCertifications([...certifications, { certificationName: '', issuingOrganization: '', year: '' }]);
+    };
 
     const {
         register,
@@ -185,7 +201,7 @@ export default function VerticalTabs() {
                 className="flex flex-col md:flex-row relative mt-6 mb-24 md:my-6 "
             >
                 <Tabs
-                    orientation={`${width ? 'horizontal' : 'vertical'}`}
+                    orientation={'vertical'}
                     variant="scrollable"
                     value={value}
                     onChange={handleChange}
@@ -473,7 +489,156 @@ export default function VerticalTabs() {
                         </>}
 
                     </TabPanel>
-                   
+                    {/* Work Experience */}
+                    <TabPanel value={value} index={4}>
+                        {edit ? <>
+                            <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                <h3 className="text-xl font-semibold mb-4">Work Experience</h3>
+                                {workExperience.map((experience, index) => (
+                                    <div key={index} className="mb-6">
+                                        <input
+                                            type="text"
+                                            placeholder="Job Title"
+                                            value={experience.jobTitle}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Company Name"
+                                            value={experience.companyName}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                        />
+                                        <textarea
+                                            placeholder="Description"
+                                            value={experience.description}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                            rows="3"
+                                        />
+                                    </div>
+                                ))}
+                                <button
+                                    onClick={handleAddWorkExperience}
+                                    className="text-blue-600 font-bold"
+                                >
+                                    + Add Work Experience
+                                </button>
+                            </div>
+                        </> : <>
+                            <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                <h3 className="text-xl font-semibold mb-4">Work Experience</h3>
+                                {profile.workExperience.map((experience, index) => (
+                                    <div key={index} className="mb-4">
+                                        <h4 className="font-semibold">
+                                            {experience.jobTitle} | {experience.companyName}
+                                        </h4>
+                                        <p>{experience.startDate} - {experience.endDate}</p>
+                                        <ul className="list-disc ml-6">
+                                            {experience.responsibilities.map((responsibility, idx) => (
+                                                <li key={idx}>{responsibility}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        </>}
+
+                    </TabPanel>
+                    {/* Education */}
+                    <TabPanel value={value} index={5}>
+                        {
+                            edit ? <>
+                                <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                    <h3 className="text-xl font-semibold mb-4">Education</h3>
+                                    {education.map((edu, index) => (
+                                        <div key={index} className="mb-6">
+                                            <input
+                                                type="text"
+                                                placeholder="Degree"
+                                                value={edu.degree}
+                                                className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Institution"
+                                                value={edu.institution}
+                                                className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                            />
+                                            <textarea
+                                                placeholder="Description"
+                                                value={edu.description}
+                                                className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                                rows="3"
+                                            />
+                                        </div>
+                                    ))}
+                                    <button
+                                        onClick={handleAddEducation}
+                                        className="text-blue-600 font-bold"
+                                    >
+                                        + Add Education
+                                    </button>
+                                </div>
+                            </> : <>
+                                <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                    <h3 className="text-xl font-semibold mb-4">Education</h3>
+                                    {profile.education.map((edu, index) => (
+                                        <div key={index}>
+                                            <h4 className="font-semibold">{edu.degree} | {edu.institution}</h4>
+                                            <p>{edu.startDate} - {edu.endDate}</p>
+                                            <p>{edu.fieldOfStudy}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        }
+
+                    </TabPanel>
+                    {/* Certifications */}
+                    <TabPanel value={value} index={6}>
+                        {edit ? <>
+                            <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                <h3 className="text-xl font-semibold mb-4">Certifications</h3>
+                                {certifications.map((cert, index) => (
+                                    <div key={index} className="mb-6">
+                                        <input
+                                            type="text"
+                                            placeholder="Certification Name"
+                                            value={cert.certificationName}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Issuing Organization"
+                                            value={cert.issuingOrganization}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Year"
+                                            value={cert.year}
+                                            className="w-full mb-2 p-2 border border-gray-300 rounded-lg"
+                                        />
+                                    </div>
+                                ))}
+                                <button
+                                    onClick={handleAddCertification}
+                                    className="text-blue-600 font-bold"
+                                >
+                                    + Add Certification
+                                </button>
+                            </div>
+                        </> : <>
+                            <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                <h3 className="text-xl font-semibold mb-4">Certifications</h3>
+                                <ul className="list-disc ml-6">
+                                    {profile.certifications.map((cert, index) => (
+                                        <li key={index}>{cert.certificationName} - {cert.issuingOrganization} ({cert.year})</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </>}
+
+                    </TabPanel>
 
                     {/* Submit button */}
                     {
