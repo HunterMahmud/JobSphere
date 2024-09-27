@@ -21,6 +21,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+
 
 const links = [
   {
@@ -51,7 +54,9 @@ const links = [
 const Navbar = () => {
   const pathName = usePathname();
   const router = useRouter();
-  const user = true;
+  const session=useSession();
+  const user = false;
+  console.log(session);
 
   if (pathName.includes('dashboard')) return
 
@@ -99,7 +104,7 @@ const Navbar = () => {
           {/* Right Section ( Profile, Notifications) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Notifications */}
-            {user && <>
+            {session?.status==="authenticated" && <>
               <button
                 type="button"
                 className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -111,13 +116,13 @@ const Navbar = () => {
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
               {
-                user ? <>
+                session?.status==="authenticated" ? <>
                   <div>
                     <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-[1px] focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
                       <Image
                         alt="Profile"
-                        src={user ? 'https://i.ibb.co.com/3BY9Fks/profile.png' : 'https://i.ibb.co.com/3BY9Fks/profile.png'}
+                        src={session?.status==="authenticated" ? 'https://i.ibb.co.com/3BY9Fks/profile.png' : 'https://i.ibb.co.com/3BY9Fks/profile.png'}
                         className="rounded-full"
                         height={40}
                         width={40}
@@ -126,14 +131,14 @@ const Navbar = () => {
                   </div>
                   <MenuItems className="absolute right-0 z-10 mt-2 w-[300px] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     {/* If there is user */}
-                    {user && <>
+                    {session?.status==="authenticated" && <>
                       <MenuItem>
-                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">User Name</p>
+                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">{}</p>
                       </MenuItem>
                       {/* Divider */}
                       <div className="border-t border-gray-200"></div>
                       <MenuItem>
-                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">user@gmail.com</p>
+                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">{session?.data?.user?.email}</p>
                       </MenuItem>
                       {/* Divider */}
                       <div className="border-t border-gray-200"></div>
@@ -159,12 +164,13 @@ const Navbar = () => {
                       <div className="border-t border-gray-200"></div>
                       <MenuItem>
                         <>
-                          <a
-                            href="#"
+                          <button
+
+                            onClick={() => signOut()}
                             className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-800 transition-colors duration-200"
                           >
                             Logout
-                          </a>
+                          </button>
                         </>
                       </MenuItem>
                     </>
