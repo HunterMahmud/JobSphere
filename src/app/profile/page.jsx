@@ -8,6 +8,8 @@ import Box from '@mui/material/Box';
 import { useForm } from "react-hook-form";
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
+import { useState } from 'react';
+import { WithContext as ReactTagInput } from 'react-tag-input';
 
 const profile = {
     "profileOverview": {
@@ -144,6 +146,26 @@ export default function VerticalTabs() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+    // Define technical and soft skills
+    const [skills, setSkills] = useState({
+        technicalSkills: ["React.js", "Node.js", "JavaScript", "MongoDB", "HTML/CSS"],
+        softSkills: ["Communication", "Teamwork", "Problem Solving"]
+    });
+
+    const handleSkillDelete = (i, type) => {
+        setSkills({
+            ...skills,
+            [type]: skills[type].filter((_, index) => index !== i)
+        });
+    };
+
+    const handleSkillAddition = (tag, type) => {
+        setSkills({
+            ...skills,
+            [type]: [...skills[type], tag.text]
+        });
+    };
+
     const {
         register,
         handleSubmit,
@@ -387,7 +409,71 @@ export default function VerticalTabs() {
                                 <p>{profile.careerObjective}</p>
                             </div>
                         </>}
-                    </TabPanel> 
+                    </TabPanel>
+                    {/* Skills */}
+                    <TabPanel value={value} index={3}>
+                        {edit ? <>
+                            <div className="min-h-screen bg-gray-100 md:p-6 flex flex-col items-center">
+                                {/* Technical Skills */}
+                                <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                    <h3 className="text-xl font-semibold mb-4">Technical Skills</h3>
+                                    <ReactTagInput
+                                        tags={skills.technicalSkills.map(skill => ({ id: skill, text: skill }))}
+                                        handleDelete={(i) => handleSkillDelete(i, 'technicalSkills')}
+                                        handleAddition={(tag) => handleSkillAddition(tag, 'technicalSkills')}
+                                        inputFieldPosition="bottom"
+                                        placeholder="Add a new technical skill"
+                                        classNames={{
+                                            tags: 'flex flex-wrap gap-2 mt-4',
+                                            tag: 'bg-gray-200 px-3 py-1 rounded-lg text-black flex items-center',
+                                            tagInput: 'border border-gray-300 rounded-lg p-2 w-full',
+                                            tagInputField: 'outline-none text-gray-600',
+                                            remove: 'ml-2 text-blue-900 cursor-pointer'
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Soft Skills */}
+                                <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                    <h3 className="text-xl font-semibold mb-4">Soft Skills</h3>
+                                    <ReactTagInput
+                                        tags={skills.softSkills.map(skill => ({ id: skill, text: skill }))}
+                                        handleDelete={(i) => handleSkillDelete(i, 'softSkills')}
+                                        handleAddition={(tag) => handleSkillAddition(tag, 'softSkills')}
+                                        inputFieldPosition="bottom"
+                                        placeholder="Add a new soft skill"
+                                        classNames={{
+                                            tags: 'flex flex-wrap gap-2 mt-4',
+                                            tag: 'bg-gray-200 px-3 py-1 rounded-lg text-black flex items-center',
+                                            tagInput: 'border border-gray-300 rounded-lg p-2 w-full',
+                                            tagInputField: 'outline-none text-gray-600',
+                                            remove: 'ml-2 text-blue-900 cursor-pointer'
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                        </> : <>
+                            <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6">
+                                <h3 className="text-xl font-semibold mb-4">Skills</h3>
+                                <h4 className="font-semibold">Technical Skills:</h4>
+                                <ul className="list-disc ml-6">
+                                    {profile.skills.technicalSkills.map((skill, index) => (
+                                        <li key={index}>{skill}</li>
+                                    ))}
+                                </ul>
+                                <h4 className="font-semibold mt-4">Soft Skills:</h4>
+                                <ul className="list-disc ml-6">
+                                    {profile.skills.softSkills.map((skill, index) => (
+                                        <li key={index}>{skill}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </>}
+
+                    </TabPanel>
+                   
+
                     {/* Submit button */}
                     {
                         edit && <>
