@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -21,10 +22,13 @@ const BlogsCard = ({ Blog }) => {
 
                 <div className ="flex flex-col md:flex-row">
                     <div className ="block basis-2 md:basis-72">
-                        <img
-                            alt=""
+                        <Image
+                            alt="pic"
                             src={picture}
                             className ="aspect-square h-full w-full object-cover"
+                            height={500}
+                            width={500}
+                            priority 
                         />
                     </div>
 
