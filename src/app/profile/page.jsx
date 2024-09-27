@@ -14,7 +14,7 @@ const profile = {
         "fullName": "John Doe",
         "profilePicture": "https://i.ibb.co.com/Swccb1r/Customer-Satisfaction.png",
         "professionalTitle": "Frontend Developer",
-        "linkedin": "Dhaka, Bangladesh",
+        "location": "Dhaka, Bangladesh",
         "resumeLink": "/resume.pdf"
     },
     "personalInformation": {
@@ -150,18 +150,11 @@ export default function VerticalTabs() {
         reset,
         formState: { errors },
     } = useForm();
-    const handleRegister = async data => {
-        const {
-            name,
-            email,
-            cityName,
-            education,
-            mobileNumber,
-            image,
-            password,
-            acceptTerms,
-        } = data;
+
+    const handleSave = async data => {
+        const { } = data;
     }
+
     return (
         <div className='custom-container border-l-2'>
             <Box
@@ -188,7 +181,7 @@ export default function VerticalTabs() {
                 <div onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-5 top- text-2xl font-semibold'>
                     {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
                 </div>
-                <form onSubmit={handleSubmit(handleRegister)} className="space-y-6">
+                <form onSubmit={handleSubmit(handleSave)} className="space-y-6 w-full">
                     {/* Profile Overview */}
                     <TabPanel value={value} index={0}>
                         {!edit ? <>
@@ -240,10 +233,10 @@ export default function VerticalTabs() {
                                         Location
                                     </label>
                                     <input
-                                        {...register("locatiom")}
-                                        defaultValue={profile.profileOverview.location}
+                                        {...register("location")}
+                                        defaultValue={profile?.profileOverview?.location}
                                         type="text"
-                                        placeholder="Enter Your Name"
+                                        placeholder="Enter Your Location"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                     />
                                 </div>
@@ -367,6 +360,34 @@ export default function VerticalTabs() {
                             </div>
                         </>}
                     </TabPanel>
+                    {/* Career Objective */}
+                    <TabPanel value={value} index={2} >
+                        {edit ? <>
+                            <div className='grid grid-cols-1 justify-center items-center'>
+                                <div>
+                                    <h3 className="text-xl text-center font-semibold mb-2">Career Objective</h3>
+                                    <textarea
+                                        {...register("careerObjective", {
+                                            required: {
+                                                value: true,
+                                                message: "This field is required.",
+                                            },
+                                        })}
+                                        defaultValue={profile.careerObjective}
+                                        type="textarea"
+                                        placeholder="Write your carrer objective"
+                                        className="block w-full px-4 py-2 min-h-[150px] text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                    />
+                                </div>
+
+                            </div>
+                        </> : <>
+                            <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-8 mb-6 border mt-2">
+                                <h3 className="text-xl text-center font-semibold mb-4">Career Objective</h3>
+                                <p>{profile.careerObjective}</p>
+                            </div>
+                        </>}
+                    </TabPanel> 
                     {/* Submit button */}
                     {
                         edit && <>
