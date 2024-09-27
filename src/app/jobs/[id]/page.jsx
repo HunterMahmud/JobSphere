@@ -9,7 +9,7 @@ const JobDetails = ({ params }) => {
 
   const getServicesDetails = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:3000/jobs/api/${id}`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/${id}`);
       console.log(res.data.job)
       return res.data.job;
     } catch (error) {
