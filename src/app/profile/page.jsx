@@ -166,7 +166,7 @@ export default function VerticalTabs() {
         <div className='custom-container border-l-2'>
             <Box
                 sx={{ flexGrow: 1, bgcolor: 'background.paper', }}
-                className="flex flex-col md:flex-row relative my-6"
+                className="flex flex-col md:flex-row relative mt-6 mb-24 md:my-6 "
             >
                 <Tabs
                     orientation={`${width ? 'horizontal' : 'vertical'}`}
@@ -270,7 +270,7 @@ export default function VerticalTabs() {
                     {/* Submit button */}
                     {
                         edit && <>
-                            <div className='absolute right-3 bottom-0'>
+                            <div className='absolute right-3 md:bottom-0 '>
                                 <div className='flex justify-end items-end'>
                                     <button
                                         type="submit"
