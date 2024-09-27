@@ -248,17 +248,18 @@ export default function VerticalTabs() {
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                     />
                                 </div>
-                                {/* Name */}
+                                {/* profilePicture */}
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                                        Full Name
+                                        Profile Picture
                                     </label>
                                     <input
-                                        {...register("name")}
-                                        defaultValue={profile.profileOverview.fullName}
-                                        type="text"
-                                        placeholder="Enter Your Name"
-                                        className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                        {...register("profilePicture")}
+                                        type="file"
+                                        id="image"
+                                        name="image"
+                                        accept="image/*"
+                                        className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                     />
                                 </div>
 
@@ -275,7 +276,7 @@ export default function VerticalTabs() {
                                         type="submit"
                                         className="bg-primary hover:bg-hoverColor px-5 rounded-md py-3 text-white"
                                     >
-                                        Register
+                                        Save
                                     </button>
                                 </div>
                             </div>
