@@ -219,10 +219,10 @@ export default function VerticalTabs() {
                     <Tab label="Education" {...a11yProps(5)} className='capitalize' />
                     <Tab label="Certifications" {...a11yProps(6)} className='capitalize' />
                 </Tabs>
-                <div onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-5 top- text-2xl font-semibold'>
+                <div onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-5 -top-1 text-2xl font-semibold'>
                     {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
                 </div>
-                <form onSubmit={handleSubmit(handleSave)} className="space-y-6 w-full">
+                <form onSubmit={handleSubmit(handleSave)} className="relative space-y-6 w-full">
                     {/* Profile Overview */}
                     <TabPanel value={value} index={0}>
                         {!edit ? <>
@@ -672,8 +672,8 @@ export default function VerticalTabs() {
                     {/* Submit button */}
                     {
                         edit && <>
-                            <div className='absolute right-3 md:bottom-0 '>
-                                <div className='flex justify-end items-end'>
+                            <div>
+                                <div className=' flex justify-end items-end'>
                                     <button
                                         type="submit"
                                         className="bg-primary hover:bg-hoverColor px-5 rounded-md py-3 text-white"
