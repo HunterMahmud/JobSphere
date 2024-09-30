@@ -219,9 +219,9 @@ export default function VerticalTabs() {
                     <Tab label="Education" {...a11yProps(5)} className='capitalize' />
                     <Tab label="Certifications" {...a11yProps(6)} className='capitalize' />
                 </Tabs>
-                <div onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-5 -top-1 text-2xl font-semibold'>
+                <button onClick={() => setEdit(!edit)} className='cursor-pointer z-10 absolute right-5 -top-1 text-2xl font-semibold'>
                     {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
-                </div>
+                </button>
                 <form onSubmit={handleSubmit(handleSave)} className="relative space-y-6 w-full">
                     {/* Profile Overview */}
                     <TabPanel value={value} index={0}>
