@@ -7,10 +7,12 @@ import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
 import { MdAssignmentAdd, MdOutlineWorkOutline } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
+import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
-
+  const user = useSession();
+  console.log(user)
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
