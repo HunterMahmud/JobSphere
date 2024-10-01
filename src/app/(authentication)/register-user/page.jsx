@@ -282,7 +282,6 @@ const RegisterUser = () => {
       name,
       email,
       cityName,
-      education,
       mobileNumber,
       image,
       password,
@@ -302,7 +301,6 @@ const RegisterUser = () => {
           name,
           email,
           cityName,
-          education,
           mobileNumber,
           userIMG: data?.data?.display_url,
           password,
@@ -415,40 +413,6 @@ const RegisterUser = () => {
                 type="text"
                 placeholder="Enter City Name"
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
-            </div>
-            {/* Education Name */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Education
-              </label>
-              <input
-                {...register("education", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="text"
-                placeholder="Enter Your Education level"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
-            </div>
-            {/* Skills */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Skill
-              </label>
-              <Select
-                onChange={(e) => setSkill(e.value)}
-                options={skillOptions}
-                className="w-full"
               />
               {errors?.email?.message && (
                 <span className="text-red-500">{errors.email.message}</span>
