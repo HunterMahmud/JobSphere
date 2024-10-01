@@ -246,7 +246,7 @@ const companyServices = [
   { value: "Research", label: "Research and Development" },
 ];
 
-const RegisterRecruter = () => {
+const RegisterRecruiter = () => {
   const pathName = usePathname()
   const [show, setShow] = useState(false);
   const [country, setCountry] = useState("");
@@ -266,7 +266,7 @@ const RegisterRecruter = () => {
   const handleRegister = async (data) => {
     setLoading(true);
     const {
-      userName,
+      fullName,
       email,
       password,
       cityName,
@@ -287,7 +287,7 @@ const RegisterRecruter = () => {
       );
 
       const newUser = {
-        userName,
+        fullName,
         email,
         password,
         cityName,
@@ -334,17 +334,17 @@ const RegisterRecruter = () => {
             {/* Name */}
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                User Name
+                Full Name
               </label>
               <input
-                {...register("userName", {
+                {...register("fullName", {
                   required: {
                     value: true,
                     message: "This field is required.",
                   },
                 })}
                 type="text"
-                placeholder="Type Username"
+                placeholder="Type full name"
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
               {errors?.name?.message && (
@@ -656,4 +656,4 @@ const RegisterRecruter = () => {
   );
 };
 
-export default RegisterRecruter;
+export default RegisterRecruiter;
