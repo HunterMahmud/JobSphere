@@ -246,7 +246,7 @@ const companyServices = [
   { value: "Research", label: "Research and Development" },
 ];
 
-const RegisterRecruter = () => {
+const RegisterRecruiter = () => {
   const pathName = usePathname()
   const [show, setShow] = useState(false);
   const [country, setCountry] = useState("");
@@ -656,4 +656,4 @@ const RegisterRecruter = () => {
   );
 };
 
-export default RegisterRecruter;
+export default RegisterRecruiter;
