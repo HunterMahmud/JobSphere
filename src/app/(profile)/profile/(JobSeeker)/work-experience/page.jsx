@@ -57,9 +57,9 @@ const WorkExperience = () => {
                         <form onSubmit={handleSubmit(handleSave)}>
                             <div className="w-full mb-6">
                                 {workExperience.map((experience, index) => (
-                                    <div>
+                                    <div key={index}>
                                         <label className="block text-sm font-medium text-gray-700">Work Experience</label>
-                                        <div key={index} className="mb-6 flex items-center gap-1">
+                                        <div  className="mb-6 flex items-center gap-1">
                                             <div className='w-full'>
                                                 <input
                                                     type="text"
@@ -133,7 +133,7 @@ const WorkExperience = () => {
                                         </h4>
                                         <p>{experience.startDate} - {experience.endDate}</p>
                                         {experience.responsibilities?.map((responsibility, idx) => (
-                                            <div key={index} className='flex gap-1'>
+                                            <div key={idx} className='flex gap-1'>
                                                 <CgMoveRight className='text-xl md:text-2xl' />
                                                 <p>{responsibility}</p>
                                             </div>

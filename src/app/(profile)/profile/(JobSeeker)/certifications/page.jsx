@@ -45,15 +45,15 @@ const Certifications = () => {
                 {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
             </button>
             <div>
-            <h3 className="text-xl text-center font-semibold mb-2">Certifications</h3>
+                <h3 className="text-xl text-center font-semibold mb-2">Certifications</h3>
                 {
                     edit ?
                         <form onSubmit={handleSave}>
                             <div className="w-full max-w-3xl rounded-lg mb-6">
                                 {certifications?.map((cert, index) => (
-                                    <div>
+                                    <div key={index}>
                                         <label className="block text-sm font-medium text-gray-700">Certificate</label>
-                                        <div key={index} className="mb-6 flex items-center">
+                                        <div className="mb-6 flex items-center">
                                             <div className='w-full'>
                                                 <input
                                                     type="text"
@@ -107,7 +107,7 @@ const Certifications = () => {
                         :
                         <div className='mt-5'>
                             <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                <ul className="">
+                                <ul>
                                     {certifications?.map((cert, index) => (
                                         <div key={index} className='flex items-center gap-1'>
                                             <CgMoveRight className='text-xl md:text-2xl' />
@@ -117,9 +117,7 @@ const Certifications = () => {
                                 </ul>
                             </div>
                         </div>
-
                 }
-
             </div>
         </div>
     );

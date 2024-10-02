@@ -3,7 +3,6 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
-import { useForm } from "react-hook-form";
 import Select from "react-select";
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -381,10 +380,12 @@ const ProfileOverview = () => {
                         :
                         <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                             <div className='border rounded-full'>
-                                <img
+                                <Image
                                     className='h-[200px] w-[200px] object-cover rounded-full'
                                     src={overview.profilePicture}
                                     alt="ProfileImg"
+                                    width={200}
+                                    height={200}
                                 />
                             </div>
                             <div className='space-y-1 mt-5'>
