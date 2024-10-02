@@ -255,7 +255,6 @@ const ProfileOverview = () => {
         } catch (err) {
             console.log(err.message);
         }
-
     }
 
     return (

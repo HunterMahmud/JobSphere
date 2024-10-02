@@ -24,8 +24,19 @@ const PersonalInformation = () => {
         formState: { errors },
     } = useForm();
 
-    const handleSave = async () => {
-        console.log('Hello')
+    const handleSave = async (data) => {
+        const {email,phoneNumber,linkedin,github,portfolio} = data;
+        try{
+            console.log({
+                email,
+                phoneNumber,
+                linkedin,
+                github,
+                portfolio
+            })
+        }catch(err){
+            console.log(err.message)
+        }
     }
 
     return (
