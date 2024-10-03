@@ -1,27 +1,43 @@
 "use client"
-import React, { useState } from 'react';
+import Loader from '@/app/loading';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const JobListTable = () => {
     const [selectedRole, setSelectedRole] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedType, setSelectedType] = useState('');
+    const [loading, setLoading] = useState(true)
+    const [jobData, setJobData] = useState([])
 
-    const jobData = [
-        { role: 'Social Media Assistant', jobStatus: 'Live', datePosted: '20 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-        { role: 'Senior Designer', jobStatus: 'Live', datePosted: '16 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-        { role: 'Visual Designer', jobStatus: 'Live', datePosted: '15 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
-        { role: 'Data Science', jobStatus: 'Closed', datePosted: '13 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
-        { role: 'Kotlin Developer', jobStatus: 'Closed', datePosted: '12 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-    ];
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getSaveJobs`);
+                setJobData(data.jobs);
+                setLoading(false)
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+                setLoading(false)
+            }
+        };
+
+        fetchJobs();
+    }, []);
+    if (loading) {
+        return <Loader />
+    }
+    // const jobData = [
+    //     { role: 'Social Media Assistant', jobStatus: 'Live', datePosted: '20 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
+    //     { role: 'Senior Designer', jobStatus: 'Live', datePosted: '16 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
+    //     { role: 'Visual Designer', jobStatus: 'Live', datePosted: '15 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
+    //     { role: 'Data Science', jobStatus: 'Closed', datePosted: '13 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
+    //     { role: 'Kotlin Developer', jobStatus: 'Closed', datePosted: '12 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
+    // ];
 
     // Filtering logic
-    const filteredJobs = jobData.filter((job) => {
-        return (
-            (selectedRole ? job.role === selectedRole : true) &&
-            (selectedStatus ? job.jobStatus === selectedStatus : true) &&
-            (selectedType ? job.jobType === selectedType : true)
-        );
-    });
+
 
     return (
         <div className="max-w-7xl mx-auto py-8 px-4">
@@ -31,11 +47,11 @@ const JobListTable = () => {
             {/* Filter Section */}
             <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
                 {/* Role Filter */}
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
                     <select
                         value={selectedRole}
                         onChange={(e) => setSelectedRole(e.target.value)}
-                        className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+                        className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300 w-full"
                     >
                         <option value="">Filter by Role</option>
                         <option value="Social Media Assistant">Social Media Assistant</option>
@@ -49,7 +65,7 @@ const JobListTable = () => {
                     <select
                         value={selectedStatus}
                         onChange={(e) => setSelectedStatus(e.target.value)}
-                        className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+                        className="border border-gray-300 rounded-md py-2 w-full px-4 focus:outline-none focus:ring focus:border-blue-300"
                     >
                         <option value="">Filter by Status</option>
                         <option value="Live">Live</option>
@@ -60,23 +76,24 @@ const JobListTable = () => {
                     <select
                         value={selectedType}
                         onChange={(e) => setSelectedType(e.target.value)}
-                        className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+                        className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
                     >
                         <option value="">Filter by Job Type</option>
                         <option value="Fulltime">Fulltime</option>
                         <option value="Freelance">Freelance</option>
                     </select>
+                    <div className="flex gap-2 w-full">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="border w-full  border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+                        />
+                        <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Search</button>
+                    </div>
                 </div>
 
                 {/* Search Field */}
-                {/* <div className="flex items-center space-x-2">
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
-                    />
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Search</button>
-                </div> */}
+
             </div>
 
             {/* Table */}
@@ -90,39 +107,40 @@ const JobListTable = () => {
                             <th className="px-6 py-4 text-left font-medium text-gray-700">Date Posted</th>
                             <th className="px-6 py-4 text-left font-medium text-gray-700">End Date</th>
                             <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">Applied Status</th>
+                            <th className="px-6 py-4 text-left font-medium text-gray-700">vacancy</th>
                             <th className="px-6 py-4 text-right font-medium text-gray-700"></th>
                         </tr>
                     </thead>
                     {/* Table Body */}
                     <tbody>
-                        {filteredJobs.map((job, index) => (
+                        {jobData.map((job, index) => (
                             <tr key={index} className="border-b hover:bg-gray-50">
-                                <td className="px-6 py-4">{job.role}</td>
+                                <td className="px-6 py-4">{job.job?.summary?.jobTitle}</td>
                                 <td className="px-6 py-4">
                                     <span
-                                        className={`inline-block px-2 py-1 text-sm font-medium rounded-full ${job.jobStatus === 'Live'
-                                                ? 'bg-green-100 text-green-600'
-                                                : 'bg-red-100 text-red-600'
+                                        className={`inline-block px-2 py-1 text-sm font-medium rounded-full ${job === 'Live'
+                                            ? 'bg-green-100 text-green-600'
+                                            : 'bg-red-100 text-red-600'
                                             }`}
                                     >
-                                        {job.jobStatus}
+                                        {"Live"}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4">{job.datePosted}</td>
-                                <td className="px-6 py-4">{job.endDate}</td>
+                                <td className="px-6 py-4">{job.job?.postedDate}</td>
+                                <td className="px-6 py-4">{job.job?.deadline}</td>
                                 <td className="px-6 py-4">
                                     <span className="inline-block px-2 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-600">
-                                        {job.jobType}
+                                        {job.job?.summary?.jobType}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
                                     <span className="inline-block px-2 py-1 text-sm font-medium rounded-full bg-green-100 text-green-600">
-                                        {job.appliedStatus}
+                                        {job.job?.summary?.vacancy}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     {/* "..." button */}
+
                                     <button className="text-gray-500 hover:text-gray-700">
                                         <svg
                                             className="w-6 h-6"

@@ -5,14 +5,17 @@ import { FaSave } from "react-icons/fa";
 import { FcProcess } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Loader from "@/app/loading";
+import Swal from "sweetalert2";
 
 const JobDetails = ({ params }) => {
   const [jobDetails, setJobDetails] = useState(null); // State to store job details
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [error, setError] = useState(null); // State to handle errors
   const { data: session } = useSession();
-  console.log(session?.user , "check my");
+  const [message ,setMessage] =useState() 
+  console.log(message);
   
+
   const getServicesDetails = async (id) => {
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/${id}`);
@@ -49,8 +52,55 @@ const JobDetails = ({ params }) => {
     return <div>No job details available.</div>;
   }
 
-  const handleSaveJob =()=>{
-   const job ={}
+  const handleSaveJob = async()=>{
+    const newJob ={user :session?.user , job :jobDetails}
+    try {
+      // Use axios to make the POST request
+      const response = await axios.post("/api/saveJob", newJob, {
+        headers: {
+          "Content-Type": "application/json", // Set the content type
+        },
+      });
+
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "Job Added Successfully",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 409) {
+          // If job already exists, set a custom message
+          Swal.fire({
+            position: "top",
+            icon: "info",
+            title: "Job already Saved!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        
+        } else {
+          Swal.fire({
+            position: "top",
+            icon: "info",
+            title:`Failed to add job: ${error.response.data.message}`,
+            showConfirmButton: false,
+            timer: 1500
+          });
+         
+        }
+      } else if (error.request) {
+        // The request was made, but no response was received
+        setMessage("No response from server. Please try again.");
+        console.error("No response received:", error.request);
+      } else {
+        // Something happened in setting up the request that triggered an error
+        setMessage("Error occurred: " + error.message);
+        console.error("Error:", error.message);
+      }
+    }
     
   }
 
