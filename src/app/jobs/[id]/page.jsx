@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FaSave } from "react-icons/fa";
+import { FcProcess } from "react-icons/fc";
 
 const JobDetails = ({ params }) => {
   const [jobDetails, setJobDetails] = useState(null); // State to store job details
@@ -186,6 +188,39 @@ const JobDetails = ({ params }) => {
           <span className="text-xl font-bold">Others:</span>{" "}
           {jobDetails.applyProcess.others || "N/A"}
         </h4>
+      </div>
+      {/*Action process */}
+      <div className="md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4 shadow-md">
+        {/* Main container */}
+        <div className=" md:flex justify-between items-center border rounded-lg p-4 ">
+          {/* Left-side information */}
+          <div className="flex flex-col space-y-2">
+            <p className="text-lg font-semibold text-gray-700">
+              Applied for This Job - <span className="text-teal-600">50</span>
+            </p>
+            <p className="text-lg text-gray-500">
+              Posted on - <span className="text-teal-600">19.09.2024</span>
+            </p>
+            <p className="text-lg font-semibold text-red-500">
+              Deadline - <span className="text-red-500">10.10.2024</span>
+            </p>
+          </div>
+
+          {/* Right-side buttons */}
+          <div className="flex space-x-4 mt-4">
+            {/* Apply Button */}
+            <button className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
+              <FcProcess className="w-5 h-5" />
+              <span>Apply This Job</span>
+            </button>
+
+            {/* Save Job Button */}
+            <button className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
+              <FaSave className="w-5 h-5" />
+              <span>Save Job</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
