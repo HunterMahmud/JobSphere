@@ -3,16 +3,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSave } from "react-icons/fa";
 import { FcProcess } from "react-icons/fc";
+import { useSession } from "next-auth/react";
+import Loader from "@/app/loading";
 
 const JobDetails = ({ params }) => {
   const [jobDetails, setJobDetails] = useState(null); // State to store job details
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [error, setError] = useState(null); // State to handle errors
-
+  const { data: session } = useSession();
+  console.log(session?.user , "check my");
+  
   const getServicesDetails = async (id) => {
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/${id}`);
-      console.log(res.data.job)
       return res.data.job;
     } catch (error) {
       console.error("Error fetching job details:", error);
@@ -34,7 +37,7 @@ const JobDetails = ({ params }) => {
   }, [params.id]); // Dependency on params.id to fetch details when it changes
 
   if (loading) {
-    return <div>Loading...</div>; // Loading state
+    return <Loader/>; // Loading state
   }
 
   if (error) {
@@ -46,7 +49,12 @@ const JobDetails = ({ params }) => {
     return <div>No job details available.</div>;
   }
 
-  console.log(jobDetails)
+  const handleSaveJob =()=>{
+   const job ={}
+    
+  }
+
+ 
 
   return (
     <div className="border-2 border-sky-400 rounded-lg p-1 md:p-2 my-8 min-h-screen">
@@ -195,19 +203,16 @@ const JobDetails = ({ params }) => {
         <div className=" md:flex justify-between items-center border rounded-lg p-4 ">
           {/* Left-side information */}
           <div className="flex flex-col space-y-2">
-            <p className="text-lg font-semibold text-gray-700">
-              Applied for This Job - <span className="text-teal-600">50</span>
-            </p>
             <p className="text-lg text-gray-500">
-              Posted on - <span className="text-teal-600">19.09.2024</span>
+              Posted on - <span className="text-teal-600">{jobDetails?.postedDate}</span>
             </p>
             <p className="text-lg font-semibold text-red-500">
-              Deadline - <span className="text-red-500">10.10.2024</span>
+              Deadline - <span className="text-red-500 animate-pulse ">{jobDetails?.deadline}</span>
             </p>
           </div>
 
           {/* Right-side buttons */}
-          <div className="flex space-x-4 mt-4">
+          <div className="flex space-x-4 mt-4 text-sm md:text-xl">
             {/* Apply Button */}
             <button className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
               <FcProcess className="w-5 h-5" />
@@ -215,7 +220,7 @@ const JobDetails = ({ params }) => {
             </button>
 
             {/* Save Job Button */}
-            <button className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
+            <button onClick={handleSaveJob} className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
               <FaSave className="w-5 h-5" />
               <span>Save Job</span>
             </button>
