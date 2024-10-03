@@ -262,7 +262,7 @@ const RegisterRecruiter = () => {
     reset,
     formState: { errors },
   } = useForm();
-
+  const password = watch('password');
   const handleRegister = async (data) => {
     setLoading(true);
     const {
@@ -383,12 +383,21 @@ const RegisterRecruiter = () => {
               </div>
               <div className="relative">
                 <input
-                  {...register("password", {
-                    required: {
-                      value: true,
-                      message: "This field is required.",
-                    },
-                  })}
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 8,
+                    message: 'Password must be at least 8 characters long',
+                  },
+                  validate: {
+                    hasUpperCase: (value) =>
+                      /[A-Z]/.test(value) || 'Password must contain an uppercase letter',
+                    hasLowerCase: (value) =>
+                      /[a-z]/.test(value) || 'Password must contain a lowercase letter',
+                    hasNumber: (value) =>
+                      /[0-9]/.test(value) || 'Password must contain a number',
+                  },
+                })}
                   name="password"
                   className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                   type={show ? "text" : "password"}
@@ -416,19 +425,18 @@ const RegisterRecruiter = () => {
               </div>
               <div className="relative">
                 <input
-                  {...register("confirmPassword", {
-                    required: {
-                      value: true,
-                      message: "This field is required.",
-                    },
+                  {...register('confirmPassword', {
+                    required: 'Please confirm your password',
+                    validate: (value) =>
+                      value === password || 'Passwords do not match',
                   })}
                   className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                   type={show ? "text" : "password"}
                   placeholder="Enter Confirm password "
                 />
-                {errors?.password?.message && (
+                {errors?.confirmPassword?.message && (
                   <span className="text-red-500">
-                    {errors.password.message}
+                    {errors.confirmPassword.message}
                   </span>
                 )}
                 <div
@@ -438,109 +446,6 @@ const RegisterRecruiter = () => {
                   {!show ? <IoEyeOffOutline /> : <IoEyeOutline />}
                 </div>
               </div>
-            </div>
-            {/* Country Name */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Country Name
-              </label>
-              <Select
-                onChange={(e) => setCountry(e.value)}
-                options={countryOptions}
-                className="w-full"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
-            </div>
-            {/* City Name */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                City Name
-              </label>
-              <input
-                {...register("cityName", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="text"
-                placeholder="Enter City Name"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
-            </div>
-            {/* Company Name */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Company Name
-              </label>
-              <input
-                {...register("companyName", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="text"
-                placeholder="Enter Company Name"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
-            </div>
-            {/* Company Type */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Company Type
-              </label>
-              <Select
-                onChange={(e) => setCompanyType(e.value)}
-                options={companyTypes}
-                className="w-full"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors?.email.message}</span>
-              )}
-            </div>
-            {/* Company services */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Company Services
-              </label>
-              <Select
-                onChange={(e) => setCompanyService(e.value)}
-                options={companyServices}
-                className="w-full"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors?.email?.message}</span>
-              )}
-            </div>
-
-            {/* Mobile Number */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Contact Number
-              </label>
-              <input
-                {...register("contactNumber", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="number"
-                placeholder="Enter Contact Number"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors?.email?.message}</span>
-              )}
             </div>
             {/* Image */}
             <div>
@@ -569,48 +474,10 @@ const RegisterRecruiter = () => {
                 </span>
               )}
             </div>
-            {/* Website URL */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Website URL
-              </label>
-              <input
-                {...register("websiteURL", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="text"
-                placeholder="Enter Website URL"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors?.email?.message}</span>
-              )}
-            </div>
+           
           </div>
           {/* Business Description */}
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-600 ">
-              Business Description
-            </label>
-            <textarea
-              {...register("bsinessDescription", {
-                required: {
-                  value: true,
-                  message: "This field is required.",
-                },
-              })}
-              type="textarea"
-              placeholder="Write Business Description"
-              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-            />
-            {errors?.email?.message && (
-              <span className="text-red-500">{errors?.email?.message}</span>
-            )}
-          </div>
-          <div className="flex items-start md:justify-center gap-1">
+          <div className="flex items-start md:justify-center gap-1 ">
             <input
               id="acceptTerms"
               type="checkbox"
@@ -623,7 +490,7 @@ const RegisterRecruiter = () => {
               className="mt-1"
             />
             {errors?.acceptTerms?.message && (
-              <span className="text-red-500">{errors?.password?.message}</span>
+              <span className="text-red-500">{errors?.acceptTerms?.message}</span>
             )}
             <label for="acceptTerms" className="text-sm">
               By clicking &apos;Continue&apos;, you acknowledge that you have read and

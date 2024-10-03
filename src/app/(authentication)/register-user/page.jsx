@@ -273,9 +273,11 @@ const RegisterUser = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
-
+  const password = watch('password');
+  
   const handleRegister = async (data) => {
     setLoading(true);
     const {
@@ -359,7 +361,7 @@ const RegisterUser = () => {
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
               {errors?.name?.message && (
-                <span className="text-red-500">{errors.name.message}</span>
+                <span className="text-red-500 text-sm">{errors.name.message}</span>
               )}
             </div>
             {/* Email */}
@@ -381,43 +383,11 @@ const RegisterUser = () => {
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
               {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
+                <span className="text-red-500 text-sm">{errors.email.message}</span>
               )}
             </div>
-            {/* Country Name */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                Country Name
-              </label>
-              <Select
-                onChange={(countryOptions) => setCountry(countryOptions.value)}
-                options={countryOptions}
-                className="w-full"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
-            </div>
-            {/* City Name */}
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-600 ">
-                City Name
-              </label>
-              <input
-                {...register("cityName", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="text"
-                placeholder="Enter City Name"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
-              )}
-            </div>
+          
+          
 
             {/* Mobile Number */}
             <div>
@@ -436,7 +406,7 @@ const RegisterUser = () => {
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
               {errors?.email?.message && (
-                <span className="text-red-500">{errors.email.message}</span>
+                <span className="text-red-500 text-sm">{errors.email.message}</span>
               )}
             </div>
             {/* Image */}
@@ -458,10 +428,10 @@ const RegisterUser = () => {
                 id="image"
                 name="image"
                 accept="image/*"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full dark:file:bg-gray-800 dark:file:text-gray-200 dark:text-gray-300 placeholder-gray-400/70 dark:placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:focus:border-blue-300"
               />
               {errors?.name?.message && (
-                <span className="block text-red-500">
+                <span className="block text-red-500 text-sm">
                   {errors.name.message}
                 </span>
               )}
@@ -478,10 +448,19 @@ const RegisterUser = () => {
               </div>
               <div className="relative">
                 <input
-                  {...register("password", {
-                    required: {
-                      value: true,
-                      message: "This field is required.",
+                  {...register('password', {
+                    required: 'Password is required',
+                    minLength: {
+                      value: 8,
+                      message: 'Password must be at least 8 characters long',
+                    },
+                    validate: {
+                      hasUpperCase: (value) =>
+                        /[A-Z]/.test(value) || 'Password must contain an uppercase letter',
+                      hasLowerCase: (value) =>
+                        /[a-z]/.test(value) || 'Password must contain a lowercase letter',
+                      hasNumber: (value) =>
+                        /[0-9]/.test(value) || 'Password must contain a number',
                     },
                   })}
                   name="password"
@@ -490,7 +469,7 @@ const RegisterUser = () => {
                   placeholder="Enter password"
                 />
                 {errors?.password?.message && (
-                  <span className="text-red-500">
+                  <span className="text-red-500 text-sm">
                     {errors.password.message}
                   </span>
                 )}
@@ -511,32 +490,27 @@ const RegisterUser = () => {
               </div>
               <div className="relative">
                 <input
-                  {...register("confirmPassword", {
-                    required: {
-                      value: true,
-                      message: "This field is required.",
-                    },
+                   name="confirmPassword"
+                  {...register('confirmPassword', {
+                    required: 'Please confirm your password',
+                    validate: (value) =>
+                      value === password || 'Passwords do not match',
                   })}
                   className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                   type={show ? "text" : "password"}
                   placeholder="Enter Confirm password "
                 />
-                {errors?.password?.message && (
-                  <span className="text-red-500">
-                    {errors.password.message}
+                {errors?.confirmPassword?.message && (
+                  <span className="text-red-500 text-sm">
+                    {errors.confirmPassword.message}
                   </span>
                 )}
-                <div
-                  onClick={() => setShow(!show)}
-                  className="absolute top-[30%] right-3 cursor-pointer"
-                >
-                  {!show ? <IoEyeOffOutline /> : <IoEyeOutline />}
-                </div>
               </div>
             </div>
           </div>
           <div className="flex items-start md:justify-center gap-1">
             <input
+            name="acceptTerms"
               id="acceptTerms"
               type="checkbox"
               {...register("acceptTerms", {
@@ -548,7 +522,7 @@ const RegisterUser = () => {
               className="mt-1"
             />
             {errors?.acceptTerms?.message && (
-              <span className="text-red-500">{errors?.password?.message}</span>
+              <span className="text-red-500 text-sm">{errors?.acceptTerms?.message}</span>
             )}
             <label for="acceptTerms" className="text-sm">
               By clicking &apos;Continue&apos;, you acknowledge that you have read and
