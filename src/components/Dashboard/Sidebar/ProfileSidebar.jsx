@@ -12,7 +12,7 @@ import { RiContactsBook3Line } from "react-icons/ri";
 import { FaUsersViewfinder } from "react-icons/fa6";
 
 const Sidebar = () => {
-    const role = 'recruiter'
+    const role = 'user'
     return (
         <>
             {/* Sidebar */}
