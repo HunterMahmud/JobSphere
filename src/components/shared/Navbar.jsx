@@ -56,7 +56,7 @@ const Navbar = () => {
   const router = useRouter();
   const session = useSession();
   const user = false;
-  const role = 'recruiter'
+  const role = 'user'
   console.log(session);
 
   if (pathName.includes('dashboard')) return
@@ -157,7 +157,7 @@ const Navbar = () => {
                           <div className="border-t border-gray-200"></div>
                           <MenuItem>
                             <a
-                              href="/profile"
+                              href="/profile/company-information"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                             >
                               Company Profile
@@ -171,7 +171,7 @@ const Navbar = () => {
                           <div className="border-t border-gray-200"></div>
                           <MenuItem>
                             <a
-                              href="/profile"
+                              href="/profile/profile-overview"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                             >
                               My Profile
