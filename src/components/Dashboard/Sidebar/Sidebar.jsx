@@ -71,13 +71,13 @@ const Sidebar = () => {
               <MenuItem icon={IoHomeOutline} label="Home" address="/" />
               <MenuItem
                 icon={MdAssignmentAdd}
-                label="Add a Job"
-                address="/dashboard/addjob"
+                label="Post a Job"
+                address="/dashboard/post-a-job"
               />
               <MenuItem
                 icon={MdOutlineWorkOutline}
                 label="My Posted Jobs"
-                address="/dashboard/mypostedjobs"
+                address="/dashboard/my-posted-jobs"
               />
             </nav>
           </div>
