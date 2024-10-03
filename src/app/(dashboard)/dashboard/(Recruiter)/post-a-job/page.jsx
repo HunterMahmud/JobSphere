@@ -1,11 +1,11 @@
 import React from 'react';
 
-const page = () => {
+const PostAJob = () => {
     return (
         <div>
-            ww
+            Post a job
         </div>
     );
 };
 
-export default page;
+export default PostAJob;
