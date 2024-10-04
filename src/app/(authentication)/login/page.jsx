@@ -31,14 +31,14 @@ const LoginPage = () => {
                 toast.error("Enter correct email or password");
             } else {
                 toast.success('SignIn Successful');
-                router.push(path ? path : "/");
+                router.push("/");
             }
         } catch (err) {
             toast.error(err?.message);
         }
     }
    
-    const handlesignInWithGoogle = async () => {
+    const handleSignInWithGoogle = async () => {
         try {
             //
         }
