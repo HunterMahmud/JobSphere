@@ -20,6 +20,8 @@ const page = () => {
     setLoading(true);
     try {
       // Replace with your API endpoint
+
+      //todo: have to change the localhost
       const response = await axios.post(
         "http://localhost:3000/dashboard/addjob/api",
         data
