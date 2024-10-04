@@ -1,16 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FaSave } from "react-icons/fa";
+import { FcProcess } from "react-icons/fc";
+import { useSession } from "next-auth/react";
+import Loader from "@/app/loading";
+import Swal from "sweetalert2";
 
 const JobDetails = ({ params }) => {
   const [jobDetails, setJobDetails] = useState(null); // State to store job details
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [error, setError] = useState(null); // State to handle errors
+  const { data: session } = useSession();
+  const [message ,setMessage] =useState() 
+  console.log(message);
+  
 
   const getServicesDetails = async (id) => {
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/${id}`);
-      console.log(res.data.job)
       return res.data.job;
     } catch (error) {
       console.error("Error fetching job details:", error);
@@ -32,7 +40,7 @@ const JobDetails = ({ params }) => {
   }, [params.id]); // Dependency on params.id to fetch details when it changes
 
   if (loading) {
-    return <div>Loading...</div>; // Loading state
+    return <Loader/>; // Loading state
   }
 
   if (error) {
@@ -44,7 +52,59 @@ const JobDetails = ({ params }) => {
     return <div>No job details available.</div>;
   }
 
-  console.log(jobDetails)
+  const handleSaveJob = async()=>{
+    const newJob ={user :session?.user , job :jobDetails}
+    try {
+      // Use axios to make the POST request
+      const response = await axios.post("/api/saveJob", newJob, {
+        headers: {
+          "Content-Type": "application/json", // Set the content type
+        },
+      });
+
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "Job Added Successfully",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 409) {
+          // If job already exists, set a custom message
+          Swal.fire({
+            position: "top",
+            icon: "info",
+            title: "Job already Saved!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        
+        } else {
+          Swal.fire({
+            position: "top",
+            icon: "info",
+            title:`Failed to add job: ${error.response.data.message}`,
+            showConfirmButton: false,
+            timer: 1500
+          });
+         
+        }
+      } else if (error.request) {
+        // The request was made, but no response was received
+        setMessage("No response from server. Please try again.");
+        console.error("No response received:", error.request);
+      } else {
+        // Something happened in setting up the request that triggered an error
+        setMessage("Error occurred: " + error.message);
+        console.error("Error:", error.message);
+      }
+    }
+    
+  }
+
+ 
 
   return (
     <div className="border-2 border-sky-400 rounded-lg p-1 md:p-2 my-8 min-h-screen">
@@ -186,6 +246,36 @@ const JobDetails = ({ params }) => {
           <span className="text-xl font-bold">Others:</span>{" "}
           {jobDetails.applyProcess.others || "N/A"}
         </h4>
+      </div>
+      {/*Action process */}
+      <div className="md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4 shadow-md">
+        {/* Main container */}
+        <div className=" md:flex justify-between items-center border rounded-lg p-4 ">
+          {/* Left-side information */}
+          <div className="flex flex-col space-y-2">
+            <p className="text-lg text-gray-500">
+              Posted on - <span className="text-teal-600">{jobDetails?.postedDate}</span>
+            </p>
+            <p className="text-lg font-semibold text-red-500">
+              Deadline - <span className="text-red-500 animate-pulse ">{jobDetails?.deadline}</span>
+            </p>
+          </div>
+
+          {/* Right-side buttons */}
+          <div className="flex space-x-4 mt-4 text-sm md:text-xl">
+            {/* Apply Button */}
+            <button className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
+              <FcProcess className="w-5 h-5" />
+              <span>Apply This Job</span>
+            </button>
+
+            {/* Save Job Button */}
+            <button onClick={handleSaveJob} className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
+              <FaSave className="w-5 h-5" />
+              <span>Save Job</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

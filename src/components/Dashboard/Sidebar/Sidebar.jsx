@@ -5,6 +5,7 @@ import { FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
+import { RiSave3Line } from "react-icons/ri";
 import { MdAssignmentAdd, MdOutlineWorkOutline } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
 import { useSession } from "next-auth/react";
@@ -73,6 +74,11 @@ const Sidebar = () => {
                 icon={MdAssignmentAdd}
                 label="Post a Job"
                 address="/dashboard/post-a-job"
+              />
+              <MenuItem
+                icon={RiSave3Line}
+                label="Saved Jobs"
+                address="/dashboard/saveJob"
               />
               <MenuItem
                 icon={MdOutlineWorkOutline}
