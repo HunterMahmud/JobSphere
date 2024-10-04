@@ -16,17 +16,7 @@ const page = () => {
             "softwareEngineer": "80,000 - 120,000 USD",
             "productManager": "90,000 - 130,000 USD",
             "uxDesigner": "70,000 - 110,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Senior Software Engineer",
-              "description": "Experienced software engineer to lead product development."
-            },
-            {
-              "jobTitle": "Junior UX Designer",
-              "description": "Entry-level position for a creative UX designer."
-            }
-          ]
+          }
         },
         {
           "logo": "https://i.ibb.co.com/PjDHrcQ/Health.jpg",
@@ -38,17 +28,7 @@ const page = () => {
             "Nurse": "60,000 - 90,000 USD",
             "medicalAdministrator": "70,000 - 100,000 USD",
             "labTechnician": "50,000 - 80,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Senior Nurse",
-              "description": "Responsible for overseeing patient care and management."
-            },
-            {
-              "jobTitle": "Lab Technician",
-              "description": "Lab technician to perform various clinical tests."
-            }
-          ]
+          }
         },
         {
           "logo": "https://i.ibb.co.com/j9KXbRY/Eco.jpg",
@@ -60,17 +40,7 @@ const page = () => {
             "energyAnalyst": "85,000 - 110,000 USD",
             "projectManager": "95,000 - 130,000 USD",
             "sustainabilityConsultant": "75,000 - 105,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Energy Analyst",
-              "description": "Analyze energy usage and recommend sustainability solutions."
-            },
-            {
-              "jobTitle": "Project Manager",
-              "description": "Lead energy-efficient building projects."
-            }
-          ]
+          }
         },
         {
           "logo": "https://i.ibb.co.com/tMWGhNR/Global.jpg",
@@ -82,17 +52,7 @@ const page = () => {
             "financialAnalyst": "70,000 - 100,000 USD",
             "riskManager": "85,000 - 120,000 USD",
             "Accountant": "65,000 - 95,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Financial Analyst",
-              "description": "Analyze financial data and trends for clients."
-            },
-            {
-              "jobTitle": "Risk Manager",
-              "description": "Assess and mitigate risks in financial operations."
-            }
-          ]
+          }
         },
         {
           "logo": "https://i.ibb.co.com/kcVFqtL/Edu.jpg",
@@ -104,17 +64,7 @@ const page = () => {
             "Teacher": "50,000 - 80,000 USD",
             "curriculumDeveloper": "60,000 - 90,000 USD",
             "Administrator": "70,000 - 100,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Senior Curriculum Developer",
-              "description": "Develop and oversee curriculum implementation."
-            },
-            {
-              "jobTitle": "High School Teacher",
-              "description": "Teach various subjects in high school."
-            }
-          ]
+          }
         },
         {
           "logo": "https://i.ibb.co.com/sw1g1Lg/Urban.jpg",
@@ -126,17 +76,7 @@ const page = () => {
             "civilEngineer": "75,000 - 110,000 USD",
             "constructionManager": "90,000 - 140,000 USD",
             "siteSupervisor": "65,000 - 95,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Construction Manager",
-              "description": "Manage large-scale urban construction projects."
-            },
-            {
-              "jobTitle": "Site Supervisor",
-              "description": "Oversee site operations and worker management."
-            }
-          ]
+          }
         },
         {
           "logo": "https://i.ibb.co.com/sQ3ytKT/Retail.jpg",
@@ -148,17 +88,7 @@ const page = () => {
             "storeManager": "60,000 - 90,000 USD",
             "salesAssociate": "30,000 - 50,000 USD",
             "marketingSpecialist": "55,000 - 80,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Store Manager",
-              "description": "Manage day-to-day store operations."
-            },
-            {
-              "jobTitle": "Sales Associate",
-              "description": "Assist customers with product selection and purchases."
-            }
-          ]
+          }
         },
         {
           "logo": "https://i.ibb.co.com/n8kp7hv/DIgital.jpg",
@@ -170,17 +100,7 @@ const page = () => {
             "graphicDesigner": "55,000 - 85,000 USD",
             "contentCreator": "50,000 - 75,000 USD",
             "marketingManager": "80,000 - 120,000 USD"
-          },
-          "postedJobs": [
-            {
-              "jobTitle": "Graphic Designer",
-              "description": "Design visual content for digital platforms."
-            },
-            {
-              "jobTitle": "Content Creator",
-              "description": "Create engaging content for clients' digital channels."
-            }
-          ]
+          }
         }
       ];
 
@@ -190,7 +110,7 @@ const page = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Jobs</h1>
 
       {/* Job Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-around gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 justify-around gap-10">
         {Array.isArray(companies) && companies.length > 0 ? (
           companies.map((company, index) => <CompanyCard key={index} company={company} />)
         ) : (
