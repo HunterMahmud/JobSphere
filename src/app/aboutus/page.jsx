@@ -1,5 +1,5 @@
 "use client";
-import FAQ from '@/components/FAQ';
+import FAQ from '@/components/shared/FAQ';
 import ContactUs from '@/components/shared/ContactUs';
 import Image from 'next/image';
 import React from 'react';
