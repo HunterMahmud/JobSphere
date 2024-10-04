@@ -34,7 +34,26 @@ const FAQ = () => {
                 </Link>
               </div>
             </details>
-            
+            {/* 2nd */}
+            <details
+              className="w-full border border-orange-200 rounded-lg"
+              open=""
+            >
+              <summary className="px-4 text-lg font-semibold py-6 focus:outline-none focus-visible:dark:ring-violet-600">
+                <span className="font-bold">2.</span> What types of companies post jobs on JobSphere?
+              </summary>
+              <p className="px-4 py-6 pt-0 ml-4 lg:text-lg -mt-4 dark:text-gray-600">
+                <span className="font-semibold">Answer:</span> This gives job seekers insights into the kinds of employers they might find on the platform (startups, enterprises, tech companies, etc.).{" "}
+              </p>
+              <div className="-mt-6 ml-6 p-2">
+                <Link to="/companies">
+                  <button className="btn btn-sm md:btn-wide btn-warning mt-2">
+                    <span className="lg:text-xl">Click to See Companies</span>
+                  </button>
+                </Link>
+              </div>
+            </details>
+           
           </div>
         </div>
       </section>
