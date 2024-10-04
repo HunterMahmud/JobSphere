@@ -1,6 +1,4 @@
 "use client";
-import JobDetails from "@/components/Jobs/JobDetails";
-import JobsCard from "@/components/Jobs/JobsCard";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import JobCard from "@/components/Jobs/JobCard";
@@ -21,9 +19,7 @@ const JobPage = () => {
 
     fetchJobs();
   }, []);
-
-  console.log(jobs);
-
+  
   return (
     <div className="container mx-auto my-12">
       <h1 className="text-3xl font-bold text-center mb-8">Jobs</h1>
@@ -33,7 +29,7 @@ const JobPage = () => {
         {Array.isArray(jobs) && jobs.length > 0 ? (
           jobs.map((job, index) => <JobCard key={index} job={job} />)
         ) : (
-          <p>No jobs found</p>
+          <p className="text-center">No jobs found</p>
         )}
       </div>
 

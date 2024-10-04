@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import Select from "react-select";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const skillOptions = [
   { value: "Select", label: "Select" },
@@ -269,6 +269,7 @@ const RegisterUser = () => {
   const [country, setCountry] = useState("");
   const [skill, setSkill] = useState();
   const [loading, setLoading] = useState(false);
+  const router =useRouter()
   const {
     register,
     handleSubmit,
@@ -316,7 +317,7 @@ const RegisterUser = () => {
       if (result?.status === 200) {
         toast.success("User created successfully");
         reset();
-        router.push("/");
+        router.push(router?.query?.redirect || "/");
       }
     } catch (err) {
       console.log(err);
