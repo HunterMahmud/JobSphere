@@ -52,11 +52,9 @@ const links = [
 
 const Navbar = () => {
   const pathName = usePathname();
-  const router = useRouter();
   const session = useSession();
   const { loggedInUser } = useRole();
-  console.log(loggedInUser)
-  console.log(session);
+  console.log("logged in user in navbar: ", loggedInUser)
 
   if (pathName.includes("dashboard")) return;
 

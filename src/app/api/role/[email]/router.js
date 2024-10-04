@@ -19,7 +19,7 @@ export const GET = async (request, { params }) => {
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
-    console.log(user)
+    console.log("here is user: ",user)
     // Return user data, including role
     return NextResponse.json({ user });
   } catch (error) {
