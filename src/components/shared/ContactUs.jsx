@@ -39,18 +39,18 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row md:p-10 bg-white shadow-md rounded-lg">
-      <div className='md:w-1/2'>
+    <div className="flex flex-col items-center md:flex-row md:p-10 bg-sky-50  shadow-md rounded-lg">
+      <div className='md:w-1/2 rounded-lg'>
         <Image
           src="/images/img10.jpg" // Ensure the image exists at this path
           alt="Team Member 1"
           width={600} 
           height={400} 
-          className="w-10/12 mb-4 shadow-lg"
+          className="w-10/12 mb-4 shadow-lg rounded-lg"
         />
       </div>
       <div>
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-sky-100 rounded-xl p-6">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
           <p className="text-lg text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
           <form 
