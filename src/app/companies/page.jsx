@@ -1,10 +1,11 @@
 "use client"
 
+import CompanyCard from '@/components/Companies/CompanyCard';
 import React from 'react';
 
 const page = () => {
 
-    const Companies = [
+    const companies = [
         {
           "logo": "https://i.ibb.co.com/tbTQy0f/Tech.jpg",
           "name": "Tech Innovators Inc.",
@@ -185,9 +186,20 @@ const page = () => {
 
 
     return (
-        <div>
-           <h1>Companies Page</h1> 
-        </div>
+        <div className="container mx-auto my-12">
+      <h1 className="text-3xl font-bold text-center mb-8">Jobs</h1>
+
+      {/* Job Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 items-center">
+        {Array.isArray(companies) && companies.length > 0 ? (
+          companies.map((company, index) => <CompanyCard key={index} company={company} />)
+        ) : (
+          <p>No jobs found</p>
+        )}
+      </div>
+
+      
+    </div>
     );
 };
 
