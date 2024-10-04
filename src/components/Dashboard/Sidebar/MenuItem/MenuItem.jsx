@@ -7,7 +7,6 @@ const MenuItem = ({ label, address, icon: Icon }) => {
     return (
         <Link
             href={address}
-            end
             className={`${pathName === address
                 ? "bg-gray-300  text-gray-700"
                 : "text-gray-600"
