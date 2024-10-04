@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const page = ({ params }) => {
+const UpdateJobs = ({ params }) => {
   const { data: session } = useSession(); // Fetch session data
   const [job, setJob] = useState(null); // Initialize job state to null
   const [loading, setLoading] = useState(false);
@@ -342,4 +342,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default UpdateJobs;

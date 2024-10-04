@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const page = () => {
+const AddJobPage = () => {
   const {
     register,
     handleSubmit,
@@ -394,4 +394,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default AddJobPage;
