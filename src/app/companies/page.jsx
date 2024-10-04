@@ -13,9 +13,9 @@ const page = () => {
           "companyType": "Technology",
           "typesOfJobs": ["Software Engineer", "Product Manager", "UX Designer"],
           "salaryScales": {
-            "Software Engineer": "80,000 - 120,000 USD",
-            "Product Manager": "90,000 - 130,000 USD",
-            "UX Designer": "70,000 - 110,000 USD"
+            "softwareEngineer": "80,000 - 120,000 USD",
+            "productManager": "90,000 - 130,000 USD",
+            "uxDesigner": "70,000 - 110,000 USD"
           },
           "postedJobs": [
             {
@@ -36,8 +36,8 @@ const page = () => {
           "typesOfJobs": ["Nurse", "Medical Administrator", "Lab Technician"],
           "salaryScales": {
             "Nurse": "60,000 - 90,000 USD",
-            "Medical Administrator": "70,000 - 100,000 USD",
-            "Lab Technician": "50,000 - 80,000 USD"
+            "medicalAdministrator": "70,000 - 100,000 USD",
+            "labTechnician": "50,000 - 80,000 USD"
           },
           "postedJobs": [
             {
@@ -57,9 +57,9 @@ const page = () => {
           "companyType": "Energy",
           "typesOfJobs": ["Energy Analyst", "Project Manager", "Sustainability Consultant"],
           "salaryScales": {
-            "Energy Analyst": "85,000 - 110,000 USD",
-            "Project Manager": "95,000 - 130,000 USD",
-            "Sustainability Consultant": "75,000 - 105,000 USD"
+            "energyAnalyst": "85,000 - 110,000 USD",
+            "projectManager": "95,000 - 130,000 USD",
+            "sustainabilityConsultant": "75,000 - 105,000 USD"
           },
           "postedJobs": [
             {
@@ -79,8 +79,8 @@ const page = () => {
           "companyType": "Finance",
           "typesOfJobs": ["Financial Analyst", "Risk Manager", "Accountant"],
           "salaryScales": {
-            "Financial Analyst": "70,000 - 100,000 USD",
-            "Risk Manager": "85,000 - 120,000 USD",
+            "financialAnalyst": "70,000 - 100,000 USD",
+            "riskManager": "85,000 - 120,000 USD",
             "Accountant": "65,000 - 95,000 USD"
           },
           "postedJobs": [
@@ -102,7 +102,7 @@ const page = () => {
           "typesOfJobs": ["Teacher", "Curriculum Developer", "Administrator"],
           "salaryScales": {
             "Teacher": "50,000 - 80,000 USD",
-            "Curriculum Developer": "60,000 - 90,000 USD",
+            "curriculumDeveloper": "60,000 - 90,000 USD",
             "Administrator": "70,000 - 100,000 USD"
           },
           "postedJobs": [
@@ -123,9 +123,9 @@ const page = () => {
           "companyType": "Construction",
           "typesOfJobs": ["Civil Engineer", "Construction Manager", "Site Supervisor"],
           "salaryScales": {
-            "Civil Engineer": "75,000 - 110,000 USD",
-            "Construction Manager": "90,000 - 140,000 USD",
-            "Site Supervisor": "65,000 - 95,000 USD"
+            "civilEngineer": "75,000 - 110,000 USD",
+            "constructionManager": "90,000 - 140,000 USD",
+            "siteSupervisor": "65,000 - 95,000 USD"
           },
           "postedJobs": [
             {
@@ -145,9 +145,9 @@ const page = () => {
           "companyType": "Retail",
           "typesOfJobs": ["Store Manager", "Sales Associate", "Marketing Specialist"],
           "salaryScales": {
-            "Store Manager": "60,000 - 90,000 USD",
-            "Sales Associate": "30,000 - 50,000 USD",
-            "Marketing Specialist": "55,000 - 80,000 USD"
+            "storeManager": "60,000 - 90,000 USD",
+            "salesAssociate": "30,000 - 50,000 USD",
+            "marketingSpecialist": "55,000 - 80,000 USD"
           },
           "postedJobs": [
             {
@@ -167,9 +167,9 @@ const page = () => {
           "companyType": "Media & Advertising",
           "typesOfJobs": ["Graphic Designer", "Content Creator", "Marketing Manager"],
           "salaryScales": {
-            "Graphic Designer": "55,000 - 85,000 USD",
-            "Content Creator": "50,000 - 75,000 USD",
-            "Marketing Manager": "80,000 - 120,000 USD"
+            "graphicDesigner": "55,000 - 85,000 USD",
+            "contentCreator": "50,000 - 75,000 USD",
+            "marketingManager": "80,000 - 120,000 USD"
           },
           "postedJobs": [
             {
@@ -190,7 +190,7 @@ const page = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Jobs</h1>
 
       {/* Job Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-around gap-10">
         {Array.isArray(companies) && companies.length > 0 ? (
           companies.map((company, index) => <CompanyCard key={index} company={company} />)
         ) : (
