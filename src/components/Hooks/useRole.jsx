@@ -12,7 +12,7 @@ const useRole = () => {
       if (status === "authenticated" && session?.user?.email) {
         try {
           const { data } = await axios.get(
-            `http://localhost:3000/hook/api/role/${session.user.email}`
+            `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/hook/api/role/${session.user.email}`
           );
           setLoggedInUser(data.user); // Adjust this according to your response structure
         } catch (error) {

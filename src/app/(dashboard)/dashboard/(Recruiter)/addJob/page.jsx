@@ -23,7 +23,7 @@ const page = () => {
 
       //todo: have to change the localhost
       const response = await axios.post(
-        "http://localhost:3000/dashboard/addjob/api",
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/addJob/api`,
         data
       );
       // console.log(response.data);

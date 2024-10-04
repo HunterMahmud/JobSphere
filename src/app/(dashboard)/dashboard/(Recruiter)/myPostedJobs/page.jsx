@@ -19,7 +19,7 @@ const PostedJobs = () => {
     try {
       if (session?.user?.email) {
         const response = await axios.get(
-          `http://localhost:3000/dashboard/myPostedJobs/api/${session?.user?.email}`
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
         );
 
         // Ensure the response is an array
@@ -49,7 +49,7 @@ const PostedJobs = () => {
   //   if (!confirmDelete) return;
 
   //   try {
-  //     await axios.delete(`http://localhost:3000/dashboard/myPostedJobs/api/posted-job/${jobId}`);
+  //     await axios.delete(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/posted-job/${jobId}`);
   //     alert("Job deleted successfully.");
   //     fetchJobs(); // Re-fetch the jobs after deletion
   //   } catch (error) {
@@ -71,7 +71,7 @@ const PostedJobs = () => {
         try {
           // Send DELETE request to the server
           await axios.delete(
-            `http://localhost:3000/dashboard/myPostedJobs/api/posted-job/${jobId}`
+            `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${jobId}`
           );
 
           // Show success message

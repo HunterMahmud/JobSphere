@@ -14,7 +14,7 @@ const page = ({ params }) => {
   const loadJob = async () => {
     try {
       const jobDetail = await fetch(
-        `http://localhost:3000/dashboard/myPostedJobs/api/postedJobs/${params.id}`
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`
       );
       const responseData = await jobDetail.json();
       setJob(responseData.data); // Update state with job details
@@ -42,7 +42,7 @@ const page = ({ params }) => {
     console.log(data);
     setLoading(true);
     const resp = await fetch(
-      `http://localhost:3000/dashboard/myPostedJobs/api/postedJobs/${params.id}`,
+      `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`,
       {
         method: "PUT",
         body: JSON.stringify(data),
