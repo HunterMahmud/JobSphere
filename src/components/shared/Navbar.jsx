@@ -23,7 +23,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
-import useRole from "./../Hooks/useRole";
+import useRole from "../Hooks/useRole"
 
 const links = [
   {
@@ -55,6 +55,7 @@ const Navbar = () => {
   const router = useRouter();
   const session = useSession();
   const { loggedInUser } = useRole();
+  console.log(loggedInUser)
   console.log(session);
 
   if (pathName.includes("dashboard")) return;
