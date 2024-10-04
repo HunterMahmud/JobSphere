@@ -107,7 +107,7 @@ const page = () => {
 
     return (
         <div className="mx-auto my-12">
-            <h1 className="text-3xl font-bold text-center mb-8">Companies</h1>
+            <h1 className="text-3xl font-bold text-center mb-8 underline">Companies</h1>
 
             {/* Job Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-around md:gap-10">
