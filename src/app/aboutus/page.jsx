@@ -1,4 +1,5 @@
 "use client";
+import FAQ from '@/components/FAQ';
 import ContactUs from '@/components/shared/ContactUs';
 import Image from 'next/image';
 import React from 'react';
@@ -80,7 +81,7 @@ const AboutUsPage = () => {
 
                     <div className="text-center">
                         <Image 
-                        src="/images/team5.jpg"
+                        src="/images/Tanvir.jpg"
                         width={600} 
                         height={400} 
                         alt="Team Member 4" 
@@ -159,6 +160,8 @@ const AboutUsPage = () => {
                     </div>
                 </div>
             </div>
+
+            <FAQ></FAQ>
 
             <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
               <ContactUs/>
