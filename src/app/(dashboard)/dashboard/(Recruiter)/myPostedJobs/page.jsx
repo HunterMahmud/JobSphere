@@ -14,33 +14,30 @@ const PostedJobs = () => {
   const { data: session } = useSession(); // Access session object
   console.log(session?.user?.email);
 
-  // Function to fetch jobs
-  const fetchJobs = async () => {
-    try {
-      if (session?.user?.email) {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
-        );
-
-        // Ensure the response is an array
-        console.log(response?.data?.myAddedJobs);
-        const jobsData = Array.isArray(response?.data?.myAddedJobs)
-          ? response?.data?.myAddedJobs
-          : [];
-        setJobs(jobsData); // Set jobs state with the correct array
-      }
-    } catch (error) {
-      setError("Error fetching jobs");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Call fetchJobs on component mount and when email changes
   useEffect(() => {
-    if (session?.user?.email) {
-      fetchJobs();
-    }
+    // Function to fetch jobs
+    const fetchJobs = async () => {
+      try {
+        if (session?.user?.email) {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
+          );
+
+          // Ensure the response is an array
+          console.log(response?.data?.myAddedJobs);
+          const jobsData = Array.isArray(response?.data?.myAddedJobs)
+            ? response?.data?.myAddedJobs
+            : [];
+          setJobs(jobsData); // Set jobs state with the correct array
+        }
+      } catch (error) {
+        setError("Error fetching jobs");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
   }, [session?.user?.email]);
 
   // Function to delete a job and refresh the list
@@ -60,7 +57,7 @@ const PostedJobs = () => {
   const handleDelete = async (jobId) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "You won&apos;t be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -103,7 +100,7 @@ const PostedJobs = () => {
       <h1 className="text-3xl font-semibold mb-6">My Posted Jobs</h1>
       {jobs.length === 0 ? (
         <div className="text-center text-gray-500">
-          You haven't posted any jobs yet.
+          You haven&apos;t posted any jobs yet.
         </div>
       ) : (
         <table className="min-w-full bg-white shadow-lg rounded-lg">
