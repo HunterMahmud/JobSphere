@@ -21,7 +21,6 @@ const AddJobPage = () => {
     try {
       // Replace with your API endpoint
 
-      //todo: have to change the localhost
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/addJob/api`,
         data

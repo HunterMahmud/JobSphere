@@ -7,7 +7,7 @@ const BlogsCard = ({ Blog }) => {
     return (
         <div>
             <article className ="bg-slate-100 transition hover:shadow-xl dark:bg-sky-50 border-sky-600 md:min-h-[340px] dark:shadow-gray-800/25 rounded-lg border-2 p-2">
-                <div className ="p-2">
+                <div className ="p-2 ">
                     <time
 
                         className ="items-center p-2 gap-4 text-xs font-bold uppercase text-sky-900 dark:text-sky-900"
