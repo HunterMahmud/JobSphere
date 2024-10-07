@@ -5,28 +5,26 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const page = ({ params }) => {
+const UpdateJobs = ({ params }) => {
   const { data: session } = useSession(); // Fetch session data
   const [job, setJob] = useState(null); // Initialize job state to null
   const [loading, setLoading] = useState(false);
 
-  // Load Job Details
-  const loadJob = async () => {
-    try {
-      const jobDetail = await fetch(
-        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`
-      );
-      const responseData = await jobDetail.json();
-      setJob(responseData.data); // Update state with job details
-    } catch (error) {
-      toast.error("Error fetching job details.");
-    }
-  };
-
   useEffect(() => {
+    const loadJob = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`
+        );
+        setJob(response.data.data); // Update state with job details
+      } catch (error) {
+        toast.error("Error fetching job details.");
+      }
+    };
+  
     loadJob(); // Fetch job details when component loads
-  }, [params.id]);
-
+  }, [params.id]); // No warning now, as `loadJob` is defined within useEffect
+  
   // React Hook Form setup
   const {
     register,
@@ -37,23 +35,26 @@ const page = ({ params }) => {
     defaultValues: job, // Set initial form values
   });
 
-  // Submit updated job data
+  // Submit updated job data using Axios
   const onSubmit = async (data) => {
     console.log(data);
     setLoading(true);
-    const resp = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: {
-          "content-type": "application/json",
-        },
+    try {
+      const resp = await axios.put(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (resp.status === 200) {
+        toast.success("Updated Successfully");
       }
-    );
-    console.log(resp);
-    if (resp.status === 200) {
-      toast.success("Updated Successfully");
+    } catch (error) {
+      toast.error("Failed to update job");
     }
     setLoading(false);
   };
@@ -296,50 +297,45 @@ const page = ({ params }) => {
             </div>
 
             <div>
-              <label className="block">Email Address</label>
+              <label className="block">Recruiter Email</label>
               <input
                 type="email"
-                {...register("email", { required: "Email is required" })}
+                {...register("recruiterEmail", {
+                  required: "Recruiter email is required",
+                })}
                 className={inputField}
                 placeholder="Recruiter Email"
               />
-              {errors.email && (
-                <span className="text-red-500">{errors.email.message}</span>
+              {errors.recruiterEmail && (
+                <span className="text-red-500">
+                  {errors.recruiterEmail.message}
+                </span>
               )}
             </div>
 
             <div>
-              <label className="block">Phone Number</label>
+              <label className="block">Recruiter Phone</label>
               <input
                 type="tel"
-                {...register("phone", {
-                  required: "Phone number is required",
-                })}
+                {...register("recruiterPhone")}
                 className={inputField}
-                placeholder="Recruiter Phone"
+                placeholder="Recruiter Phone Number"
               />
-              {errors.phone && (
-                <span className="text-red-500">{errors.phone.message}</span>
-              )}
             </div>
           </div>
         </div>
 
         {/* Submit Button */}
-        <div>
-          <button
-            type="submit"
-            className={`w-full bg-indigo-600 text-white py-2 px-4 rounded-md ${
-              loading ? "cursor-not-allowed" : ""
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Updating..." : "Update Job"}
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          disabled={loading}
+        >
+          {loading ? "Updating..." : "Update Job"}
+        </button>
       </form>
     </div>
   );
 };
 
-export default page;
+export default UpdateJobs;
