@@ -73,17 +73,17 @@ const Sidebar = () => {
               <MenuItem
                 icon={MdAssignmentAdd}
                 label="Post a Job"
-                address="/dashboard/post-a-job"
+                address="/dashboard/postAJob"
               />
               <MenuItem
                 icon={RiSave3Line}
                 label="Saved Jobs"
-                address="/dashboard/saveJob"
+                address="/dashboard/savedJobs"
               />
               <MenuItem
                 icon={MdOutlineWorkOutline}
                 label="My Posted Jobs"
-                address="/dashboard/my-posted-jobs"
+                address="/dashboard/myPostedJobs"
               />
             </nav>
           </div>
