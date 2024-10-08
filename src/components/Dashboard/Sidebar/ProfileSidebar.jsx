@@ -10,6 +10,7 @@ import { MdOutlineLocalActivity, MdWorkOutline,MdOutlineAssuredWorkload } from "
 import { FaRegUser } from "react-icons/fa";
 import { RiContactsBook3Line } from "react-icons/ri";
 import { FaUsersViewfinder } from "react-icons/fa6";
+import { FaRegFilePdf } from "react-icons/fa";
 
 const Sidebar = () => {
     const role = 'user'
@@ -32,6 +33,7 @@ const Sidebar = () => {
                             <MenuItem icon={MdOutlineAssuredWorkload} label="Work Experience" address="/profile/work-experience" />
                             <MenuItem icon={PiCertificate} label="Certifications" address="/profile/certifications" />
                             <MenuItem icon={MdOutlineLocalActivity} label="Extra-Curricular Activity" address="/profile/extra-curricular-activity" />
+                            <MenuItem icon={FaRegFilePdf} label="View Resume" address="/profile/viewResume" />
                         </nav>
                     }
                     {
