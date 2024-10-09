@@ -1,23 +1,13 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import Select from "react-select";
 import toast from 'react-hot-toast';
 import axios from 'axios';
-
-const overview = {
-    fullName: "John Doe",
-    profilePicture: "https://i.ibb.co.com/yFVrdXs/rafizul1-Photoroom1.png",
-    address: "123 Main St",
-    city: "New York",
-    country: "USA",
-    wantJob: 'No',
-    preferredJobPosition: "Frontend Developer",
-    preferredJobType: "Full-Time"
-}
-
+import useRole from '@/components/Hooks/useRole';
+import useProfileInfo from '@/components/Hooks/useProfileInfo';
 
 const countryOptions = [
     { value: "Afghanistan", label: "Afghanistan" },
@@ -219,8 +209,10 @@ const countryOptions = [
 ];
 
 const ProfileOverview = () => {
+    const { loggedInUser } = useRole();
     const [edit, setEdit] = useState(false);
-    const [country, setCountry] = useState(overview.country);
+    const { profileInfo } = useProfileInfo()
+    const [country, setCountry] = useState('');
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -236,23 +228,26 @@ const ProfileOverview = () => {
         formData.append('image', profilePicture)
 
         try {
-            const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+            const { data } = profilePicture ? await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
                 formData
-            );
-            const userOverview = {
+            ) : '';
+            const profileOverview = {
                 fullName,
-                profilePicture: data?.data?.display_url,
+                profilePicture: profilePicture ? data?.data?.display_url : profileInfo?.profileOverview?.profilePicture,
                 address,
-                country,
+                country: country ? country : profileInfo?.profileOverview?.country,
                 city,
                 wantJob,
                 preferredJobPosition,
                 preferredJobType
             }
-            console.log(userOverview);
-            toast.success("Successful")
+            const { data: update } = await axios.put(`http://localhost:3000/profile/api/${loggedInUser?.email}`, { profileOverview });
+            console.log('Update', update)
+            if (update?.modifiedCount > 0) {
+                toast.success("Updated Successful")
+            }
         } catch (err) {
-            console.log(err.message);
+            console.log(err?.message);
         }
     }
 
@@ -273,7 +268,7 @@ const ProfileOverview = () => {
                                 </label>
                                 <input
                                     name='fullName'
-                                    defaultValue={overview.fullName}
+                                    defaultValue={profileInfo?.profileOverview?.fullName}
                                     type="text"
                                     placeholder="Enter Your Name"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -286,7 +281,7 @@ const ProfileOverview = () => {
                                 </label>
                                 <input
                                     name='preferredJobPosition'
-                                    defaultValue={overview.preferredJobPosition}
+                                    defaultValue={profileInfo?.profileOverview?.preferredJobPosition}
                                     type="text"
                                     placeholder="Enter Your Professional Title"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -298,7 +293,7 @@ const ProfileOverview = () => {
                                     Country Name
                                 </label>
                                 <Select
-                                    defaultInputValue={country}
+                                    defaultInputValue={country ? country : profileInfo?.profileOverview?.country}
                                     onChange={(countryOptions) => setCountry(countryOptions.value)}
                                     options={countryOptions}
                                     className="w-full"
@@ -311,7 +306,7 @@ const ProfileOverview = () => {
                                 </label>
                                 <input
                                     name='city'
-                                    defaultValue={overview.city}
+                                    defaultValue={profileInfo?.profileOverview?.city}
                                     type="text"
                                     placeholder="Enter City Name"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -324,7 +319,7 @@ const ProfileOverview = () => {
                                 </label>
                                 <input
                                     name='address'
-                                    defaultValue={overview.address}
+                                    defaultValue={profileInfo?.profileOverview?.address}
                                     type="text"
                                     placeholder="Enter Your Address"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -347,7 +342,7 @@ const ProfileOverview = () => {
                                 <label className="block mb-2 text-sm font-medium text-gray-600 ">
                                     Preferred Job Type
                                 </label>
-                                <select name='preferredJobType' defaultValue={overview.preferredJobType} className="select px-4 py-2 rounded-lg w-full">
+                                <select name='preferredJobType' defaultValue={profileInfo?.profileOverview?.preferredJobType} className="select px-4 py-2 rounded-lg w-full">
                                     <option>Full-Time</option>
                                     <option>On Site</option>
                                     <option>Remote</option>
@@ -360,7 +355,7 @@ const ProfileOverview = () => {
                                 <label className="block mb-2 text-sm font-medium text-gray-600 ">
                                     Looking for a Job
                                 </label>
-                                <select name='wantJob' defaultValue={overview.wantJob} className="select px-4 py-2 rounded-lg w-full">
+                                <select name='wantJob' defaultValue={profileInfo?.profileOverview?.wantJob} className="select px-4 py-2 rounded-lg w-full">
                                     <option>Yes</option>
                                     <option>No</option>
                                 </select>
@@ -382,18 +377,18 @@ const ProfileOverview = () => {
                             <div className='border rounded-full'>
                                 <Image
                                     className='h-[200px] w-[200px] object-cover rounded-full'
-                                    src={overview.profilePicture}
+                                    src={profileInfo?.profileOverview?.profilePicture}
                                     alt="ProfileImg"
                                     width={200}
                                     height={200}
                                 />
                             </div>
                             <div className='space-y-1 mt-5'>
-                                <p><strong>Full Name:</strong> {overview.fullName}</p>
-                                <p><strong>Address:</strong> {overview.address}, {overview.city}, {overview.country}</p>
-                                <p><strong>Looking for a Job?</strong> {overview.wantJob}</p>
-                                <p><strong>Preferred Job Position:</strong> {overview.preferredJobPosition}</p>
-                                <p><strong>Preferred Job Type:</strong> {overview.preferredJobType}</p>
+                                <p><strong>Full Name:</strong> {profileInfo?.profileOverview?.fullName}</p>
+                                <p><strong>Address:</strong> {profileInfo?.profileOverview?.address}, {profileInfo?.profileOverview?.city}, {profileInfo?.ProfileOverview?.country}</p>
+                                <p><strong>Looking for a Job?</strong> {profileInfo?.profileOverview?.wantJob}</p>
+                                <p><strong>Preferred Job Position:</strong> {profileInfo?.profileOverview?.preferredJobPosition}</p>
+                                <p><strong>Preferred Job Type:</strong> {profileInfo?.profileOverview?.preferredJobType}</p>
                             </div>
                         </div>
 
