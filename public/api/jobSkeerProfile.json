@@ -1,0 +1,81 @@
+{
+    "profileOverview": {
+      "fullName": "John Doe",
+      "profilePicture": "https://example.com/johndoe.jpg",
+      "address": "1234 Elm St",
+      "city": "San Francisco",
+      "country": "USA",
+      "wantJob": true,
+      "preferredJobPosition": "Frontend Developer",
+      "preferredJobType": "Full-Time"
+    },
+    "socialProfiles": {
+      "phoneNumber": "+1-234-567-8900",
+      "emailAddress": "johndoe@example.com",
+      "linkedinProfile": "https://linkedin.com/in/johndoe",
+      "otherProfiles": {
+        "github": "https://github.com/johndoe",
+        "portfolio": "https://johndoe.com"
+      }
+    },
+    "careerObjective": "Passionate developer looking to leverage 5 years of experience in web development to build innovative applications.",
+    "projects": [
+      {
+        "projectName": "Tourism Kingdom",
+        "projectLink": "https://tourismkingdom.com",
+        "projectMadeWith": ["React", "Node.js", "MongoDB"],
+        "projectDetails": "A web platform for adding and exploring tourist places."
+      },
+      {
+        "projectName": "Job Sphere",
+        "projectLink": "https://jobsphere.com",
+        "projectMadeWith": ["Next.js", "Tailwind CSS", "Firebase"],
+        "projectDetails": "A job hiring platform for employers and job seekers."
+      }
+    ],
+    "skills": {
+      "technicalSkills": [
+        "JavaScript",
+        "React",
+        "Next.js",
+        "Node.js",
+        "MongoDB"
+      ],
+      "softSkills": [
+        "Communication",
+        "Problem-solving",
+        "Teamwork"
+      ]
+    },
+    "education": [
+      {
+        "degreeName": "Bachelor of Science in Computer Science",
+        "instituteName": "Stanford University",
+        "cgpa": "3.8",
+        "passingYear": 2020
+      }
+    ],
+    "workExperience": [
+      {
+        "positionName": "Frontend Developer",
+        "companyName": "Innovative Coders",
+        "startedDate": "2021-06-01",
+        "endingDate": "2024-09-01",
+        "stillWorking": false
+      }
+    ],
+    "certifications": [
+      {
+        "certificateName": "Certified JavaScript Developer",
+        "issuedBy": "JS Academy",
+        "issueDate": "2022-05-01"
+      }
+    ],
+    "extraCurricularActivities": [
+      {
+        "activityName": "Hackathon Winner",
+        "description": "Won 1st place at a national hackathon for building a web app."
+      }
+    ]
+  }
+  
