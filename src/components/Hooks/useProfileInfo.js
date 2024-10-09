@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import useRole from "./useRole";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const useProfileInfo = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const [profileInfo, setProfileInfo] = useState([]);
-    const { loggedInUser } = useRole();
+    const { data: session } = useSession();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/profile/api/${loggedInUser?.email}`)
-            .then(res => res.json())
-            .then(data => setProfileInfo(data))
-    }, [loggedInUser])
+        const fetchUserInfo = async () => {
+            try {
+                const { data } = await axios.get(`http://localhost:3000/profile/api/${session.user.email}`);
+                setProfileInfo(data);
+            } catch (error) {
+                console.error('profileInfo', error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchUserInfo()
+    }, [session])
 
-    return { profileInfo }
+    return { profileInfo, isLoading }
 };
 
 export default useProfileInfo;

@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import useRole from '@/components/Hooks/useRole';
 import useProfileInfo from '@/components/Hooks/useProfileInfo';
+import { useSession } from 'next-auth/react';
 
 const countryOptions = [
     { value: "Afghanistan", label: "Afghanistan" },
@@ -209,9 +210,9 @@ const countryOptions = [
 ];
 
 const ProfileOverview = () => {
-    const { loggedInUser } = useRole();
+    const { data: session } = useSession();
     const [edit, setEdit] = useState(false);
-    const { profileInfo } = useProfileInfo()
+    const { profileInfo } = useProfileInfo();
     const [country, setCountry] = useState('');
 
     const handleSave = async (e) => {
@@ -241,7 +242,7 @@ const ProfileOverview = () => {
                 preferredJobPosition,
                 preferredJobType
             }
-            const { data: update } = await axios.put(`http://localhost:3000/profile/api/${loggedInUser?.email}`, { profileOverview });
+            const { data: update } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { profileOverview });
             console.log('Update', update)
             if (update?.modifiedCount > 0) {
                 toast.success("Updated Successful")

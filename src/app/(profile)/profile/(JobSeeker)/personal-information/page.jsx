@@ -3,38 +3,37 @@ import React from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useForm } from "react-hook-form";
-
-const profile = {
-    "personalInformation": {
-        "email": "johndoe@example.com",
-        "phoneNumber": "+880 123 456 789",
-        "socialLinks": {
-            "linkedin": "https://linkedin.com/in/johndoe",
-            "github": "https://github.com/johndoe",
-            "portfolio": "https://johndoe.com"
-        }
-    },
-}
+import useProfileInfo from '@/components/Hooks/useProfileInfo';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
 
 const PersonalInformation = () => {
+    const { data: session } = useSession();
+    const { profileInfo } = useProfileInfo();
     const [edit, setEdit] = React.useState(false)
     const {
         register,
         handleSubmit,
-        formState: { errors },
     } = useForm();
 
     const handleSave = async (data) => {
-        const {email,phoneNumber,linkedin,github,portfolio} = data;
-        try{
-            console.log({
-                email,
-                phoneNumber,
+        const { email, phoneNumber, linkedin, github, portfolio } = data;
+        const personalInformation = {
+            email,
+            phoneNumber,
+            "socialLinks": {
                 linkedin,
                 github,
                 portfolio
-            })
-        }catch(err){
+            }
+        }
+        try {
+            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { personalInformation });
+            if (data?.modifiedCount > 0) {
+                toast.success("Updated Successful")
+            }
+        } catch (err) {
             console.log(err.message)
         }
     }
@@ -57,7 +56,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("email")}
-                                        defaultValue={profile.personalInformation.email}
+                                        defaultValue={profileInfo.personalInformation.email}
                                         type="email"
                                         placeholder="Enter Your Email"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -70,7 +69,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("phoneNumber")}
-                                        defaultValue={profile?.personalInformation?.phoneNumber}
+                                        defaultValue={profileInfo?.personalInformation?.phoneNumber}
                                         type="text"
                                         placeholder="Enter Your Phone Number"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -86,7 +85,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("linkedin")}
-                                        defaultValue={profile.personalInformation.socialLinks.linkedin}
+                                        defaultValue={profileInfo.personalInformation.socialLinks.linkedin}
                                         type="text"
                                         placeholder="Enter Your linkedin account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -99,7 +98,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("github")}
-                                        defaultValue={profile.personalInformation.socialLinks.github}
+                                        defaultValue={profileInfo.personalInformation.socialLinks.github}
                                         type="text"
                                         placeholder="Enter Your github account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -112,7 +111,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("portfolio")}
-                                        defaultValue={profile.personalInformation.socialLinks.portfolio}
+                                        defaultValue={profileInfo.personalInformation.socialLinks.portfolio}
                                         type="text"
                                         placeholder="Enter Your portfolio account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -133,25 +132,25 @@ const PersonalInformation = () => {
                         :
                         <div className='mt-5'>
                             <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                <p><strong>Email:</strong> {profile.personalInformation.email}</p>
-                                <p><strong>Phone Number:</strong> {profile.personalInformation.phoneNumber}</p>
+                                <p><strong>Email:</strong> {profileInfo?.personalInformation?.email}</p>
+                                <p><strong>Phone Number:</strong> {profileInfo?.personalInformation?.phoneNumber}</p>
                                 <div className="mt-4">
                                     <a
-                                        href={profile.personalInformation.socialLinks.linkedin}
+                                        href={profileInfo?.personalInformation?.socialLinks?.linkedin}
                                         className="text-blue-500 hover:underline"
                                     >
                                         LinkedIn
                                     </a>{" "}
                                     |{" "}
                                     <a
-                                        href={profile.personalInformation.socialLinks.github}
+                                        href={profileInfo?.personalInformation?.socialLinks?.github}
                                         className="text-blue-500 hover:underline"
                                     >
                                         GitHub
                                     </a>{" "}
                                     |{" "}
                                     <a
-                                        href={profile.personalInformation.socialLinks.portfolio}
+                                        href={profileInfo?.personalInformation?.socialLinks?.portfolio}
                                         className="text-blue-500 hover:underline"
                                     >
                                         Portfolio
