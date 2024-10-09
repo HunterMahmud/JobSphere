@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const page = () => {
+const AddJobPage = () => {
   const {
     register,
     handleSubmit,
@@ -21,7 +21,6 @@ const page = () => {
     try {
       // Replace with your API endpoint
 
-      //todo: have to change the localhost
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/addJob/api`,
         data
@@ -394,4 +393,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default AddJobPage;
