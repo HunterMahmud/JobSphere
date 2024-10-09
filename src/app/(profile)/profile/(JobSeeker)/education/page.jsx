@@ -1,34 +1,33 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
-import { useForm } from "react-hook-form";
 import { IoMdAdd } from 'react-icons/io';
 import { MdDeleteOutline } from 'react-icons/md';
-
-const profile = {
-    "education": [
-        {
-            "degree": "B.Sc. in Computer Science",
-            "institution": "XYZ University",
-            "startDate": "2018",
-            "endDate": "2022",
-            "fieldOfStudy": "Computer Science"
-        }
-    ],
-}
+import { useSession } from 'next-auth/react';
+import useProfileInfo from '@/components/Hooks/useProfileInfo';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Education = () => {
-    const [edit, setEdit] = React.useState(false);
-    const [education, setEducation] = React.useState([...profile.education]);
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { data: session } = useSession();
+    const [edit, setEdit] = useState(false);
+    const { profileInfo } = useProfileInfo();
+    const [education, setEducation] = useState(profileInfo.education);
+    useEffect(() => {
+        if (profileInfo?.education) {
+            setEducation(profileInfo?.education);
+        }
+    }, [profileInfo]);
 
     const handleAddEducation = () => {
         setEducation([...education, { degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
+    };
+
+    const handleEducationChange = (index, field, value) => {
+        const newEducation = [...education];
+        newEducation[index][field] = value;
+        setEducation(newEducation);
     };
 
     // Remove an education
@@ -37,8 +36,17 @@ const Education = () => {
         setEducation(newEducation);
     };
 
-    const handleSave = async () => {
-        console.log('Hello')
+    const handleSave = async (e) => {
+        e.preventDefault()
+        console.log(education)
+        try {
+            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { education });
+            if (data?.modifiedCount > 0) {
+                toast.success("Updated Successful")
+            }
+        } catch (err) {
+            console.log(err?.message)
+        }
     }
 
     return (
@@ -50,44 +58,66 @@ const Education = () => {
                 <h3 className="text-xl text-center font-semibold">Education</h3>
                 {
                     edit ?
-                        <form onSubmit={handleSubmit(handleSave)}>
+                        <form onSubmit={handleSave}>
                             <div className="">
                                 {education?.map((edu, index) => (
                                     <div key={index} className="mb-6">
-                                        <label className="block text-sm font-medium text-gray-700">Education</label>
-                                        <div className='flex items-center gap-1'>
+                                        <div className='flex items-center gap-1 border-b-2 border-b-white'>
                                             <div className='w-full'>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Degree"
-                                                    defaultValue={edu?.degree}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="Institution"
-                                                    defaultValue={edu?.institution}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="Start Year"
-                                                    defaultValue={edu?.startDate}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="End Year"
-                                                    defaultValue={edu?.endDate}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="Field Of Study"
-                                                    defaultValue={edu?.fieldOfStudy}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
+                                                <div className="mb-2">
+                                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                                        Degree Name
+                                                    </label>
+                                                    <input
+                                                        required
+                                                        type="text"
+                                                        placeholder="Degree"
+                                                        defaultValue={edu?.degreeName}
+                                                        onChange={(e) => handleEducationChange(index,'degreeName', e.target.value)}
+                                                        className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                                    />
+                                                </div>
+                                                <div className="mb-2">
+                                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                                        Institute Name
+                                                    </label>
+                                                    <input
+                                                        required
+                                                        type="text"
+                                                        placeholder="Institution"
+                                                        defaultValue={edu?.instituteName}
+                                                        onChange={(e) => handleEducationChange(index,'instituteName', e.target.value)}
+                                                        className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                                    />
+                                                </div>
+                                                <div className="mb-2">
+                                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                                        CGPA
+                                                    </label>
+                                                    <input
+                                                        required
+                                                        type="text"
+                                                        placeholder="Start Year"
+                                                        defaultValue={edu?.cgpa}
+                                                        onChange={(e) => handleEducationChange(index,'cgpa', e.target.value)}
+                                                        className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                                    />
+                                                </div>
+                                                <div className="mb-2">
+                                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                                        Passing Year
+                                                    </label>
+                                                    <input
+                                                        required
+                                                        type="text"
+                                                        placeholder="End Year"
+                                                        defaultValue={edu?.passingYear}
+                                                        onChange={(e) => handleEducationChange(index,'passingYear', e.target.value)}
+                                                        className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                                    />
+                                                </div>
                                             </div>
+
                                             <button
                                                 type="button"
                                                 onClick={() => removeEducation(index)}
@@ -103,7 +133,7 @@ const Education = () => {
                                     onClick={handleAddEducation}
                                     className="bg-hoverColor flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
                                 >
-                                    <IoMdAdd /> <span>Add Activity</span>
+                                    <IoMdAdd /> <span>Add</span>
                                 </button>
                             </div>
                             <div className='col-span-2'>
@@ -122,9 +152,10 @@ const Education = () => {
                             <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                                 {education?.map((edu, index) => (
                                     <div key={index}>
-                                        <h4 className="font-semibold">{edu?.degree} | {edu?.institution}</h4>
-                                        <p>{edu?.startDate} - {edu?.endDate}</p>
-                                        <p>{edu?.fieldOfStudy}</p>
+                                        <h4 className="font-semibold">{edu?.degreeName}</h4>
+                                        <p><strong>Institute Name : </strong>{edu?.instituteName}</p>
+                                        <p><strong>Cgpa : </strong>{edu?.cgpa}</p>
+                                        <p><strong>Passing Year : </strong>{edu?.passingYear}</p>
                                     </div>
                                 ))}
                             </div>
