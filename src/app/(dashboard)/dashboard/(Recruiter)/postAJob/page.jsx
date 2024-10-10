@@ -200,3 +200,50 @@ const PostAJob = () => {
 };
 
 export default PostAJob;
+<<<<<<< HEAD
+=======
+
+
+// const jobs = [{
+//         "_id": "66f623533ca31127c42ba950",
+//         "summary": {
+//           "jobTitle": "Backend Developer",
+//           "vacancy": 3,
+//           "location": "Remote",
+//           "jobType": "Remote",
+//           "salaryScale": "$80,000 - $100,000",
+//           "experienceNeed": "4 Years"
+//         },
+//         "requirement": {
+//           "education": "Bachelor's Degree in Computer Science or related field",
+//           "experience": "4 Years",
+//           "additionalRequirements": "Proficient in Node.js, SQL, and AWS.",
+//           "responsibility": "Developing server-side logic and database management.",
+//           "benefits": "Competitive salary and health benefits."
+//         },
+//         "companyDetails": {
+//           "companyName": "DevCore",
+//           "type": "Hybrid",
+//           "headOffice": "321 Dev St, Seattle, WA",
+//           "workArea": "Software Development",
+//           "contact": {
+//             "mobileNo": "+1 (321) 654-0987",
+//             "email": "info@devcore.com",
+//             "website": "www.devcore.com"
+//           }
+//         },
+//         "applyProcess": {
+//           "needToDoForApply": "Email your CV to our HR department.",
+//           "others": "Mention relevant experience in your application."
+//         },
+//         "postedDate": "18 Sept 2024",
+//         "deadline": "24 Sept 2024",
+//         "skills": [
+//           "Node.js",
+//           "SQL",
+//           "AWS"
+//         ]
+//       }]
+      
+    
+>>>>>>> 428c753b25f7f67cba0ae834a822587624cae173
