@@ -6,6 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { addDays } from 'date-fns';
 import axios from "axios";
 import CreatableSelect from 'react-select/creatable';
+import { toast } from 'react-hot-toast';
 
 const JobForm = () => {
     const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
@@ -188,7 +189,7 @@ const JobForm = () => {
 
                     {/* Submit Button */}
                     <div className="text-center">
-                        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg">
+                        <button type="submit" disabled={loading} className="bg-blue-500 text-white py-2 px-4 rounded-lg">
                             Post Job
                         </button>
                     </div>
