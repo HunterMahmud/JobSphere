@@ -119,7 +119,7 @@ const page = () => {
             </div>
 
             {/* Pagination */}
-            <div className="mt-16 flex flex-col md:flex-row  text-center gap-6 mx-auto max-w-[500px] border-4">
+            <div className="mt-16 flex flex-col md:flex-row  text-center gap-6 mx-auto max-w-[500px]">
                 <button className="btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg">
                     Previous
                 </button>
