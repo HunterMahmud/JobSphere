@@ -249,7 +249,7 @@ const ProfileOverview = () => {
                 preferredJobPosition,
                 preferredJobType
             }
-            const { data: update } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { profileOverview });
+            const { data: update } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { profileOverview });
             console.log('Update', update)
             if (update?.modifiedCount > 0) {
                 toast.success("Updated Successful");

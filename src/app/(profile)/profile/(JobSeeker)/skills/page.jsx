@@ -44,7 +44,7 @@ const Skills = () => {
     const handleSave = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { skills });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { skills });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successfully");
                 setSkills(skills)
