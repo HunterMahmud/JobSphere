@@ -42,19 +42,12 @@ const JobForm = () => {
     }
   };
 
-<<<<<<< HEAD
-    return (
-        <div className="min-h-screen flex items-center justify-center w-full">
-            <div className="w-full bg-white p-8 rounded-lg shadow-lg">
-                <h1 className="text-3xl font-bold mb-8 text-center">Create A Job Post</h1>
-=======
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-8 text-center">
           Create A Job Post
         </h1>
->>>>>>> 6dde1e89304aec3bda66ea1caa9a532176a6517d
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Job Title & Vacancy */}
