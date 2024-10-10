@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import NoInformation from '@/components/shared/NoInformation';
 
 const profile = {
     contact: {
@@ -57,8 +58,8 @@ const ContactInformation = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!contactInformation && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold">Contact Information</h3>
@@ -73,7 +74,7 @@ const ContactInformation = () => {
                                     </label>
                                     <input
                                         {...register("email")}
-                                        value={contactInformation?.email}
+                                        value={session.user?.email}
                                         type="email"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                     />
@@ -146,20 +147,25 @@ const ContactInformation = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5'>
-                            <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                <p><strong>Phone:</strong> {contactInformation?.phone}</p>
-                                <p><strong>Email:</strong> {contactInformation?.email}</p>
-                                <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>
-                                <div className="mt-2 flex gap-5">
-                                    <strong>Social Links:</strong>
-                                    <p className='flex gap-5'>
-                                        <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>
-                                        ||
-                                        <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>
-                                    </p>
-                                </div>
-                            </div>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                            {
+                                contactInformation ? <>
+                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                                        <p><strong>Phone:</strong> {contactInformation?.phone}</p>
+                                        <p><strong>Email:</strong> {contactInformation?.email}</p>
+                                        <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>
+                                        <div className="mt-2 flex gap-5">
+                                            <strong>Social Links:</strong>
+                                            <p className='flex gap-5'>
+                                                <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>
+                                                ||
+                                                <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
+
                         </div>
                 }
             </div>
