@@ -40,19 +40,7 @@ const PostedJobs = () => {
     fetchJobs();
   }, [session?.user?.email]);
 
-  // Function to delete a job and refresh the list
-  // const handleDelete = async (jobId) => {
-  //   const confirmDelete = confirm("Are you sure you want to delete this job?");
-  //   if (!confirmDelete) return;
 
-  //   try {
-  //     await axios.delete(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/posted-job/${jobId}`);
-  //     alert("Job deleted successfully.");
-  //     fetchJobs(); // Re-fetch the jobs after deletion
-  //   } catch (error) {
-  //     alert("Failed to delete the job.");
-  //   }
-  // };
 
   const handleDelete = async (jobId) => {
     Swal.fire({
