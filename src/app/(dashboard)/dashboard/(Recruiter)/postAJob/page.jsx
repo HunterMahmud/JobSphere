@@ -200,8 +200,6 @@ const PostAJob = () => {
 };
 
 export default PostAJob;
-<<<<<<< HEAD
-=======
 
 
 // const jobs = [{
@@ -246,4 +244,3 @@ export default PostAJob;
 //       }]
       
     
->>>>>>> 428c753b25f7f67cba0ae834a822587624cae173
