@@ -245,7 +245,8 @@ const ProfileOverview = () => {
             const { data: update } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { profileOverview });
             console.log('Update', update)
             if (update?.modifiedCount > 0) {
-                toast.success("Updated Successful")
+                toast.success("Updated Successful");
+                setEdit(false);
             }
         } catch (err) {
             console.log(err?.message);

@@ -42,6 +42,7 @@ const Skills = () => {
             const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { skills });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
+                setEdit(false)
             }
         } catch (err) {
             console.log(err?.message)
