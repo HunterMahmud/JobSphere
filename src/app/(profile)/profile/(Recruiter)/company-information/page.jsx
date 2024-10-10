@@ -1,21 +1,15 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import toast from 'react-hot-toast';
 import Select from "react-select";
+import { useSession } from 'next-auth/react';
+import useProfileInfo from '@/components/Hooks/useProfileInfo';
+import axios from 'axios';
+import NoInformation from '@/components/shared/NoInformation';
 
-const companyData = {
-    companyName: "Tech Solutions Inc.",
-    mission: "Innovating the Future",
-    logo: "https://via.placeholder.com/150", // Replace with actual logo URL
-    companyType: "Software Development",
-    address: "123 Tech Park",
-    city: "San Francisco",
-    country: "USA",
-    foundedYear: 2010,
-}
 
 const countryOptions = [
     { value: "Afghanistan", label: "Afghanistan" },
@@ -218,17 +212,47 @@ const countryOptions = [
 
 
 const CompanyInformation = () => {
+    const { data: session } = useSession();
+    const { profileInfo } = useProfileInfo();
     const [edit, setEdit] = useState(false);
-    const [country, setCountry] = useState(companyData.country);
-
+    const [companyInfo, setCompanyInfo] = useState(profileInfo?.companyInfo)
+    const [country, setCountry] = useState(companyInfo?.country);
+    useEffect(() => {
+        if (profileInfo?.companyInfo) {
+            setCompanyInfo(profileInfo?.companyInfo)
+            setCountry(profileInfo?.companyInfo?.country)
+        }
+    }, [profileInfo])
+    console.log(country)
     const handleSave = async (e) => {
         e.preventDefault();
         const form = e.target;
         const companyName = form.companyName.value;
-       
+        const logo = form.logo.value;
+        const companyType = form.companyType.value;
+        const address = form.address.value;
+        const city = form.city.value;
+        const foundedYear = form.foundedYear.value;
+        const companyMission = form.companyMission.value;
+
+        const companyInfo = {
+            companyName,
+            companyMission,
+            companyType,
+            logo,
+            address,
+            city,
+            foundedYear,
+            country: country
+        }
+
         try {
-           
-            toast.success("Successful")
+            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { companyInfo });
+            if (data?.modifiedCount > 0) {
+                toast.success("Updated Successful")
+                setCompanyInfo(companyInfo)
+                setEdit(false);
+            }
         } catch (err) {
             console.log(err.message);
         }
@@ -236,8 +260,8 @@ const CompanyInformation = () => {
 
     return (
         <div className='relative'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+           <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!companyInfo && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h2 className='text-center text-xl font-semibold mb-5'>Profile Overview</h2>
@@ -251,7 +275,7 @@ const CompanyInformation = () => {
                                 </label>
                                 <input
                                     name='companyName'
-                                    defaultValue={companyData.companyName}
+                                    defaultValue={companyInfo?.companyName}
                                     type="text"
                                     placeholder="Enter Company Name"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -263,8 +287,8 @@ const CompanyInformation = () => {
                                     Mission
                                 </label>
                                 <input
-                                    name='preferredJobPosition'
-                                    defaultValue={companyData.mission}
+                                    name='companyMission'
+                                    defaultValue={companyInfo?.companyMission}
                                     type="text"
                                     placeholder="Enter company mission"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -277,7 +301,7 @@ const CompanyInformation = () => {
                                 </label>
                                 <input
                                     name='companyType'
-                                    defaultValue={companyData.companyType}
+                                    defaultValue={companyInfo?.companyType}
                                     type="text"
                                     placeholder="Enter Company Type"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -302,7 +326,7 @@ const CompanyInformation = () => {
                                 </label>
                                 <input
                                     name='city'
-                                    defaultValue={companyData.city}
+                                    defaultValue={companyInfo?.city}
                                     type="text"
                                     placeholder="Enter City Name"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -315,7 +339,7 @@ const CompanyInformation = () => {
                                 </label>
                                 <input
                                     name='address'
-                                    defaultValue={companyData.address}
+                                    defaultValue={companyInfo?.address}
                                     type="text"
                                     placeholder="Enter Your Address"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -328,7 +352,7 @@ const CompanyInformation = () => {
                                 </label>
                                 <input
                                     name='foundedYear'
-                                    defaultValue={companyData.foundedYear}
+                                    defaultValue={companyInfo?.foundedYear}
                                     type="text"
                                     placeholder="Enter Your Address"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -341,7 +365,7 @@ const CompanyInformation = () => {
                                 </label>
                                 <input
                                     name='logo'
-                                    defaultValue={companyData.logo}
+                                    defaultValue={companyInfo?.logo}
                                     type="text"
                                     placeholder="Enter company logo link"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -361,28 +385,30 @@ const CompanyInformation = () => {
                         </form>
                         :
                         <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                            <div className='border rounded-full'>
-                                <Image
-                                    className='h-[200px] w-[200px] object-cover rounded-full'
-                                    src={companyData.logo}
-                                    alt="ProfileImg"
-                                    width={200}
-                                    height={200}
-                                />
-                            </div>
-                            <div>
-                                <h3 className="text-2xl font-bold">{companyData.companyName}</h3>
-                                <p className='text-center'>{companyData.mission}</p>
-                            </div>
-                            <div className="mb-2">
-                                <p><strong>Company Type:</strong> {companyData.companyType}</p>
-                                <p><strong>Address:</strong> {companyData.address}, {companyData.city}, {companyData.country}</p>
-                                <p><strong>Founded Year:</strong> {companyData.foundedYear}</p>
-                            </div>
+                            {
+                                companyInfo ? <>
+                                    <div className='border rounded-full'>
+                                        <Image
+                                            className='h-[200px] w-[200px] object-cover rounded-full'
+                                            src={companyInfo?.logo}
+                                            alt="ProfileImg"
+                                            width={200}
+                                            height={200}
+                                        />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-2xl font-bold">{companyInfo?.companyName}</h3>
+                                        <p className='text-center'>{companyInfo?.companyMission}</p>
+                                    </div>
+                                    <div className="mb-2">
+                                        <p><strong>Company Type:</strong> {companyInfo?.companyType}</p>
+                                        <p><strong>Address:</strong> {companyInfo?.address}, {companyInfo?.city}, {companyInfo?.country}</p>
+                                        <p><strong>Founded Year:</strong> {companyInfo?.foundedYear}</p>
+                                    </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
                         </div>
-
                 }
-
             </div>
         </div >
     );
