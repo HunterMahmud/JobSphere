@@ -5,10 +5,11 @@ import React from 'react';
 const SeekersCard = ({seekers}) => {
 
     const {fullName, profilePicture, city, country, preferredJobPosition, preferredJobType} = seekers.profileOverview;
+    const {phoneNumber, emailAddress} = seekers.socialProfiles;
 
 
     return (
-        <div className="bg-sky-50 shadow-2xl mx-2 md:mx-4 p-2 md:p-6 rounded-xl border-l-4 border-sky-600 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-auto">
+        <div className="bg-sky-50 shadow-2xl my-4 mx-2 md:mx-4 p-2 md:p-6 rounded-xl border-l-4 border-sky-600 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-auto">
             <div className="">
                 <div>
                     <Image src={profilePicture} alt='Profile' width={200} height={150} className='rounded-full w-[150px] h-[150px] border-2 border-sky-400 mx-auto my-4'></Image>
@@ -27,6 +28,14 @@ const SeekersCard = ({seekers}) => {
                     <p className='mt-3'>
                         <span className="font-bold">Preferred Position:</span>{" "}
                         {preferredJobPosition}
+                    </p>
+                    <p className='mt-3'>
+                        <span className="font-bold">Preferred Position:</span>{" "}
+                        {phoneNumber}
+                    </p>
+                    <p className='mt-3'>
+                        <span className="font-bold">Preferred Position:</span>{" "}
+                        {emailAddress}
                     </p>
 
                 </div>
