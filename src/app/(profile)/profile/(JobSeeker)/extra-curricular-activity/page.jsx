@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import NoInformation from '@/components/shared/NoInformation';
 
 const ExtraCurricularActivity = () => {
     const { data: session } = useSession();
@@ -27,7 +28,7 @@ const ExtraCurricularActivity = () => {
             setExtraCurricularActivities([...extraCurricularActivities, { activityName: "", description: "" }]);
             return
         }
-        setExtraCurricularActivities([...extraCurricularActivities, { activityName: "", description: "" }]);
+        setExtraCurricularActivities([{ activityName: "", description: "" }]);
     };
 
     // Remove an activity
@@ -59,8 +60,8 @@ const ExtraCurricularActivity = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!extraCurricularActivities && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold mb-2">Extra-Curricular Activities</h3>
@@ -130,15 +131,20 @@ const ExtraCurricularActivity = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5'>
-                            <div className='flex flex-col gap-5 w-full max-w-2xl mx-auto border bg-white p-4'>
-                                {extraCurricularActivities?.map((activity, index) => (
-                                    <div>
-                                        <p><strong>Activity Name : </strong>{activity.activityName}</p>
-                                        <p><strong>Description : </strong>{activity.description}</p>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                            {
+                                extraCurricularActivities ? <>
+                                    <div className='flex flex-col gap-5 w-full max-w-2xl mx-auto border bg-white p-4'>
+                                        {extraCurricularActivities?.map((activity, index) => (
+                                            <div key={index}>
+                                                <p><strong>Activity Name : </strong>{activity.activityName}</p>
+                                                <p><strong>Description : </strong>{activity.description}</p>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
+
                         </div>
 
                 }

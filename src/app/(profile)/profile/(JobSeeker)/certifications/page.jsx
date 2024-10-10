@@ -9,6 +9,7 @@ import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import NoInformation from '@/components/shared/NoInformation';
 
 const profile = {
     "certifications": [
@@ -74,8 +75,8 @@ const Certifications = () => {
 
     return (
         <div className='relative'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!certifications && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold mb-2">Certifications</h3>
@@ -158,17 +159,22 @@ const Certifications = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5'>
-                            <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                <ul>
-                                    {certifications?.map((cert, index) => (
-                                        <div key={index} className='flex items-center gap-1'>
-                                            <CgMoveRight className='text-xl md:text-2xl' />
-                                            <li>{cert?.certificationName} - {cert?.issuingOrganization} ({cert?.year})</li>
-                                        </div>
-                                    ))}
-                                </ul>
-                            </div>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                            {
+                                certifications ? <>
+                                    <div className='flex flex-col w-full max-w-2xl mx-auto border bg-white p-4'>
+                                        <ul>
+                                            {certifications?.map((cert, index) => (
+                                                <div key={index} className='flex items-center gap-1 mb-2'>
+                                                    <CgMoveRight className='text-xl md:text-2xl' />
+                                                    <li>{cert?.certificationName} - {cert?.issuingOrganization} ({cert?.year})</li>
+                                                </div>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
+
                         </div>
                 }
             </div>

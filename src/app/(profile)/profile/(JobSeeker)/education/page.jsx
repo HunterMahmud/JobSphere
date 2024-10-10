@@ -8,24 +8,25 @@ import { useSession } from 'next-auth/react';
 import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import NoInformation from '@/components/shared/NoInformation';
 
 const Education = () => {
     const { data: session } = useSession();
     const [edit, setEdit] = useState(false);
     const { profileInfo } = useProfileInfo();
-    const [education, setEducation] = useState(profileInfo.education);
+    const [education, setEducation] = useState(profileInfo?.education);
     useEffect(() => {
         if (profileInfo?.education) {
             setEducation(profileInfo?.education);
-        }
+        }   
     }, [profileInfo]);
 
     const handleAddEducation = () => {
-        if(education){
-            setEducation([...education, { degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
+        if (education) {
+            setEducation([...education, { degreeName: '', instituteName: '', cgpa: '', passingYear: '' }]);
             return
         }
-        setEducation([{ degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
+        setEducation([{ degreeName: '', instituteName: '', cgpa: '', passingYear: '' }]);
     };
 
     const handleEducationChange = (index, field, value) => {
@@ -56,8 +57,8 @@ const Education = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!education && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold">Education</h3>
@@ -78,7 +79,7 @@ const Education = () => {
                                                         type="text"
                                                         placeholder="Degree"
                                                         defaultValue={edu?.degreeName}
-                                                        onChange={(e) => handleEducationChange(index,'degreeName', e.target.value)}
+                                                        onChange={(e) => handleEducationChange(index, 'degreeName', e.target.value)}
                                                         className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                                     />
                                                 </div>
@@ -91,7 +92,7 @@ const Education = () => {
                                                         type="text"
                                                         placeholder="Institution"
                                                         defaultValue={edu?.instituteName}
-                                                        onChange={(e) => handleEducationChange(index,'instituteName', e.target.value)}
+                                                        onChange={(e) => handleEducationChange(index, 'instituteName', e.target.value)}
                                                         className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                                     />
                                                 </div>
@@ -104,7 +105,7 @@ const Education = () => {
                                                         type="text"
                                                         placeholder="Start Year"
                                                         defaultValue={edu?.cgpa}
-                                                        onChange={(e) => handleEducationChange(index,'cgpa', e.target.value)}
+                                                        onChange={(e) => handleEducationChange(index, 'cgpa', e.target.value)}
                                                         className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                                     />
                                                 </div>
@@ -117,7 +118,7 @@ const Education = () => {
                                                         type="text"
                                                         placeholder="End Year"
                                                         defaultValue={edu?.passingYear}
-                                                        onChange={(e) => handleEducationChange(index,'passingYear', e.target.value)}
+                                                        onChange={(e) => handleEducationChange(index, 'passingYear', e.target.value)}
                                                         className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                                     />
                                                 </div>
@@ -138,7 +139,7 @@ const Education = () => {
                                     onClick={handleAddEducation}
                                     className="bg-hoverColor flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
                                 >
-                                    <IoMdAdd /> <span>Add</span>
+                                    <IoMdAdd /> <span>Add Education</span>
                                 </button>
                             </div>
                             <div className='col-span-2'>
@@ -153,21 +154,23 @@ const Education = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5'>
-                            <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                {education?.map((edu, index) => (
-                                    <div key={index}>
-                                        <h4 className="font-semibold">{edu?.degreeName}</h4>
-                                        <p><strong>Institute Name : </strong>{edu?.instituteName}</p>
-                                        <p><strong>Cgpa : </strong>{edu?.cgpa}</p>
-                                        <p><strong>Passing Year : </strong>{edu?.passingYear}</p>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                            {
+                                education ? <>
+                                    <div className='flex flex-col gap-5 w-full max-w-2xl mx-auto border bg-white p-4'>
+                                        {education?.map((edu, index) => (
+                                            <div key={index}>
+                                                <h4 className="font-semibold">{edu?.degreeName}</h4>
+                                                <p><strong>Institute Name : </strong>{edu?.instituteName}</p>
+                                                <p><strong>Cgpa : </strong>{edu?.cgpa}</p>
+                                                <p><strong>Passing Year : </strong>{edu?.passingYear}</p>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
                         </div>
-
                 }
-
             </div>
         </div>
     );

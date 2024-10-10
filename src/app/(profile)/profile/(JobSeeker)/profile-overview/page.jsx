@@ -9,6 +9,7 @@ import axios from 'axios';
 import useRole from '@/components/Hooks/useRole';
 import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import { useSession } from 'next-auth/react';
+import NoInformation from '@/components/shared/NoInformation';
 
 const countryOptions = [
     { value: "Afghanistan", label: "Afghanistan" },
@@ -214,6 +215,12 @@ const ProfileOverview = () => {
     const [edit, setEdit] = useState(false);
     const { profileInfo } = useProfileInfo();
     const [country, setCountry] = useState('');
+    const [profileOverview, setProfileOverview] = useState(profileInfo?.profileOverview)
+    useEffect(() => {
+        if (profileInfo?.profileOverview) {
+            setProfileOverview(profileInfo?.profileOverview)
+        }
+    }, [profileInfo])
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -246,6 +253,7 @@ const ProfileOverview = () => {
             console.log('Update', update)
             if (update?.modifiedCount > 0) {
                 toast.success("Updated Successful");
+                setProfileOverview(profileOverview)
                 setEdit(false);
             }
         } catch (err) {
@@ -253,10 +261,11 @@ const ProfileOverview = () => {
         }
     }
 
+
     return (
         <div className='relative'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!profileOverview && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h2 className='text-center text-xl font-semibold mb-5'>Profile Overview</h2>
@@ -264,13 +273,13 @@ const ProfileOverview = () => {
                     edit ?
                         <form onSubmit={handleSave} className="mt-10 grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5">
                             {/* Name */}
-                            <div>
+                            <div div >
                                 <label className="block mb-2 text-sm font-medium text-gray-600 ">
                                     Full Name
                                 </label>
                                 <input
                                     name='fullName'
-                                    defaultValue={profileInfo?.profileOverview?.fullName}
+                                    defaultValue={profileOverview?.fullName}
                                     type="text"
                                     placeholder="Enter Your Name"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -283,7 +292,7 @@ const ProfileOverview = () => {
                                 </label>
                                 <input
                                     name='preferredJobPosition'
-                                    defaultValue={profileInfo?.profileOverview?.preferredJobPosition}
+                                    defaultValue={profileOverview?.preferredJobPosition}
                                     type="text"
                                     placeholder="Enter Your Professional Title"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -295,7 +304,7 @@ const ProfileOverview = () => {
                                     Country Name
                                 </label>
                                 <Select
-                                    defaultInputValue={country ? country : profileInfo?.profileOverview?.country}
+                                    defaultInputValue={country ? country : profileOverview?.country}
                                     onChange={(countryOptions) => setCountry(countryOptions.value)}
                                     options={countryOptions}
                                     className="w-full"
@@ -308,7 +317,7 @@ const ProfileOverview = () => {
                                 </label>
                                 <input
                                     name='city'
-                                    defaultValue={profileInfo?.profileOverview?.city}
+                                    defaultValue={profileOverview?.city}
                                     type="text"
                                     placeholder="Enter City Name"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -321,7 +330,7 @@ const ProfileOverview = () => {
                                 </label>
                                 <input
                                     name='address'
-                                    defaultValue={profileInfo?.profileOverview?.address}
+                                    defaultValue={profileOverview?.address}
                                     type="text"
                                     placeholder="Enter Your Address"
                                     className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -344,7 +353,7 @@ const ProfileOverview = () => {
                                 <label className="block mb-2 text-sm font-medium text-gray-600 ">
                                     Preferred Job Type
                                 </label>
-                                <select name='preferredJobType' defaultValue={profileInfo?.profileOverview?.preferredJobType} className="select px-4 py-2 rounded-lg w-full">
+                                <select name='preferredJobType' defaultValue={profileOverview?.preferredJobType} className="select px-4 py-2 rounded-lg w-full">
                                     <option>Full-Time</option>
                                     <option>On Site</option>
                                     <option>Remote</option>
@@ -357,7 +366,7 @@ const ProfileOverview = () => {
                                 <label className="block mb-2 text-sm font-medium text-gray-600 ">
                                     Looking for a Job
                                 </label>
-                                <select name='wantJob' defaultValue={profileInfo?.profileOverview?.wantJob} className="select px-4 py-2 rounded-lg w-full">
+                                <select name='wantJob' defaultValue={profileOverview?.wantJob} className="select px-4 py-2 rounded-lg w-full">
                                     <option>Yes</option>
                                     <option>No</option>
                                 </select>
@@ -376,28 +385,30 @@ const ProfileOverview = () => {
                         </form>
                         :
                         <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                            <div className='border rounded-full'>
-                                <Image
-                                    className='h-[200px] w-[200px] object-cover rounded-full'
-                                    src={profileInfo?.profileOverview?.profilePicture}
-                                    alt="ProfileImg"
-                                    width={200}
-                                    height={200}
-                                />
-                            </div>
-                            <div className='space-y-1 mt-5'>
-                                <p><strong>Full Name:</strong> {profileInfo?.profileOverview?.fullName}</p>
-                                <p><strong>Address:</strong> {profileInfo?.profileOverview?.address}, {profileInfo?.profileOverview?.city}, {profileInfo?.ProfileOverview?.country}</p>
-                                <p><strong>Looking for a Job?</strong> {profileInfo?.profileOverview?.wantJob}</p>
-                                <p><strong>Preferred Job Position:</strong> {profileInfo?.profileOverview?.preferredJobPosition}</p>
-                                <p><strong>Preferred Job Type:</strong> {profileInfo?.profileOverview?.preferredJobType}</p>
-                            </div>
+                            {
+                                profileOverview ? <><div className='border rounded-full'>
+                                    <Image
+                                        className='h-[200px] w-[200px] object-cover rounded-full'
+                                        src={profileOverview?.profilePicture}
+                                        alt="ProfileImg"
+                                        width={200}
+                                        height={200}
+                                    />
+                                </div>
+                                    <div className='space-y-1 mt-5'>
+                                        <p><strong>Full Name:</strong> {profileOverview?.fullName}</p>
+                                        <p><strong>Address:</strong> {profileOverview?.address}, {profileOverview?.city}, {ProfileOverview?.country}</p>
+                                        <p><strong>Looking for a Job?</strong> {profileOverview?.wantJob}</p>
+                                        <p><strong>Preferred Job Position:</strong> {profileOverview?.preferredJobPosition}</p>
+                                        <p><strong>Preferred Job Type:</strong> {profileOverview?.preferredJobType}</p>
+                                    </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
+
                         </div>
-
                 }
-
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

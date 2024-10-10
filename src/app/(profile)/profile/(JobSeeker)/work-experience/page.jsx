@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import NoInformation from '@/components/shared/NoInformation';
 
 const WorkExperience = () => {
     const { data: session } = useSession();
@@ -26,7 +27,7 @@ const WorkExperience = () => {
             setWorkExperience([...workExperience, { jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
             return
         }
-        setWorkExperience([ { jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
+        setWorkExperience([{ jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
     };
 
     const handleWorkExperienceChange = (index, field, value) => {
@@ -56,8 +57,8 @@ const WorkExperience = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!workExperience && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold">Work Experience</h3>
@@ -152,7 +153,7 @@ const WorkExperience = () => {
                                     onClick={handleAddWorkExperience}
                                     className="bg-hoverColor flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
                                 >
-                                    <IoMdAdd /> <span>Add Activity</span>
+                                    <IoMdAdd /> <span>Add Experience</span>
                                 </button>
                             </div>
                             <div className='col-span-2'>
@@ -167,19 +168,23 @@ const WorkExperience = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5'>
-                            <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                {workExperience?.map((experience, index) => (
-                                    <div key={index} className="mb-4">
-                                        <h4 className="font-semibold">
-                                            {experience.jobTitle} | {experience.companyName}
-                                        </h4>
-                                        <p><strong>Start Date : </strong>{experience.startDate}</p>
-                                        <p><strong>End Date : </strong>{experience.endDate}</p>
-                                        <p><strong>Responsibilities : </strong>{experience?.responsibilities}</p>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                            {
+                                workExperience ? <>
+                                    <div className='flex flex-col w-full max-w-2xl mx-auto border bg-white p-4'>
+                                        {workExperience?.map((experience, index) => (
+                                            <div key={index} className="mb-4">
+                                                <h4 className="font-semibold">
+                                                    {experience.jobTitle} | {experience.companyName}
+                                                </h4>
+                                                <p><strong>Start Date : </strong>{experience.startDate}</p>
+                                                <p><strong>End Date : </strong>{experience.endDate}</p>
+                                                <p><strong>Responsibilities : </strong>{experience?.responsibilities}</p>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
                         </div>
                 }
             </div>

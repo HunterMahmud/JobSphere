@@ -8,6 +8,7 @@ import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
+import NoInformation from '@/components/shared/NoInformation';
 
 const Projects = () => {
     const { data: session } = useSession();
@@ -49,6 +50,7 @@ const Projects = () => {
             const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { projects });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful");
+                setProjects(projects)
                 setEdit(false);
             }
         } catch (err) {
@@ -58,8 +60,8 @@ const Projects = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!projects && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold">Projects</h3>
@@ -141,7 +143,7 @@ const Projects = () => {
                                     onClick={addProject}
                                     className="bg-hoverColor flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
                                 >
-                                    <IoMdAdd /> <span>Add </span>
+                                    <IoMdAdd /> <span>Add Projects</span>
                                 </button>
                             </div>
                             <div className='col-span-2'>
@@ -156,17 +158,21 @@ const Projects = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5'>
-                            <div className='w-full max-w-2xl mx-auto border bg-white p-4'>
-                                {profileInfo?.projects?.map((project, index) => (
-                                    <div key={index} className='mt-5'>
-                                        <h3>{project?.projectName}</h3>
-                                        <p><strong>Link:</strong> <a href={project?.projectLink} target="_blank" rel="noreferrer">{project?.projectLink}</a></p>
-                                        <p><strong>Made with:</strong> {project?.projectMadeWith}</p>
-                                        <p>{project?.projectDetails}</p>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                            {
+                                projects ? <>
+                                    <div className='w-full max-w-2xl mx-auto border bg-white p-4'>
+                                        {projects?.map((project, index) => (
+                                            <div key={index} className='mt-5'>
+                                                <h3>{project?.projectName}</h3>
+                                                <p><strong>Link:</strong> <a href={project?.projectLink} target="_blank" rel="noreferrer">{project?.projectLink}</a></p>
+                                                <p><strong>Made with:</strong> {project?.projectMadeWith}</p>
+                                                <p>{project?.projectDetails}</p>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
                         </div>
                 }
 
