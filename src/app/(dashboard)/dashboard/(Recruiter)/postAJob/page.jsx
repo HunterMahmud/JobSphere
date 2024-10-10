@@ -8,7 +8,6 @@ import axios from "axios";
 import CreatableSelect from "react-select/creatable";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import useProfileInfo from "@/components/Hooks/useProfileInfo";
 
 
 const JobForm = () => {
@@ -25,7 +24,7 @@ const JobForm = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const jobData = { ...data, email: session?.user?.email };
+    const jobData = { ...data, email: session?.data?.user?.email };
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/postAJob/api`,
