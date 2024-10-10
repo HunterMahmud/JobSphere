@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export const GET = async (request, {params}) => {
     const db =await connectDB()
-    const addedJobsCollection = db.collection('added-jobs')
+    const addedJobsCollection = db.collection('addedJobs')
     try {
         const myAddedJobs = await addedJobsCollection.find({email : params.email}).toArray();
         console.log(myAddedJobs)
