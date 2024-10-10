@@ -1,20 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
 import { GrLogout } from "react-icons/gr";
-import { FcSettings } from "react-icons/fc";
+import { FcSettings, FcStatistics } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
 import { RiSave3Line } from "react-icons/ri";
-import { MdAssignmentAdd, MdOutlineWorkOutline } from "react-icons/md";
+import { MdAssignmentAdd, MdOutlineWorkOutline, MdOutlineManageSearch } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
 import { ImProfile } from "react-icons/im";
-import { useSession } from "next-auth/react";
+import { GoCodeReview } from "react-icons/go";
+import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
+import useRole from "@/components/Hooks/useRole";
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
-  const user = useSession();
-  console.log(user)
+  const { loggedInUser } = useRole();
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
@@ -55,9 +56,8 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${
-          isActive ? "-translate-x-full" : ""
-        } md:translate-x-0 transition duration-200 ease-in-out`}
+        className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${isActive ? "-translate-x-full" : ""
+          } md:translate-x-0 transition duration-200 ease-in-out`}
       >
         <div>
           <div className="bg-[#4a5666] p-3 rounded-md text-center">
@@ -69,29 +69,32 @@ const Sidebar = () => {
           {/* Nav Items */}
           <div className="flex flex-col justify-between flex-1 mt-6">
             {/* Menu Items */}
-            <nav>
-              <MenuItem icon={IoHomeOutline} label="Home" address="/" />
-              <MenuItem
-                icon={MdAssignmentAdd}
-                label="Post a Job"
-                address="/dashboard/postAJob"
-              />
-              <MenuItem
-                icon={RiSave3Line}
-                label="Saved Jobs"
-                address="/dashboard/savedJobs"
-              />
-              <MenuItem
-                icon={MdOutlineWorkOutline}
-                label="My Posted Jobs"
-                address="/dashboard/myPostedJobs"
-              />
-              <MenuItem
-                icon={ImProfile}
-                label="Job Seekers"
-                address="/dashboard/jobSeekers"
-              />
-            </nav>
+            {
+              loggedInUser?.role === "seeker" &&
+              <nav>
+                <MenuItem icon={IoHomeOutline} label="Home" address="/dashboard" />
+                <MenuItem icon={FaLaptopHouse} label="Apply Jobs" address="/dashboard/applyJobs" />
+                <MenuItem icon={RiSave3Line} label="Saved Jobs" address="/dashboard/savedJobs" />
+              </nav>
+            }
+            {
+              loggedInUser?.role === "recruiter" &&
+              <nav>
+                <MenuItem icon={IoHomeOutline} label="Home" address="/dashboard" />
+                <MenuItem icon={MdAssignmentAdd} label="Post a Job" address="/dashboard/postAJob" />
+                <MenuItem icon={ImProfile} label="Job Seekers" address="/dashboard/jobSeekers" />
+                <MenuItem icon={MdOutlineWorkOutline} label="My Posted Jobs" address="/dashboard/myPostedJobs" />
+              </nav>
+            }
+            {
+              loggedInUser?.role === "admin" &&
+              <nav>
+                <MenuItem icon={FaUserCog} label="User Management" address="/dashboard/userManagement" />
+                <MenuItem icon={MdOutlineManageSearch} label="Job Management" address="/dashboard/jobManagement" />
+                <MenuItem icon={GoCodeReview} label="Interview" address="/dashboard/interview" />
+                <MenuItem icon={FcStatistics} label="Statistics" address="/dashboard/statistics" />
+              </nav>
+            }
           </div>
         </div>
 
