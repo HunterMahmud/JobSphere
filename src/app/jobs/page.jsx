@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import JobCard from "@/components/Jobs/JobCard";
+import { FaSearch } from "react-icons/fa";
 const JobPage = () => {
   const [jobs, setJobs] = useState([]); // Initialize as an array
   const [error, setError] = useState(null);
@@ -19,10 +20,22 @@ const JobPage = () => {
 
     fetchJobs();
   }, []);
-  
+
   return (
     <div className="container mx-auto my-12">
-      <h1 className="text-3xl font-bold text-center mb-8">Jobs</h1>
+      <h1 className="text-3xl font-bold text-center mb-8 underline underline-offset-2">Jobs</h1>
+
+      {/* Search Function */}
+      <div className="flex items-center bg-white rounded-l-lg border-2 border-sky-500 w-[300px] mx-auto my-8 p-2">
+        <FaSearch className="ml-3 text-gray-400" />
+        <input
+          type="text"
+          className="w-[300px] p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
+          placeholder="Search with Skill or Types"
+          value={""}
+          onChange={(e) => setJobTitle(e.target.value)}
+        />
+      </div>
 
       {/* Job Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
