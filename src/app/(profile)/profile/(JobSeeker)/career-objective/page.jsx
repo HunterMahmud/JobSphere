@@ -27,7 +27,7 @@ const CareerObjective = () => {
     const handleSave = async (data) => {
         const { careerObjective } = data;
         try {
-            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { careerObjective });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { careerObjective });
             if (data?.modifiedCount > 0) {
                 setCareerObjective(careerObjective);
                 toast.success("Updated Successful");

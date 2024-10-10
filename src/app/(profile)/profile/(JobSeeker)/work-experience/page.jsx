@@ -45,7 +45,7 @@ const WorkExperience = () => {
     const handleSave = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { workExperience });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { workExperience });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setEdit(false)
