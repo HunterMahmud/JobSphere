@@ -6,7 +6,6 @@ export const POST = async (request) => {
   const db = await connectDB();
   const postAJobCollection = db.collection("addedJobs");
 
-
   try {
     const res = await postAJobCollection.insertOne(newJobs);
     return Response.json({ message: "job posted successfully",res }, { status: 200 });
