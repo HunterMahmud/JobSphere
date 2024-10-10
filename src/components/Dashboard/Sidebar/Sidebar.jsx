@@ -8,6 +8,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { RiSave3Line } from "react-icons/ri";
 import { MdAssignmentAdd, MdOutlineWorkOutline } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
+import { ImProfile } from "react-icons/im";
 import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
@@ -84,6 +85,11 @@ const Sidebar = () => {
                 icon={MdOutlineWorkOutline}
                 label="My Posted Jobs"
                 address="/dashboard/myPostedJobs"
+              />
+              <MenuItem
+                icon={ImProfile}
+                label="Job Seekers"
+                address="/dashboard/jobSeekers"
               />
             </nav>
           </div>

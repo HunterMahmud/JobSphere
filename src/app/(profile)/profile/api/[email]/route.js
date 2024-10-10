@@ -4,7 +4,7 @@ export const GET = async (request, { params }) => {
     const db = await connectDB();
     const userInfoCollection = db.collection('usersInformation');
     try {
-        const res = await userInfoCollection.findOne({ 'personalInformation.email': params.email });
+        const res = await userInfoCollection.findOne({ 'contactInformation.email': params.email });
         return Response.json(res);
     } catch (err) {
         console.log(err)
@@ -19,7 +19,7 @@ export const PUT = async (request, { params }) => {
     console.log(updateDoc)
     try {
         const res = await userInfoCollection.updateOne(
-            { 'personalInformation.email': params.email },
+            { 'contactInformation.email': params.email },
             {
                 $set: {
                     ...updateDoc
