@@ -1,6 +1,5 @@
 import { connectDB } from "@/lib/connectDB";
 
-
 export const POST = async (request) => {
   const newJobs = await request.json();
   const db = await connectDB();
