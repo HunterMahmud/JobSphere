@@ -6,11 +6,11 @@ const page = () => {
     const jobSeekers = [
         {
             "profileOverview": {
-                "fullName": "Alice Johnson",
-                "profilePicture": "https://example.com/alicejohnson.jpg",
-                "address": "456 Pine St",
-                "city": "New York",
-                "country": "USA",
+                "fullName": "Tanvir Ahamed",
+                "profilePicture": "https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg",
+                "address": "Kalindi Para",
+                "city": "Munshiganj",
+                "country": "Bangladesh",
                 "wantJob": true,
                 "preferredJobPosition": "Full Stack Developer",
                 "preferredJobType": "Remote"
@@ -20,7 +20,7 @@ const page = () => {
                 "emailAddress": "alice.johnson@example.com",
                 "linkedinProfile": "https://linkedin.com/in/alicejohnson",
                 "otherProfiles": {
-                    "github": "https://github.com/alicejohnson",
+                    "github": "https://github.com/tajtanvr1",
                     "portfolio": "https://aliceportfolio.com"
                 }
             },
@@ -70,11 +70,11 @@ const page = () => {
         },
         {
             "profileOverview": {
-                "fullName": "Bob Martinez",
-                "profilePicture": "https://example.com/bobmartinez.jpg",
+                "fullName": "Hasan Al Mahmud",
+                "profilePicture": "https://i.ibb.co.com/54M49Z0/Hasan.jpg",
                 "address": "789 Elm St",
                 "city": "Los Angeles",
-                "country": "USA",
+                "country": "Bangladesh",
                 "wantJob": true,
                 "preferredJobPosition": "UI/UX Designer",
                 "preferredJobType": "Full-Time"
@@ -134,8 +134,8 @@ const page = () => {
         },
         {
             "profileOverview": {
-                "fullName": "Carla Wong",
-                "profilePicture": "https://example.com/carlawong.jpg",
+                "fullName": "Rafizul Islam",
+                "profilePicture": "https://i.ibb.co.com/FH7Yhb6/Rafizul.jpg",
                 "address": "246 Maple St",
                 "city": "Chicago",
                 "country": "USA",
@@ -197,8 +197,8 @@ const page = () => {
         },
         {
             "profileOverview": {
-                "fullName": "David Lee",
-                "profilePicture": "https://example.com/davidlee.jpg",
+                "fullName": "Sahidul Islam",
+                "profilePicture": "https://i.ibb.co.com/Ct6mM6L/Sahidul.jpg",
                 "address": "135 Oak St",
                 "city": "Seattle",
                 "country": "USA",
@@ -261,11 +261,11 @@ const page = () => {
         },
         {
             "profileOverview": {
-                "fullName": "Evelyn Garcia",
-                "profilePicture": "https://example.com/evelyngarcia.jpg",
+                "fullName": "Shamim Islam",
+                "profilePicture": "https://i.ibb.co.com/gz7jjtF/Shamim.jpg",
                 "address": "678 Birch St",
                 "city": "Austin",
-                "country": "USA",
+                "country": "Bangladesh",
                 "wantJob": true,
                 "preferredJobPosition": "Data Scientist",
                 "preferredJobType": "Remote"
@@ -322,15 +322,79 @@ const page = () => {
                     "description": "Mentored aspiring data scientists through an online mentoring platform."
                 }
             ]
+        },
+        {
+            "profileOverview": {
+                "fullName": "Tanvir Ahamed",
+                "profilePicture": "https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg",
+                "address": "Kalindi Para",
+                "city": "Munshiganj",
+                "country": "Bangladesh",
+                "wantJob": true,
+                "preferredJobPosition": "Full Stack Developer",
+                "preferredJobType": "Remote"
+            },
+            "socialProfiles": {
+                "phoneNumber": "+1-555-1234-567",
+                "emailAddress": "alice.johnson@example.com",
+                "linkedinProfile": "https://linkedin.com/in/alicejohnson",
+                "otherProfiles": {
+                    "github": "https://github.com/tajanvr1",
+                    "portfolio": "https://aliceportfolio.com"
+                }
+            },
+            "careerObjective": "Seeking a challenging position as a Full Stack Developer to utilize my experience in web technologies and cloud computing.",
+            "projects": [
+                {
+                    "projectName": "E-commerce Platform",
+                    "projectLink": "https://ecommerceplatform.com",
+                    "projectMadeWith": ["React", "Node.js", "MySQL"],
+                    "projectDetails": "Developed a scalable e-commerce platform for small businesses."
+                }
+            ],
+            "skills": {
+                "technicalSkills": ["React", "Node.js", "Express", "MySQL", "AWS"],
+                "softSkills": ["Leadership", "Problem-solving", "Adaptability"]
+            },
+            "education": [
+                {
+                    "degreeName": "Bachelor of Science in Computer Science",
+                    "instituteName": "MIT",
+                    "cgpa": "3.9",
+                    "passingYear": 2019
+                }
+            ],
+            "workExperience": [
+                {
+                    "positionName": "Full Stack Developer",
+                    "companyName": "Tech Solutions",
+                    "startedDate": "2020-01-01",
+                    "endingDate": "2023-09-01",
+                    "stillWorking": false
+                }
+            ],
+            "certifications": [
+                {
+                    "certificateName": "AWS Certified Developer",
+                    "issuedBy": "Amazon Web Services",
+                    "issueDate": "2021-11-15"
+                }
+            ],
+            "extraCurricularActivities": [
+                {
+                    "activityName": "Volunteer Web Developer",
+                    "description": "Built websites for local non-profit organizations."
+                }
+            ]
         }
     ]
 
     return (
-        <div>
-            <h1>Job Seekers</h1>
+        <div className='my-8'>
+            <h1 className="text-3xl font-bold text-center mb-8 underline">Job Seekers</h1>
 
             {/* Job Seekers Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-around md:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-around md:gap-16">
                 {Array.isArray(jobSeekers) && jobSeekers.length > 0 ? (
                     jobSeekers.map((seekers, index) => <SeekersCard key={index} seekers={seekers} />)
                 ) : (
