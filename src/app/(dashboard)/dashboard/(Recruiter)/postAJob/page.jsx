@@ -8,7 +8,7 @@ import axios from "axios";
 import CreatableSelect from 'react-select/creatable';
 
 const JobForm = () => {
-    const { register, handleSubmit, control, formState: { errors } } = useForm();
+    const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
     
   const [loading, setLoading] = useState(false);
 
