@@ -33,7 +33,7 @@ const Resume = () => {
     if (!user) {
       return <div className="h-screen text-center flex justify-center items-center text-3xl font-bold"><h1>Please Update your profile </h1></div>  
     }
-    if (Object.keys(user).length >= 7) {
+    if (Object.keys(user).length <= 7) {
       return <div className="h-screen text-center flex justify-center items-center text-3xl font-bold"><h1>Please complete your profile minimum 80 % </h1></div>  
     }
     
