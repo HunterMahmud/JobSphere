@@ -30,7 +30,11 @@ const Projects = () => {
 
     // Add a new project
     const addProject = () => {
-        setProjects([...projects, { projectName: "", projectLink: "", projectMadeWith: "", projectDetails: "" }]);
+        if (projects) {
+            setProjects([...projects, { projectName: "", projectLink: "", projectMadeWith: "", projectDetails: "" }]);
+            return
+        }
+        setProjects([{ projectName: "", projectLink: "", projectMadeWith: "", projectDetails: "" }]);
     };
 
     // Remove a project

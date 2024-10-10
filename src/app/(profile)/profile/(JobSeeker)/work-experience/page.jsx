@@ -22,7 +22,11 @@ const WorkExperience = () => {
     }, [profileInfo])
 
     const handleAddWorkExperience = () => {
-        setWorkExperience([...workExperience, { jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
+        if (workExperience) {
+            setWorkExperience([...workExperience, { jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
+            return
+        }
+        setWorkExperience([ { jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
     };
 
     const handleWorkExperienceChange = (index, field, value) => {

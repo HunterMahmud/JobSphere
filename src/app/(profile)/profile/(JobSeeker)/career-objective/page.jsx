@@ -52,7 +52,7 @@ const CareerObjective = () => {
                                             message: "This field is required.",
                                         },
                                     })}
-                                    defaultValue={profileInfo?.careerObjective}
+                                    defaultValue={profileInfo?.careerObjective || ''}
                                     type="textarea"
                                     placeholder="Write your carrer objective"
                                     className="block w-full px-4 py-2 min-h-[150px] text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"

@@ -21,7 +21,11 @@ const Education = () => {
     }, [profileInfo]);
 
     const handleAddEducation = () => {
-        setEducation([...education, { degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
+        if(education){
+            setEducation([...education, { degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
+            return
+        }
+        setEducation([{ degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
     };
 
     const handleEducationChange = (index, field, value) => {

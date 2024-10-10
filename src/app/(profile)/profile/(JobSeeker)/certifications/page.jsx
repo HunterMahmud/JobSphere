@@ -1,10 +1,14 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { CgMoveRight } from 'react-icons/cg';
 import { IoMdAdd } from 'react-icons/io';
 import { MdDeleteOutline } from 'react-icons/md';
+import useProfileInfo from '@/components/Hooks/useProfileInfo';
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const profile = {
     "certifications": [
@@ -22,12 +26,31 @@ const profile = {
 }
 
 const Certifications = () => {
-    const [edit, setEdit] = React.useState(false)
-    const [certifications, setCertifications] = React.useState([...profile.certifications])
+    const { data: session } = useSession();
+    const { profileInfo } = useProfileInfo();
+    const [edit, setEdit] = useState(false);
+    const [certifications, setCertifications] = useState(profileInfo?.certifications);
+
+    useEffect(() => {
+        if (profileInfo?.certifications) {
+            setCertifications(profileInfo?.certifications)
+        }
+    }, [profileInfo])
 
     const handleAddCertification = () => {
-        setCertifications([...certifications, { degree: '', institution: '', startDate: '', endDate: '', fieldOfStudy: '' }]);
+        if (certifications) {
+            setCertifications([...certifications, { certificationName: '', issuingOrganization: '', year: '' }]);
+            return
+        }
+        setCertifications([{ certificationName: '', issuingOrganization: '', year: '' }]);
     };
+
+    const handleCertificationChange = (index, field, value) => {
+        const newCertifications = [...certifications];
+        newCertifications[index][field] = value;
+        setCertifications(newCertifications);
+    };
+
 
     // Remove an Certification
     const removeCertification = (index) => {
@@ -35,8 +58,18 @@ const Certifications = () => {
         setCertifications(newActivities);
     };
 
-    const handleSave = async () => {
-        console.log('Hello')
+    const handleSave = async (e) => {
+        e.preventDefault();
+        try {
+            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { certifications });
+            if (data?.modifiedCount > 0) {
+                toast.success("Updated Successful")
+                setEdit(false)
+            }
+        } catch (err) {
+            console.log(err?.message)
+            toast.error(err?.message)
+        }
     }
 
     return (
@@ -52,27 +85,47 @@ const Certifications = () => {
                             <div className="w-full max-w-3xl rounded-lg mb-6">
                                 {certifications?.map((cert, index) => (
                                     <div key={index}>
-                                        <label className="block text-sm font-medium text-gray-700">Certificate</label>
                                         <div className="mb-6 flex items-center">
                                             <div className='w-full'>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Certification Name"
-                                                    defaultValue={cert?.certificationName}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="Issuing Organization"
-                                                    defaultValue={cert?.issuingOrganization}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="Year"
-                                                    defaultValue={cert?.year}
-                                                    className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                                                />
+                                                <div className="mb-2">
+                                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                                        Certification Name
+                                                    </label>
+                                                    <input
+                                                        required
+                                                        type="text"
+                                                        placeholder="Certification Name"
+                                                        defaultValue={cert?.certificationName}
+                                                        onChange={(e) => handleCertificationChange(index, 'certificationName', e.target.value)}
+                                                        className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                                    />
+                                                </div>
+                                                <div className="mb-2">
+                                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                                        Issuing Organization
+                                                    </label>
+                                                    <input
+                                                        required
+                                                        type="text"
+                                                        placeholder="Issuing Organization"
+                                                        defaultValue={cert?.issuingOrganization}
+                                                        onChange={(e) => handleCertificationChange(index, 'issuingOrganization', e.target.value)}
+                                                        className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                                    />
+                                                </div>
+                                                <div className="mb-2">
+                                                    <label className="block mb-2 text-sm font-medium text-gray-600 ">
+                                                        Year
+                                                    </label>
+                                                    <input
+                                                        required
+                                                        type="number"
+                                                        placeholder="year"
+                                                        defaultValue={cert?.year}
+                                                        onChange={(e) => handleCertificationChange(index, 'year', e.target.value)}
+                                                        className="block mt-2 w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                                                    />
+                                                </div>
                                             </div>
                                             <button
                                                 type="button"
