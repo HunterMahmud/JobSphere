@@ -11,7 +11,7 @@ const useProfileInfo = () => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:3000/profile/api/${session.user.email}`);
+                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`);
                 setProfileInfo(data);
             } catch (error) {
                 console.error('profileInfo', error);

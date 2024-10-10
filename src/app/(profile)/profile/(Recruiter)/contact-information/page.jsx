@@ -1,8 +1,13 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useForm } from "react-hook-form";
+import { useSession } from 'next-auth/react';
+import useProfileInfo from '@/components/Hooks/useProfileInfo';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import NoInformation from '@/components/shared/NoInformation';
 
 const profile = {
     contact: {
@@ -17,19 +22,35 @@ const profile = {
 }
 
 const ContactInformation = () => {
-    const [edit, setEdit] = React.useState(false)
+    const { data: session } = useSession();
+    const { profileInfo } = useProfileInfo();
+    const [edit, setEdit] = useState(false)
     const { register, handleSubmit } = useForm();
+    const [contactInformation, setContactInformation] = useState(profileInfo?.contactInformation);
+    useEffect(() => {
+        if (profileInfo?.contactInformation) {
+            setContactInformation(profileInfo?.contactInformation)
+        }
+    }, [profileInfo])
 
     const handleSave = async (data) => {
         const { email, phone, linkedin, twitter, website } = data;
-        try {
-            console.log({
-                email,
-                phone,
-                website,
+        const contactInformation = {
+            email,
+            phone,
+            website,
+            socialLinks: {
                 linkedin,
                 twitter
-            })
+            }
+        }
+        try {
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { contactInformation });
+            if (data?.modifiedCount > 0) {
+                toast.success("Updated Successful")
+                setContactInformation(contactInformation)
+                setEdit(false);
+            }
         } catch (err) {
             console.log(err.message)
         }
@@ -37,8 +58,8 @@ const ContactInformation = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className='cursor-pointer absolute right-3 top-0 text-2xl'>
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!contactInformation && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold">Contact Information</h3>
@@ -53,7 +74,7 @@ const ContactInformation = () => {
                                     </label>
                                     <input
                                         {...register("email")}
-                                        defaultValue={profile.contact.email}
+                                        value={session.user?.email}
                                         type="email"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                                     />
@@ -65,7 +86,7 @@ const ContactInformation = () => {
                                     </label>
                                     <input
                                         {...register("phone")}
-                                        defaultValue={profile?.contact?.phone}
+                                        defaultValue={contactInformation?.phone}
                                         type="text"
                                         placeholder="Enter Phone Number"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -78,7 +99,7 @@ const ContactInformation = () => {
                                     </label>
                                     <input
                                         {...register("website")}
-                                        defaultValue={profile?.contact?.website}
+                                        defaultValue={contactInformation?.website}
                                         type="text"
                                         placeholder="Enter Phone Number"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -94,7 +115,7 @@ const ContactInformation = () => {
                                     </label>
                                     <input
                                         {...register("linkedin")}
-                                        defaultValue={profile.contact.socialLinks.linkedin}
+                                        defaultValue={contactInformation?.socialLinks?.linkedin}
                                         type="text"
                                         placeholder="Enter linkedin account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -107,7 +128,7 @@ const ContactInformation = () => {
                                     </label>
                                     <input
                                         {...register("twitter")}
-                                        defaultValue={profile.contact.socialLinks.twitter}
+                                        defaultValue={contactInformation?.socialLinks?.twitter}
                                         type="text"
                                         placeholder="Enter twitter account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -126,20 +147,25 @@ const ContactInformation = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5'>
-                            <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                <p><strong>Phone:</strong> {profile.contact.phone}</p>
-                                <p><strong>Email:</strong> {profile.contact.email}</p>
-                                <p><strong>Website:</strong> <a href={profile.contact.website} className="text-blue-500 underline">{profile.contact.website}</a></p>
-                                <div className="mt-2 flex gap-5">
-                                    <strong>Social Links:</strong>
-                                    <p className='flex gap-5'>
-                                        <a href={profile.contact.socialLinks.linkedin} className="text-blue-500 underline">LinkedIn</a>
-                                        ||
-                                        <a href={profile.contact.socialLinks.twitter} className="text-blue-500 underline">Twitter</a>
-                                    </p>
-                                </div>
-                            </div>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                            {
+                                contactInformation ? <>
+                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                                        <p><strong>Phone:</strong> {contactInformation?.phone}</p>
+                                        <p><strong>Email:</strong> {contactInformation?.email}</p>
+                                        <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>
+                                        <div className="mt-2 flex gap-5">
+                                            <strong>Social Links:</strong>
+                                            <p className='flex gap-5'>
+                                                <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>
+                                                ||
+                                                <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </> : <NoInformation setEdit={setEdit} edit={edit} />
+                            }
+
                         </div>
                 }
             </div>

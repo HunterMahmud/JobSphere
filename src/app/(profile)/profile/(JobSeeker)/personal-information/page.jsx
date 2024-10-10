@@ -13,10 +13,10 @@ const PersonalInformation = () => {
     const { data: session } = useSession();
     const { profileInfo } = useProfileInfo();
     const [edit, setEdit] = useState(false)
-    const [personalInformation, setPersonalInformation] = useState(profileInfo?.personalInformation)
+    const [contactInformation, setContactInformation] = useState(profileInfo?.contactInformation)
     useEffect(() => {
-        if (profileInfo?.personalInformation) {
-            setPersonalInformation(profileInfo?.personalInformation)
+        if (profileInfo?.contactInformation) {
+            setContactInformation(profileInfo?.contactInformation)
         }
     }, [profileInfo])
 
@@ -27,7 +27,7 @@ const PersonalInformation = () => {
 
     const handleSave = async (data) => {
         const { email, phoneNumber, linkedin, github, portfolio } = data;
-        const personalInformation = {
+        const contactInformation = {
             email,
             phoneNumber,
             "socialLinks": {
@@ -37,10 +37,10 @@ const PersonalInformation = () => {
             }
         }
         try {
-            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { personalInformation });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { contactInformation });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
-                setPersonalInformation(personalInformation)
+                setContactInformation(contactInformation)
                 setEdit(false);
             }
         } catch (err) {
@@ -51,7 +51,7 @@ const PersonalInformation = () => {
     return (
         <div className='relative border'>
             <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!personalInformation && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!contactInformation && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>
                 <h3 className="text-xl text-center font-semibold">Personal Information</h3>
@@ -66,7 +66,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("email")}
-                                        value={personalInformation?.email}
+                                        value={session.user?.email}
                                         type="email"
                                         placeholder="Enter Your Email"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -79,7 +79,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("phoneNumber")}
-                                        defaultValue={personalInformation?.phoneNumber}
+                                        defaultValue={contactInformation?.phoneNumber}
                                         type="text"
                                         placeholder="Enter Your Phone Number"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -95,7 +95,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("linkedin")}
-                                        defaultValue={personalInformation?.socialLinks?.linkedin}
+                                        defaultValue={contactInformation?.socialLinks?.linkedin}
                                         type="text"
                                         placeholder="Enter Your linkedin account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -108,7 +108,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("github")}
-                                        defaultValue={personalInformation?.socialLinks?.github}
+                                        defaultValue={contactInformation?.socialLinks?.github}
                                         type="text"
                                         placeholder="Enter Your github account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -121,7 +121,7 @@ const PersonalInformation = () => {
                                     </label>
                                     <input
                                         {...register("portfolio")}
-                                        defaultValue={personalInformation?.socialLinks?.portfolio}
+                                        defaultValue={contactInformation?.socialLinks?.portfolio}
                                         type="text"
                                         placeholder="Enter Your portfolio account link"
                                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
@@ -142,27 +142,27 @@ const PersonalInformation = () => {
                         :
                         <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                             {
-                                personalInformation ? <>
+                                contactInformation ? <>
                                     <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                        <p><strong>Email:</strong> {personalInformation?.email}</p>
-                                        <p><strong>Phone Number:</strong> {personalInformation?.phoneNumber}</p>
+                                        <p><strong>Email:</strong> {contactInformation?.email}</p>
+                                        <p><strong>Phone Number:</strong> {contactInformation?.phoneNumber}</p>
                                         <div className="mt-4">
                                             <a
-                                                href={personalInformation?.socialLinks?.linkedin}
+                                                href={contactInformation?.socialLinks?.linkedin}
                                                 className="text-blue-500 hover:underline"
                                             >
                                                 LinkedIn
                                             </a>{" "}
                                             |{" "}
                                             <a
-                                                href={personalInformation?.socialLinks?.github}
+                                                href={contactInformation?.socialLinks?.github}
                                                 className="text-blue-500 hover:underline"
                                             >
                                                 GitHub
                                             </a>{" "}
                                             |{" "}
                                             <a
-                                                href={personalInformation?.socialLinks?.portfolio}
+                                                href={contactInformation?.socialLinks?.portfolio}
                                                 className="text-blue-500 hover:underline"
                                             >
                                                 Portfolio

@@ -15,16 +15,16 @@ const AboutUsPage = () => {
                     <Image
                         src="/images/img2.jpg"
                         alt="Our Mission"
-                        width={600} 
-                        height={400} 
+                        width={600}
+                        height={400}
                         className="w-3/4 rounded-lg shadow-xl"
                     />
                     {/* Second Image */}
                     <Image
                         src="/images/img1.jpg"
                         alt="Our Vision"
-                        width={600} 
-                        height={400} 
+                        width={600}
+                        height={400}
                         className="w-1/2 absolute right-5 top-1/3 rounded-lg border-8 border-white shadow-xl"
                     />
                 </div>
@@ -62,84 +62,76 @@ const AboutUsPage = () => {
                 </div>
             </div>
 
-           
+
             <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
-                <h2 className="text-4xl font-bold text-center text-gray-800">Meet the Team</h2>
+                <h2 className="text-4xl font-bold text-center text-gray-800">Our Team</h2>
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    
-                    <div className="text-center">
-                        <Image 
-                        src="/images/team1.jpg" 
-                        alt="Team Member 1"
-                        width={600} 
-                        height={400} 
-                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
-                        <h3 className="text-2xl font-semibold">Shafaet Hossain</h3>
-                        <p className="text-gray-600">Design & Analysis</p>
-                        <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
-                    </div>
 
                     <div className="text-center">
-                        <Image 
-                        src="/images/Tanvir.jpg"
-                        width={600} 
-                        height={400} 
-                        alt="Team Member 4" 
-                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image
+                            src={"https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg"}
+                            width={600}
+                            height={400}
+                            alt="Tanvir Ahamed"
+                            className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg" />
                         <h3 className="text-2xl font-semibold">Tanvir Ahamed</h3>
                         <p className="text-gray-600">Design & Analysis</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
 
                     <div className="text-center">
-                        <Image 
-                        src="/images/team4.jpg"
-                        width={600} 
-                        height={400}  
-                        alt="Team Member 4" 
-                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image
+                            src={"https://i.ibb.co.com/54M49Z0/Hasan.jpg"}
+                            width={600}
+                            height={400}
+                            alt="Hasan Al Mahmud"
+                            className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg" />
                         <h3 className="text-2xl font-semibold">Hasan Al Mahmud</h3>
                         <p className="text-gray-600">Backend Developer</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
-                 
+
                     <div className="text-center">
                         <Image
-                         src="/images/team2.jpg" 
-                         alt="Team Member 2"
-                         width={600} 
-                         height={400} 
-                         className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                            src={"https://i.ibb.co.com/FH7Yhb6/Rafizul.jpg"}
+                            alt="Rafizul Islam"
+                            width={600}
+                            height={400}
+                            className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg" />
+                        <h3 className="text-2xl font-semibold">Rafizul Islam</h3>
+                        <p className="text-gray-600">Frontend Developer</p>
+                        <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
+                    </div>
+
+
+                </div>
+
+                <div className="mt-8 mx-32 grid grid-cols-1 md:grid-cols-2 justify-around">
+                    <div className="text-center">
+                        <Image
+                            src={"https://i.ibb.co.com/gz7jjtF/Shamim.jpg"}
+                            alt="Md Shamim"
+                            width={600}
+                            height={400}
+                            className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg" />
                         <h3 className="text-2xl font-semibold">Md Shamim</h3>
                         <p className="text-gray-600">Backend Developer</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
-              
+
                     <div className="text-center">
-                        <Image 
-                        src="/images/team3.jpg"
-                        alt="Team Member 3"
-                        width={600} 
-                        height={400} 
-                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
+                        <Image
+                            src={"https://i.ibb.co.com/Ct6mM6L/Sahidul.jpg"}
+                            alt="MD Sahidul Islam"
+                            width={600}
+                            height={400}
+                            className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg" />
 
                         <h3 className="text-2xl font-semibold">MD Sahidul Islam</h3>
                         <p className="text-gray-600">Frontend Developer</p>
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
 
-                 
-                    <div className="text-center">
-                        <Image 
-                        src="/images/team6.jpg" 
-                        alt="Team Member 4"
-                        width={600} 
-                        height={400} 
-                        className="w-32 h-32 rounded-full mx-auto mb-4 shadow-lg"/>
-                        <h3 className="text-2xl font-semibold">Rafizul Islam Rafiz</h3>
-                        <p className="text-gray-600">Frontend Developer</p>
-                        <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
-                    </div>
                 </div>
             </div>
 
@@ -164,7 +156,7 @@ const AboutUsPage = () => {
             <FAQ></FAQ>
 
             <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
-              <ContactUs/>
+                <ContactUs />
             </div>
         </div>
     );

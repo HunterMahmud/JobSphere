@@ -45,7 +45,7 @@ const Education = () => {
         e.preventDefault()
         console.log(education)
         try {
-            const { data } = await axios.put(`http://localhost:3000/profile/api/${session.user.email}`, { education });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { education });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setEdit(false)
