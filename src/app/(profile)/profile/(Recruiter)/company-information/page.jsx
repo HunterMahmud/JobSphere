@@ -388,22 +388,25 @@ const CompanyInformation = () => {
                             {
                                 companyInfo ? <>
                                     <div className='border rounded-full'>
-                                        <Image
-                                            className='h-[200px] w-[200px] object-cover rounded-full'
-                                            src={companyInfo?.logo}
-                                            alt="ProfileImg"
-                                            width={200}
-                                            height={200}
-                                        />
+                                        {
+                                            companyInfo?.logo &&
+                                            <Image
+                                                className='h-[200px] w-[200px] object-cover rounded-full'
+                                                src={companyInfo?.logo}
+                                                alt="ProfileImg"
+                                                width={200}
+                                                height={200}
+                                            />
+                                        }
                                     </div>
                                     <div>
-                                        <h3 className="text-2xl font-bold">{companyInfo?.companyName}</h3>
-                                        <p className='text-center'>{companyInfo?.companyMission}</p>
+                                        {companyInfo?.companyName && <h3 className="text-2xl font-bold">{companyInfo?.companyName}</h3>}
+                                        {companyInfo?.companyMission && <p className='text-center'>{companyInfo?.companyMission}</p>}
                                     </div>
                                     <div className="mb-2">
-                                        <p><strong>Company Type:</strong> {companyInfo?.companyType}</p>
-                                        <p><strong>Address:</strong> {companyInfo?.address}, {companyInfo?.city}, {companyInfo?.country}</p>
-                                        <p><strong>Founded Year:</strong> {companyInfo?.foundedYear}</p>
+                                        {companyInfo?.companyType && <p><strong>Company Type:</strong> {companyInfo?.companyType}</p>}
+                                        {companyInfo?.address && <p><strong>Address:</strong> {companyInfo?.address}, {companyInfo?.city}, {companyInfo?.country}</p>}
+                                        {companyInfo?.foundedYear && <p><strong>Founded Year:</strong> {companyInfo?.foundedYear}</p>}
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
                             }
