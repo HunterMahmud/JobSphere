@@ -276,7 +276,7 @@ const RegisterRecruiter = () => {
       websiteURL,
       businessDescription,
     } = data;
-
+    
     const formData = new FormData();
     formData.append("image", image[0]);
 
