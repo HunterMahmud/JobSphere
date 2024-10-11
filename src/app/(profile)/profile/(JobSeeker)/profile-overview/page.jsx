@@ -392,7 +392,7 @@ const ProfileOverview = () => {
                                 profileOverview ? <><div className='border rounded-full'>
                                     <Image
                                         className='h-[200px] w-[200px] object-cover rounded-full'
-                                        src={profileOverview?.profilePicture || loggedInUser?.userIMG}
+                                        src={profileOverview?.profilePicture || loggedInUser?.userIMG || 'https://i.ibb.co/3BY9Fks/profile.png'}
                                         alt="ProfileImg"
                                         width={200}
                                         height={200}
@@ -400,10 +400,10 @@ const ProfileOverview = () => {
                                 </div>
                                     <div className='space-y-1 mt-5'>
                                         <p><strong>Full Name:</strong> {profileOverview?.fullName}</p>
-                                        <p><strong>Address:</strong> {profileOverview?.address}, {profileOverview?.city}, {ProfileOverview?.country}</p>
-                                        <p><strong>Looking for a Job?</strong> {profileOverview?.wantJob}</p>
-                                        <p><strong>Preferred Job Position:</strong> {profileOverview?.preferredJobPosition}</p>
-                                        <p><strong>Preferred Job Type:</strong> {profileOverview?.preferredJobType}</p>
+                                        {profileOverview?.address && <p><strong>Address:</strong> {profileOverview?.address}, {profileOverview?.city}, {ProfileOverview?.country}</p>}
+                                        {profileOverview?.wantJob && <p><strong>Looking for a Job?</strong> {profileOverview?.wantJob}</p>}
+                                        {profileOverview?.preferredJobPosition && <p><strong>Preferred Job Position:</strong> {profileOverview?.preferredJobPosition}</p>}
+                                        {profileOverview?.preferredJobType && <p><strong>Preferred Job Type:</strong> {profileOverview?.preferredJobType}</p>}
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
                             }
