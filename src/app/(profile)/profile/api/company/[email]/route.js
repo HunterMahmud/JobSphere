@@ -2,9 +2,9 @@ import { connectDB } from "@/lib/connectDB"
 
 export const GET = async (request, { params }) => {
     const db = await connectDB();
-    const seekerInfoCollection = db.collection('seekerInfo');
+    const companyInfoCollection = db.collection('companyInfo');
     try {
-        const res = await seekerInfoCollection.findOne({ 'contactInformation.email': params.email });
+        const res = await companyInfoCollection.findOne({ 'contactInformation.email': params.email });
         return Response.json(res);
     } catch (err) {
         console.log(err)
@@ -14,11 +14,11 @@ export const GET = async (request, { params }) => {
 
 export const PUT = async (request, { params }) => {
     const db = await connectDB();
-    const seekerInfoCollection = db.collection('seekerInfo');
+    const companyInfoCollection = db.collection('companyInfo');
     const updateDoc = await request.json();
     console.log(updateDoc)
     try {
-        const res = await seekerInfoCollection.updateOne(
+        const res = await companyInfoCollection.updateOne(
             { 'contactInformation.email': params.email },
             {
                 $set: {

@@ -4,34 +4,23 @@ import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useForm } from "react-hook-form";
 import { useSession } from 'next-auth/react';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import NoInformation from '@/components/shared/NoInformation';
+import useCompanyInfo from '@/components/Hooks/useCompanyInfo';
 
-const profile = {
-    contact: {
-        phone: "+1 234 567 890",
-        email: "contact@techsolutions.com",
-        website: "https://www.techsolutions.com",
-        socialLinks: {
-            linkedin: "https://www.linkedin.com/company/techsolutions",
-            twitter: "https://twitter.com/techsolutions"
-        }
-    }
-}
 
 const ContactInformation = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const {companyInfo} = useCompanyInfo();
     const [edit, setEdit] = useState(false)
     const { register, handleSubmit } = useForm();
-    const [contactInformation, setContactInformation] = useState(profileInfo?.contactInformation);
+    const [contactInformation, setContactInformation] = useState(companyInfo?.contactInformation);
     useEffect(() => {
-        if (profileInfo?.contactInformation) {
-            setContactInformation(profileInfo?.contactInformation)
+        if (companyInfo?.contactInformation) {
+            setContactInformation(companyInfo?.contactInformation)
         }
-    }, [profileInfo])
+    }, [companyInfo])
 
     const handleSave = async (data) => {
         const { email, phone, linkedin, twitter, website } = data;
@@ -45,7 +34,7 @@ const ContactInformation = () => {
             }
         }
         try {
-            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { contactInformation });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${session.user.email}`, { contactInformation });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setContactInformation(contactInformation)

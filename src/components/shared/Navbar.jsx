@@ -15,8 +15,6 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { FaRegUser } from "react-icons/fa";
-import { MdWorkOutline } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -131,7 +129,7 @@ const Navbar = () => {
                         src={
                           session?.status === "authenticated" &&
                           loggedInUser?.userIMG
-                            ? loggedInUser.userIMG
+                            ? loggedInUser?.userIMG
                             : "https://i.ibb.co/3BY9Fks/profile.png"
                         }
                         className="rounded-full"

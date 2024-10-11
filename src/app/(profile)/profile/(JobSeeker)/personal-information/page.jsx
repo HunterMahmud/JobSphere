@@ -3,22 +3,22 @@ import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useForm } from "react-hook-form";
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const PersonalInformation = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const {seekerInfo} = useSeekerInfo();
     const [edit, setEdit] = useState(false)
-    const [contactInformation, setContactInformation] = useState(profileInfo?.contactInformation)
+    const [contactInformation, setContactInformation] = useState(seekerInfo?.contactInformation)
     useEffect(() => {
-        if (profileInfo?.contactInformation) {
-            setContactInformation(profileInfo?.contactInformation)
+        if (seekerInfo?.contactInformation) {
+            setContactInformation(seekerInfo?.contactInformation)
         }
-    }, [profileInfo])
+    }, [seekerInfo])
 
     const {
         register,

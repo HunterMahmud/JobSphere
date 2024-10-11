@@ -59,6 +59,18 @@ const RegisterUser = () => {
       );
       if (result?.status === 200) {
         toast.success("User created successfully");
+
+        const seekerInformation = {
+          contactInformation: {
+            email,
+            phoneNumber: mobileNumber
+          },
+          profileOverview: {
+            fullName: name,
+            profilePicture: data?.data?.display_url,
+          }
+        }
+        await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${email}`, { ...seekerInformation });
         reset();
         router.push(router?.query?.redirect || "/");
       }
@@ -81,9 +93,8 @@ const RegisterUser = () => {
           <a
             rel="noopener noreferrer"
             href="/register-user"
-            className={`${
-              pathName === "/register-user" && "border-b-primary"
-            } flex items-center flex-shrink-0 px-5 py-2 border-b-4  dark:text-gray-600`}
+            className={`${pathName === "/register-user" && "border-b-primary"
+              } flex items-center flex-shrink-0 px-5 py-2 border-b-4  dark:text-gray-600`}
           >
             Job Seeker
           </a>
