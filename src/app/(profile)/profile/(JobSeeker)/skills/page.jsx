@@ -3,27 +3,27 @@ import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { CgMoveRight } from 'react-icons/cg';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import '@pathofdev/react-tag-input/build/index.css'; // Import styles for ReactTagInput
 import ReactTagInput from '@pathofdev/react-tag-input';
 import { useSession } from 'next-auth/react';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const Skills = () => {
     const { data: session } = useSession();
     const [edit, setEdit] = useState(false);
-    const { profileInfo } = useProfileInfo();
+    const {seekerInfo} = useSeekerInfo();
 
     // Initialize technical and soft skills with fallback values to avoid undefined errors
-    const [skills, setSkills] = useState(profileInfo?.skills || { technicalSkills: [], softSkills: [] });
-    // Use useEffect to update the state when profileInfo changes
+    const [skills, setSkills] = useState(seekerInfo?.skills || { technicalSkills: [], softSkills: [] });
+    // Use useEffect to update the state when seekerInfo changes
     useEffect(() => {
-        if (profileInfo?.skills) {
-            setSkills(profileInfo?.skills);
+        if (seekerInfo?.skills) {
+            setSkills(seekerInfo?.skills);
         }
-    }, [profileInfo]);
+    }, [seekerInfo]);
 
     // Handle technical skill changes
     const handleTechnicalSkillsChange = (newSkills) => {

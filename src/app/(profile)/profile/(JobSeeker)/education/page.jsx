@@ -5,21 +5,21 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { IoMdAdd } from 'react-icons/io';
 import { MdDeleteOutline } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const Education = () => {
     const { data: session } = useSession();
     const [edit, setEdit] = useState(false);
-    const { profileInfo } = useProfileInfo();
-    const [education, setEducation] = useState(profileInfo?.education);
+    const {seekerInfo} = useSeekerInfo();
+    const [education, setEducation] = useState(seekerInfo?.education);
     useEffect(() => {
-        if (profileInfo?.education) {
-            setEducation(profileInfo?.education);
+        if (seekerInfo?.education) {
+            setEducation(seekerInfo?.education);
         }   
-    }, [profileInfo]);
+    }, [seekerInfo]);
 
     const handleAddEducation = () => {
         if (education) {

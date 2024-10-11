@@ -6,9 +6,9 @@ import { IoCloseSharp } from 'react-icons/io5';
 import toast from 'react-hot-toast';
 import Select from "react-select";
 import { useSession } from 'next-auth/react';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import NoInformation from '@/components/shared/NoInformation';
+import useCompanyInfo from '@/components/Hooks/useCompanyInfo';
 
 
 const countryOptions = [
@@ -213,16 +213,16 @@ const countryOptions = [
 
 const CompanyInformation = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const { companyInfo: companyInformation } = useCompanyInfo();
     const [edit, setEdit] = useState(false);
-    const [companyInfo, setCompanyInfo] = useState(profileInfo?.companyInfo)
+    const [companyInfo, setCompanyInfo] = useState(companyInformation?.companyInfo)
     const [country, setCountry] = useState(companyInfo?.country);
     useEffect(() => {
-        if (profileInfo?.companyInfo) {
-            setCompanyInfo(profileInfo?.companyInfo)
-            setCountry(profileInfo?.companyInfo?.country)
+        if (companyInformation?.companyInfo) {
+            setCompanyInfo(companyInformation?.companyInfo)
+            setCountry(companyInformation?.companyInfo?.country)
         }
-    }, [profileInfo])
+    }, [companyInformation])
     console.log(country)
     const handleSave = async (e) => {
         e.preventDefault();
@@ -247,7 +247,7 @@ const CompanyInformation = () => {
         }
 
         try {
-            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { companyInfo });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${session.user.email}`, { companyInfo });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setCompanyInfo(companyInfo)
@@ -260,7 +260,7 @@ const CompanyInformation = () => {
 
     return (
         <div className='relative'>
-           <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
                 {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!companyInfo && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
             </button>
             <div>

@@ -5,38 +5,23 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { CgMoveRight } from 'react-icons/cg';
 import { IoMdAdd } from 'react-icons/io';
 import { MdDeleteOutline } from 'react-icons/md';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import NoInformation from '@/components/shared/NoInformation';
-
-const profile = {
-    "certifications": [
-        {
-            "certificationName": "Google Cloud Certified",
-            "issuingOrganization": "Google",
-            "year": 2023
-        },
-        {
-            "certificationName": "React.js Advanced Course",
-            "issuingOrganization": "Udemy",
-            "year": 2022
-        }
-    ],
-}
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const Certifications = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const {seekerInfo} = useSeekerInfo();
     const [edit, setEdit] = useState(false);
-    const [certifications, setCertifications] = useState(profileInfo?.certifications);
+    const [certifications, setCertifications] = useState(seekerInfo?.certifications);
 
     useEffect(() => {
-        if (profileInfo?.certifications) {
-            setCertifications(profileInfo?.certifications)
+        if (seekerInfo?.certifications) {
+            setCertifications(seekerInfo?.certifications)
         }
-    }, [profileInfo])
+    }, [seekerInfo])
 
     const handleAddCertification = () => {
         if (certifications) {

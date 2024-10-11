@@ -4,21 +4,22 @@ import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const CareerObjective = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const {seekerInfo} = useSeekerInfo();
     const [edit, setEdit] = React.useState(false);
-    const [careerObjective, setCareerObjective] = useState(profileInfo?.careerObjective || '')
+    const [careerObjective, setCareerObjective] = useState(seekerInfo?.careerObjective || '')
     useEffect(() => {
-        if (profileInfo?.careerObjective) {
-            setCareerObjective(profileInfo?.careerObjective)
+        if (seekerInfo?.careerObjective) {
+            setCareerObjective(seekerInfo?.careerObjective)
         }
-    }, [profileInfo])
+    }, [seekerInfo])
+
     const {
         register,
         handleSubmit,

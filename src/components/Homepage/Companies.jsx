@@ -30,7 +30,7 @@ const Companies = () => {
             <Marquee>
                 <div className='grid grid-rows-3 grid-flow-col gap-4'>
                     {
-                        companiesName.map(Name => <div className='min-w-72' key={Name._id}><h1 className='bg-blue-100 px-2 ml-5 py-3 rounded-2xl border-2 border-blue-800 text-center text-xl font-semibold text-slate-800 ' >{Name?.companyDetails?.companyName}</h1></div>)
+                        companiesName?.map(Name => <div className='min-w-72' key={Name._id}><h1 className='bg-blue-100 px-2 ml-5 py-3 rounded-2xl border-2 border-blue-800 text-center text-xl font-semibold text-slate-800 ' >{Name?.companyDetails?.companyName}</h1></div>)
                     }  </div>
             </Marquee>
         </div>
