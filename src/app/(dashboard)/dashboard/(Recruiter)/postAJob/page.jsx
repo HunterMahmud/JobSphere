@@ -24,7 +24,8 @@ const JobForm = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const jobData = { ...data, applicantsNumber:0, email: session?.data?.user?.email };
+    const jobData = { ...data, applicantsNumber:0, email: session?.data?.user?.email, postedDate: new Date() };
+  
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/postAJob/api`,
