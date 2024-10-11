@@ -257,6 +257,7 @@ const ProfileOverview = () => {
                 toast.success("Updated Successful");
                 setProfileOverview(profileOverview)
                 setEdit(false);
+                await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/register/${session.user.email}`, { userIMG: data?.data?.display_url });
             }
         } catch (err) {
             console.log(err?.message);
