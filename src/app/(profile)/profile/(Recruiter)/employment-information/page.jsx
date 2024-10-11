@@ -11,7 +11,7 @@ import useCompanyInfo from '@/components/Hooks/useCompanyInfo';
 
 const EmploymentInformation = () => {
     const { data: session } = useSession();
-    const {companyInfo} = useCompanyInfo();
+    const { companyInfo } = useCompanyInfo();
     const [edit, setEdit] = useState(false);
     const [employmentInfo, setEmploymentInfo] = useState(companyInfo?.employmentInfo);
 
@@ -103,8 +103,8 @@ const EmploymentInformation = () => {
                             {
                                 employmentInfo ? <>
                                     <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                        <p><strong>Company Size:</strong> {employmentInfo?.companySize}</p>
-                                        <p><strong>Types of Jobs:</strong> {employmentInfo?.typesOfJobs}</p>
+                                        {employmentInfo?.companySize && <p><strong>Company Size:</strong> {employmentInfo?.companySize}</p>}
+                                        {employmentInfo?.typesOfJobs && <p><strong>Types of Jobs:</strong> {employmentInfo?.typesOfJobs}</p>}
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
                             }

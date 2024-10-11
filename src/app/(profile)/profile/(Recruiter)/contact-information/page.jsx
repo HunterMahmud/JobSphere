@@ -12,7 +12,7 @@ import useCompanyInfo from '@/components/Hooks/useCompanyInfo';
 
 const ContactInformation = () => {
     const { data: session } = useSession();
-    const {companyInfo} = useCompanyInfo();
+    const { companyInfo } = useCompanyInfo();
     const [edit, setEdit] = useState(false)
     const { register, handleSubmit } = useForm();
     const [contactInformation, setContactInformation] = useState(companyInfo?.contactInformation);
@@ -140,21 +140,23 @@ const ContactInformation = () => {
                             {
                                 contactInformation ? <>
                                     <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                        <p><strong>Phone:</strong> {contactInformation?.phone}</p>
-                                        <p><strong>Email:</strong> {contactInformation?.email}</p>
-                                        <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>
-                                        <div className="mt-2 flex gap-5">
-                                            <strong>Social Links:</strong>
-                                            <p className='flex gap-5'>
-                                                <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>
-                                                ||
-                                                <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>
-                                            </p>
-                                        </div>
+                                        {contactInformation?.phone && <p><strong>Phone:</strong> {contactInformation?.phone}</p>}
+                                        {contactInformation?.email && <p><strong>Email:</strong> {contactInformation?.email}</p>}
+                                        {contactInformation?.website && <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>}
+                                        {
+                                            contactInformation?.socialLinks &&
+                                            <div className="mt-2 flex gap-5">
+                                                <strong>Social Links:</strong>
+                                                <p className='flex gap-5'>
+                                                    {contactInformation?.socialLinks?.linkedin && <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>}
+                                                    ||
+                                                    {contactInformation?.socialLinks?.twitter && <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>}
+                                                </p>
+                                            </div>
+                                        }
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
                             }
-
                         </div>
                 }
             </div>

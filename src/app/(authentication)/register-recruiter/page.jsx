@@ -65,17 +65,17 @@ const RegisterRecruiter = () => {
       if (result.status === 200) {
         toast.success("User created successfully");
 
-        const companyInformation = {
-          companyInfo: {
-            companyName: fullName,
-            logo: data?.data?.display_url,
-          },
-          contactInformation: {
-            email
-          }
-        }
+        // const companyInformation = {
+        //   companyInfo: {
+        //     companyName: '',
+        //     logo: '',
+        //   },
+        //   contactInformation: {
+        //     email:''
+        //   }
+        // }
         
-        await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${email}`, { ...companyInformation });
+        // await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${email}`, { ...companyInformation });
 
         reset();
         router.push("/");

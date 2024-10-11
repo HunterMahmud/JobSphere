@@ -11,7 +11,7 @@ import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const PersonalInformation = () => {
     const { data: session } = useSession();
-    const {seekerInfo} = useSeekerInfo();
+    const { seekerInfo } = useSeekerInfo();
     const [edit, setEdit] = useState(false)
     const [contactInformation, setContactInformation] = useState(seekerInfo?.contactInformation)
     useEffect(() => {
@@ -36,6 +36,7 @@ const PersonalInformation = () => {
                 portfolio
             }
         }
+
         try {
             const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { contactInformation });
             if (data?.modifiedCount > 0) {
@@ -145,28 +146,36 @@ const PersonalInformation = () => {
                                 contactInformation ? <>
                                     <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                                         <p><strong>Email:</strong> {contactInformation?.email}</p>
-                                        <p><strong>Phone Number:</strong> {contactInformation?.phoneNumber}</p>
+                                        {contactInformation?.phoneNumber && <p><strong>Phone Number:</strong> {contactInformation?.phoneNumber}</p>}
                                         <div className="mt-4">
-                                            <a
-                                                href={contactInformation?.socialLinks?.linkedin}
-                                                className="text-blue-500 hover:underline"
-                                            >
-                                                LinkedIn
-                                            </a>{" "}
+                                            {contactInformation?.socialLinks?.linkedin &&
+                                                <a
+                                                    href={contactInformation?.socialLinks?.linkedin}
+                                                    className="text-blue-500 hover:underline"
+                                                >
+                                                    LinkedIn
+                                                </a>
+                                            }
+                                            {" "}
                                             |{" "}
-                                            <a
-                                                href={contactInformation?.socialLinks?.github}
-                                                className="text-blue-500 hover:underline"
-                                            >
-                                                GitHub
-                                            </a>{" "}
+                                            {contactInformation?.socialLinks?.github &&
+                                                <a
+                                                    href={contactInformation?.socialLinks?.github}
+                                                    className="text-blue-500 hover:underline"
+                                                >
+                                                    GitHub
+                                                </a>
+                                            }{" "}
                                             |{" "}
-                                            <a
-                                                href={contactInformation?.socialLinks?.portfolio}
-                                                className="text-blue-500 hover:underline"
-                                            >
-                                                Portfolio
-                                            </a>
+
+                                            {contactInformation?.socialLinks?.portfolio &&
+                                                <a
+                                                    href={contactInformation?.socialLinks?.portfolio}
+                                                    className="text-blue-500 hover:underline"
+                                                >
+                                                    Portfolio
+                                                </a>
+                                            }
                                         </div>
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
