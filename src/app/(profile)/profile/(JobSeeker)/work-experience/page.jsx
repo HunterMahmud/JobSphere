@@ -5,22 +5,22 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { IoMdAdd } from 'react-icons/io';
 import { MdDeleteOutline } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const WorkExperience = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const {seekerInfo} = useSeekerInfo();
     const [edit, setEdit] = useState(false);
-    const [workExperience, setWorkExperience] = useState(profileInfo?.workExperience);
+    const [workExperience, setWorkExperience] = useState(seekerInfo?.workExperience);
     console.log(workExperience)
     useEffect(() => {
-        if (profileInfo?.workExperience) {
-            setWorkExperience(profileInfo?.workExperience)
+        if (seekerInfo?.workExperience) {
+            setWorkExperience(seekerInfo?.workExperience)
         }
-    }, [profileInfo])
+    }, [seekerInfo])
 
     const handleAddWorkExperience = () => {
         if (workExperience) {
