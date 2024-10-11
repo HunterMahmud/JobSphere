@@ -4,24 +4,24 @@ import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { IoMdAdd } from 'react-icons/io';
 import { MdDeleteOutline } from 'react-icons/md';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const Projects = () => {
     const { data: session } = useSession();
     const [edit, setEdit] = useState(false);
-    const { profileInfo } = useProfileInfo();
+    const {seekerInfo} = useSeekerInfo();
     // State for projects and activities
-    const [projects, setProjects] = useState(profileInfo?.projects);
-    // Use useEffect to update the state when profileInfo changes
+    const [projects, setProjects] = useState(seekerInfo?.projects);
+    // Use useEffect to update the state when seekerInfo changes
     useEffect(() => {
-        if (profileInfo?.projects) {
-            setProjects(profileInfo.projects);
+        if (seekerInfo?.projects) {
+            setProjects(seekerInfo.projects);
         }
-    }, [profileInfo]);
+    }, [seekerInfo]);
     // Handle project change
     const handleProjectChange = (index, field, value) => {
         const newProjects = [...projects];

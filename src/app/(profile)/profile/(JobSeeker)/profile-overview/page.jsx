@@ -6,10 +6,10 @@ import { IoCloseSharp } from 'react-icons/io5';
 import Select from "react-select";
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import useRole from '@/components/Hooks/useRole';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import { useSession } from 'next-auth/react';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
+import useRole from '@/components/Hooks/useRole';
 
 const countryOptions = [
     { value: "Afghanistan", label: "Afghanistan" },
@@ -213,14 +213,16 @@ const countryOptions = [
 const ProfileOverview = () => {
     const { data: session } = useSession();
     const [edit, setEdit] = useState(false);
-    const { profileInfo } = useProfileInfo();
+    const { seekerInfo } = useSeekerInfo();
     const [country, setCountry] = useState('');
-    const [profileOverview, setProfileOverview] = useState(profileInfo?.profileOverview)
+    const [profileOverview, setProfileOverview] = useState(seekerInfo?.profileOverview);
+    const { loggedInUser } = useRole();
+
     useEffect(() => {
-        if (profileInfo?.profileOverview) {
-            setProfileOverview(profileInfo?.profileOverview)
+        if (seekerInfo?.profileOverview) {
+            setProfileOverview(seekerInfo?.profileOverview)
         }
-    }, [profileInfo])
+    }, [seekerInfo])
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -241,9 +243,9 @@ const ProfileOverview = () => {
             ) : '';
             const profileOverview = {
                 fullName,
-                profilePicture: profilePicture ? data?.data?.display_url : profileInfo?.profileOverview?.profilePicture,
+                profilePicture: profilePicture ? data?.data?.display_url : loggedInUser?.userIMG, // seekerInfo?.profileOverview?.profilePicture
                 address,
-                country: country ? country : profileInfo?.profileOverview?.country,
+                country: country ? country : seekerInfo?.profileOverview?.country,
                 city,
                 wantJob,
                 preferredJobPosition,
@@ -255,6 +257,7 @@ const ProfileOverview = () => {
                 toast.success("Updated Successful");
                 setProfileOverview(profileOverview)
                 setEdit(false);
+                await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/register/${session.user.email}`, { userIMG: data?.data?.display_url });
             }
         } catch (err) {
             console.log(err?.message);
@@ -389,7 +392,7 @@ const ProfileOverview = () => {
                                 profileOverview ? <><div className='border rounded-full'>
                                     <Image
                                         className='h-[200px] w-[200px] object-cover rounded-full'
-                                        src={profileOverview?.profilePicture}
+                                        src={profileOverview?.profilePicture || loggedInUser?.userIMG}
                                         alt="ProfileImg"
                                         width={200}
                                         height={200}

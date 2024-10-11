@@ -18,10 +18,6 @@ export const POST = async (request) => {
     if (newUser?.role === "seeker") {
       //check the user is already exists or not
       const isExist = await userCollection.findOne({ email: newUser?.email });
-      const isExistRecruiter = await recruiterCollection.findOne({ email: newUser?.email });
-      if(isExistRecruiter){
-        return NextResponse.json({message: 'User Exists as a recruiter'}, {status: 409})
-      }
 
       if (isExist) {
         return NextResponse.json({ message: "User Exists" }, { status: 409 });
@@ -33,10 +29,7 @@ export const POST = async (request) => {
     } else if (newUser?.role === "recruiter") {
       //check the recruiter is already exists or not
       const isExist = await recruiterCollection.findOne({email: newUser?.email});
-      const isExistUser = await userCollection.findOne({ email: newUser?.email });
-      if(isExistUser){
-        return NextResponse.json({message: 'User Exists as a job seeker'}, {status: 409})
-      }
+
       if (isExist) {
         return NextResponse.json({ message: "User Exists" }, { status: 409 });
       }

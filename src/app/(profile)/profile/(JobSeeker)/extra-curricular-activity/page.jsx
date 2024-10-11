@@ -5,22 +5,22 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 import { useSession } from 'next-auth/react';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import NoInformation from '@/components/shared/NoInformation';
+import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const ExtraCurricularActivity = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const {seekerInfo} = useSeekerInfo();
     const [edit, setEdit] = useState(false);
-    const [extraCurricularActivities, setExtraCurricularActivities] = useState(profileInfo?.extraCurricularActivities);
+    const [extraCurricularActivities, setExtraCurricularActivities] = useState(seekerInfo?.extraCurricularActivities);
 
     useEffect(() => {
-        if (profileInfo?.extraCurricularActivities) {
-            setExtraCurricularActivities(profileInfo?.extraCurricularActivities)
+        if (seekerInfo?.extraCurricularActivities) {
+            setExtraCurricularActivities(seekerInfo?.extraCurricularActivities)
         }
-    }, [profileInfo])
+    }, [seekerInfo])
 
     // Add a new activity
     const addActivity = () => {

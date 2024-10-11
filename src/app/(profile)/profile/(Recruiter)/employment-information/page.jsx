@@ -4,22 +4,22 @@ import { FaRegEdit } from 'react-icons/fa';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useForm } from "react-hook-form";
 import { useSession } from 'next-auth/react';
-import useProfileInfo from '@/components/Hooks/useProfileInfo';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import NoInformation from '@/components/shared/NoInformation';
+import useCompanyInfo from '@/components/Hooks/useCompanyInfo';
 
 const EmploymentInformation = () => {
     const { data: session } = useSession();
-    const { profileInfo } = useProfileInfo();
+    const {companyInfo} = useCompanyInfo();
     const [edit, setEdit] = useState(false);
-    const [employmentInfo, setEmploymentInfo] = useState(profileInfo?.employmentInfo);
+    const [employmentInfo, setEmploymentInfo] = useState(companyInfo?.employmentInfo);
 
     useEffect(() => {
-        if (profileInfo?.employmentInfo) {
-            setEmploymentInfo(profileInfo?.employmentInfo)
+        if (companyInfo?.employmentInfo) {
+            setEmploymentInfo(companyInfo?.employmentInfo)
         }
-    }, [profileInfo])
+    }, [companyInfo])
 
     const {
         register,
@@ -36,7 +36,7 @@ const EmploymentInformation = () => {
 
         try {
             console.log(employmentInfo)
-            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { employmentInfo });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${session.user.email}`, { employmentInfo });
             if (data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setEmploymentInfo(employmentInfo)
