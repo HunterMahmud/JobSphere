@@ -24,7 +24,7 @@ const JobForm = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const jobData = { ...data, email: session?.data?.user?.email };
+    const jobData = { ...data, applicantsNumber:0, email: session?.data?.user?.email };
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/postAJob/api`,
@@ -34,8 +34,8 @@ const JobForm = () => {
       toast.success("Job successfully posted!");
       reset(); // Clear form fields after submission
     } catch (error) {
-      // console.error(error);
-      toast.error("Error posting a job.");
+      // console.log(error);
+      toast.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
