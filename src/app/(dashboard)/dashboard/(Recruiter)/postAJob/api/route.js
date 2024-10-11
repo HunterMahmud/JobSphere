@@ -4,7 +4,7 @@ export const POST = async (request) => {
   const newJobs = await request.json();
 
   const db = await connectDB();
-  const postAJobCollection = db.collection("addedJobs");
+  const jobsCollection = db.collection("jobs");
   const companyCollection = db.collection("companyInfo");
 
   try {
@@ -14,7 +14,7 @@ export const POST = async (request) => {
     if(!result?.companyInfo?.companyName || !result?.companyInfo?.address || !result?.contactInformation?.phone){
       return Response.json({message: 'Update company info'}, {status: 404})
     }
-    const res = await postAJobCollection.insertOne({...newJobs, compnayInforamtion: result});
+    const res = await jobsCollection.insertOne({...newJobs, compnayInforamtion: result});
     return Response.json({ message: "job posted successfully",res }, { status: 200 });
   } catch (error) {
     return Response.json({ message: "Something Went Wrong" }, { status: 400 });
