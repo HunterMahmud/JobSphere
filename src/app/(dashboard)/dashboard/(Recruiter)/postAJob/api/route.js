@@ -2,7 +2,7 @@ import { connectDB } from "@/lib/connectDB";
 
 export const POST = async (request) => {
   const newJobs = await request.json();
-  console.log(newJobs);
+
   const db = await connectDB();
   const postAJobCollection = db.collection("addedJobs");
   const companyCollection = db.collection("companyInfo");
@@ -10,7 +10,7 @@ export const POST = async (request) => {
   try {
     const result = await companyCollection.findOne({'contactInformation.email':newJobs?.email})
 
-    // console.log(result);
+
     if(!result?.companyInfo?.companyName || !result?.companyInfo?.address || !result?.contactInformation?.phone){
       return Response.json({message: 'Update company info'}, {status: 404})
     }

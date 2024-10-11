@@ -34,8 +34,8 @@ const JobForm = () => {
       toast.success("Job successfully posted!");
       reset(); // Clear form fields after submission
     } catch (error) {
-      // console.error(error);
-      toast.error("Error posting a job.");
+      // console.log(error);
+      toast.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
