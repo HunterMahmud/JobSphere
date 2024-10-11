@@ -52,7 +52,6 @@ const Navbar = () => {
   const pathName = usePathname();
   const session = useSession();
   const { loggedInUser } = useRole();
-  console.log("logged in user in navbar: ", loggedInUser)
 
   if (pathName.includes("dashboard")) return;
 
