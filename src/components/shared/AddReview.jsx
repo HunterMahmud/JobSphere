@@ -100,6 +100,21 @@ const AddReview = () => {
                                     required
                                 />
                             </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="company name">
+                                    Rate Us
+                                </label>
+                                <input
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="ratings"
+                                    type="ratings"
+                                    name="ratings"
+                                    placeholder="Enter your ratings"
+                                    value={formData.ratings}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
 
                             <div className="mb-6">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="message">
