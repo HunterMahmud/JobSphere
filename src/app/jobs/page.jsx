@@ -3,24 +3,29 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import JobCard from "@/components/Jobs/JobCard";
 import { FaSearch } from "react-icons/fa";
+import Loader from "../loading";
 const JobPage = () => {
   const [jobs, setJobs] = useState([]); // Initialize as an array
-  const [error, setError] = useState(null);
+  const [search , setSearch]= useState("")
+  const [loading , setLoading]=useState(true)
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api`);
         setJobs(data.jobs);
+        setLoading(false)
       } catch (error) {
         console.error("Error fetching data: ", error);
+        setLoading(false)
         setError("Failed to fetch jobs");
       }
     };
 
     fetchJobs();
   }, []);
-
+ console.log(search);
+ 
   return (
     <div className="container mx-auto my-12">
       <h1 className="text-3xl font-bold text-center mb-8 underline underline-offset-2">Jobs</h1>
@@ -31,15 +36,14 @@ const JobPage = () => {
         <input
           type="text"
           className="w-[300px] p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
-          placeholder="Search with Skill or Types"
-          value={""}
-          onChange={(e) => setJobTitle(e.target.value)}
+          placeholder="Search with jOB title"
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
       {/* Job Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {Array.isArray(jobs) && jobs.length > 0 ? (
+        { loading?<div className=" md:grid-cols-2 lg:col-span-3"><Loader/></div>: Array.isArray(jobs) && jobs.length > 0 ? (
           jobs.map((job, index) => <JobCard key={index} job={job} />)
         ) : (
           <p className="text-center">No jobs found</p>
