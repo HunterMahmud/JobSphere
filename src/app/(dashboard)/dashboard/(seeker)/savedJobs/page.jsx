@@ -2,19 +2,21 @@
 import Loader from '@/app/loading';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 const JobListTable = () => {
     const [selectedRole, setSelectedRole] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedType, setSelectedType] = useState('');
     const [loading, setLoading] = useState(true)
+    const session = useSession();
     const [jobData, setJobData] = useState([])
 
 
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getSaveJobs`);
+                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getSaveJobs/${session?.data?.user?.email}`);
                 setJobData(data.jobs);
                 setLoading(false)
             } catch (error) {
@@ -29,7 +31,7 @@ const JobListTable = () => {
         return <Loader />
     }
  
-
+console.log(jobData)
 
     return (
         <div className="max-w-7xl mx-auto py-8 px-4">
