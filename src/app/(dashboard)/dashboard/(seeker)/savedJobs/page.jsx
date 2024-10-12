@@ -2,19 +2,21 @@
 import Loader from '@/app/loading';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 const JobListTable = () => {
     const [selectedRole, setSelectedRole] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedType, setSelectedType] = useState('');
     const [loading, setLoading] = useState(true)
+    const session = useSession();
     const [jobData, setJobData] = useState([])
 
 
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getSaveJobs`);
+                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getSaveJobs/${session?.data?.user?.email}`);
                 setJobData(data.jobs);
                 setLoading(false)
             } catch (error) {
@@ -24,20 +26,12 @@ const JobListTable = () => {
         };
 
         fetchJobs();
-    }, []);
+    }, [session?.data?.user?.email]);
     if (loading) {
         return <Loader />
     }
-    // const jobData = [
-    //     { role: 'Social Media Assistant', jobStatus: 'Live', datePosted: '20 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-    //     { role: 'Senior Designer', jobStatus: 'Live', datePosted: '16 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-    //     { role: 'Visual Designer', jobStatus: 'Live', datePosted: '15 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
-    //     { role: 'Data Science', jobStatus: 'Closed', datePosted: '13 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
-    //     { role: 'Kotlin Developer', jobStatus: 'Closed', datePosted: '12 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-    // ];
-
-    // Filtering logic
-
+ 
+console.log(jobData)
 
     return (
         <div className="max-w-7xl mx-auto py-8 px-4">
