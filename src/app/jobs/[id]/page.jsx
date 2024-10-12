@@ -1,25 +1,35 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaSave } from "react-icons/fa";
-import { FcProcess } from "react-icons/fc";
+import {
+  FaBookmark,
+  FaBriefcase,
+  FaMapMarkerAlt,
+  FaCalendarAlt,
+  FaClock,
+  FaBuilding,
+  FaEnvelope,
+  FaPhone,
+  FaGlobe,
+} from "react-icons/fa"; // Icons from react-icons
 import { useSession } from "next-auth/react";
 import Loader from "@/app/loading";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 const JobDetails = ({ params }) => {
-  const [jobDetails, setJobDetails] = useState(null); // State to store job details
+  const [job, setJob] = useState(null); // State to store job details
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [error, setError] = useState(null); // State to handle errors
   const { data: session } = useSession();
-  const [message ,setMessage] =useState() 
-  console.log(message);
-  
+  const [message, setMessage] = useState();
 
   const getServicesDetails = async (id) => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/${id}`);
-      return res.data.job;
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/${id}`
+      );
+      return data.job;
     } catch (error) {
       console.error("Error fetching job details:", error);
       setError("Could not fetch job details.");
@@ -31,7 +41,7 @@ const JobDetails = ({ params }) => {
     const fetchJobDetails = async () => {
       const details = await getServicesDetails(params.id);
       if (details) {
-        setJobDetails(details);
+        setJob(details);
       }
       setLoading(false); // Stop loading once data is fetched
     };
@@ -40,7 +50,7 @@ const JobDetails = ({ params }) => {
   }, [params.id]); // Dependency on params.id to fetch details when it changes
 
   if (loading) {
-    return <Loader/>; // Loading state
+    return <Loader />; // Loading state
   }
 
   if (error) {
@@ -48,12 +58,16 @@ const JobDetails = ({ params }) => {
   }
 
   // Fallback if no job details are available
-  if (!jobDetails || !jobDetails.summary) {
+  if (!job) {
     return <div>No job details available.</div>;
   }
 
-  const handleSaveJob = async()=>{
-    const newJob ={user :session?.user , job :jobDetails}
+  const handleApplyJob = () => {
+    window.location.href = `/apply-job/${id}`;
+  };
+
+  const handleSaveJob = async () => {
+    const newJob = { user: session?.user, job };
     try {
       // Use axios to make the POST request
       const response = await axios.post("/api/saveJob", newJob, {
@@ -67,7 +81,7 @@ const JobDetails = ({ params }) => {
         icon: "success",
         title: "Job Added Successfully",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
     } catch (error) {
       if (error.response) {
@@ -78,18 +92,16 @@ const JobDetails = ({ params }) => {
             icon: "info",
             title: "Job already Saved!",
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
-        
         } else {
           Swal.fire({
             position: "top",
             icon: "info",
-            title:`Failed to add job: ${error.response.data.message}`,
+            title: `Failed to add job: ${error?.response?.data?.message}`,
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
-         
         }
       } else if (error.request) {
         // The request was made, but no response was received
@@ -101,180 +113,155 @@ const JobDetails = ({ params }) => {
         console.error("Error:", error.message);
       }
     }
-    
-  }
-
- 
+  };
 
   return (
-    <div className="border-2 border-sky-400 rounded-lg p-1 md:p-2 my-8 min-h-screen">
-      <h1 className="text-3xl font-bold underline text-center my-6">
-        Job Details
-      </h1>
-      <h1 className="text-2xl font-semibold text-center lg:max-w-[400px] mx-auto border-b-2 border-sky-700 rounded-xl">
-        <span className="text-2xl font-bold">Job Title:</span>{" "}
-        {jobDetails.summary.jobTitle || "N/A"}
-      </h1>
-
-      {/* Summary */}
-      <div className="md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4">
-        <h1 className="text-2xl font-semibold underline mb-3">Summary:</h1>
-        <div className="md:grid md:grid-cols-2 md:justify-between">
-          <h4 className="text-lg font-semibold">
-            {" "}
-            <span className="text-xl font-bold">Title:</span>{" "}
-            {jobDetails.summary.title || "N/A"}
-          </h4>
-          <h4 className="text-lg font-semibold">
-            {" "}
-            <span className="text-xl font-bold">Vacancy:</span>{" "}
-            {jobDetails.summary.vacancy || "N/A"}
-          </h4>
+    <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-100">
+      {/* Job Details Section */}
+      <div className="bg-white shadow-md p-6 rounded-lg mb-8">
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-start space-x-4">
+            <Image
+              src={
+                job?.compnayInforamtion?.companyInfo?.logo ||
+                "/default-logo.png"
+              }
+              alt="Company Logo"
+              width={64}
+              height={64}
+              className="rounded-full"
+            />
+            <div>
+              <h2 className="text-2xl font-bold">{job?.jobTitle}</h2>
+              <p className="text-gray-500">
+                {job?.compnayInforamtion?.companyInfo?.companyName}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleSaveJob}
+            className="flex items-center text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition"
+          >
+            <FaBookmark className="w-5 h-5 mr-2" />
+            Save Job
+          </button>
         </div>
-        <div className="md:grid md:grid-cols-2 md:justify-between">
-          <h4 className="text-lg font-semibold">
-            {" "}
-            <span className="text-xl font-bold">Location:</span>{" "}
-            {jobDetails.summary.location || "N/A"}
-          </h4>
-          <h4 className="text-lg font-semibold">
-            {" "}
-            <span className="text-xl font-bold">Job Type:</span>{" "}
-            {jobDetails.summary.jobType || "N/A"}
-          </h4>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+          <div className="flex items-center">
+            <FaMapMarkerAlt className="w-5 h-5 mr-2 text-gray-500" />
+            <span>{job?.locationType || "Not specified"}</span>
+          </div>
+          <div className="flex items-center">
+            <FaBriefcase className="w-5 h-5 mr-2 text-gray-500" />
+            <span>{job?.jobType || "Not specified"}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="font-bold mr-2">$</span>
+            <span>{job?.salaryScale || "Salary not specified"}</span>
+          </div>
+          <div className="flex items-center">
+            <FaCalendarAlt className="w-5 h-5 mr-2 text-gray-500" />
+            <span>
+              Posted on: {new Date(job?.postedDate).toLocaleDateString()}
+            </span>
+          </div>
+          <div className="flex items-center">
+            <FaClock className="w-5 h-5 mr-2 text-gray-500" />
+            <span>
+              Deadline: {new Date(job?.deadline).toLocaleDateString()}
+            </span>
+          </div>
         </div>
-        <div className="md:grid md:grid-cols-2 md:justify-between">
-          <h4 className="text-lg font-semibold">
-            {" "}
-            <span className="text-xl font-bold">Salary Scale:</span>{" "}
-            {jobDetails.summary.salaryScale || "N/A"}
-          </h4>
-          <h4 className="text-lg font-semibold">
-            {" "}
-            <span className="text-xl font-bold">Experience Needed:</span>{" "}
-            {jobDetails.summary.experienceNeed || "N/A"}
-          </h4>
+
+        <div className="mb-6">
+          <h3 className="font-semibold text-lg">Responsibilities</h3>
+          <p className="text-gray-700 whitespace-pre-line">
+            {job?.responsibility}
+          </p>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="font-semibold text-lg">Requirements</h3>
+          <ul className="list-disc list-inside">
+            <li>Education: {job?.education}</li>
+            <li>Experience: {job?.experience} years</li>
+            <li>{job?.additionalRequirements}</li>
+          </ul>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <button
+            onClick={handleApplyJob}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Apply Now
+          </button>
+          <p className="text-gray-500">
+            {job?.applicantsNumber || 0} applicants
+          </p>
         </div>
       </div>
 
-      {/* Requirement */}
-      <div className="md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4">
-        <h1 className="text-2xl font-semibold underline mb-3">Requirements:</h1>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Education:</span>{" "}
-          {jobDetails.requirement.education || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold my-2">
-          {" "}
-          <span className="text-xl font-bold">Experience:</span>{" "}
-          {jobDetails.requirement.experience || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">
-            Additional Requirements:
-          </span>{" "}
-          {jobDetails.requirement.additionalRequirements || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold my-2">
-          {" "}
-          <span className="text-xl font-bold">Responsibility:</span>{" "}
-          {jobDetails.requirement.responsibility || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Benefits:</span>{" "}
-          {jobDetails.requirement.benefits || "N/A"}
-        </h4>
-      </div>
-
-      {/* Company Details */}
-      <div className="md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4">
-        <h1 className="text-2xl font-semibold underline mb-3">
-          Company Details:
-        </h1>
-        <h4 className="text-xl font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Company Name:</span>{" "}
-          {jobDetails.companyDetails.companyName || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold my-2">
-          {" "}
-          <span className="text-xl font-bold">Company Type:</span>{" "}
-          {jobDetails.companyDetails.type || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Head Office:</span>{" "}
-          {jobDetails.companyDetails.headOffice || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold my-2">
-          {" "}
-          <span className="text-xl font-bold">Work Area:</span>{" "}
-          {jobDetails.companyDetails.workArea || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Contact Number:</span>{" "}
-          {jobDetails.companyDetails.contact.mobileNo || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Email:</span>{" "}
-          {jobDetails.companyDetails.contact.email || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Website:</span>{" "}
-          {jobDetails.companyDetails.contact.website || "N/A"}
-        </h4>
-      </div>
-
-      {/* Apply Process */}
-      <div className="md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4">
-        <h1 className="text-2xl font-semibold underline mb-3">
-          Apply Process:
-        </h1>
-        <h4 className="text-lg font-semibold">
-          {" "}
-          <span className="text-xl font-bold">Need To Do For Apply:</span>{" "}
-          {jobDetails.applyProcess.needToDoForApply || "N/A"}
-        </h4>
-        <h4 className="text-lg font-semibold my-2">
-          {" "}
-          <span className="text-xl font-bold">Others:</span>{" "}
-          {jobDetails.applyProcess.others || "N/A"}
-        </h4>
-      </div>
-      {/*Action process */}
-      <div className="md:mx-8 mx-2 border-l-2 p-2 md:p-4 rounded-lg border-sky-600 bg-sky-50 my-4 shadow-md">
-        {/* Main container */}
-        <div className=" md:flex justify-between items-center border rounded-lg p-4 ">
-          {/* Left-side information */}
-          <div className="flex flex-col space-y-2">
-            <p className="text-lg text-gray-500">
-              Posted on - <span className="text-teal-600">{jobDetails?.postedDate}</span>
-            </p>
-            <p className="text-lg font-semibold text-red-500">
-              Deadline - <span className="text-red-500 animate-pulse ">{jobDetails?.deadline}</span>
+      {/* Company Details Section */}
+      <div className="bg-white shadow-md p-6 rounded-lg">
+        <div className="flex items-start space-x-4 mb-4">
+          <FaBuilding className="w-8 h-8 text-gray-500" />
+          <div>
+            <h3 className="text-xl font-bold">
+              About {job?.compnayInforamtion?.companyInfo?.companyName}
+            </h3>
+            <p className="text-gray-500">
+              {job?.compnayInforamtion?.companyInfo?.companyMission}
             </p>
           </div>
-
-          {/* Right-side buttons */}
-          <div className="flex space-x-4 mt-4 text-sm md:text-xl">
-            {/* Apply Button */}
-            <button className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
-              <FcProcess className="w-5 h-5" />
-              <span>Apply This Job</span>
-            </button>
-
-            {/* Save Job Button */}
-            <button onClick={handleSaveJob} className="border border-gray-400 text-teal-700 hover:text-white hover:bg-teal-600 transition duration-300 px-6 py-2 rounded-lg font-semibold flex items-center space-x-2">
-              <FaSave className="w-5 h-5" />
-              <span>Save Job</span>
-            </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <p>
+              <strong>Company Type:</strong>{" "}
+              {job?.compnayInforamtion?.companyInfo?.companyType}
+            </p>
+            <p>
+              <strong>Founded:</strong>{" "}
+              {job?.compnayInforamtion?.companyInfo?.foundedYear}
+            </p>
+            <p>
+              <strong>Size:</strong>{" "}
+              {job?.compnayInforamtion?.employmentInfo?.companySize} employees
+            </p>
           </div>
+          <div>
+            <p>
+              <strong>Address:</strong>{" "}
+              {job?.compnayInforamtion?.companyInfo?.address},{" "}
+              {job?.compnayInforamtion?.companyInfo?.city},{" "}
+              {job?.compnayInforamtion?.companyInfo?.country}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start space-x-4">
+          <FaEnvelope className="w-6 h-6 text-gray-500" />
+          <div>
+            <p>{job?.compnayInforamtion?.contactInformation?.email}</p>
+          </div>
+        </div>
+        <div className="flex items-start space-x-4 mt-4">
+          <FaPhone className="w-6 h-6 text-gray-500" />
+          <div>
+            <p>{job?.compnayInforamtion?.contactInformation?.phone}</p>
+          </div>
+        </div>
+        <div className="flex items-start space-x-4 mt-4">
+          <FaGlobe className="w-6 h-6 text-gray-500" />
+          <a
+            href={job?.compnayInforamtion?.contactInformation?.website}
+            className="text-blue-600"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {job?.compnayInforamtion?.contactInformation?.website}
+          </a>
         </div>
       </div>
     </div>
