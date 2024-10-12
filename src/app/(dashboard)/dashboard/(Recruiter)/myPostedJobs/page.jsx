@@ -12,35 +12,33 @@ const PostedJobs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Access session object
+  const fetchJobs = async () => {
+    try {
+      if (session?.user?.email) {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
+        );
 
+        // Ensure the response is an array
+        // console.log(response?.data?.myJobs);
+        const jobsData = Array.isArray(response?.data?.myJobs)
+          ? response?.data?.myJobs
+          : [];
+        setJobs(jobsData); // Set jobs state with the correct array
+      }
+    } catch (error) {
+      setError("Error fetching jobs");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Call fetchJobs on component mount and when email changes
   useEffect(() => {
     // Function to fetch jobs
-    const fetchJobs = async () => {
-      try {
-        if (session?.user?.email) {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
-          );
 
-          // Ensure the response is an array
-          // console.log(response?.data?.myJobs);
-          const jobsData = Array.isArray(response?.data?.myJobs)
-            ? response?.data?.myJobs
-            : [];
-          setJobs(jobsData); // Set jobs state with the correct array
-        }
-      } catch (error) {
-        setError("Error fetching jobs");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchJobs();
   }, [session?.user?.email]);
-
-
 
   const handleDelete = async (jobId) => {
     Swal.fire({
@@ -70,6 +68,7 @@ const PostedJobs = () => {
           fetchJobs();
         } catch (error) {
           // Handle error
+          console.log(error);
           Swal.fire({
             title: "Error!",
             text: "Failed to delete the job.",
@@ -103,7 +102,7 @@ const PostedJobs = () => {
               <th className="py-3 px-6 text-left text-gray-600 font-bold">
                 Type
               </th>
-             
+
               <th className="py-3 px-6 text-center text-gray-600 font-bold">
                 Actions
               </th>
@@ -114,7 +113,9 @@ const PostedJobs = () => {
               jobs.map((job) => (
                 <tr key={job._id} className="hover:bg-gray-50 border-b">
                   <td className="py-3 px-6">{job?.jobTitle}</td>
-                  <td className="py-3 px-6">{job?.compnayInforamtion?.companyInfo?.companyName}</td>
+                  <td className="py-3 px-6">
+                    {job?.compnayInforamtion?.companyInfo?.companyName}
+                  </td>
                   <td className="py-3 px-6">{job?.jobType}</td>
                   <td className="py-3 px-6 text-center flex justify-center gap-2">
                     <Link
