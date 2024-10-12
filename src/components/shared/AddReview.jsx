@@ -5,7 +5,8 @@ const AddReview = () => {
 
     const [formData, setFormData] = useState({
         name: '',
-        email: '',
+        position: '',
+        companyName: '',
         message: ''
     });
 
@@ -18,6 +19,7 @@ const AddReview = () => {
             ...formData,
             [name]: value
         });
+        console.log(name);
     };
 
     // Handle form submission
@@ -32,11 +34,13 @@ const AddReview = () => {
             // Clear the form fields after submission
             setFormData({
                 name: '',
-                email: '',
+                position: '',
+                companyName: '',
                 message: ''
             });
         }, 1000);
     };
+    
 
     return (
         <div>
@@ -45,11 +49,11 @@ const AddReview = () => {
 
                 <div className='w-1/2'>
                     <div className="flex flex-col items-center justify-center  bg-sky-100 rounded-xl p-8">
-                        <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+                        <h1 className="text-4xl font-bold mb-4">Review Us</h1>
                         <p className="text-lg text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
                         <form
                             onSubmit={handleSubmit}  // Adding submit handler
-                            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg w-full"
+                            className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 max-w-lg w-full"
                         >
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
@@ -67,29 +71,45 @@ const AddReview = () => {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                                    Email
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="position">
+                                    Position
                                 </label>
                                 <input
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    placeholder="Enter your email"
-                                    value={formData.email}
+                                    id="position"
+                                    type="position"
+                                    name="position"
+                                    placeholder="Enter your position"
+                                    value={formData.position}
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="company name">
+                                    Company Name
+                                </label>
+                                <input
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="companyName"
+                                    type="companyName"
+                                    name="companyName"
+                                    placeholder="Enter your companyName"
+                                    value={formData.companyName}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+
                             <div className="mb-6">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="message">
-                                    Message
+                                    Review Message
                                 </label>
                                 <textarea
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="message"
                                     name="message"
-                                    placeholder="Write your message"
+                                    placeholder="Write your review message"
                                     rows="5"
                                     value={formData.message}
                                     onChange={handleChange}
@@ -102,7 +122,7 @@ const AddReview = () => {
                                     type="submit"
                                     disabled={isSubmitting} // Disable button while submitting
                                 >
-                                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                                    {isSubmitting ? 'Submitting...' : 'Submit Review'}
                                 </button>
                             </div>
                         </form>
@@ -110,7 +130,7 @@ const AddReview = () => {
                 </div>
                 <div className='md:w-1/2 rounded-lg'>
                     <Image
-                        src="/images/img10.jpg" // Ensure the image exists at this path
+                        src="/images/review.png" // Ensure the image exists at this path
                         alt="Team Member 1"
                         width={600}
                         height={400}
