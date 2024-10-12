@@ -28,15 +28,7 @@ const JobListTable = () => {
     if (loading) {
         return <Loader />
     }
-    // const jobData = [
-    //     { role: 'Social Media Assistant', jobStatus: 'Live', datePosted: '20 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-    //     { role: 'Senior Designer', jobStatus: 'Live', datePosted: '16 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-    //     { role: 'Visual Designer', jobStatus: 'Live', datePosted: '15 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
-    //     { role: 'Data Science', jobStatus: 'Closed', datePosted: '13 May 2020', endDate: '24 May 2020', jobType: 'Freelance', appliedStatus: 'Applied' },
-    //     { role: 'Kotlin Developer', jobStatus: 'Closed', datePosted: '12 May 2020', endDate: '24 May 2020', jobType: 'Fulltime', appliedStatus: 'Applied' },
-    // ];
-
-    // Filtering logic
+ 
 
 
     return (
