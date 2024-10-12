@@ -26,7 +26,7 @@ const JobListTable = () => {
         };
 
         fetchJobs();
-    }, []);
+    }, [session?.data?.user?.email]);
     if (loading) {
         return <Loader />
     }
