@@ -3,10 +3,14 @@ import FAQ from '@/components/shared/FAQ';
 import ContactUs from '@/components/shared/ContactUs';
 import Image from 'next/image';
 import React from 'react';
+import AddReview from '@/components/shared/AddReview';
 
 const AboutUsPage = () => {
     return (
         <div className="min-h-screen bg-gray-100 py-10">
+
+            <AddReview></AddReview>
+
             {/* Hero Section */}
             <div className="hero-content flex flex-col md:flex-row p-10 bg-white shadow-md rounded-lg">
                 {/* Image Section */}
