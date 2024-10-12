@@ -15,6 +15,7 @@ import {
 import { useSession } from "next-auth/react";
 import Loader from "@/app/loading";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 const JobDetails = ({ params }) => {
   const [job, setJob] = useState(null); // State to store job details
@@ -120,10 +121,15 @@ const JobDetails = ({ params }) => {
       <div className="bg-white shadow-md p-6 rounded-lg mb-8">
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-start space-x-4">
-            <img
-              src={job?.compnayInforamtion?.companyInfo?.logo}
+            <Image
+              src={
+                job?.compnayInforamtion?.companyInfo?.logo ||
+                "/default-logo.png"
+              }
               alt="Company Logo"
-              className="w-16 h-16 rounded-full"
+              width={64}
+              height={64}
+              className="rounded-full"
             />
             <div>
               <h2 className="text-2xl font-bold">{job?.jobTitle}</h2>
