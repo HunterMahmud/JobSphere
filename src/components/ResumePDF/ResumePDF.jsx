@@ -1,106 +1,7 @@
+import Image from "next/image";
 
 
 const ResumePDF = ({ user }) => {
-
-
-    // const user = [
-    //     {
-    //         profileOverview: {
-    //             fullName: "John Doe",
-    //             profilePicture: "https://i.ibb.co.com/qDfgZ7r/pexels-rezwan-1145434.jpg",
-    //             address: "1234 Elm St",
-    //             city: "San Francisco",
-    //             country: "USA",
-    //             wantJob: true,
-    //             preferredJobPosition: "Frontend Developer",
-    //             preferredJobType: "Full-Time"
-    //         }
-    //     },
-    //     {
-    //         socialProfiles: {
-    //             phoneNumber: "+1-234-567-8900",
-    //             emailAddress: "johndoe@example.com",
-    //             linkedinProfile: "https://linkedin.com/in/johndoe",
-    //             otherProfiles: {
-    //                 github: "https://github.com/johndoe",
-    //                 portfolio: "https://johndoe.com"
-    //             }
-    //         }
-    //     },
-    //     {
-    //         careerObjective: "Passionate developer looking to leverage 5 years of experience in web development to build innovative applications."
-    //     },
-    //     {
-    //         projects: [
-    //             {
-    //                 projectName: "Tourism Kingdom",
-    //                 projectLink: "https://tourismkingdom.com",
-    //                 projectMadeWith: ["React", "Node.js", "MongoDB"],
-    //                 projectDetails: "A web platform for adding and exploring tourist places."
-    //             },
-    //             {
-    //                 projectName: "Job Sphere",
-    //                 projectLink: "https://jobsphere.com",
-    //                 projectMadeWith: ["Next.js", "Tailwind CSS", "Firebase"],
-    //                 projectDetails: "A job hiring platform for employers and job seekers."
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         skills: {
-    //             technicalSkills: [
-    //                 "JavaScript",
-    //                 "React",
-    //                 "Next.js",
-    //                 "Node.js",
-    //                 "MongoDB"
-    //             ],
-    //             softSkills: [
-    //                 "Communication",
-    //                 "Problem-solving",
-    //                 "Teamwork"
-    //             ]
-    //         }
-    //     },
-    //     {
-    //         education: [
-    //             {
-    //                 degreeName: "Bachelor of Science in Computer Science",
-    //                 instituteName: "Stanford University",
-    //                 cgpa: "3.8",
-    //                 passingYear: 2020
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         workExperience: [
-    //             {
-    //                 positionName: "Frontend Developer",
-    //                 companyName: "Innovative Coders",
-    //                 startedDate: "2021-06-01",
-    //                 endingDate: "2024-09-01",
-    //                 stillWorking: false
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         certifications: [
-    //             {
-    //                 certificateName: "Certified JavaScript Developer",
-    //                 issuedBy: "JS Academy",
-    //                 issueDate: "2022-05-01"
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         extraCurricularActivities: [
-    //             {
-    //                 activityName: "Hackathon Winner",
-    //                 description: "Won 1st place at a national hackathon for building a web app."
-    //             }
-    //         ]
-    //     }
-    // ];
     return (
         <div className="overflow-x-scroll">
             <div id="resume" className="p-4 md:p-10 lg:p-16 border rounded shadow-md bg-white">
@@ -109,7 +10,7 @@ const ResumePDF = ({ user }) => {
                 </h1>
 
                 <div className="flex items-center mb-4">
-                    <img
+                    <Image height={500} width={500}
                         src={user?.profileOverview?.profilePicture || "https://i1.sndcdn.com/artworks-000189080723-ez2uad-t500x500.jpg"}
                         alt="Profile"
                         className="w-28 h-28 rounded-full mr-4"
@@ -122,26 +23,26 @@ const ResumePDF = ({ user }) => {
                             {user?.profileOverview?.address}, {user?.profileOverview?.city}, {user?.profileOverview?.country}
                         </p>
                         <p className="text-gray-600">
-                            Phone: {user?.personalInformation?.phoneNumber}
+                            Phone: {user?.contactInformation?.phoneNumber}
                         </p>
                         <p className="text-gray-600">
-                            Email: {user?.personalInformation?.email}
+                            Email: {user?.contactInformation?.email}
                         </p>
                         <p className="text-gray-600">
                             LinkedIn:{" "}
-                            <a target='_blank' href={user?.personalInformation?.socialLinks?.linkedin} className="text-blue-600 underline">
+                            <a target='_blank' href={user?.contactInformation?.socialLinks?.linkedin} className="text-blue-600 underline">
                                Link here
                             </a>
                         </p>
                         <p className="text-gray-600">
                             GitHub:{" "}
-                            <a target='_blank' href={user?.personalInformation?.socialLinks?.github} className="text-blue-600 underline">
+                            <a target='_blank' href={user?.contactInformation?.socialLinks?.github} className="text-blue-600 underline">
                             Link here
                             </a>
                         </p>
                         <p className="text-gray-600">
                             Portfolio:{" "}
-                            <a target='_blank' href={user?.personalInformation?.socialLinks?.portfolio} className="text-blue-600 underline">
+                            <a target='_blank' href={user?.contactInformation?.socialLinks?.portfolio} className="text-blue-600 underline">
                             Link here
                             </a>
                         </p>
