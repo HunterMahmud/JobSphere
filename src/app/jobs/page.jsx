@@ -12,7 +12,7 @@ const JobPage = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api`);
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}`);
         setJobs(data.jobs);
         setLoading(false)
       } catch (error) {
@@ -23,7 +23,7 @@ const JobPage = () => {
     };
 
     fetchJobs();
-  }, []);
+  }, [search]);
  console.log(search);
  
   return (
@@ -36,7 +36,7 @@ const JobPage = () => {
         <input
           type="text"
           className="w-[300px] p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
-          placeholder="Search with jOB title"
+          placeholder="Search with job title"
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
@@ -46,7 +46,7 @@ const JobPage = () => {
         { loading?<div className=" md:grid-cols-2 lg:col-span-3"><Loader/></div>: Array.isArray(jobs) && jobs.length > 0 ? (
           jobs.map((job, index) => <JobCard key={index} job={job} />)
         ) : (
-          <p className="text-center">No jobs found</p>
+          <p className="text-center md:grid-cols-2 lg:col-span-3">No jobs found</p>
         )}
       </div>
 
