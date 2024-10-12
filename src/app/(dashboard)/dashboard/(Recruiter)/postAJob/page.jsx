@@ -22,6 +22,7 @@ const JobForm = () => {
 
   const [loading, setLoading] = useState(false);
 
+  
   const onSubmit = async (data) => {
     setLoading(true);
     const jobData = { ...data, applicantsNumber:0, email: session?.data?.user?.email, postedDate: new Date() };
