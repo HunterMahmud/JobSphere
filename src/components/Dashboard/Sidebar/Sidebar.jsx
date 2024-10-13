@@ -12,6 +12,7 @@ import { ImProfile } from "react-icons/im";
 import { GoCodeReview } from "react-icons/go";
 import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
+import { TfiWrite } from "react-icons/tfi";
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
@@ -79,7 +80,8 @@ const Sidebar = () => {
             {
               loggedInUser?.role === "recruiter" &&
               <nav>
-                <MenuItem icon={MdAssignmentAdd} label="Post a Job" address="/dashboard/postAJob" />
+                <MenuItem icon={MdAssignmentAdd} label="Post A Job" address="/dashboard/postAJob" />
+                <MenuItem icon={TfiWrite} label="Write A Blog" address="/dashboard/writeABlog" />
                 <MenuItem icon={ImProfile} label="Job Seekers" address="/dashboard/jobSeekers" />
                 <MenuItem icon={MdOutlineWorkOutline} label="My Posted Jobs" address="/dashboard/myPostedJobs" />
               </nav>
