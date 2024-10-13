@@ -11,7 +11,7 @@ const JobCard = ({ job }) => {
 
   return (
     <div>
-      <div className="card mx-3 bg-sky-50 shadow-2xl p-6 rounded-xl border-l-4 border-slate-800 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-min-[350px]">
+      <div className="card mx-3 md:mx-0 bg-sky-50 shadow-2xl p-6 rounded-xl border-l-4 border-slate-800 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-min-[350px]">
         <div className="card-body">
           <h2 className="card-title text-xl font-semibold animate-pulse">
             {job?.jobTitle}

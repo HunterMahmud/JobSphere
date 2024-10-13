@@ -5,21 +5,33 @@ export const GET = async (request) => {
   const db = await connectDB();
   const jobsCollection = db.collection("jobs");
 
-  // Get search query from the URL
+  // Get search query and pagination parameters from the URL
   const { searchParams } = new URL(request.url);
-  const search = searchParams.get('search') || ''; // Get the search parameter, default to an empty string if not provided
+  const search = searchParams.get('search') || ''; // Get the search parameter
+  const page = parseInt(searchParams.get('page')) || 1; // Default to page 1 if not provided
+  const limit = parseInt(searchParams.get('limit')) || 9; // Default to 9 jobs per page
+  const skip = (page - 1) * limit; // Skip jobs for pagination
 
   try {
-    // Perform search based on the `search` query parameter
+    // Perform search with pagination
     const jobs = await jobsCollection
       .find({
         $or: [
           { 'jobTitle': { $regex: search, $options: 'i' } }, // Case-insensitive search for job title
         ]
       })
+      .skip(skip)
+      .limit(limit)
       .toArray();
 
-    return NextResponse.json({ jobs });
+    // Get total number of jobs for pagination metadata
+    const totalJobs = await jobsCollection.countDocuments({
+      $or: [
+        { 'jobTitle': { $regex: search, $options: 'i' } }, // Case-insensitive search for job title
+      ]
+    });
+
+    return NextResponse.json({ jobs, totalJobs, currentPage: page, totalPages: Math.ceil(totalJobs / limit) });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: "No Data Found", error });
