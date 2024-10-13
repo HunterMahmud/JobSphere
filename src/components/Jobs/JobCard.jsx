@@ -14,19 +14,19 @@ const JobCard = ({ job }) => {
       <div className="card bg-sky-50 shadow-2xl p-6 rounded-xl border-l-4 border-slate-800 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-[350px]">
         <div className="card-body">
           <h2 className="card-title text-xl font-semibold animate-pulse">
-            {job.summary.jobTitle}
+            {job?.summary?.jobTitle}
           </h2>
           <p className="text-gray-700 font-medium">
-            {job.companyDetails.companyName}
+            {job?.companyDetails?.companyName}
           </p>
           <div className="text-gray-600 mt-2">
             <p>
               <span className="font-bold">Job Type:</span>{" "}
-              {job.companyDetails.type}
+              {job?.companyDetails?.type}
             </p>
             <p>
               <span className="font-bold">Experience Need:</span>{" "}
-              {job.requirement.experience}
+              {job?.requirement?.experience}
             </p>
             <p>
               <span className="font-bold">Posted Date:</span> {postedDate}

@@ -72,9 +72,6 @@ const JobPage = () => {
           Next
         </button>
       </div>
-
-      {/* Job Details */}
-      {/* <JobDetails /> */}
     </div>
   );
 };
