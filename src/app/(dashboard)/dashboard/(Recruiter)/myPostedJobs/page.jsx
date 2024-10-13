@@ -122,13 +122,13 @@ const PostedJobs = () => {
                       href={`/dashboard/myPostedJobs/api/update/${job._id}`}
                       className="flex items-center justify-center gap-1 bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition"
                     >
-                      <AiFillEdit className="mr-1" /> Edit
+                      <AiFillEdit className="text-lg flex items-center justify-center" />
                     </Link>
                     <button
                       className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
                       onClick={() => handleDelete(job._id)}
                     >
-                      <AiFillDelete className="mr-1" /> Delete
+                      <AiFillDelete className="text-lg flex items-center justify-center" /> 
                     </button>
                     <button
                       className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
@@ -136,7 +136,7 @@ const PostedJobs = () => {
                         (window.location.href = `/jobs/${job._id}`)
                       }
                     >
-                      <AiFillEye className="mr-1" /> View
+                      <AiFillEye className="text-lg flex items-center justify-center" /> 
                     </button>
                   </td>
                 </tr>
