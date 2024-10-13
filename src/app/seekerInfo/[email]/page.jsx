@@ -1,12 +1,28 @@
+'use client'
+import axios from "axios";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
+const SeekerDetails = async ({ params }) => {
+    const [user, setUser] = useState([]);
 
-const ResumePDF = ({ user }) => {
+    useEffect(() => {
+        const fetchInfo = async () => {
+            try {
+                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${params.email}`);
+                setUser(data);
+            } catch (error) {
+                console.error("Error fetching data: ", error.message);
+            }
+        };
+        fetchInfo();
+    }, [params]);
+
     return (
-        <div className="overflow-x-scroll">
+        <div className="overflow-x-scroll custom-container">
             <div id="resume" className="p-4 md:p-10 lg:p-16 border rounded shadow-md bg-white">
                 <h1 className="text-3xl font-bold mb-4 text-center">
-                    {user?.profileOverview?.fullName || " "} Resume
+                    {user?.profileOverview?.fullName || " "} 
                 </h1>
 
                 <div className="flex items-center mb-4">
@@ -31,19 +47,19 @@ const ResumePDF = ({ user }) => {
                         <p className="text-gray-600">
                             LinkedIn:{" "}
                             <a target='_blank' href={user?.contactInformation?.socialLinks?.linkedin} className="text-blue-600 underline">
-                               Link here
+                                Link here
                             </a>
                         </p>
                         <p className="text-gray-600">
                             GitHub:{" "}
                             <a target='_blank' href={user?.contactInformation?.socialLinks?.github} className="text-blue-600 underline">
-                            Link here
+                                Link here
                             </a>
                         </p>
                         <p className="text-gray-600">
                             Portfolio:{" "}
                             <a target='_blank' href={user?.contactInformation?.socialLinks?.portfolio} className="text-blue-600 underline">
-                            Link here
+                                Link here
                             </a>
                         </p>
                     </div>
@@ -110,4 +126,4 @@ const ResumePDF = ({ user }) => {
     );
 };
 
-export default ResumePDF;
+export default SeekerDetails;

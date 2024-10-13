@@ -30,8 +30,7 @@ const JobListTable = () => {
     if (loading) {
         return <Loader />
     }
- 
-console.log(jobData)
+
 
     return (
         <div className="max-w-7xl mx-auto py-8 px-4">

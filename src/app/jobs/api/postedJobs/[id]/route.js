@@ -1,17 +1,18 @@
 import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from "next/server";
+import { ObjectId } from 'mongodb';
 
-export const GET = async () => {
+export const GET = async (request, {params}) => {
   const db = await connectDB();
-  const companyCollection = db.collection("companyInfo");
+  const jobsCollection = db.collection("jobs");
 
   try {
-    const company = await companyCollection
-      .find()
+    const jobs = await jobsCollection
+      .find({'compnayInforamtion._id': new ObjectId(params.id)})
       .sort({ creationTime: -1 })
       .toArray();
 
-    return NextResponse.json({ company });
+    return NextResponse.json({ jobs });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: "No comapny found", error });

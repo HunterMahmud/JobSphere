@@ -1,12 +1,15 @@
 "use client";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import { addDays } from "date-fns";
 import axios from "axios";
 import toast from "react-hot-toast";
+import "react-datepicker/dist/react-datepicker.css";
+import CreatableSelect from "react-select/creatable";
 
 const UpdateJobs = ({ params }) => {
-  const { data: session } = useSession(); // Fetch session data
   const [job, setJob] = useState(null); // Initialize job state to null
   const [loading, setLoading] = useState(false);
 
@@ -21,14 +24,14 @@ const UpdateJobs = ({ params }) => {
         toast.error("Error fetching job details.");
       }
     };
-  
+
     loadJob(); // Fetch job details when component loads
-  }, [params.id]); // No warning now, as `loadJob` is defined within useEffect
-  
+  }, [params?.id]);
   // React Hook Form setup
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
   } = useForm({
@@ -36,24 +39,26 @@ const UpdateJobs = ({ params }) => {
   });
 
   // Submit updated job data using Axios
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async (info) => {
+    const { _id, ...updateInfo } = info;
     setLoading(true);
     try {
-      const resp = await axios.put(
+      const { data } = await axios.put(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`,
-        data,
+        updateInfo,
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-
-      if (resp.status === 200) {
+      if (data?.response?.modifiedCount === 1) {
         toast.success("Updated Successfully");
+      } else {
+        toast.error("Make change to update");
       }
     } catch (error) {
+      console.log("error: ", error);
       toast.error("Failed to update job");
     }
     setLoading(false);
@@ -66,274 +71,239 @@ const UpdateJobs = ({ params }) => {
     }
   }, [job, reset]);
 
-  const inputField = `w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500`;
-
   if (!job) {
     return <div>Loading job details...</div>; // Show loading message until job data is fetched
   }
 
   return (
-    <div className="container mx-auto py-6 px-4">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 px-2 mx-auto py-10"
-      >
-        <h1 className="text-2xl font-semibold mb-4">Update Job</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold mb-8 text-center">Update Job</h1>
 
-        {/* Job Information */}
-        <div>
-          <h2 className="text-lg font-semibold">Job Information</h2>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block">Job Title</label>
+              <label className="block text-sm font-medium">Job Title</label>
               <input
-                {...register("jobTitle", { required: "Job title is required" })}
-                className={inputField}
-                placeholder="Job Title"
+                {...register("jobTitle", { required: "Job Title is required" })}
+                type="text"
+                className="w-full mt-1 p-2 border rounded-lg"
+                placeholder="e.g. Backend Developer"
               />
-              {errors.jobTitle && (
-                <span className="text-red-500">{errors.jobTitle.message}</span>
+              {errors?.jobTitle && (
+                <p className="text-red-500 text-sm">
+                  {errors?.jobTitle?.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block">Job Type</label>
+              <label className="block text-sm font-medium">Vacancy</label>
+              <input
+                {...register("vacancy", {
+                  required: "Vacancy is required",
+                  valueAsNumber: true,
+                })}
+                type="number"
+                className="w-full mt-1 p-2 border rounded-lg"
+                placeholder="e.g. 3"
+              />
+              {errors?.vacancy && (
+                <p className="text-red-500 text-sm">
+                  {errors?.vacancy?.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium">Location Type</label>
               <select
-                {...register("jobType", { required: "Job type is required" })}
-                className={inputField}
+                {...register("locationType", {
+                  required: "Location Type is required",
+                })}
+                className="w-full mt-1 p-2 border rounded-lg"
               >
-                <option value="">Select Job Type</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Temporary">Temporary</option>
-                <option value="Internship">Internship</option>
                 <option value="Remote">Remote</option>
+                <option value="On-Site">On-Site</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+              {errors?.locationType && (
+                <p className="text-red-500 text-sm">
+                  {errors?.locationType?.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium">Job Type</label>
+              <select
+                {...register("jobType", { required: "Job Type is required" })}
+                className="w-full mt-1 p-2 border rounded-lg"
+              >
+                <option value="Full-Time">Full-Time</option>
+                <option value="Part-Time">Part-Time</option>
+                <option value="Contract-Based">Contract-Based</option>
               </select>
               {errors.jobType && (
-                <span className="text-red-500">{errors.jobType.message}</span>
+                <p className="text-red-500 text-sm">{errors.jobType.message}</p>
               )}
-            </div>
-
-            <div>
-              <label className="block">Job Category</label>
-              <input
-                {...register("jobCategory", {
-                  required: "Job category is required",
-                })}
-                className={inputField}
-                placeholder="Job Category"
-              />
-              {errors.jobCategory && (
-                <span className="text-red-500">
-                  {errors.jobCategory.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label className="block">Job Location</label>
-              <input
-                {...register("jobLocation", {
-                  required: "Job location is required",
-                })}
-                className={inputField}
-                placeholder="Job Location"
-              />
-              {errors.jobLocation && (
-                <span className="text-red-500">
-                  {errors.jobLocation.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label className="block">Salary/Pay Range</label>
-              <input
-                {...register("salaryRange", {
-                  required: "Salary range is required",
-                })}
-                className={inputField}
-                placeholder="e.g. $40,000 - $60,000"
-              />
-              {errors.salaryRange && (
-                <span className="text-red-500">
-                  {errors.salaryRange.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label className="block">Application Deadline</label>
-              <input
-                type="date"
-                {...register("applicationDeadline", {
-                  required: "Application deadline is required",
-                })}
-                className={inputField}
-              />
-              {errors.applicationDeadline && (
-                <span className="text-red-500">
-                  {errors.applicationDeadline.message}
-                </span>
-              )}
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block">Job Description</label>
-              <textarea
-                {...register("jobDescription", {
-                  required: "Job description is required",
-                })}
-                className={inputField}
-                rows="4"
-                placeholder="Job Description"
-              />
-              {errors.jobDescription && (
-                <span className="text-red-500">
-                  {errors.jobDescription.message}
-                </span>
-              )}
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block">Job Requirements</label>
-              <textarea
-                {...register("jobRequirements", {
-                  required: "Job requirements are required",
-                })}
-                className={inputField}
-                rows="4"
-                placeholder="Job Requirements (Skills, experience, qualifications)"
-              />
-              {errors.jobRequirements && (
-                <span className="text-red-500">
-                  {errors.jobRequirements.message}
-                </span>
-              )}
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block">Work Schedule</label>
-              <input
-                {...register("workSchedule")}
-                className={inputField}
-                placeholder="e.g. Monday-Friday, Weekends, Shifts"
-              />
             </div>
           </div>
-        </div>
 
-        {/* Company Information */}
-        <div>
-          <h2 className="text-lg font-semibold">Company Information</h2>
-          <div className="grid grid-cols-1 gap-4">
+          <div>
+            <label className="block text-sm font-medium">Salary Scale</label>
+            <input
+              {...register("salaryScale", {
+                required: "Salary Scale is required",
+              })}
+              type="text"
+              className="w-full mt-1 p-2 border rounded-lg"
+              placeholder="e.g. $80,000 - $100,000"
+            />
+            {errors?.salaryScale && (
+              <p className="text-red-500 text-sm">
+                {errors?.salaryScale?.message}
+              </p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block">Company Name</label>
+              <label className="block text-sm font-medium">Education</label>
               <input
-                {...register("companyName", {
-                  required: "Company name is required",
+                {...register("education", {
+                  required: "Education is required",
                 })}
-                className={inputField}
-                placeholder="Company Name"
+                type="text"
+                className="w-full mt-1 p-2 border rounded-lg"
+                placeholder="e.g. Bachelor's in Computer Science"
               />
-              {errors.companyName && (
-                <span className="text-red-500">
-                  {errors.companyName.message}
-                </span>
+              {errors?.education && (
+                <p className="text-red-500 text-sm">
+                  {errors?.education?.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block">Company Website</label>
+              <label className="block text-sm font-medium">
+                Experience (Years)
+              </label>
               <input
-                type="url"
-                {...register("companyWebsite")}
-                className={inputField}
-                placeholder="Company Website"
+                {...register("experience", {
+                  required: "Experience is required",
+                  valueAsNumber: true,
+                })}
+                type="number"
+                className="w-full mt-1 p-2 border rounded-lg"
+                placeholder="e.g. 4"
               />
-            </div>
-
-            <div>
-              <label className="block">Company Description</label>
-              <textarea
-                {...register("companyDescription")}
-                className={inputField}
-                rows="3"
-                placeholder="Company Overview"
-              />
-            </div>
-
-            <div>
-              <label className="block">Industry</label>
-              <select {...register("industry")} className={inputField}>
-                <option value="">Select Industry</option>
-                <option value="Tech">Tech</option>
-                <option value="Finance">Finance</option>
-                <option value="Healthcare">Healthcare</option>
-              </select>
+              {errors?.experience && (
+                <p className="text-red-500 text-sm">
+                  {errors?.experience?.message}
+                </p>
+              )}
             </div>
           </div>
-        </div>
 
-        {/* Contact Information */}
-        <div>
-          <h2 className="text-lg font-semibold">Contact Information</h2>
-          <div className="grid grid-cols-1 gap-4">
-            <div>
-              <label className="block">Recruiter Name</label>
-              <input
-                {...register("recruiterName", {
-                  required: "Recruiter name is required",
-                })}
-                className={inputField}
-                placeholder="Recruiter Name"
-              />
-              {errors.recruiterName && (
-                <span className="text-red-500">
-                  {errors.recruiterName.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label className="block">Recruiter Email</label>
-              <input
-                type="email"
-                {...register("recruiterEmail", {
-                  required: "Recruiter email is required",
-                })}
-                className={inputField}
-                placeholder="Recruiter Email"
-              />
-              {errors.recruiterEmail && (
-                <span className="text-red-500">
-                  {errors.recruiterEmail.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label className="block">Recruiter Phone</label>
-              <input
-                type="tel"
-                {...register("recruiterPhone")}
-                className={inputField}
-                placeholder="Recruiter Phone Number"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium">
+              Additional Requirements
+            </label>
+            <textarea
+              {...register("additionalRequirements", {
+                required: "Additional Requirements are required",
+              })}
+              className="w-full mt-1 p-2 border rounded-lg"
+              placeholder="e.g. Proficient in Node.js, SQL, and AWS"
+            ></textarea>
+            {errors?.additionalRequirements && (
+              <p className="text-red-500 text-sm">
+                {errors?.additionalRequirements?.message}
+              </p>
+            )}
           </div>
-        </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          disabled={loading}
-        >
-          {loading ? "Updating..." : "Update Job"}
-        </button>
-      </form>
+          <div>
+            <label className="block text-sm font-medium">
+              Responsibilities
+            </label>
+            <textarea
+              {...register("responsibility", {
+                required: "Responsibilities are required",
+              })}
+              className="w-full mt-1 p-2 border rounded-lg"
+              placeholder="e.g. Details about job responsibilities"
+            ></textarea>
+            {errors?.responsibility && (
+              <p className="text-red-500 text-sm">
+                {errors?.responsibility?.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium">Deadline</label>
+            <Controller
+              control={control}
+              name="deadline"
+              rules={{ required: "Deadline is required" }}
+              render={({ field }) => (
+                <DatePicker
+                  selected={field?.value}
+                  onChange={(date) => field.onChange(date)}
+                  minDate={addDays(new Date(), 1)}
+                  placeholderText="Select a deadline date"
+                  className="w-full mt-1 p-2 border rounded-lg"
+                />
+              )}
+            />
+            {errors?.deadline && (
+              <p className="text-red-500 text-sm">
+                {errors?.deadline?.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium">Skills</label>
+            <Controller
+              control={control}
+              name="skills"
+              render={({ field }) => (
+                <CreatableSelect
+                  isMulti
+                  onChange={(selected) =>
+                    field.onChange(selected.map((skill) => skill?.value))
+                  }
+                  className="w-full mt-1 p-2"
+                  placeholder="Type and press Enter to add skills"
+                  // Set default values from job.skills array
+                  defaultValue={job?.skills?.map((skill) => ({
+                    label: skill,
+                    value: skill,
+                  }))}
+                />
+              )}
+            />
+            {errors.skills && (
+              <p className="text-red-500 text-sm">{errors?.skills?.message}</p>
+            )}
+          </div>
+
+          <div className="text-center">
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+            >
+              Update Job
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

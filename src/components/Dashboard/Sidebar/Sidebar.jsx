@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { GrLogout } from "react-icons/gr";
-import { FcSettings, FcStatistics } from "react-icons/fc";
+import { FcStatistics } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
@@ -12,6 +12,7 @@ import { ImProfile } from "react-icons/im";
 import { GoCodeReview } from "react-icons/go";
 import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
+import { TfiWrite } from "react-icons/tfi";
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
@@ -72,7 +73,6 @@ const Sidebar = () => {
             {
               loggedInUser?.role === "seeker" &&
               <nav>
-                <MenuItem icon={IoHomeOutline} label="Home" address="/dashboard" />
                 <MenuItem icon={FaLaptopHouse} label="Apply Jobs" address="/dashboard/applyJobs" />
                 <MenuItem icon={RiSave3Line} label="Saved Jobs" address="/dashboard/savedJobs" />
               </nav>
@@ -80,8 +80,8 @@ const Sidebar = () => {
             {
               loggedInUser?.role === "recruiter" &&
               <nav>
-                <MenuItem icon={IoHomeOutline} label="Home" address="/dashboard" />
-                <MenuItem icon={MdAssignmentAdd} label="Post a Job" address="/dashboard/postAJob" />
+                <MenuItem icon={MdAssignmentAdd} label="Post A Job" address="/dashboard/postAJob" />
+                <MenuItem icon={TfiWrite} label="Write A Blog" address="/dashboard/writeABlog" />
                 <MenuItem icon={ImProfile} label="Job Seekers" address="/dashboard/jobSeekers" />
                 <MenuItem icon={MdOutlineWorkOutline} label="My Posted Jobs" address="/dashboard/myPostedJobs" />
               </nav>
@@ -100,14 +100,7 @@ const Sidebar = () => {
 
         <div>
           <hr />
-          {/* Profile Menu */}
-          <Link
-            href={"/profile"}
-            className="flex items-center px-4 py-2 my-5 transition-colors duration-300 transform hover:bg-gray-300 hover:text-gray-700 text-gray-600"
-          >
-            <FcSettings className="w-5 h-5" />
-            <span className="mx-4 font-medium">Profile</span>
-          </Link>
+          <MenuItem icon={IoHomeOutline} label="Home" address="/dashboard" />
           <button className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300 hover:text-gray-700 transition-colors duration-300 transform">
             <GrLogout className="w-5 h-5" />
             <span className="mx-4 font-medium">Logout</span>

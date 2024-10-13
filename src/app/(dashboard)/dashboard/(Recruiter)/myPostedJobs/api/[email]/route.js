@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 
 export const GET = async (request, {params}) => {
     const db =await connectDB()
-    const addedJobsCollection = db.collection('addedJobs')
+    const jobsCollection = db.collection('jobs')
     try {
-        const myAddedJobs = await addedJobsCollection.find({email : params.email}).toArray();
-        console.log(myAddedJobs)
-        return NextResponse.json({myAddedJobs})
+        const myJobs = await jobsCollection.find({email : params?.email}).toArray();
+        // console.log(myJobs)
+        return NextResponse.json({myJobs})
     } catch (error) {
         return NextResponse.json({message : "No Data Found"})
     }
