@@ -49,7 +49,7 @@ const CompanyCard = ({ company }) => {
       </div>
       <div className="flex justify-center mt-4">
         <button className="bg-sky-500 btn hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded-lg w-auto">
-          <Link href={`/jobs`}>View Posted Jobs</Link>
+          <Link href={`/jobs/api/postedJobs/${company._id}`}>View Posted Jobs</Link>
         </button>
       </div>
     </div>
