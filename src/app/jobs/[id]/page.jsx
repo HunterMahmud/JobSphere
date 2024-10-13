@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 import Modal from "@/components/Modal/Modal";
 import useSeekerInfo from "@/components/Hooks/useSeekerInfo";
+import toast from "react-hot-toast";
 
 const JobDetails = ({ params }) => {
   const [showModal, setShowModal] = useState(false);
@@ -27,6 +28,9 @@ const JobDetails = ({ params }) => {
   const { data: session } = useSession();
   const [message, setMessage] = useState();
   const { seekerInfo } = useSeekerInfo();
+  const today = new Date().toLocaleDateString();
+  const deadline = new Date(job?.deadline).toLocaleDateString();
+  console.log(today,deadline)
 
   const getServicesDetails = async (id) => {
     try {
@@ -66,12 +70,37 @@ const JobDetails = ({ params }) => {
     return <div>No job details available.</div>;
   }
 
-  const handleApplyJob = (e) => {
-    e.preventDefault()
+  const handleApplyJob = async (e) => {
+    e.preventDefault();
     const form = e.target;
-    const resume = form.resume.files[0];
-    console.log(resume);
-  };
+    const name = form.name.value;
+    const email = form.email.value
+    const resume = form.resume.value;
+
+    if (today > deadline) {
+      toast.error('job deadline is over')
+      return
+    }
+
+    const applyedJob = {
+      applicantInfo: {
+        contactInformation: seekerInfo?.contactInformation,
+        resume
+      },
+      jobId: job?._id,
+      jobTitle: job?.jobTitle,
+      applicationDate: today,
+      jobStatus: 'pending'
+    }
+    console.log(applyedJob)
+    try {
+
+    } catch (err) {
+      console.log(err?.message);
+      toast.error(err?.message);
+    }
+  }
+
 
   const handleSaveJob = async () => {
     const newJob = { user: session?.user, job };
@@ -307,15 +336,17 @@ const JobDetails = ({ params }) => {
                 />
               </div>
 
-              <div className="mb-4 md:col-span-2">
+              <div className="md:col-span-2">
                 <label className='' htmlFor='job_title'>
-                  Upload Resume
+                  Resume Link
                 </label>
                 <input
-                  type="file"
-                  name="resume"
-                  className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                  placeholder="Submit your resume link"
+                  id='jobTitle'
+                  name='resume'
+                  type='text'
                   required
+                  className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                 />
               </div>
 
