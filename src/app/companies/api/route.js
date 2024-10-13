@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 
 export const GET = async () => {
   const db = await connectDB();
-  const companyCollection = db.collection("company");
-  console.log(companyCollection);
+  const companyCollection = db.collection("companyInfo");
+
   try {
     const company = await companyCollection
       .find()
@@ -14,6 +14,6 @@ export const GET = async () => {
     return NextResponse.json({ company });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ message: "No Data Found", error });
+    return NextResponse.json({ message: "No comapny found", error });
   }
 };
