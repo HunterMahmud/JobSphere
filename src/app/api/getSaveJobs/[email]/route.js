@@ -1,13 +1,13 @@
 import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (request, { params }) => {
   const db = await connectDB();
   const SaveJobsCollection = db.collection("saveJobs");
-  console.log(SaveJobsCollection);
+  // console.log(params.email)
   try {
     const jobs = await SaveJobsCollection
-      .find()
+      .find({'user.email': params?.email})
       .toArray()
 
     return NextResponse.json({ jobs });
