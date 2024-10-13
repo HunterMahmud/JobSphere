@@ -9,9 +9,7 @@ import toast from "react-hot-toast";
 import "react-datepicker/dist/react-datepicker.css";
 import CreatableSelect from "react-select/creatable";
 
-
 const UpdateJobs = ({ params }) => {
-  const { data: session } = useSession(); // Fetch session data
   const [job, setJob] = useState(null); // Initialize job state to null
   const [loading, setLoading] = useState(false);
 
@@ -26,9 +24,9 @@ const UpdateJobs = ({ params }) => {
         toast.error("Error fetching job details.");
       }
     };
-  
+
     loadJob(); // Fetch job details when component loads
-  }, [params?.id]); 
+  }, [params?.id]);
   // React Hook Form setup
   const {
     register,
@@ -42,11 +40,10 @@ const UpdateJobs = ({ params }) => {
 
   // Submit updated job data using Axios
   const onSubmit = async (info) => {
-
-    const {_id, ...updateInfo} = info;
+    const { _id, ...updateInfo } = info;
     setLoading(true);
     try {
-      const {data} = await axios.put(
+      const { data } = await axios.put(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`,
         updateInfo,
         {
@@ -57,12 +54,11 @@ const UpdateJobs = ({ params }) => {
       );
       if (data?.response?.modifiedCount === 1) {
         toast.success("Updated Successfully");
-      }
-      else{
-        toast.error("Make change to update")
+      } else {
+        toast.error("Make change to update");
       }
     } catch (error) {
-      console.log("error: ", error)
+      console.log("error: ", error);
       toast.error("Failed to update job");
     }
     setLoading(false);
@@ -75,7 +71,6 @@ const UpdateJobs = ({ params }) => {
     }
   }, [job, reset]);
 
-
   if (!job) {
     return <div>Loading job details...</div>; // Show loading message until job data is fetched
   }
@@ -83,12 +78,9 @@ const UpdateJobs = ({ params }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-8 text-center">
-          Update Job
-        </h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">Update Job</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-         
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium">Job Title</label>
@@ -117,12 +109,13 @@ const UpdateJobs = ({ params }) => {
                 placeholder="e.g. 3"
               />
               {errors?.vacancy && (
-                <p className="text-red-500 text-sm">{errors?.vacancy?.message}</p>
+                <p className="text-red-500 text-sm">
+                  {errors?.vacancy?.message}
+                </p>
               )}
             </div>
           </div>
 
-        
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium">Location Type</label>
@@ -158,7 +151,6 @@ const UpdateJobs = ({ params }) => {
               )}
             </div>
           </div>
-
 
           <div>
             <label className="block text-sm font-medium">Salary Scale</label>
@@ -216,7 +208,6 @@ const UpdateJobs = ({ params }) => {
             </div>
           </div>
 
-     
           <div>
             <label className="block text-sm font-medium">
               Additional Requirements
@@ -253,7 +244,6 @@ const UpdateJobs = ({ params }) => {
             )}
           </div>
 
-        
           <div>
             <label className="block text-sm font-medium">Deadline</label>
             <Controller
@@ -271,36 +261,38 @@ const UpdateJobs = ({ params }) => {
               )}
             />
             {errors?.deadline && (
-              <p className="text-red-500 text-sm">{errors?.deadline?.message}</p>
+              <p className="text-red-500 text-sm">
+                {errors?.deadline?.message}
+              </p>
             )}
           </div>
 
           <div>
-          <label className="block text-sm font-medium">Skills</label>
-          <Controller
-          control={control}
-          name="skills"
-          render={({ field }) => (
-            <CreatableSelect
-              isMulti
-              onChange={(selected) =>
-                field.onChange(selected.map((skill) => skill?.value))
-              }
-              className="w-full mt-1 p-2"
-              placeholder="Type and press Enter to add skills"
-              // Set default values from job.skills array
-              defaultValue={job?.skills?.map((skill) => ({
-                label: skill,
-                value: skill,
-              }))}
+            <label className="block text-sm font-medium">Skills</label>
+            <Controller
+              control={control}
+              name="skills"
+              render={({ field }) => (
+                <CreatableSelect
+                  isMulti
+                  onChange={(selected) =>
+                    field.onChange(selected.map((skill) => skill?.value))
+                  }
+                  className="w-full mt-1 p-2"
+                  placeholder="Type and press Enter to add skills"
+                  // Set default values from job.skills array
+                  defaultValue={job?.skills?.map((skill) => ({
+                    label: skill,
+                    value: skill,
+                  }))}
+                />
+              )}
             />
-          )}
-          />
-          {errors.skills && (
-          <p className="text-red-500 text-sm">{errors?.skills?.message}</p>
-          )}
-          </div>  
-     
+            {errors.skills && (
+              <p className="text-red-500 text-sm">{errors?.skills?.message}</p>
+            )}
+          </div>
+
           <div className="text-center">
             <button
               type="submit"

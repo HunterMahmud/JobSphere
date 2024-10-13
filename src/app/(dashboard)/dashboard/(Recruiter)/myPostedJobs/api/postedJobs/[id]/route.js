@@ -2,7 +2,6 @@ import { connectDB } from "@/lib/connectDB";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
-
 export const DELETE = async (request, { params }) => {
   const db = await connectDB();
   const jobsCollection = db.collection("jobs");
@@ -17,7 +16,6 @@ export const DELETE = async (request, { params }) => {
   }
 };
 
-
 export const PUT = async (request, { params }) => {
   const db = await connectDB();
   const jobsCollection = db.collection("jobs");
@@ -28,21 +26,19 @@ export const PUT = async (request, { params }) => {
       { _id: new ObjectId(params.id) },
       {
         $set: {
-          ...updateDoc
+          ...updateDoc,
         },
       },
       {
-        upsert : true
+        upsert: true,
       }
     );
     return NextResponse.json({ message: "updated the job", response: resp });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json({ message: "Something Went Wrong" });
   }
 };
-
-
 
 export const GET = async (request, { params }) => {
   const db = await connectDB();
@@ -56,6 +52,3 @@ export const GET = async (request, { params }) => {
     return NextResponse.json({ message: "Something Went Wrong" });
   }
 };
-
-
-
