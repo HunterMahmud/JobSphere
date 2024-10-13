@@ -12,24 +12,25 @@ const JobPage = () => {
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const [totalPages, setTotalPages] = useState(1); // Track total pages
 
-  const fetchJobs = async (page = 1) => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}&page=${page}&limit=9`
-      );
-      setJobs(data.jobs);
-      setTotalPages(data.totalPages); // Set total pages from response
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-      setLoading(false);
-    }
-  };
+
 
   useEffect(() => {
+    const fetchJobs = async (page = 1) => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}&page=${page}&limit=9`
+        );
+        setJobs(data.jobs);
+        setTotalPages(data.totalPages); // Set total pages from response
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        setLoading(false);
+      }
+    };
     fetchJobs(currentPage); // Fetch jobs when page or search changes
-  }, [search, currentPage]);
+  }, [search, currentPage,]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -41,6 +42,10 @@ const JobPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+  };
+  const handleSearch = (e) => {
+    setCurrentPage(1)
+    setSearch(e.target.value)
   };
 
   return (
@@ -54,7 +59,7 @@ const JobPage = () => {
           type="text"
           className="w-[300px] p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
           placeholder="Search with job title"
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => handleSearch(e) }
         />
       </div>
 
@@ -85,9 +90,8 @@ const JobPage = () => {
             <button
               key={index + 1}
               onClick={() => setCurrentPage(index + 1)}
-              className={`btn px-4 py-2 border-2 text-xs lg:text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${
-                currentPage === index + 1 ? "bg-sky-500 text-white" : ""
-              }`}
+              className={`btn px-4 py-2 border-2 text-xs lg:text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${currentPage === index + 1 ? "bg-sky-500 text-white" : ""
+                }`}
             >
               {index + 1}
             </button>
