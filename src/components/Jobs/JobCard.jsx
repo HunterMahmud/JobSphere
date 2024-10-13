@@ -11,22 +11,22 @@ const JobCard = ({ job }) => {
 
   return (
     <div>
-      <div className="card mx-3 bg-sky-50 shadow-2xl p-6 rounded-xl border-l-4 border-slate-800 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-min-[350px]">
+      <div className="card mx-3 md:mx-0 bg-sky-50 shadow-2xl p-6 rounded-xl border-l-4 border-slate-800 flex flex-col justify-between hover:border-2 hover:border-sky-500 box-border h-min-[350px]">
         <div className="card-body">
           <h2 className="card-title text-xl font-semibold animate-pulse">
-            {job?.summary?.jobTitle}
+            {job?.jobTitle}
           </h2>
           <p className="text-gray-700 font-medium">
-            {job?.companyDetails?.companyName}
+            {job?.compnayInforamtion?.companyInfo?.companyName}
           </p>
           <div className="text-gray-600 mt-2">
             <p>
               <span className="font-bold">Job Type:</span>{" "}
-              {job?.companyDetails?.type}
+              {job?.jobType}
             </p>
             <p>
               <span className="font-bold">Experience Need:</span>{" "}
-              {job?.requirement?.experience}
+             <span className="font-bold"> {job?.experience}</span>
             </p>
             <p>
               <span className="font-bold">Posted Date:</span> {new Date(postedDate).toLocaleDateString('en-US', {
