@@ -26,7 +26,7 @@ const Resume = () => {
         };
 
         fetchJobs();
-    }, []);
+    }, [seasons?.user?.email]);
     if (loading) {
      return <Loader/>  
     }

@@ -12,35 +12,33 @@ const PostedJobs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Access session object
-  console.log(session?.user?.email);
+  const fetchJobs = async () => {
+    try {
+      if (session?.user?.email) {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
+        );
+
+        // Ensure the response is an array
+        // console.log(response?.data?.myJobs);
+        const jobsData = Array.isArray(response?.data?.myJobs)
+          ? response?.data?.myJobs
+          : [];
+        setJobs(jobsData); // Set jobs state with the correct array
+      }
+    } catch (error) {
+      setError("Error fetching jobs");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Call fetchJobs on component mount and when email changes
   useEffect(() => {
     // Function to fetch jobs
-    const fetchJobs = async () => {
-      try {
-        if (session?.user?.email) {
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
-          );
 
-          // Ensure the response is an array
-          console.log(response?.data?.myAddedJobs);
-          const jobsData = Array.isArray(response?.data?.myAddedJobs)
-            ? response?.data?.myAddedJobs
-            : [];
-          setJobs(jobsData); // Set jobs state with the correct array
-        }
-      } catch (error) {
-        setError("Error fetching jobs");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchJobs();
   }, [session?.user?.email]);
-
-
 
   const handleDelete = async (jobId) => {
     Swal.fire({
@@ -70,6 +68,7 @@ const PostedJobs = () => {
           fetchJobs();
         } catch (error) {
           // Handle error
+          console.log(error);
           Swal.fire({
             title: "Error!",
             text: "Failed to delete the job.",
@@ -84,7 +83,7 @@ const PostedJobs = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="max-w-5xl mx-auto py-10">
+    <div className="max-w-5xl mx-auto py-10 overflow-x-auto">
       <h1 className="text-3xl font-semibold mb-6">My Posted Jobs</h1>
       {jobs.length === 0 ? (
         <div className="text-center text-gray-500">
@@ -103,9 +102,7 @@ const PostedJobs = () => {
               <th className="py-3 px-6 text-left text-gray-600 font-bold">
                 Type
               </th>
-              {/* <th className="py-3 px-6 text-left text-gray-600 font-bold">
-                Location
-              </th> */}
+
               <th className="py-3 px-6 text-center text-gray-600 font-bold">
                 Actions
               </th>
@@ -115,10 +112,11 @@ const PostedJobs = () => {
             {Array.isArray(jobs) &&
               jobs.map((job) => (
                 <tr key={job._id} className="hover:bg-gray-50 border-b">
-                  <td className="py-3 px-6">{job.jobTitle}</td>
-                  <td className="py-3 px-6">{job.companyName}</td>
-                  <td className="py-3 px-6">{job.jobType}</td>
-                  {/* <td className="py-3 px-6">{job.jobLocation}</td> */}
+                  <td className="py-3 px-6">{job?.jobTitle}</td>
+                  <td className="py-3 px-6">
+                    {job?.compnayInforamtion?.companyInfo?.companyName}
+                  </td>
+                  <td className="py-3 px-6">{job?.jobType}</td>
                   <td className="py-3 px-6 text-center flex justify-center gap-2">
                     <Link
                       href={`/dashboard/myPostedJobs/update/${job._id}`}
@@ -132,14 +130,14 @@ const PostedJobs = () => {
                     >
                       <AiFillDelete className="mr-1" /> Delete
                     </button>
-                    {/* <button
+                    <button
                       className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
                       onClick={() =>
-                        (window.location.href = `/view-job/${job.id}`)
+                        (window.location.href = `/jobs/${job._id}`)
                       }
                     >
                       <AiFillEye className="mr-1" /> View
-                    </button> */}
+                    </button>
                   </td>
                 </tr>
               ))}
