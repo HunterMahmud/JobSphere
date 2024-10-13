@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import  axios  from "axios";
 import { toast } from 'react-hot-toast';
 
-const page = () => {
+const Companies = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -80,4 +80,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Companies;
