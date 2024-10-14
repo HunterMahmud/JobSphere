@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import StarRating from './StarRating';
 
-const AddReview = () => {
+const AddReview = ({ rating }) => {
 
     const [formData, setFormData] = useState({
         name: '',
@@ -48,17 +48,17 @@ const AddReview = () => {
             <h1 className="text-3xl font-bold text-center mb-8 underline underline-offset-2">Post a Review</h1>
             <div className="flex flex-col justify-around border-4 items-center md:flex-row md:p-10 bg-sky-50  shadow-md rounded-lg gap-10">
 
-                <div className='w-1/2'>
-                    <div className="flex flex-col items-center justify-center  bg-sky-100 rounded-xl p-8">
-                        <h1 className="text-4xl font-bold mb-4">Review Us</h1>
-                        <p className="text-lg text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
+                <div className='md:w-1/2 mx-2'>
+                    <div className="flex flex-col items-center justify-center  bg-sky-100 rounded-xl md:p-8">
+                        <h1 className="text-4xl font-bold mt-4 mb-4">Review Us</h1>
+                        <p className="text-lg text-center text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
                         <form
                             onSubmit={handleSubmit}  // Adding submit handler
                             className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 max-w-lg w-full"
                         >
                             <div className="mb-4">
                                 <div className='flex flex-col items-center mx-auto my-4'>
-                                    <h1 className='text-lg font-semibold my-2'>How much you like our website?</h1>
+                                    <h1 className='text-lg text-center font-semibold my-2'>How much you like our website?</h1>
                                     <StarRating />
                                 </div>
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
@@ -135,13 +135,7 @@ const AddReview = () => {
                     </div>
                 </div>
                 <div className='md:w-1/2 rounded-lg'>
-                    <Image
-                        src="/images/review.png" // Ensure the image exists at this path
-                        alt="Team Member 1"
-                        width={600}
-                        height={400}
-                        className="mb-4 shadow-lg rounded-lg"
-                    />
+                    
                 </div>
             </div>
         </div>

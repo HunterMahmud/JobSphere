@@ -11,7 +11,7 @@ const StarRating = () => {
     // console.log(rating);
 
     return (
-        <div className='flex'>
+        <div className='flex gap-1 items-center'>
             {[...Array(5)].map((star, i) => {
                 const currentRate = i + 1;
                 return (
@@ -21,7 +21,7 @@ const StarRating = () => {
 
                         <input type="radio" name="rate" value={currentRate} onClick={() => setRating(currentRate)} id="" className='hidden' />
 
-                        <FaStar size={50} 
+                        <FaStar className='text-2xl' 
                         color={currentRate <= (rateColor || rating) ? '#f2e35e' : '#cfcfcf'} 
                         />
 
@@ -31,6 +31,7 @@ const StarRating = () => {
 
                 )
             })}
+            <p className='text-2xl ml-2 flex gap-1 items-center'>({rating <= 0 ? '0' : rating} <FaStar className='text-yellow-400' />)</p>
         </div>
     );
 };
