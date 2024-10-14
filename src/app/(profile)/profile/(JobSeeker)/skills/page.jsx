@@ -45,7 +45,7 @@ const Skills = () => {
         e.preventDefault();
         try {
             const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${session.user.email}`, { skills });
-            if (data?.modifiedCount > 0) {
+            if (data?.upsertedId || data?.modifiedCount > 0) {
                 toast.success("Updated Successfully");
                 setSkills(skills)
                 setEdit(false);

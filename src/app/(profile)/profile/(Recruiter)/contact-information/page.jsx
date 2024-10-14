@@ -35,7 +35,7 @@ const ContactInformation = () => {
         }
         try {
             const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${session.user.email}`, { contactInformation });
-            if (data?.modifiedCount > 0) {
+            if (data?.upsertedId || data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setContactInformation(contactInformation)
                 setEdit(false);
