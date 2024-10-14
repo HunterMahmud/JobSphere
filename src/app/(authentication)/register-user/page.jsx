@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
 
 const RegisterUser = () => {
@@ -57,8 +58,25 @@ const RegisterUser = () => {
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/register/api`,
         newUser
       );
-      if (result?.status === 200) {
+      
+      if (result.status === 200) {
         toast.success("User created successfully");
+
+        // Automatic login after successful registration
+        const loginResp = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
+
+        if (loginResp?.error) {
+          toast.error("Auto-sign-in failed. Please login manually.");
+        } else {
+          toast.success("SignIn Successful");
+          reset();
+          router.push("/");
+        }
+      }
 
         const seekerInformation = {
           contactInformation: {
@@ -71,9 +89,7 @@ const RegisterUser = () => {
           }
         }
         await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${email}`, { ...seekerInformation });
-        reset();
-        router.push(router?.query?.redirect || "/");
-      }
+        
     } catch (err) {
       console.log(err);
       if (err.response && err?.response?.status === 409) {

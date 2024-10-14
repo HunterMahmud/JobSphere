@@ -6,11 +6,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const RegisterRecruiter = () => {
   const pathName = usePathname()
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -65,20 +68,20 @@ const RegisterRecruiter = () => {
       if (result.status === 200) {
         toast.success("User created successfully");
 
-        // const companyInformation = {
-        //   companyInfo: {
-        //     companyName: '',
-        //     logo: '',
-        //   },
-        //   contactInformation: {
-        //     email:''
-        //   }
-        // }
-        
-        // await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${email}`, { ...companyInformation });
+        // Automatic login after successful registration
+        const loginResp = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
 
-        reset();
-        router.push("/");
+        if (loginResp?.error) {
+          toast.error("Auto-sign-in failed. Please login manually.");
+        } else {
+          toast.success("SignIn Successful");
+          reset();
+          router.push("/");
+        }
       }
     } catch (err) {
       if (err.response && err.response.status === 409) {
