@@ -12,6 +12,7 @@ const roleBasedRoutes = {
   "/dashboard/postAJob": ["recruiter"],
   "/dashboard/myPostedJobs": ["recruiter"],
   "/dashboard/jobSeekers": ["recruiter"],
+  "/dashboard/writeABlog": ["recruiter"],
   "/dashboard/appliedJobs": ["seeker"],
   "/dashboard/savedJobs": ["seeker"],
   // Add more routes and their respective allowed roles here
