@@ -64,10 +64,12 @@ const JobListTable = () => {
                 try {
                     await axios.delete(`/api/deleteSavedJob/${jobId}`); // Correct endpoint for DELETE
                     Swal.fire({
-                        title: "Removed!",
-                        text: "Your file has been deleted.",
-                        icon: "success"
-                    });
+                        position: "top",
+                        icon: "success",
+                        title: "Your Job has been Removed",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
                     setReFetch(!reFetch)
                 } catch (error) {
                     Swal.fire({
@@ -151,7 +153,7 @@ const JobListTable = () => {
 
                         {/* Table Body */}
                         <tbody>
-                            {jobData.map((job, index) => (
+                            {jobData?.map((job, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                                     <td className="px-6 py-4">{index + 1}</td>
                                     <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
