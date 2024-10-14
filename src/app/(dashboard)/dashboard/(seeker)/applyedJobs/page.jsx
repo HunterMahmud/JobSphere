@@ -11,7 +11,7 @@ const ApplyedJobs = () => {
   const [loading, setLoading] = useState(true);
   const session = useSession();
   const [jobs, setJobs] = useState([]);
-  console.log(jobs)
+  
   const fetchJobs = async () => {
     setLoading(true);
     try {
@@ -27,7 +27,7 @@ const ApplyedJobs = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [session]);
+  }, [session?.data?.user?.email]);
 
   const handleSearch = (e) => {
 
@@ -56,10 +56,10 @@ const ApplyedJobs = () => {
               text: "Your file has been deleted.",
               icon: "success",
             });
-            refetch()
+            // Re-fetch the jobs after deletion
+            fetchJobs();
           }
-          // Re-fetch the jobs after deletion
-          fetchJobs();
+
         } catch (error) {
           // Handle error
           console.log(error);
