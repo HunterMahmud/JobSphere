@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import React, { useState } from 'react';
 import StarRating from './StarRating';
+import Reviews from './Reviews';
 
 const AddReview = ({ rating }) => {
 
@@ -44,9 +44,9 @@ const AddReview = ({ rating }) => {
 
 
     return (
-        <div>
+        <div className='md:mx-4 mx-2'>
             <h1 className="text-3xl font-bold text-center mb-8 underline underline-offset-2">Post a Review</h1>
-            <div className="flex flex-col justify-around border-4 items-center md:flex-row md:p-10 bg-sky-50  shadow-md rounded-lg gap-10">
+            <div className="flex flex-col justify-around md:flex-row md:p-10 bg-sky-50  shadow-md rounded-lg gap-10">
 
                 <div className='md:w-1/2 mx-2'>
                     <div className="flex flex-col items-center justify-center  bg-sky-100 rounded-xl md:p-8">
@@ -135,7 +135,7 @@ const AddReview = ({ rating }) => {
                     </div>
                 </div>
                 <div className='md:w-1/2 rounded-lg'>
-                    
+                    <Reviews/>
                 </div>
             </div>
         </div>

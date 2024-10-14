@@ -7,7 +7,7 @@ const OurTeam = () => {
             <div className="mt-16 bg-white md:p-10 rounded-lg shadow-md">
                 <h2 className="text-4xl pb-4 font-bold text-center text-gray-800">Our Team</h2>
                 <div className=" lg:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-
+                    
                     <div className="text-center">
                         <Image
                             src={"https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg"}
