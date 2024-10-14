@@ -24,7 +24,8 @@ const LoginPage = () => {
             const resp = await signIn("credentials", {
                 email,
                 password,
-                redirect: false,
+                redirect: true,
+                callbackUrl: path ? path : "/",
             });
    
             if (resp?.error) {
