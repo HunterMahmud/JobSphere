@@ -13,6 +13,7 @@ import { GoCodeReview } from "react-icons/go";
 import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
 import { TfiWrite } from "react-icons/tfi";
+import { signOut } from "next-auth/react";
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
@@ -73,7 +74,7 @@ const Sidebar = () => {
             {
               loggedInUser?.role === "seeker" &&
               <nav>
-                <MenuItem icon={FaLaptopHouse} label="Apply Jobs" address="/dashboard/applyJobs" />
+                <MenuItem icon={FaLaptopHouse} label="Applyed Jobs" address="/dashboard/applyedJobs" />
                 <MenuItem icon={RiSave3Line} label="Saved Jobs" address="/dashboard/savedJobs" />
               </nav>
             }
@@ -101,7 +102,9 @@ const Sidebar = () => {
         <div>
           <hr />
           <MenuItem icon={IoHomeOutline} label="Home" address="/dashboard" />
-          <button className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300 hover:text-gray-700 transition-colors duration-300 transform">
+          <button
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="hover:text-red-500 flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-red-100 transition-colors duration-300 transform">
             <GrLogout className="w-5 h-5" />
             <span className="mx-4 font-medium">Logout</span>
           </button>
