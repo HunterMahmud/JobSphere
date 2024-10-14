@@ -20,19 +20,21 @@ import Image from "next/image";
 import Modal from "@/components/Modal/Modal";
 import useSeekerInfo from "@/components/Hooks/useSeekerInfo";
 import toast from "react-hot-toast";
+import useRole from "@/components/Hooks/useRole";
 
 const JobDetails = ({ params }) => {
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [job, setJob] = useState(null); // State to store job details
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [error, setError] = useState(null); // State to handle errors
   const { data: session } = useSession();
+  const { loggedInUser } = useRole();
   const [message, setMessage] = useState();
   const { seekerInfo } = useSeekerInfo();
   const today = new Date();
   const deadline = new Date(job?.deadline);
-  console.log(today, deadline)
+  console.log(loggedInUser)
 
   const getServicesDetails = async (id) => {
     try {
@@ -77,7 +79,10 @@ const JobDetails = ({ params }) => {
     const form = e.target;
     const email = form.email.value
     const resume = form.resume.value;
+    if (loggedInUser?.role === "recruiter") {
+      return toast.error('Action not permitted!')
 
+    }
     if (today > deadline) {
       toast.error('job deadline is over')
       return
@@ -103,7 +108,7 @@ const JobDetails = ({ params }) => {
         setShowModal(!showModal)
         setIsLoading(false)
       }
-      if(data.status === 400) {
+      if (data.status === 400) {
         setIsLoading(false)
         setShowModal(!showModal)
         toast.error('You have applied!')
@@ -366,7 +371,7 @@ const JobDetails = ({ params }) => {
 
               <div className='flex justify-end md:col-span-2'>
                 <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-              {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Apply'}
+                  {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Apply'}
                 </button>
               </div>
             </div>
