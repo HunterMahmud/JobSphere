@@ -3,7 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const SeekerDetails = async ({ params }) => {
+const SeekerDetails = ({ params }) => {
     const [user, setUser] = useState([]);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const SeekerDetails = async ({ params }) => {
         <div className="overflow-x-scroll custom-container">
             <div id="resume" className="p-4 md:p-10 lg:p-16 border rounded shadow-md bg-white">
                 <h1 className="text-3xl font-bold mb-4 text-center">
-                    {user?.profileOverview?.fullName || " "} 
+                    {user?.profileOverview?.fullName || " "}
                 </h1>
 
                 <div className="flex items-center mb-4">

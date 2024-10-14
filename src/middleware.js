@@ -68,6 +68,7 @@ export const config = {
     "/dashboard/postAJob",
     "/dashboard/myPostedJobs",
     "/dashboard/jobSeekers",
+     "/dashboard/writeABlog",
     "/dashboard/savedJobs",
     "/dashboard/appliedJobs",
     // Add more routes here if needed
