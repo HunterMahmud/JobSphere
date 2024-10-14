@@ -102,6 +102,19 @@ const JobDetails = ({ params }) => {
       return
     }
 
+    if (Object.keys(seekerInfo).length <= 3) {
+      return toast.error('Please update your profile information first..!');
+    }
+
+    if (!seekerInfo?.contactInformation?.email || !seekerInfo?.contactInformation?.phoneNumber || !seekerInfo?.contactInformation?.socialLinks) {
+      return toast.error('Please update your profile Contact Information first..!');
+    }
+
+    // Check if required social links are filled
+    if (!seekerInfo?.contactInformation?.socialLinks?.linkedin || !seekerInfo?.contactInformation?.socialLinks?.github) {
+      return toast.error('Please update your profile Contact Information first..!');
+    }
+
     const applyedJob = {
       applicantInfo: {
         contactInformation: seekerInfo?.contactInformation,
@@ -110,7 +123,8 @@ const JobDetails = ({ params }) => {
       jobId: job?._id,
       jobTitle: job?.jobTitle,
       applicationDate: today,
-      jobStatus: 'pending'
+      jobStatus: 'pending',
+      jobType: job?.jobType
     }
 
     try {
