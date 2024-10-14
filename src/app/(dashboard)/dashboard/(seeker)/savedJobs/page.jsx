@@ -116,7 +116,7 @@ const JobListTable = () => {
 
                         {/* Table Body */}
                         <tbody>
-                            { jobData.map((job, index) => (
+                            {jobData.map((job, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                                     <td className="px-6 py-4">{index + 1}</td>
                                     <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
@@ -203,3 +203,43 @@ const JobListTable = () => {
 };
 
 export default JobListTable;
+
+{/* <tr key={index} className="border-b hover:bg-gray-50">
+    <td className="px-6 py-4">{job.role}</td>
+    <td className="px-6 py-4">
+        <span
+            className={`inline-block px-2 py-1 text-sm font-medium rounded-full ${job.jobStatus === "Live"
+                    ? "bg-green-100 text-green-600"
+                    : "bg-red-100 text-red-600"
+                }`}
+        >
+            {job.jobStatus}
+        </span>
+    </td>
+    <td className="px-6 py-4">{job.datePosted}</td>
+    <td className="px-6 py-4">{job.endDate}</td>
+    <td className="px-6 py-4">
+        <span className="inline-block px-2 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-600">
+            {job.jobType}
+        </span>
+    </td>
+    <td className="px-6 py-4">
+        <span className="inline-block px-2 py-1 text-sm font-medium rounded-full bg-green-100 text-green-600">
+            {job.appliedStatus}
+        </span>
+    </td>
+    <td className="px-6 py-4 text-right">
+        <button className="text-gray-500 hover:text-gray-700">
+            <svg
+                className="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path d="M12 13.5C12.8284 13.5 13.5 12.8284 13.5 12C13.5 11.1716 12.8284 10.5 12 10.5C11.1716 10.5 10.5 11.1716 10.5 12C10.5 12.8284 11.1716 13.5 12 13.5Z" />
+                <path d="M12 17.5C12.8284 17.5 13.5 16.8284 13.5 16C13.5 15.1716 12.8284 14.5 12 14.5C11.1716 14.5 10.5 15.1716 10.5 16C10.5 16.8284 11.1716 17.5 12 17.5Z" />
+                <path d="M12 7.5C12.8284 7.5 13.5 6.82843 13.5 6C13.5 5.17157 12.8284 4.5 12 4.5C11.1716 4.5 10.5 5.17157 10.5 6C10.5 6.82843 11.1716 7.5 12 7.5Z" />
+            </svg>
+        </button>
+    </td>
+</tr> */}
