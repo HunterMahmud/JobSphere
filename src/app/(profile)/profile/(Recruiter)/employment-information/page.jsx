@@ -37,7 +37,7 @@ const EmploymentInformation = () => {
         try {
             console.log(employmentInfo)
             const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${session.user.email}`, { employmentInfo });
-            if (data?.modifiedCount > 0) {
+            if (data?.upsertedId || data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setEmploymentInfo(employmentInfo)
                 setEdit(false);
