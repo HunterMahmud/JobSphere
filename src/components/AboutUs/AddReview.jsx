@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import StarRating from './StarRating';
 
 const AddReview = () => {
 
@@ -40,7 +41,7 @@ const AddReview = () => {
             });
         }, 1000);
     };
-    
+
 
     return (
         <div>
@@ -56,6 +57,10 @@ const AddReview = () => {
                             className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 max-w-lg w-full"
                         >
                             <div className="mb-4">
+                                <div className='flex flex-col items-center mx-auto my-4'>
+                                    <h1 className='text-lg font-semibold my-2'>How much you like our website?</h1>
+                                    <StarRating />
+                                </div>
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
                                     Name
                                 </label>
@@ -100,21 +105,7 @@ const AddReview = () => {
                                     required
                                 />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="company name">
-                                    Rate Us
-                                </label>
-                                <input
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="ratings"
-                                    type="ratings"
-                                    name="ratings"
-                                    placeholder="Enter your ratings"
-                                    value={formData.ratings}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
+
 
                             <div className="mb-6">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="message">

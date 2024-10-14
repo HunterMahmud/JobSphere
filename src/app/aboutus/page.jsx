@@ -1,9 +1,9 @@
 "use client";
 import FAQ from '@/components/shared/FAQ';
-import ContactUs from '@/components/shared/ContactUs';
+import ContactUs from '@/components/AboutUs/ContactUs';
 import Image from 'next/image';
 import React from 'react';
-import AddReview from '@/components/shared/AddReview';
+import AddReview from '@/components/AboutUs/AddReview';
 
 const AboutUsPage = () => {
     return (
