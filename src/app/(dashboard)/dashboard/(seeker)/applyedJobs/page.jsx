@@ -3,15 +3,15 @@ import Loader from '@/app/loading';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { FaReact } from 'react-icons/fa';
 import { MdBookmarkRemove, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 const ApplyedJobs = () => {
   const [loading, setLoading] = useState(true);
   const session = useSession();
   const [jobs, setJobs] = useState([]);
-
+  console.log(jobs)
   const fetchJobs = async () => {
     setLoading(true);
     try {
@@ -30,8 +30,47 @@ const ApplyedJobs = () => {
   }, [session]);
 
   const handleSearch = (e) => {
-    setSearchQuery(e.target.value)
-    setPage(1); // Reset to first page on new search
+
+  };
+  // handle Remove Applyed job
+  const handleRemove = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won&apos;t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Send DELETE request to the server
+          const { data } = await axios.delete(
+            `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`
+          );
+
+          if (data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+            refetch()
+          }
+          // Re-fetch the jobs after deletion
+          fetchJobs();
+        } catch (error) {
+          // Handle error
+          console.log(error);
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to delete the job.",
+            icon: "error",
+          });
+        }
+      }
+    });
   };
 
   return (
@@ -84,7 +123,7 @@ const ApplyedJobs = () => {
                 <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
                 <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
                 <th className="px-6 py-4 text-left font-medium text-gray-700">Job applyed Date</th>
-                <th className="px-6 py-4 text-right font-medium text-gray-700">Actions</th>
+                <th className="px-6 py-4 text-center font-medium text-gray-700">Actions</th>
               </tr>
             </thead>
 
@@ -93,39 +132,28 @@ const ApplyedJobs = () => {
               {jobs?.map((job, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                   <td className="px-6 py-4">{index + 1}</td>
+
                   <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
                     {job?.jobTitle}
                   </td>
-                  <td className="px-6 py-4">
-                    {/* <span
-                      className={`inline-block px-2 py-1 font-medium rounded-full ${new Date(job?.job?.deadline) > today
-                        ? 'bg-green-100 text-green-600'
-                        : 'bg-red-100 text-red-600'
-                        }`}
-                    >
-                      {
-                        new Date(job?.deadline) > today ? "Live" : "Closed"
-                      }
-                    </span> */}
-                  </td>
+
                   <td className="px-1 md:px-3 lg:px-6 py-4">
-                    <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
-                      {job?.jobType}
+                    <span className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
+                      {job?.jobStatus}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block px-2 py-1 font-medium rounded-full bg-green-100 text-green-600">
-                      {job?.vacancy}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">{new Date(job.job?.deadline).toLocaleDateString()}</td>
+
+                  <td className="px-6 py-4">{job?.jobType}</td>
+
+                  <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
                   <td className="pl-6 py-4 text-right flex gap-2">
                     <button
+                      onClick={() => handleRemove(job?._id)}
                       className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
                     >
                       <MdBookmarkRemove className="text-lg flex items-center justify-center" />
                     </button>
-                    <Link href={`/jobs/${job?.job?._id}`}>
+                    <Link href={`/jobs/${job?.jobId}`}>
                       <button
                         className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
                       >

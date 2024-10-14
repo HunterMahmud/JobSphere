@@ -2,10 +2,12 @@ import { connectDB } from "@/lib/connectDB";
 
 export const POST = async (request) => {
     const applyedJob = await request.json();
+    console.log(applyedJob)
     const db = await connectDB();
     const applyedJobCollection = db.collection('applyedJobs')
     const query = {
-        jobId: applyedJob.jobId
+        jobId: applyedJob.jobId,
+        'applicantInfo.contactInformation.email': applyedJob.applicantInfo.contactInformation.email
     };
     const alreadyApplied = await applyedJobCollection.findOne(query);
     if (alreadyApplied) {
