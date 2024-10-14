@@ -74,15 +74,19 @@ const JobDetails = ({ params }) => {
     return <div>No job details available.</div>;
   }
 
+  const handleApplyNow = () => {
+    if (loggedInUser?.role === "recruiter" || 'admin') {
+      return toast.error('Action not permitted!')
+    } else {
+      setShowModal(!showModal)
+    }
+  }
+
   const handleApplyJob = async (e) => {
     e.preventDefault();
     const form = e.target;
-    const email = form.email.value
     const resume = form.resume.value;
-    if (loggedInUser?.role === "recruiter") {
-      return toast.error('Action not permitted!')
 
-    }
     if (today > deadline) {
       toast.error('job deadline is over')
       return
@@ -98,7 +102,7 @@ const JobDetails = ({ params }) => {
       applicationDate: today,
       jobStatus: 'pending'
     }
-    console.log(applyedJob)
+
     try {
       setIsLoading(true)
       const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi`, applyedJob);
@@ -248,7 +252,7 @@ const JobDetails = ({ params }) => {
 
           <div className="flex justify-between items-center">
             <button
-              onClick={() => { setShowModal(!showModal) }}
+              onClick={handleApplyNow}
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
             >
               Apply Now
