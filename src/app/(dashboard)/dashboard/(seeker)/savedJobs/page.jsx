@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Loader from '@/app/loading';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -8,19 +8,35 @@ import { MdBookmarkRemove, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 
 const JobListTable = () => {
-    const [selectedRole, setSelectedRole] = useState('');
-    const [selectedStatus, setSelectedStatus] = useState('');
-    const [selectedType, setSelectedType] = useState('');
     const [loading, setLoading] = useState(true);
     const session = useSession();
     const [jobData, setJobData] = useState([]);
-    const today = new Date()
+    const [selectedStatus, setSelectedStatus] = useState("");
+    const [selectedType, setSelectedType] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const [total, setTotal] = useState(0);
+    const today = new Date();
 
     useEffect(() => {
         const fetchJobs = async () => {
+            setLoading(true);
             try {
-                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getSaveJobs/${session?.data?.user?.email}`);
+                const { data } = await axios.get(
+                    `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getSaveJobs/${session?.data?.user?.email}`,
+                    {
+                        params: {
+                            status: selectedStatus,
+                            jobType: selectedType,
+                            search: searchQuery,
+                            page,
+                            limit,
+                        },
+                    }
+                );
                 setJobData(data.jobs);
+                setTotal(data.total);
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching data: ", error);
@@ -29,11 +45,13 @@ const JobListTable = () => {
         };
 
         fetchJobs();
-    }, [session?.data?.user?.email]);
+    }, [session?.data?.user?.email, selectedStatus, selectedType, searchQuery, page, limit]);
 
-    if (loading) {
-        return <Loader />;
-    }
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
+        setPage(1); // Reset to first page on new search
+    };
+
     return (
         <div className="max-w-7xl mx-auto py-8 px-4">
             {/* Page Title */}
@@ -48,6 +66,7 @@ const JobListTable = () => {
                         className="border border-gray-300 rounded-md py-2 w-full px-4 focus:outline-none focus:ring focus:border-blue-300"
                     >
                         <option disabled value="">Filter by Status</option>
+                        <option value="">All</option>
                         <option value="Live">Live</option>
                         <option value="Closed">Closed</option>
                     </select>
@@ -58,6 +77,7 @@ const JobListTable = () => {
                         className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
                     >
                         <option disabled value="">Filter by Job Type</option>
+                        <option value="">All</option>
                         <option value="Full-Time">Full-Time</option>
                         <option value="Part-Time">Part-Time</option>
                         <option value="Contract-Based">Contract-Based</option>
@@ -67,9 +87,11 @@ const JobListTable = () => {
                         <input
                             type="text"
                             placeholder="Search by job title..."
-                            className="border w-full  border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+                            value={searchQuery}
+                            onChange={(e) => handleSearch(e)}
+                            className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
                         />
-                        <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Search</button>
+                        <button onClick={handleSearch} className="px-4 py-2 bg-blue-600 text-white rounded-md">Search</button>
                     </div>
                 </div>
             </div>
@@ -93,22 +115,22 @@ const JobListTable = () => {
 
                     {/* Table Body */}
                     <tbody>
-                        {jobData.map((job, index) => (
+                        {loading?<Loader/> : jobData.map((job, index) => (
                             <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                                 <td className="px-6 py-4">{index + 1}</td>
-                                <td className="px-1 md:px-3lg:px-6 py-4 flex items-center gap-2">
+                                <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
                                     <FaReact className="text-blue-500" />
                                     {job.job?.jobTitle}
                                 </td>
                                 <td className="px-6 py-4">
                                     <span
-                                        className={`inline-block px-2 py-1 font-medium rounded-full ${new Date(job?.job?.deadline) < today
+                                        className={`inline-block px-2 py-1 font-medium rounded-full ${new Date(job?.job?.deadline) > today
                                             ? 'bg-green-100 text-green-600'
                                             : 'bg-red-100 text-red-600'
                                             }`}
                                     >
                                         {
-                                            new Date(job?.job?.deadline) < today ? "Live" : "Closed"
+                                            new Date(job?.job?.deadline) > today ? "Live" : "Closed"
                                         }
                                     </span>
                                 </td>
@@ -127,7 +149,6 @@ const JobListTable = () => {
                                 <td className="pl-6 py-4 text-right flex gap-2">
                                     <button
                                         className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
-
                                     >
                                         <MdBookmarkRemove className="text-lg flex items-center justify-center" />
                                     </button>
@@ -148,7 +169,7 @@ const JobListTable = () => {
                 <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-700">View</span>
-                        <select className="border border-gray-300 rounded-md py-1 px-3">
+                        <select value={limit} onChange={(e) => setLimit(parseInt(e.target.value))} className="border border-gray-300 rounded-md py-1 px-3">
                             <option value="10">10</option>
                             <option value="20">20</option>
                             <option value="30">30</option>
@@ -156,8 +177,8 @@ const JobListTable = () => {
                         <span className="text-gray-700">Applicants per page</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <button className="text-gray-700">1</button>
-                        <button className="text-gray-400">2</button>
+                        <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
+                        <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
                     </div>
                 </div>
             </div>
