@@ -245,14 +245,29 @@ const CompanyInformation = () => {
             foundedYear,
             country: country
         }
+        // verifyImage
+        try {
+            const response = await fetch(logo);
+            if (response.ok) {
+                console.log('Image loaded successfully.');
+            } else {
+                toast.error('Please Provide a Valid img url')
+                return
+            }
+        } catch (error) {
+            toast.error('Please Provide a Valid img url')
+            return
+        }
 
         try {
             const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/company/${session.user.email}`, { companyInfo });
-            if (data?.modifiedCount > 0) {
+            console.log(data)
+            if (data?.upsertedId || data?.modifiedCount > 0) {
                 toast.success("Updated Successful")
                 setCompanyInfo(companyInfo)
                 setEdit(false);
             }
+            setEdit(false);
         } catch (err) {
             console.log(err.message);
         }
