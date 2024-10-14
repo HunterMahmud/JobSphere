@@ -44,7 +44,7 @@ export const GET = async (request, { params }) => {
 
     const total = await SaveJobsCollection.countDocuments(filter); // Count total jobs matching the filter
 
-    return NextResponse.json({ jobs, total, page, limit ,status, filter });
+    return NextResponse.json({ jobs, total, page, limit });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: "No Data Found", error });

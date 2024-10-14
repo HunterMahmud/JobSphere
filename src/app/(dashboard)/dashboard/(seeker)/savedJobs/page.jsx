@@ -16,7 +16,7 @@ const JobListTable = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const [total, setTotal] = useState(0);
+    const [total, setTotal] = useState(1);
     const today = new Date();
 
     useEffect(() => {
@@ -98,72 +98,75 @@ const JobListTable = () => {
 
             {/* Table */}
             <div className="overflow-x-auto border rounded-lg shadow-md">
-                <table className="min-w-full bg-white">
-                    {/* Table Header */}
-                    <thead className="bg-gray-50 border-b">
-                        <tr>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">Job Title</th>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">Location Type</th>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">Vacancy</th>
-                            <th className="px-6 py-4 text-left font-medium text-gray-700">Job Deadline</th>
-                            <th className="px-6 py-4 text-right font-medium text-gray-700">Actions</th>
-                        </tr>
-                    </thead>
-
-                    {/* Table Body */}
-                    <tbody>
-                        {loading?<Loader/> : jobData.map((job, index) => (
-                            <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
-                                <td className="px-6 py-4">{index + 1}</td>
-                                <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
-                                    <FaReact className="text-blue-500" />
-                                    {job.job?.jobTitle}
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span
-                                        className={`inline-block px-2 py-1 font-medium rounded-full ${new Date(job?.job?.deadline) > today
-                                            ? 'bg-green-100 text-green-600'
-                                            : 'bg-red-100 text-red-600'
-                                            }`}
-                                    >
-                                        {
-                                            new Date(job?.job?.deadline) > today ? "Live" : "Closed"
-                                        }
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4">{job.job?.locationType}</td>
-                                <td className="px-1 md:px-3 lg:px-6 py-4">
-                                    <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
-                                        {job.job?.jobType}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="inline-block px-2 py-1 font-medium rounded-full bg-green-100 text-green-600">
-                                        {job.job?.vacancy}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4">{new Date(job.job?.deadline).toLocaleDateString()}</td>
-                                <td className="pl-6 py-4 text-right flex gap-2">
-                                    <button
-                                        className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
-                                    >
-                                        <MdBookmarkRemove className="text-lg flex items-center justify-center" />
-                                    </button>
-                                    <Link href={`/jobs/${job?.job?._id}`}>
-                                        <button
-                                            className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
-                                        >
-                                            <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
-                                        </button>
-                                    </Link>
-                                </td>
+                {
+                    loading ? <Loader /> : <table className="min-w-full bg-white">
+                        {/* Table Header */}
+                        <thead className="bg-gray-50 border-b">
+                            <tr>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Title</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Location Type</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Vacancy</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Deadline</th>
+                                <th className="px-6 py-4 text-right font-medium text-gray-700">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        {/* Table Body */}
+                        <tbody>
+                            { jobData.map((job, index) => (
+                                <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
+                                    <td className="px-6 py-4">{index + 1}</td>
+                                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
+                                        <FaReact className="text-blue-500" />
+                                        {job.job?.jobTitle}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span
+                                            className={`inline-block px-2 py-1 font-medium rounded-full ${new Date(job?.job?.deadline) > today
+                                                ? 'bg-green-100 text-green-600'
+                                                : 'bg-red-100 text-red-600'
+                                                }`}
+                                        >
+                                            {
+                                                new Date(job?.job?.deadline) > today ? "Live" : "Closed"
+                                            }
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4">{job.job?.locationType}</td>
+                                    <td className="px-1 md:px-3 lg:px-6 py-4">
+                                        <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
+                                            {job.job?.jobType}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span className="inline-block px-2 py-1 font-medium rounded-full bg-green-100 text-green-600">
+                                            {job.job?.vacancy}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4">{new Date(job.job?.deadline).toLocaleDateString()}</td>
+                                    <td className="pl-6 py-4 text-right flex gap-2">
+                                        <button
+                                            className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
+                                        >
+                                            <MdBookmarkRemove className="text-lg flex items-center justify-center" />
+                                        </button>
+                                        <Link href={`/jobs/${job?.job?._id}`}>
+                                            <button
+                                                className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
+                                            >
+                                                <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
+                                            </button>
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                }
+
 
                 {/* Pagination */}
                 <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
@@ -178,6 +181,19 @@ const JobListTable = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                         <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
+                        <div className="space-x-2">
+                            {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
+                                <button
+                                    key={index + 1}
+                                    onClick={() => setPage(index + 1)}
+                                    className={`btn p-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
+                                        }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
+
                         <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
                     </div>
                 </div>
