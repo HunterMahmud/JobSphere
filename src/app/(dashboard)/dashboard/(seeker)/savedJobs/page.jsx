@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { FaReact } from 'react-icons/fa';
 import { MdBookmarkRemove, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 const JobListTable = () => {
     const [loading, setLoading] = useState(true);
@@ -17,6 +18,7 @@ const JobListTable = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [total, setTotal] = useState(1);
+    const [reFetch, setReFetch] = useState(true)
     const today = new Date();
 
     useEffect(() => {
@@ -45,8 +47,43 @@ const JobListTable = () => {
         };
 
         fetchJobs();
-    }, [session?.data?.user?.email, selectedStatus, selectedType, searchQuery, page, limit]);
+    }, [session?.data?.user?.email, selectedStatus, selectedType, searchQuery, page, limit, reFetch]);
 
+
+    const handleDelete = async (jobId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Remove it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`/api/deleteSavedJob/${jobId}`); // Correct endpoint for DELETE
+                    Swal.fire({
+                        position: "top",
+                        icon: "success",
+                        title: "Your Job has been Removed",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                    setReFetch(!reFetch)
+                } catch (error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: error,
+                        icon: "error"
+                    });
+                    console.error("Error deleting job: ", error);
+                }
+            }
+        });
+
+
+    };
     const handleSearch = (e) => {
         setSearchQuery(e.target.value)
         setPage(1); // Reset to first page on new search
@@ -97,7 +134,7 @@ const JobListTable = () => {
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto border rounded-lg shadow-md">
+            <div className="overflow-x-scroll border rounded-lg shadow-md">
                 {
                     loading ? <Loader /> : <table className="min-w-full bg-white">
                         {/* Table Header */}
@@ -116,7 +153,7 @@ const JobListTable = () => {
 
                         {/* Table Body */}
                         <tbody>
-                            { jobData.map((job, index) => (
+                            {jobData?.map((job, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                                     <td className="px-6 py-4">{index + 1}</td>
                                     <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
@@ -149,6 +186,7 @@ const JobListTable = () => {
                                     <td className="px-6 py-4">{new Date(job.job?.deadline).toLocaleDateString()}</td>
                                     <td className="pl-6 py-4 text-right flex gap-2">
                                         <button
+                                            onClick={() => handleDelete(job?._id)}
                                             className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
                                         >
                                             <MdBookmarkRemove className="text-lg flex items-center justify-center" />
@@ -177,16 +215,16 @@ const JobListTable = () => {
                             <option value="20">20</option>
                             <option value="30">30</option>
                         </select>
-                        <span className="text-gray-700">Applicants per page</span>
+                        <span className="text-gray-700 block w-full pr-6">Applicants per page</span>
                     </div>
                     <div className="flex items-center space-x-2">
                         <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
-                        <div className="space-x-2">
+                        <div className="space-x-2 flex">
                             {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
                                 <button
                                     key={index + 1}
                                     onClick={() => setPage(index + 1)}
-                                    className={`btn p-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
+                                    className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
                                         }`}
                                 >
                                     {index + 1}
@@ -197,6 +235,7 @@ const JobListTable = () => {
                         <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
                     </div>
                 </div>
+
             </div>
         </div>
     );
