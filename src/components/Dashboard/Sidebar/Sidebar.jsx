@@ -18,28 +18,16 @@ import { signOut } from "next-auth/react";
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
   const { loggedInUser } = useRole();
+
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".navbar")) {
-        setActive(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []); // Empty dependency array to run once on mount
-
   return (
     <>
       {/* Small Screen Navbar */}
-      <div className="bg-[#1f2937] text-gray-800 flex justify-between md:hidden">
+      <div className="bg-[#1f2937]  text-gray-800 flex justify-between md:hidden">
         <div>
           <div className="block cursor-pointer p-4 font-bold">
             <button className="text-2xl font-bold text-white">
