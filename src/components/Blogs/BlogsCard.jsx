@@ -3,19 +3,14 @@ import Link from "next/link";
 import React from "react";
 
 const BlogsCard = ({ blog }) => {
-  console.log(blog);
+  // console.log(blog);
   const {
     _id,
     author,
-    authorEmail,
     blogImage,
     content,
-    downvotes,
     publishedDate,
     title,
-    upvotes,
-    userId,
-    votedUsers,
   } = blog;
   return (
     <div>
@@ -24,11 +19,11 @@ const BlogsCard = ({ blog }) => {
           <time className="items-center p-2 gap-4 text-xs font-bold uppercase text-sky-900 dark:text-sky-900">
             <span>date :</span>
             <span className="h-px flex-1 bg-gray-900/10 dark:bg-white/10"></span>
-            <span>{new Date(publishedDate).toLocaleDateString()}</span>
+            <span>{new Date(publishedDate).toLocaleDateString()+ " " + new Date(publishedDate).toLocaleTimeString()}</span>
             <span className="h-px flex-1 bg-gray-900/10 dark:bg-white/10"></span>
           </time>
           <div className="items-center p-2 gap-4 text-lg font-bold uppercase text-sky-900 dark:text-sky-900">
-            <span>Author Name:</span>
+            <span>Author:</span>
             <span className="h-px flex-1 bg-gray-900/10 dark:bg-white/10"></span>
             <span> {author}</span>
             <span className="h-px flex-1 bg-gray-900/10 dark:bg-white/10"></span>

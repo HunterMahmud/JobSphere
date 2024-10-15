@@ -27,7 +27,7 @@ const BlogPage = () => {
         setLoading(false);
       } catch (error) {
         // console.error("Error fetching data: ", error);
-        // setError(error);
+        // setError(error?.message);
         setLoading(false);
       }
     };
@@ -62,11 +62,11 @@ const BlogPage = () => {
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p>Error: {error?.message}</p>;
   }
 
   return (
-    <div className="container mx-auto my-12">
+    <div className="custom-container mx-auto my-12">
       <h1 className="text-3xl font-bold text-center mb-8">Blogs</h1>
 
       {/* Search Function */}
@@ -86,7 +86,7 @@ const BlogPage = () => {
             <Loader />
           </div>
         ) : Array.isArray(blogs) && blogs.length > 0 ? (
-          blogs.map((blog, i) => <BlogsCard key={i} blog={blog} />)
+          blogs?.map((blog, i) => <BlogsCard key={i} blog={blog} />)
         ) : (
           <p className="text-center md:grid-cols-2 lg:col-span-3">No blogs found</p>
         )}
