@@ -14,6 +14,10 @@ const ApplyedJobs = () => {
   const [sort, setSort] = useState('');
   const [search, setSearch] = useState('');
   const [jobType, setJobType] = useState('');
+  // for pagination
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(1);
 
   console.log(search, sort, jobType)
   const fetchJobs = async () => {
@@ -26,9 +30,12 @@ const ApplyedJobs = () => {
             jobType,
             sort,
             jobTitle: search,
+            page,
+            limit
           }
         });
-      setJobs(data);
+      setJobs(data.jobs);
+      setTotal(data.total);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -38,7 +45,7 @@ const ApplyedJobs = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [session?.data?.user?.email,sort,search,jobType]);
+  }, [session?.data?.user?.email, sort, search, jobType,page,limit]);
 
   // handle Remove Applyed job
   const handleRemove = async (id) => {
@@ -118,7 +125,7 @@ const ApplyedJobs = () => {
             <input
               type="text"
               placeholder="Search by job title..."
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => { setSearch(e.target.value), setPage(1) }}
               className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
             />
           </div>
@@ -180,6 +187,36 @@ const ApplyedJobs = () => {
             </tbody>
           </table>
         }
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
+          <div className="flex items-center space-x-2">
+            <span className="text-gray-700">View</span>
+            <select value={limit} onChange={(e) => {setLimit(parseInt(e.target.value)),setPage(1)}} className="border border-gray-300 rounded-md py-1 px-3">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+            <span className="text-gray-700 block w-full pr-6">Applicants per page</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
+            <div className="space-x-2 flex">
+              {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => setPage(index + 1)}
+                  className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
+                    }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+
+            <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -8,8 +8,10 @@ export const GET = async (request, { params }) => {
     const jobTitle = url.searchParams.get("jobTitle");
     const jobType = url.searchParams.get("jobType");
     const sort = url.searchParams.get("sort");
-    console.log(jobTitle, jobType, sort)
-    console.log(url)
+    const page = parseInt(url.searchParams.get("page")) || 1;
+    const limit = parseInt(url.searchParams.get("limit")) || 10;
+    const skip = (page - 1) * limit;
+
     let query = {
         'applicantInfo.contactInformation.email': params.email
     }
@@ -29,8 +31,9 @@ export const GET = async (request, { params }) => {
     }
 
     try {
-        const res = await applyedJobCollection.find(query,options).toArray();
-        return Response.json(res);
+        const jobs = await applyedJobCollection.find(query, options).skip(skip).limit(limit).toArray();
+        const total = await applyedJobCollection.countDocuments(query, options); // Count total jobs matching the filter
+        return Response.json({ jobs, total });
     } catch (err) {
         console.log(err)
         return Response.json(err);
