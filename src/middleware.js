@@ -61,10 +61,10 @@ export const middleware = async (request) => {
 // Define the matcher for the middleware
 export const config = {
   matcher: [
-    "/dashboard/statistics",
-    "/dashboard/userManagement",
-    "/dashboard/jobManagement",
-    "/dashboard/interview",
+    // "/dashboard/statistics",
+    // "/dashboard/userManagement",
+    // "/dashboard/jobManagement",
+    // "/dashboard/interview",
     "/dashboard/postAJob",
     "/dashboard/myPostedJobs",
     "/dashboard/jobSeekers",
