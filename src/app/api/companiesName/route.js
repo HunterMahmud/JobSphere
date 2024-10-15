@@ -3,11 +3,10 @@ import { NextResponse } from "next/server";
 
 export const GET = async () => {
     const db = await connectDB();
-    const jobsCollection = db.collection("jobs");
-    console.log(jobsCollection);
+    const companiesCollection = db.collection("companyInfo");
     try {
-        const companiesName = await jobsCollection
-            .find({}, { projection: { "companyDetails.companyName": 1 } })
+        const companiesName = await companiesCollection
+            .find({}, { projection: { "companyInfo.companyName": 1 } })
             .toArray()
 
         return NextResponse.json({ companiesName });

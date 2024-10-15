@@ -66,7 +66,7 @@ const JobCard = ({ job }) => {
           </div>
         </div>
         <div className="flex justify-center mt-3">
-          <button className="bg-purple-600 btn hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg w-auto">
+          <button className="bg-purple-600 btn hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg w-auto">
             <Link href={`/jobs/${_id}`}>View Details</Link>
           </button>
         </div>
