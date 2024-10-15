@@ -57,9 +57,6 @@ const BlogPage = () => {
   //   }
   // };
 
-  if (loading) {
-    return <Loader/>;
-  }
 
   if (error) {
     return <p>Error: {error?.message}</p>;
