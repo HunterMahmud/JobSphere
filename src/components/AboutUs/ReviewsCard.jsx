@@ -5,11 +5,11 @@ import { FaStar } from "react-icons/fa";
 const ReviewsCard = ({ reviews }) => {
     const { name, role, rating, image, review, date } = reviews;
     return (
-        <div className='bg-slate-100 transition hover:shadow-xl dark:bg-sky-50 border-sky-600 mx-auto dark:shadow-gray-800/25 rounded-lg border-2 py-2 px-4 my-4'>
+        <div className='bg-slate-100 transition hover:shadow-xl dark:bg-sky-50 border-sky-600 mx-auto dark:shadow-gray-800/25 min-h-[210px] rounded-lg border-2 py-2 px-4 my-4'>
             <div>
                 <div className='flex justify-between'>
                     <div className='p-2  rounded-lg flex gap-2'>
-                        <Image src={image} height={50} width={50} className='rounded-full' />
+                        <Image src={image} height={50} width={50} className='rounded-full mx-2' />
                         <div>
                             <h1 className='text-xl font-bold underline-offset-2 underline'>Name: {name}</h1>
                             <h1 className='text-lg font-semibold'>Position: {role}</h1>

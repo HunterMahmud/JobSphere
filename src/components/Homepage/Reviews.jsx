@@ -49,12 +49,12 @@ const Reviews = () => {
           }
     ]
 
-    const {name, role, rating, review} = userReviews;
+  
     
     return (
         <div className='mx-4 my-10 md:m-16'>
            <h1 className='text-3xl font-bold text-center mb-8 md:mt-20 underline'>Users Reviews</h1>
-           {/* Job Cards */}
+           {/* Reviews Cards */}
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center md:gap-10 mx-auto items-center">
                 {Array.isArray(userReviews) && userReviews.length > 0 ? (
                     userReviews.map((reviews, index) => <ReviewsCard key={index} reviews={reviews} />)
