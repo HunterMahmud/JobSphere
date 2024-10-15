@@ -3,7 +3,7 @@ import Loader from '@/app/loading';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { MdBookmarkRemove, MdOutlineRemoveRedEye } from 'react-icons/md';
+import { MdOutlineCancel, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 
@@ -11,13 +11,31 @@ const ApplyedJobs = () => {
   const [loading, setLoading] = useState(true);
   const session = useSession();
   const [jobs, setJobs] = useState([]);
-  
+  const [sort, setSort] = useState('');
+  const [search, setSearch] = useState('');
+  const [jobType, setJobType] = useState('');
+  // for pagination
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(1);
+
+  console.log(search, sort, jobType)
   const fetchJobs = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/${session?.data?.user?.email}`);
-      setJobs(data);
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/${session?.data?.user?.email}`,
+        {
+          params: {
+            jobType,
+            sort,
+            jobTitle: search,
+            page,
+            limit
+          }
+        });
+      setJobs(data.jobs);
+      setTotal(data.total);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -27,21 +45,18 @@ const ApplyedJobs = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [session?.data?.user?.email]);
+  }, [session?.data?.user?.email, sort, search, jobType,page,limit]);
 
-  const handleSearch = (e) => {
-
-  };
   // handle Remove Applyed job
   const handleRemove = async (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won&apos;t be able to revert this!",
+      text: "Do you want to cancel the application?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -81,20 +96,26 @@ const ApplyedJobs = () => {
       {/* Filter Section */}
       <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
         <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
+
           <select
-            className="border border-gray-300 rounded-md py-2 w-full px-4 focus:outline-none focus:ring focus:border-blue-300"
+            onChange={e => {
+              setSort(e.target.value)
+            }}
+            value={sort}
+            name='category'
+            id='category'
+            className='border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300'
           >
-            <option disabled value="">Filter by Status</option>
-            <option value="">All</option>
-            <option value="Live">Live</option>
-            <option value="Closed">Closed</option>
+            <option value=''>Sort by Applyed Date</option>
+            <option value='dsc'>Descending Order</option>
+            <option value='asc'>Ascending Order</option>
           </select>
 
           <select
+            onChange={(e) => setJobType(e.target.value)}
             className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
           >
-            <option disabled value="">Filter by Job Type</option>
-            <option value="">All</option>
+            <option value="">Filter by Job Type</option>
             <option value="Full-Time">Full-Time</option>
             <option value="Part-Time">Part-Time</option>
             <option value="Contract-Based">Contract-Based</option>
@@ -104,9 +125,9 @@ const ApplyedJobs = () => {
             <input
               type="text"
               placeholder="Search by job title..."
+              onChange={(e) => { setSearch(e.target.value), setPage(1) }}
               className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
             />
-            <button onClick={handleSearch} className="px-4 py-2 bg-blue-600 text-white rounded-md">Search</button>
           </div>
         </div>
       </div>
@@ -151,7 +172,7 @@ const ApplyedJobs = () => {
                       onClick={() => handleRemove(job?._id)}
                       className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
                     >
-                      <MdBookmarkRemove className="text-lg flex items-center justify-center" />
+                      <MdOutlineCancel className="text-lg flex items-center justify-center" />
                     </button>
                     <Link href={`/jobs/${job?.jobId}`}>
                       <button
@@ -166,6 +187,36 @@ const ApplyedJobs = () => {
             </tbody>
           </table>
         }
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
+          <div className="flex items-center space-x-2">
+            <span className="text-gray-700">View</span>
+            <select value={limit} onChange={(e) => {setLimit(parseInt(e.target.value)),setPage(1)}} className="border border-gray-300 rounded-md py-1 px-3">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+            <span className="text-gray-700 block w-full pr-6">Applicants per page</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
+            <div className="space-x-2 flex">
+              {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => setPage(index + 1)}
+                  className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
+                    }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+
+            <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
+          </div>
+        </div>
       </div>
     </div>
   );
