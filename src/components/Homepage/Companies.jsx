@@ -21,8 +21,6 @@ const Companies = () => {
 
         fetchJobs();
     }, []);
-
-    console.log(companiesName)
     return (
         <div className="container mx-auto my-12">
             <h1 className="text-3xl font-extrabold text-center mb-8">Connected Companies</h1>
@@ -30,7 +28,7 @@ const Companies = () => {
             <Marquee>
                 <div className='grid grid-rows-3 grid-flow-col gap-4'>
                     {
-                        companiesName?.map(Name => <div className='min-w-72' key={Name._id}><h1 className='bg-blue-100 px-2 ml-5 py-3 rounded-2xl border-2 border-blue-800 text-center text-xl font-semibold text-slate-800 ' >{Name?.companyDetails?.companyName}</h1></div>)
+                        companiesName?.map(Name => <div className='min-w-72' key={Name._id}><h1 className='bg-blue-100 px-2 ml-5 py-3 rounded-2xl border-2 border-blue-800 text-center text-xl font-semibold text-slate-800 ' >{Name?.companyInfo?.companyName}</h1></div>)
                     }  </div>
             </Marquee>
         </div>
