@@ -61,7 +61,6 @@ const ApplyedAJob = ({ params }) => {
                         // Re-fetch the jobs after deletion
                         fetchJobs();
                     }
-
                 } catch (error) {
                     // Handle error
                     console.log(error.message);
@@ -145,8 +144,9 @@ const ApplyedAJob = ({ params }) => {
                                             <MdInterpreterMode className="text-lg flex items-center justify-center" />
                                         </button>
                                         <button
+                                            disabled={job?.jobStatus === 'rejected'}
                                             onClick={() => handleRemove(job?._id)}
-                                            className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2"
+                                            className={`${job?.jobStatus === 'rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
                                         >
                                             <MdOutlineCancel className="text-lg flex items-center justify-center" />
                                         </button>
