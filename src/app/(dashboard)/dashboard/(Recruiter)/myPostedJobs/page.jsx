@@ -120,9 +120,10 @@ const PostedJobs = () => {
                     {job?.compnayInforamtion?.companyInfo?.companyName}
                   </td>
                   <td className="py-3 px-6">{job?.jobType}</td>
-                  <td className="py-3 px-6">
+                  <td className="py-3 px-6 text-center">
                     <Link
-                    href={`dashboard/jobApplicants/${job?._id}`}
+                    href={`/dashboard/myPostedJobs/${job?._id}`}
+                    className="bg-primary text-white px-5 py-1 rounded-lg"
                     >
                       {job?.applicantsNumber}
                     </Link>

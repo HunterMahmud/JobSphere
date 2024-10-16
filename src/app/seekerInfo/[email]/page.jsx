@@ -1,23 +1,29 @@
 'use client'
+import Loader from "@/app/(profile)/profile/loading";
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const SeekerDetails = ({ params }) => {
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState([]);
 
     useEffect(() => {
         const fetchInfo = async () => {
+            setLoading(true)
             try {
                 const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${params.email}`);
                 setUser(data);
+                setLoading(false)
+
             } catch (error) {
+                setLoading(false)
                 console.error("Error fetching data: ", error.message);
             }
         };
         fetchInfo();
     }, [params]);
-
+    if (loading) return <Loader />
     return (
         <div className="overflow-x-scroll custom-container">
             <div id="resume" className="p-4 md:p-10 lg:p-16 border rounded shadow-md bg-white">
