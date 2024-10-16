@@ -68,7 +68,7 @@ const PostedJobs = () => {
           fetchJobs();
         } catch (error) {
           // Handle error
-          console.log(error);
+          // console.log(error);
           Swal.fire({
             title: "Error!",
             text: "Failed to delete the job.",
@@ -101,6 +101,9 @@ const PostedJobs = () => {
               </th>
               <th className="py-3 px-6 text-left text-gray-600 font-bold">
                 Type
+              </th>
+              <th className="py-3 px-6 text-left text-gray-600 font-bold">
+                Total Applicants
               </th>
 
               <th className="py-3 px-6 text-center text-gray-600 font-bold">
