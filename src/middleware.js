@@ -62,11 +62,11 @@ export const middleware = async (request) => {
 export const config = {
   matcher: [
     "/dashboard/statistics",
-    // "/dashboard/userManagement",
-    // "/dashboard/jobManagement",
+    "/dashboard/userManagement",
+    "/dashboard/jobManagement",
     "/dashboard/interview",
     "/dashboard/postAJob",
-    // "/dashboard/myPostedJobs",
+    "/dashboard/myPostedJobs",
     "/dashboard/jobSeekers",
      "/dashboard/writeABlog",
     "/dashboard/savedJobs",
