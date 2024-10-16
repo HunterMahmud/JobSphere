@@ -10,6 +10,9 @@ const JobTable = () => {
   const [sortOrder, setSortOrder] = useState(""); // for sorting
   const [jobTypeFilter, setJobTypeFilter] = useState(""); // for filtering by job type
   const [searchTerm, setSearchTerm] = useState(""); // for searching by job title
+  const [page, setPage] = useState(1); // current page
+  const [limit, setLimit] = useState(10); // items per page
+  const [total, setTotal] = useState(0); // total number of jobs
 
   // Fetch jobs from the API
   const fetchJobs = async () => {
@@ -22,11 +25,13 @@ const JobTable = () => {
             jobType: jobTypeFilter,
             sort: sortOrder,
             jobTitle: searchTerm,
+            page,   // current page
+            limit,  // items per page
           },
         }
       );
       setJobDetails(response.data.jobs);
-      console.log(response.data)
+      setTotal(response.data.total); // assuming the API returns the total count of jobs
       setLoading(false);
     } catch (err) {
       setError("Failed to load job listings.");
@@ -36,7 +41,7 @@ const JobTable = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [sortOrder, jobTypeFilter, searchTerm]);
+  }, [sortOrder, jobTypeFilter, searchTerm, page, limit]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -45,8 +50,6 @@ const JobTable = () => {
   if (error) {
     return <p>{error}</p>;
   }
-
-  console.log(jobDetails)
 
   return (
     <div className="container mx-auto p-6">
@@ -78,12 +81,17 @@ const JobTable = () => {
           </select>
 
           {/* Search by Job Title */}
-          <input
-            type="text"
-            placeholder="Search by job title..."
-            onBlur={(e) => setSearchTerm(e.target.value)}
-            className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
-          />
+<input
+  type="text"
+  placeholder="Search by Job Title and press Enter..."
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      setSearchTerm(e.target.value);
+    }
+  }}
+  className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+/>
+
         </div>
       </div>
 
@@ -119,8 +127,64 @@ const JobTable = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-700">View</span>
+          <select 
+            value={limit} 
+            onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }} 
+            className="border border-gray-300 rounded-md py-1 px-3"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+          </select>
+          <span className="text-gray-700 block w-full pr-6">Jobs per page</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <button 
+            disabled={page === 1} 
+            onClick={() => setPage(page - 1)} 
+            className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}
+          >
+            Previous
+          </button>
+          <div className="space-x-2 flex">
+            {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setPage(index + 1)}
+                className={`btn px-3 py-2 border-2 text-xs font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""}`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+          <button 
+            disabled={page === Math.ceil(total / limit)} 
+            onClick={() => setPage(page + 1)} 
+            className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default JobTable;
+
+
+
+
+
+{/* <td className="border border-gray-300 px-4 py-2">
+                  {contest.deadline ? (
+                    <Countdown date={contest.deadline} />
+                  ) : (
+                    "Contest Ended"
+                  )}
+                </td> */}
