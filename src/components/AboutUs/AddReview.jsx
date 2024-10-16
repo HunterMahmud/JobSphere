@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import StarRating from './StarRating';
-import Reviews from './Reviews';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const AddReview = ({ rating }) => {
 
@@ -134,8 +135,21 @@ const AddReview = ({ rating }) => {
                         </form>
                     </div>
                 </div>
-                <div className='md:w-1/2 rounded-lg'>
-                    <Reviews/>
+                <div className='rounded-lg flex flex-col justify-center mx-auto items-center'>
+                    <div className='rounded-lg'>
+                        <Image
+                            src="/images/Review.png"
+                            alt="Team Member 1"
+                            width={600}
+                            height={400}
+                            className="mb-4 shadow-lg rounded-lg"
+                        />
+                    </div>
+                    <div className="flex mx-auto justify-center mt-4">
+                        <button className="bg-sky-500 btn hover:bg-sky-700 text-white font-semibold py-3 my-4 px-8 rounded-lg w-auto justify-center">
+                            <Link href={`/usersReview`}>View All Reviews</Link>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
