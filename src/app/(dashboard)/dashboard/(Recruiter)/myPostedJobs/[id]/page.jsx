@@ -2,9 +2,10 @@
 import Loader from '@/app/loading';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { MdOutlineCancel, MdOutlineRemoveRedEye } from 'react-icons/md';
+import { MdInterpreterMode, MdOutlineCancel, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
+import { GiNotebook } from 'react-icons/gi';
 
 const ApplyedAJob = ({ params }) => {
     const [loading, setLoading] = useState(true);
@@ -79,6 +80,14 @@ const ApplyedAJob = ({ params }) => {
         });
     };
 
+    const handleTask = (id) => {
+
+    }
+
+    const handleInterView = (id) => {
+
+    }
+
     return (
         <div className="max-w-7xl mx-auto py-8 px-4">
             {/* Page Title */}
@@ -129,18 +138,23 @@ const ApplyedAJob = ({ params }) => {
 
                                     <td className="pl-6 py-4 text-right flex gap-2">
                                         <button
+                                            onClick={() => handleTask(job?._id)}
+                                            className="flex items-center justify-center gap-1 bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-600 transition"
+                                        >
+                                            <GiNotebook className="text-lg flex items-center justify-center" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleInterView(job?._id)}
+                                            className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
+                                        >
+                                            <MdInterpreterMode className="text-lg flex items-center justify-center" />
+                                        </button>
+                                        <button
                                             onClick={() => handleRemove(job?._id)}
-                                            className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
+                                            className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2"
                                         >
                                             <MdOutlineCancel className="text-lg flex items-center justify-center" />
                                         </button>
-                                        <Link href={`/jobs/${job?.jobId}`}>
-                                            <button
-                                                className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
-                                            >
-                                                <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
-                                            </button>
-                                        </Link>
                                     </td>
                                 </tr>
                             ))}
@@ -149,7 +163,7 @@ const ApplyedAJob = ({ params }) => {
                 }
 
                 {/* Pagination */}
-                <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
+                <div className="flex min-w-full items-center justify-between bg-gray-50 px-6 py-4 border-t">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-700">View</span>
                         <select value={limit} onChange={(e) => { setLimit(parseInt(e.target.value)), setPage(1) }} className="border border-gray-300 rounded-md py-1 px-3">
