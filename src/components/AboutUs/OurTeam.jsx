@@ -6,7 +6,7 @@ const OurTeam = () => {
         <div>
             <div className="mt-16 bg-white md:p-10 rounded-lg shadow-md">
                 <h2 className="text-4xl pb-4 font-bold text-center text-gray-800">Our Team</h2>
-                <div className=" lg:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div className=" lg:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-auto md:justify-center md:items-center">
                     
                     <div className="text-center">
                         <Image
@@ -44,7 +44,7 @@ const OurTeam = () => {
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
 
-                    <div className="text-center flex flex-col">
+                    <div className="text-center lg:col-span-2 lg:col-start-1">
                         <Image
                             src={"https://i.ibb.co.com/gz7jjtF/Shamim.jpg"}
                             alt="Md Shamim"
@@ -56,7 +56,7 @@ const OurTeam = () => {
                         <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
                     </div>
 
-                    <div className="text-center">
+                    <div className="text-center lg:relative lg:right-2/4">
                         <Image
                             src={"https://i.ibb.co.com/Ct6mM6L/Sahidul.jpg"}
                             alt="MD Sahidul Islam"
@@ -70,33 +70,7 @@ const OurTeam = () => {
                     </div>
                 </div>
 
-                {/* <div className="mt-8 space-y-4 md:mx-32 grid grid-cols-1 md:grid-cols-2 justify-around">
-                    <div className="text-center flex flex-col">
-                        <Image
-                            src={"https://i.ibb.co.com/gz7jjtF/Shamim.jpg"}
-                            alt="Md Shamim"
-                            width={600}
-                            height={400}
-                            className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
-                        <h3 className="text-2xl font-semibold">Md Shamim</h3>
-                        <p className="text-gray-600">Backend Developer</p>
-                        <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
-                    </div>
-
-                    <div className="text-center">
-                        <Image
-                            src={"https://i.ibb.co.com/Ct6mM6L/Sahidul.jpg"}
-                            alt="MD Sahidul Islam"
-                            width={600}
-                            height={400}
-                            className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
-
-                        <h3 className="text-2xl font-semibold">MD Sahidul Islam</h3>
-                        <p className="text-gray-600">Frontend Developer</p>
-                        <a href="https://linkedin.com" className="text-indigo-600 mt-2 block">LinkedIn</a>
-                    </div>
-
-                </div> */}
+               
             </div>
         </div>
     );
