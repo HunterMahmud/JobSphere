@@ -50,7 +50,7 @@ const ContactUs = () => {
         />
       </div>
       <div>
-        <div className="flex flex-col items-center justify-center min-h-screen bg-sky-100 rounded-xl p-6">
+        <div className="flex flex-col items-center justify-center bg-sky-100 rounded-xl p-6">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
           <p className="text-lg text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
           <form 
