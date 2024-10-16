@@ -6,6 +6,7 @@ import { MdInterpreterMode, MdOutlineCancel, MdOutlineRemoveRedEye } from 'react
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 import { GiNotebook } from 'react-icons/gi';
+import toast from 'react-hot-toast';
 
 const ApplyedAJob = ({ params }) => {
     const [loading, setLoading] = useState(true);
@@ -43,7 +44,7 @@ const ApplyedAJob = ({ params }) => {
     const handleRemove = async (id) => {
         Swal.fire({
             title: "Are you sure?",
-            text: "Do you want to cancel the application?",
+            text: "Do you want to reject the applicant?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -52,17 +53,11 @@ const ApplyedAJob = ({ params }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    // Send DELETE request to the server
-                    const { data } = await axios.delete(
-                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`
-                    );
+                    const { data } = await axios.put(
+                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "rejected" });
 
-                    if (data.deletedCount > 0) {
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your file has been deleted.",
-                            icon: "success",
-                        });
+                    if (data.modifiedCount > 0) {
+                        toast.success('Successful')
                         // Re-fetch the jobs after deletion
                         fetchJobs();
                     }

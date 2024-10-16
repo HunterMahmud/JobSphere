@@ -22,3 +22,4 @@ export const GET = async (request, { params }) => {
         return Response.json(err);
     }
 }
+
