@@ -19,7 +19,7 @@ const Footer = () => {
                         <h3 className="tracking-wide uppercase font-semibold">Company</h3>
                         <ul className="space-y-1">
                             <li>
-                                <Link href={`/terms`}>Terms of Service</Link>
+                                <Link href={`/terms`}>Terms and Conditions</Link>
                             </li>
                             <li>
                                 <Link href={`/security`}>Security & Privacy</Link>

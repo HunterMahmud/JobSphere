@@ -4,10 +4,10 @@ const Terms = () => {
     return (
         <div className='mx-2 md:my-6 my-8 space-y-3 md:w-[80%] md:mx-auto'>
             <div className='mb-6'>
-                <h1 className='text-center font-bold text-2xl'>Job  Sphere - Terms of Service</h1>
+                <h1 className='text-center font-bold text-2xl'>Job  Sphere - Terms and Conditions</h1>
                 <p className='text-center my-2 text-xl'>Last Update: 10 October 2024</p>
 
-                <p className='text-center mx-4 mb-4 md:w-2/3 md:mx-auto text-lg'>Welcome to Job Sphere. These Terms of Service (Terms) govern your use of the Job Sphere website and services (the Platform). By accessing or using Job Sphere, you agree to these Terms. If you do not agree to the Terms, please do not use the Platform.</p>
+                <p className='text-center mx-4 mb-4 md:w-2/3 md:mx-auto text-lg'>Welcome to Job Sphere. These Terms and Conditions (Terms) govern your use of the Job Sphere website and services (the Platform). By accessing or using Job Sphere, you agree to these Terms. If you do not agree to the Terms, please do not use the Platform.</p>
             </div>
 
             {/* 1. Definitions */}
