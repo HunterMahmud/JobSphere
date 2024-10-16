@@ -55,61 +55,32 @@ const Terms = () => {
                 <p>* Engage in spamming, phishing, or scraping of data from the Platform.</p>
                 <p>* Attempt to access unauthorized parts of the Platform or breach its security measures.</p>
             </div>
-            {/*  */}
+            
+            {/* 7. Job Sphere’s Role */}
             <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
-                <h4 className='font-bold text-xl'></h4>
-                <p></p>
+                <h4 className='font-bold text-xl'>7. Job Sphere&apos;s Role</h4>
+                <p>Job Sphere is a platform for connecting Job Seekers with Employers. We are not an employment agency, and we do not guarantee that Job Seekers will be hired or that Employers will find suitable candidates.</p>
             </div>
-            {/*  */}
+            
+            {/* 8. Privacy Policy */}
             <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
-                <h4 className='font-bold text-xl'></h4>
-                <p></p>
+                <h4 className='font-bold text-xl'>8. Privacy Policy</h4>
+                <p>By using Job Sphere, you agree to our Privacy Policy, which describes how we collect, use, and store your personal data. We comply with applicable data protection regulations, including the General Data Protection Regulation (GDPR) and the California Consumer Privacy Act (CCPA).</p>
             </div>
-
-            {/* 
-           
-
-
-
-6. Prohibited Activities
-You agree not to:
-
-Use the Platform for any fraudulent activities or purposes.
-Post any content that is false, misleading, or harmful.
-Engage in spamming, phishing, or scraping of data from the Platform.
-Attempt to access unauthorized parts of the Platform or breach its security measures.
-7. Job Sphere’s Role
-Job Sphere is a platform for connecting Job Seekers with Employers. We are not an employment agency, and we do not guarantee that Job Seekers will be hired or that Employers will find suitable candidates.
-
-8. Privacy Policy
-By using Job Sphere, you agree to our Privacy Policy, which describes how we collect, use, and store your personal data. We comply with applicable data protection regulations, including the General Data Protection Regulation (GDPR) and the California Consumer Privacy Act (CCPA).
-
-9. User-Generated Content
-Users retain ownership of any content they submit to the Platform, including resumes, job postings, and other materials.
-By submitting content, you grant Job Sphere a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute the content on the Platform.
-10. Intellectual Property
-All materials on the Platform, including text, graphics, logos, and software, are the property of Job Sphere and protected by copyright, trademark, and other intellectual property laws. Users are not permitted to copy, distribute, or modify any part of the Platform without written permission.
-
-11. Disclaimers and Limitation of Liability
-No Employment Guarantee: Job Sphere does not guarantee that you will find a job or a suitable candidate. We are not responsible for the content of job postings or resumes, nor for the actions of Users.
-Limitation of Liability: To the maximum extent permitted by law, Job Sphere shall not be liable for any indirect, incidental, or consequential damages, including but not limited to lost data, lost employment opportunities, or loss of income.
-12. Termination
-Job Sphere reserves the right to suspend or terminate any account at its discretion, without notice, for any reason, including but not limited to violations of these Terms.
-
-13. Governing Law
-These Terms and any disputes arising from your use of the Platform will be governed by and construed in accordance with the laws of [Your Country or State]. Any legal action must be filed in the courts of [Your Jurisdiction].
-
-14. Changes to Terms
-Job Sphere reserves the right to modify these Terms at any time. Changes will be effective upon posting to the Platform. Continued use of the Platform after changes have been made constitutes acceptance of the new Terms.
-
-15. Contact Us
-If you have any questions about these Terms, please contact us at:
-
-Email: [Insert Contact Email]
-Mailing Address: [Insert Address]
-Phone: [Insert Phone Number]
-
-            */}
+            
+            {/* 9. User-Generated Content */}
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'>9. User-Generated Content</h4>
+                <p>Users retain ownership of any content they submit to the Platform, including resumes, job postings, and other materials.
+                By submitting content, you grant Job Sphere a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute the content on the Platform.</p>
+            </div>
+            
+            {/* 10. Intellectual Property */}
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'>10. Intellectual Property</h4>
+                <p>All materials on the Platform, including text, graphics, logos, and software, are the property of Job Sphere and protected by copyright, trademark, and other intellectual property laws. Users are not permitted to copy, distribute, or modify any part of the Platform without written permission.</p>
+            </div>
+            
         </div>
     );
 };
