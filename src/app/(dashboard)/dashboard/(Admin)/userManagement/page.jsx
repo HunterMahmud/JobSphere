@@ -89,7 +89,6 @@ const UserManagement = () => {
 
   // Calculate pagination
   const totalPages = Math.ceil(totalUsers / limit); // Use totalUsers for pagination
-  const paginatedUsers = users.slice((page - 1) * limit, page * limit);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -129,7 +128,7 @@ const UserManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-            {paginatedUsers.map((user) => (
+            {users.map((user) => (
               <tr
                 key={user._id}
                 className="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150"

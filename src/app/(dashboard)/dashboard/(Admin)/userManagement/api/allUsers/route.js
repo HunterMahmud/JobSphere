@@ -1,4 +1,4 @@
-import { connectDB } from "@/lib/connectDB"; // Ensure the correct path for your database connection
+import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
@@ -13,24 +13,25 @@ export const GET = async (request) => {
   const skip = (page - 1) * limit; // Calculate number of items to skip
 
   try {
-    // Fetch data from both 'users' and 'recruiter' collections
-    const seekersPromise = seekersCollection.find({}).skip(skip).limit(limit).toArray();
-    const recruitersPromise = recruitersCollection.find({}).skip(skip).limit(limit).toArray();
+    // Fetch data from both 'users' and 'recruiter' collections without skip/limit
+    const seekersPromise = seekersCollection.find({}).toArray();
+    const recruitersPromise = recruitersCollection.find({}).toArray();
 
     // Await both promises
     const [seekers, recruiters] = await Promise.all([seekersPromise, recruitersPromise]);
 
-    // Count total seekers and recruiters for pagination
-    const totalSeekers = await seekersCollection.countDocuments({});
-    const totalRecruiters = await recruitersCollection.countDocuments({});
-    const totalUsers = totalSeekers + totalRecruiters;
-
     // Merge the data from both collections
     const allUsers = [...seekers, ...recruiters];
-console.log(allUsers)
+
+    // Calculate total users
+    const totalUsers = allUsers.length;
+
+    // Apply skip and limit after combining the data
+    const paginatedUsers = allUsers.slice(skip, skip + limit);
+
     // Return the combined data along with pagination info
     return NextResponse.json({
-      users: allUsers,
+      users: paginatedUsers,
       pagination: {
         currentPage: page,
         totalItems: totalUsers,
@@ -42,6 +43,6 @@ console.log(allUsers)
     return NextResponse.json({
       message: "Error fetching data.",
       error: error.message,
-    }, { status: 500 }); // Send error response with a 500 status code
+    }, { status: 500 });
   }
 };
