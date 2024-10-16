@@ -6,7 +6,7 @@ import { MdOutlineCancel, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 
-const ApplyedJobs = ({ params }) => {
+const ApplyedAJob = ({ params }) => {
     const [loading, setLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
     // for pagination
@@ -68,7 +68,7 @@ const ApplyedJobs = ({ params }) => {
 
                 } catch (error) {
                     // Handle error
-                    console.log(error);
+                    console.log(error.message);
                     Swal.fire({
                         title: "Error!",
                         text: "Failed to delete the job.",
@@ -92,10 +92,10 @@ const ApplyedJobs = ({ params }) => {
                         <thead className="bg-gray-50 border-b">
                             <tr>
                                 <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
-                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Title</th>
-                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
-                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Seeker Email</th>
                                 <th className="px-6 py-4 text-left font-medium text-gray-700">Job applyed Date</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
+                                <th className="px-6 py-4 text-left font-medium text-gray-700">Profile</th>
                                 <th className="px-6 py-4 text-center font-medium text-gray-700">Actions</th>
                             </tr>
                         </thead>
@@ -107,8 +107,10 @@ const ApplyedJobs = ({ params }) => {
                                     <td className="px-6 py-4">{index + 1}</td>
 
                                     <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
-                                        {job?.jobTitle}
+                                        {job?.applicantInfo?.contactInformation?.email}
                                     </td>
+
+                                    <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
 
                                     <td className="px-1 md:px-3 lg:px-6 py-4">
                                         <span className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
@@ -116,9 +118,15 @@ const ApplyedJobs = ({ params }) => {
                                         </span>
                                     </td>
 
-                                    <td className="px-6 py-4">{job?.jobType}</td>
+                                    <td className="px-6 py-4">
+                                        <Link
+                                            className='px-4 py-1 bg-primary text-white rounded-xl'
+                                            href={`/seekerInfo/${job?.applicantInfo?.contactInformation?.email}`}
+                                        >
+                                            View
+                                        </Link>
+                                    </td>
 
-                                    <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
                                     <td className="pl-6 py-4 text-right flex gap-2">
                                         <button
                                             onClick={() => handleRemove(job?._id)}
@@ -149,7 +157,7 @@ const ApplyedJobs = ({ params }) => {
                             <option value="20">20</option>
                             <option value="30">30</option>
                         </select>
-                        <span className="text-gray-700 block w-full pr-6">Applicants per page</span>
+                        <span className="text-gray-700 block w-full pr-6">Seekers per page</span>
                     </div>
                     <div className="flex items-center space-x-2">
                         <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
@@ -174,4 +182,4 @@ const ApplyedJobs = ({ params }) => {
     );
 };
 
-export default ApplyedJobs;
+export default ApplyedAJob;
