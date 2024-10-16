@@ -61,9 +61,9 @@ const Reviews = () => {
     <div className='mx-4 my-2'>
       <h1 className='text-3xl font-bold text-center mb-2'>Users Reviews</h1>
       {/* Reviews Cards */}
-      <div className="flex flex-col justify-center mx-auto items-center">
+      <div className="flex flex-col justify-center space-y-4 mx-auto items-center">
         {Array.isArray(userReviews) && userReviews.length > 0 ? (
-          userReviews.map((reviews, index) => <ReviewsCard key={index} reviews={reviews} />)
+          userReviews.slice(0,3).map((reviews, index) => <ReviewsCard key={index} reviews={reviews} />)
         ) : (
           <p>No Data found</p>
         )}

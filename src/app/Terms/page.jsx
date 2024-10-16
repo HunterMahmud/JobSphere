@@ -2,66 +2,67 @@ import React from 'react';
 
 const Terms = () => {
     return (
-        <div>
-            <h1 className='text-center text-xl font-bold'>Job Sphere - Terms and Conditions</h1>
-            <p className='text-center my-2'>Last Update: 10 October 2024</p>
+        <div className='mx-2 md:my-6 my-8 space-y-3 md:w-[80%] md:mx-auto'>
+            <div className='mb-6'>
+                <h1 className='text-center font-bold text-2xl'>Job  Sphere - Terms of Service</h1>
+                <p className='text-center my-2 text-xl'>Last Update: 10 October 2024</p>
 
-            <p className='text-center mx-4 mb-4'>Welcome to Job Sphere. These Terms and Conditions ("Terms") govern your use of the Job Sphere website and services (the "Platform"). By accessing or using Job Sphere, you agree to these Terms. If you do not agree to the Terms, please do not use the Platform.</p>
+                <p className='text-center mx-4 mb-4 md:w-2/3 md:mx-auto text-lg'>Welcome to Job Sphere. These Terms of Service (Terms) govern your use of the Job Sphere website and services (the Platform). By accessing or using Job Sphere, you agree to these Terms. If you do not agree to the Terms, please do not use the Platform.</p>
+            </div>
 
             {/* 1. Definitions */}
-            <div>
-                <h4 className='font-bold'>1. Definitions</h4>
-                <p><span className='font-semibold'>"Platform"</span> refers to the Job Sphere website and its services.</p>
-                <p><span className='font-semibold'>"User"</span> refers to any person using the Platform, including Job Seekers and Recruiter.</p>
-                <p><span className='font-semibold'>"Job Seeker"</span> refers to a person looking for employment using the Platform.</p>
-                <p><span className='font-semibold'>"Recruiter"</span> refers to a person or entity looking to hire employees through the Platform.</p>
-                <p><span className='font-semibold'>"Content"</span> refers to any text, images, job postings, resumes, or other materials submitted by Users.</p>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'>1. Definitions</h4>
+                <p><span className='font-semibold text-lg'>Platform</span> refers to the Job Sphere website and its services.</p>
+                <p><span className='font-semibold text-lg'>User</span> refers to any person using the Platform, including Job Seekers and Recruiter.</p>
+                <p><span className='font-semibold text-lg'>Job Seeker</span> refers to a person looking for employment using the Platform.</p>
+                <p><span className='font-semibold text-lg'>Recruiter</span> refers to a person or entity looking to hire employees through the Platform.</p>
+                <p><span className='font-semibold text-lg'>Content</span> refers to any text, images, job postings, resumes, or other materials submitted by Users.</p>
             </div>
 
             {/* 2. Acceptance of Terms */}
-            <div>
-                <h4 className='font-bold'>2. Acceptance of Terms</h4>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'>2. Acceptance of Terms</h4>
                 <p>By creating an account or using the Job Sphere, you agree to be bound by these Terms and any applicable laws and regulations. Job Sphere reserves the right to modify these Terms at any time. Any changes will be posted on the Platform, and continued use after such changes implies your consent.</p>
             </div>
 
             {/* 3. Eligibility */}
-            <div>
-                <h4 className='font-bold'>3. Eligibility</h4>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'>3. Eligibility</h4>
                 <p>You must be at least 16 years of age to use the Platform. By using Job Sphere, you represent and warrant that you meet the eligibility requirements.</p>
             </div>
 
             {/* 4. Account Responsibilities */}
-            <div>
-                <h4 className='font-bold'>4. Account Responsibilities</h4>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'>4. Account Responsibilities</h4>
                 <p>Users must create an account to access certain features. You are responsible for maintaining the confidentiality of your login information and are liable for any activities that occur under your account.
                     Users agree to provide accurate, current, and complete information during registration and to update such information as necessary.</p>
             </div>
 
             {/* 5. User Responsibilities */}
-            <div>
-                <h4 className='font-bold'>5. User Responsibilities</h4>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'>5. User Responsibilities</h4>
                 <p>Job Seekers must ensure that their resumes and profiles are accurate and up-to-date. Misrepresentation of qualifications or experience is strictly prohibited.</p>
                 <p>Recruiter must ensure that job postings are truthful and comply with all applicable employment laws, including non-discriminatory hiring practices.</p>
                 <p>Users must not See Job Details and should not do any inappropriate, offensive, or illegal content, and must not use the Platform for any unlawful purposes.</p>
             </div>
 
             {/* 6. Prohibited Activities */}
-            <div>
-                <h4 className='font-bold'></h4>
-                <p className='font-semibold'>You agree not to:</p>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <p className='font-bold text-xl'>6. You agree not to:</p>
                 <p>* Use the Platform for any fraudulent activities or purposes.</p>
                 <p>* Post any content that is false, misleading, or harmful.</p>
                 <p>* Engage in spamming, phishing, or scraping of data from the Platform.</p>
                 <p>* Attempt to access unauthorized parts of the Platform or breach its security measures.</p>
             </div>
             {/*  */}
-            <div>
-                <h4 className='font-bold'></h4>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'></h4>
                 <p></p>
             </div>
             {/*  */}
-            <div>
-                <h4 className='font-bold'></h4>
+            <div className='border-t border-sky-500 rounded-xl hover:border-2 hover:shadow-md p-2 hover:bg-sky-50'>
+                <h4 className='font-bold text-xl'></h4>
                 <p></p>
             </div>
 

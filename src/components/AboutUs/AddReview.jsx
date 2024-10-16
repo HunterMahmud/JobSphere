@@ -45,19 +45,19 @@ const AddReview = ({ rating }) => {
 
     return (
         <div className='md:mx-4 mx-2'>
-            <h1 className="text-3xl font-bold text-center mb-8 underline underline-offset-2">Post a Review</h1>
-            <div className="flex flex-col justify-around md:flex-row md:p-10 bg-sky-50  shadow-md rounded-lg gap-10">
+            <h1 className="text-3xl font-bold text-center mb-2 underline underline-offset-2">Post a Review</h1>
+            <div className="flex flex-col justify-around md:flex-row md:px-10 md:py-2 bg-sky-50  shadow-md rounded-lg gap-10">
 
                 <div className='md:w-1/2 mx-2'>
-                    <div className="flex flex-col items-center justify-center  bg-sky-100 rounded-xl md:p-8">
-                        <h1 className="text-4xl font-bold mt-4 mb-4">Review Us</h1>
-                        <p className="text-lg text-center text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
+                    <div className="flex flex-col items-center justify-center  bg-sky-100 rounded-xl md:p-4 ">
+                        <h1 className="text-4xl font-bold my-2">Review Us</h1>
+                        <p className="text-lg text-center text-gray-600 mb-4">We had love to hear from you! Please fill out the form below.</p>
                         <form
                             onSubmit={handleSubmit}  // Adding submit handler
-                            className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 max-w-lg w-full"
+                            className="bg-white shadow-md rounded-lg px-8 pt-2 pb-4 mb-4 max-w-lg w-full"
                         >
                             <div className="mb-4">
-                                <div className='flex flex-col items-center mx-auto my-4'>
+                                <div className='flex flex-col items-center mx-auto my-2'>
                                     <h1 className='text-lg text-center font-semibold my-2'>How much you like our website?</h1>
                                     <StarRating />
                                 </div>

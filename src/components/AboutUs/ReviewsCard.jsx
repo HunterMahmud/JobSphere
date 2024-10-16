@@ -9,7 +9,7 @@ const ReviewsCard = ({ reviews }) => {
             <div>
                 <div className='flex justify-between'>
                     <div className='p-2  rounded-lg flex gap-2'>
-                        <Image src={image} height={50} width={50} className='rounded-full mx-2' />
+                        <Image src={image} height={50} width={50} alt="Picture" className='rounded-full mx-2' />
                         <div>
                             <h1 className='text-xl font-bold underline-offset-2 underline'>Name: {name}</h1>
                             <h1 className='text-lg font-semibold'>Position: {role}</h1>
