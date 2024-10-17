@@ -20,7 +20,8 @@ const ApplyedAJob = ({ params }) => {
     const [limit, setLimit] = useState(10);
     const [total, setTotal] = useState(1);
     const [id, setId] = useState('');
-    const [task, setTask] = useState('')
+    const [task, setTask] = useState('');
+    const [interView, setInterView] = useState(false);
 
     const fetchJobs = async () => {
         setLoading(true);
@@ -83,6 +84,7 @@ const ApplyedAJob = ({ params }) => {
     const handleTask = (id) => {
         setShowModal(!showModal)
         setId(id)
+        setInterView(false)
     }
 
     const handleSubmitTask = async (e) => {
@@ -187,7 +189,11 @@ const ApplyedAJob = ({ params }) => {
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
                                             </button>
                                             <button
-                                                onClick={() => handleInterView(job?._id)}
+                                                onClick={() => {
+                                                    setShowModal(!showModal)
+                                                    setId(id)
+                                                    setInterView(true)
+                                                }}
                                                 className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
                                             >
                                                 <MdInterpreterMode className="text-lg flex items-center justify-center" />
@@ -200,54 +206,63 @@ const ApplyedAJob = ({ params }) => {
                                                 <MdOutlineCancel className="text-lg flex items-center justify-center" />
                                             </button>
                                         </td>
-
-                                        <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                                            {task?.taskSubmissionLink ? <>
-                                                <div>
-                                                    <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
-                                                </div>
-                                            </>
-                                                :
-                                                <>
-                                                    <form onSubmit={handleSubmitTask}>
-                                                        <div className='flex flex-col gap-3'>
-                                                            <div className="">
-                                                                <label className='font-medium' htmlFor='job_title'>
-                                                                    Last date for task submission
-                                                                </label>
-                                                                <input
-                                                                    defaultValue={job?.task?.submissionDate}
-                                                                    name='submissionDate'
-                                                                    type='date'
-                                                                    required
-                                                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                />
-                                                            </div>
-
-                                                            <div className="">
-                                                                <label className='font-medium' htmlFor='job_title'>
-                                                                    Task Link
-                                                                </label>
-                                                                <input
-                                                                    placeholder="Submit job task link"
-                                                                    defaultValue={job?.task?.taskLink} name='taskLink'
-                                                                    type='text'
-                                                                    required
-                                                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                />
-                                                            </div>
-
-                                                            <div className='flex justify-end md:col-span-2'>
-                                                                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                                                    {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </>
-                                            }
-                                        </Modal>
                                         {/* Modal */}
+                                        {
+                                            interView ? <>
+                                                <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                                    Helllo
+                                                </Modal>
+                                            </> : <>
+                                                <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                                    {task?.taskSubmissionLink ? <>
+                                                        <div>
+                                                            <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
+                                                        </div>
+                                                    </>
+                                                        :
+                                                        <>
+                                                            <form onSubmit={handleSubmitTask}>
+                                                                <div className='flex flex-col gap-3'>
+                                                                    <div className="">
+                                                                        <label className='font-medium' htmlFor='job_title'>
+                                                                            Last date for task submission
+                                                                        </label>
+                                                                        <input
+                                                                            defaultValue={job?.task?.submissionDate}
+                                                                            name='submissionDate'
+                                                                            type='date'
+                                                                            required
+                                                                            className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                        />
+                                                                    </div>
+
+                                                                    <div className="">
+                                                                        <label className='font-medium' htmlFor='job_title'>
+                                                                            Task Link
+                                                                        </label>
+                                                                        <input
+                                                                            placeholder="Submit job task link"
+                                                                            defaultValue={job?.task?.taskLink} name='taskLink'
+                                                                            type='text'
+                                                                            required
+                                                                            className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                        />
+                                                                    </div>
+
+                                                                    <div className='flex justify-end md:col-span-2'>
+                                                                        <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                            {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </>
+                                                    }
+                                                </Modal>
+                                            </>
+                                        }
+
+
 
                                     </tr>
                                 ))}
