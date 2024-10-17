@@ -142,13 +142,13 @@ const JobTable = () => {
                 {job.experience}
               </td>
               <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-        {/* Conditionally render countdown if the deadline is greater than 1 second from now */}
-        {new Date(job.deadline).getTime() - currentTime > 1000 ? (
-          <Countdown date={new Date(job.deadline)} />
-        ) : (
-          "Deadline has passed"
-        )}
-      </td>
+                {/* Conditionally render countdown if the deadline is greater than 1 second from now */}
+                {new Date(job.deadline).getTime() - currentTime > 1000 ? (
+                  <Countdown date={new Date(job.deadline)} />
+                ) : (
+                  "Deadline has passed"
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
