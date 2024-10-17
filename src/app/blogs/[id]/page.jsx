@@ -129,7 +129,7 @@ const BlogDetails = ({ params }) => {
             alt={blog?.title}
             width={1000}
             height={200}
-            className="rounded-md w-full h-full"
+            className="rounded-md w-full h-[600px] object-cover"
           />
         )}
         <p className="mt-4 text-lg">{blog?.content}</p>
