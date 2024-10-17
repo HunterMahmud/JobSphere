@@ -101,48 +101,52 @@ const UserManagement = () => {
   return (
     <section className="container mx-auto px-4 py-8">
       <div className="flex items-center gap-x-3 mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+        <h2 className="text-2xl font-semibold text-gray-800">
           User Management
         </h2>
-        <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+        <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">
           {totalUsers} users {/* Updated to show totalUsers */}
         </span>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-200 dark:bg-gray-800">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50 border-b">
             <tr>
-              <th className="py-4 px-6 text-sm font-semibold text-left text-gray-700 dark:text-gray-300">
+            <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
                 Name
               </th>
-              <th className="px-12 py-4 text-sm font-semibold text-left text-gray-700 dark:text-gray-300">
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
                 Role
               </th>
-              <th className="px-4 py-4 text-sm font-semibold text-left text-gray-700 dark:text-gray-300">
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
                 Email
               </th>
-              <th className="px-4 py-4 text-sm font-semibold text-left text-gray-700 dark:text-gray-300">
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
                 Action
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-            {users.map((user) => (
+          <tbody className="bg-white divide-y divide-gray-200">
+            {users.map((user, index) => (
               <tr
-                key={user._id}
-                className="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150"
-              >
-                <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+              key={index}
+              className="border-b hover:bg-gray-50 text-xs md:text-sm"
+            >
+              <td className="px-6 py-4">{index + 1}</td>
+                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
                   {user.name || user.fullName || user.userName}
                 </td>
-                <td className="px-12 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                  {user.role}
-                </td>
-                <td className="py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                <td className="px-6 py-4">
+                                        <span className="inline-block px-2 py-1 font-medium rounded-full  bg-blue-100 text-blue-600">
+                                            {user?.role}
+                                        </span>
+                                    </td>
+                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
                   {user.email}
                 </td>
-                <td className="px-4 py-4 text-sm whitespace-nowrap">
+                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
                   <div className="flex items-center gap-x-6">
                     <button
                       className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
