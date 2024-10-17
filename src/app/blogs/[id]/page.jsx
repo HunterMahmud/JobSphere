@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { BiUpvote, BiSolidUpvote, BiDownvote, BiSolidDownvote  } from "react-icons/bi";
 import axios from "axios";
 import Image from "next/image";
 import  Loader  from "@/app/loading";
@@ -117,21 +118,21 @@ const BlogDetails = ({ params }) => {
         <div className="flex items-center mt-6 space-x-4">
           <button
             onClick={handleUpvote}
-            className={`px-4 py-2 rounded-lg ${
-              hasVoted === "upvote" ? "bg-green-500 text-white" : "bg-gray-200"
+            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${
+              hasVoted === "upvote" ? "bg-green-400 text-white" : "bg-gray-200"
             }`}
           >
-            Upvote {blog.upvotes}
+            {hasVoted === "upvote" ? <BiSolidUpvote  className="mr-2"/>: <BiUpvote className="mr-2"/>} {blog.upvotes}
           </button>
           <button
             onClick={handleDownvote}
-            className={`px-4 py-2 rounded-lg ${
+            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${
               hasVoted === "downvote"
-                ? "bg-red-500 text-white"
+                ? "bg-red-400 text-white"
                 : "bg-gray-200"
             }`}
           >
-            Downvote {blog.downvotes}
+            {hasVoted === "downvote" ? <BiSolidDownvote  className="mr-2"/>: <BiDownvote className="mr-2"/>} {blog.downvotes}
           </button>
         </div>
       </div>
