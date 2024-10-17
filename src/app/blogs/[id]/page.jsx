@@ -11,7 +11,7 @@ const BlogDetails = ({ params }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [hasVoted, setHasVoted] = useState(null); // Track user's vote status
-console.log(session)
+
   // Fetch blog details
   const getBlogDetails = async (id) => {
     try {
@@ -52,9 +52,9 @@ console.log(session)
   // Handle Upvote
   const handleUpvote = async () => {
     if (hasVoted === "upvote") return; // Prevent multiple upvotes
-
+    
     try {
-      const response = await axios.post(`/api/blog/${blog._id}/vote`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/blog/${blog._id}/vote`, {
         voteType: "upvote",
         email: session?.data?.user?.email,
       });
@@ -77,7 +77,7 @@ console.log(session)
     if (hasVoted === "downvote") return; // Prevent multiple downvotes
 
     try {
-      const response = await axios.post(`/api/blog/${blog._id}/vote`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/blog/${blog._id}/vote`, {
         voteType: "downvote",
         email: session?.data?.user?.email,
       });
