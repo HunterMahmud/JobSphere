@@ -1,16 +1,43 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 const BlogDetails = () => {
     // Load the blog According to id & remove it 
-    const Blog = {
-        id: 1,
-        picture: "https://images.unsplash.com/photo-1609557927087-f9cf8e88de18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-        subject: "The Future of Web Development",
-        details: "This blog explores the latest trends in web development, including the rise of frameworks like Next.js and serverless architecture.",
-        date: "2024-09-26"
+
+    const [blog, setBlog] = useState([]);
+   
+   const getBlogDetails = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/api/${id}`
+      );
+      return data.blog;
+    } catch (error) {
+      
+      setError("Could not fetch blog details.");
+      return null;
+    }
+  };
+
+  
+  useEffect(() => {
+    const fetchBlogDetails = async () => {
+      const details = await getBlogDetails(params.id);
+      if (details) {
+        setApplicantsNumber(details?.applicantsNumber)
+        setBlog(details);
       }
+      setLoading(false); // Stop loading once data is fetched
+    };
+
+    fetchBlogDetails();
+  }, [params.id]); // Dependency on params.id to fetch details when it changes
+
+
+
+
+
     const {id ,picture ,subject, details, date}=Blog
     return (
         <div className='container mx-auto my-10'>
