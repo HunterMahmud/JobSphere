@@ -47,10 +47,10 @@ const AddReview = ({ rating }) => {
     return (
         <div className='md:mx-4 mx-2'>
             <h1 className="text-3xl font-bold text-center mb-2 underline underline-offset-2">Post a Review</h1>
-            <div className="flex flex-col justify-around md:flex-row md:px-10 md:py-2 bg-sky-50  shadow-md rounded-lg gap-10">
+            <div className="flex flex-col justify-around md:flex-row md:px-10 md:py-4  shadow-md rounded-lg gap-10">
 
                 <div className='md:w-1/2 mx-2'>
-                    <div className="flex flex-col items-center justify-center  bg-sky-100 rounded-xl md:p-4 ">
+                    <div className="flex flex-col items-center justify-center border border-accent shadow-md rounded-xl md:p-4 ">
                         <h1 className="text-4xl font-bold my-2">Review Us</h1>
                         <p className="text-lg text-center text-gray-600 mb-4">We had love to hear from you! Please fill out the form below.</p>
                         <form
@@ -100,7 +100,7 @@ const AddReview = ({ rating }) => {
                                     id="companyName"
                                     type="companyName"
                                     name="companyName"
-                                    placeholder="Enter your companyName"
+                                    placeholder="Enter your company name"
                                     value={formData.companyName}
                                     onChange={handleChange}
                                     required
@@ -125,7 +125,7 @@ const AddReview = ({ rating }) => {
                             </div>
                             <div className="flex items-center justify-between">
                                 <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                     type="submit"
                                     disabled={isSubmitting} // Disable button while submitting
                                 >
@@ -146,7 +146,7 @@ const AddReview = ({ rating }) => {
                         />
                     </div>
                     <div className="flex mx-auto justify-center mt-4">
-                        <button className="bg-sky-500 btn hover:bg-sky-700 text-white font-semibold py-3 my-4 px-8 rounded-lg w-auto justify-center">
+                        <button className="bg-primary btn hover:bg-secondary text-white font-semibold py-3 my-4 px-8 rounded-lg w-auto justify-center">
                             <Link href={`/usersReview`}>View All Reviews</Link>
                         </button>
                     </div>

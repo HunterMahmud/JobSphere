@@ -18,7 +18,7 @@ const Banner = () => {
   const [location, setLocation] = useState("Location");
   const [jobTitle, setJobTitle] = useState('');
   return (
-    <div className="relative py-10">
+    <div className="relative mb-10">
       <div
         data-aos="fade-up"
         className="absolute  top-[30%] sm:top-[40%] left-12 md:left-20 w-[70%]  z-10"
