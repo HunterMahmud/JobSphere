@@ -22,7 +22,7 @@ const BlogsCard = ({ blog }) => {
             <span>{new Date(publishedDate).toLocaleDateString()+ " " + new Date(publishedDate).toLocaleTimeString()}</span>
             <span className="h-px flex-1"></span>
           </time>
-          <div className="items-center p-2 gap-4 text-md font-bold uppercase text-sky-900">
+          <div className="items-center p-2 gap-4 text-base font-bold uppercase text-sky-900">
             <span>Author:</span>
             <span className="h-px flex-1">{' '}{author}</span>
            
