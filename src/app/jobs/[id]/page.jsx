@@ -299,7 +299,7 @@ const JobDetails = ({ params }) => {
           <div className="flex justify-between items-center">
             <button
               onClick={handleApplyNow}
-              className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-hover transition"
+              className="bg-primary text-sm md:text-base text-white px-4 md:px-6 py-2 rounded-lg hover:bg-hover transition"
             >
               Apply Now
             </button>
