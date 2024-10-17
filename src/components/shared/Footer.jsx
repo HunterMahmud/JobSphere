@@ -17,16 +17,19 @@ const Footer = () => {
                 <div className="flex flex-col md:flex-row text-sm md:gap-x-20 gap-y-8">
                     <div className="space-y-3">
                         <h3 className="tracking-wide uppercase font-semibold">Company</h3>
-                        <ul className="space-y-1">
+                        <ul className="space-y-1 min-w-40">
                             <li>
                                 <Link href={`/terms`}>Terms and Conditions</Link>
                             </li>
                             <li>
                                 <Link href={`/security`}>Security & Privacy</Link>
                             </li>
+                            <li>
+                                <Link href={`/aboutus`}>About Us</Link>
+                            </li>
                         </ul>
                     </div>
-                    <div className="space-y-3 col-span-2 md:col-span-1 pb-5 md:pb-0">
+                    <div className="space-y-3 col-span-2 min-w-52 md:col-span-1 pb-5 md:pb-0">
                         <h3 className="uppercase  font-semibold">Contact Us</h3>
                         <ul className="space-y-1">
                             <li>
@@ -43,7 +46,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className="py-3 md:py-0 flejtax flex-col-reverse md:flex-row mx-auto items-center justify-between">
-                <p className="py-3 md:my-2 text-sm text-center mx-auto">© 2024 Job Sphere All rights reserved.</p>
+                <p className="py-3 md:my-2 text-sm text-center mx-auto">© 2024 Job Sphere all rights reserved.</p>
             </div>
         </footer>
     );
