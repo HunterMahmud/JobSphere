@@ -221,7 +221,7 @@ const JobDetails = ({ params }) => {
 
   return (
     <Fragment>
-      <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-100">
+      <div className="custom-container mx-auto px-4 py-8 ">
         {/* Job Details Section */}
         <div className="bg-white shadow-md p-6 rounded-lg mb-8">
           <div className="flex items-start justify-between mb-6">
@@ -340,7 +340,7 @@ const JobDetails = ({ params }) => {
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-5">
             <a
               rel="noopener"
               target="_blank"
