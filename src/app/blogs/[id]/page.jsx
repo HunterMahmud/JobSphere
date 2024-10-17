@@ -1,13 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { BiUpvote, BiSolidUpvote, BiDownvote, BiSolidDownvote  } from "react-icons/bi";
+import {
+  BiUpvote,
+  BiSolidUpvote,
+  BiDownvote,
+  BiSolidDownvote,
+} from "react-icons/bi";
 import axios from "axios";
 import Image from "next/image";
-import  Loader  from "@/app/loading";
+import Loader from "@/app/loading";
+import { toast } from 'react-hot-toast';
 
 const BlogDetails = ({ params }) => {
-  const  session = useSession(); // Access session data
+  const session = useSession(); // Access session data
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -19,7 +25,7 @@ const BlogDetails = ({ params }) => {
       const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/api/${id}`
       );
-      
+
       return data.blog;
     } catch (error) {
       setError("Could not fetch blog details.");
@@ -29,7 +35,7 @@ const BlogDetails = ({ params }) => {
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
-        setLoading(true)
+      setLoading(true);
       const details = await getBlogDetails(params.id);
       if (details) {
         setBlog(details);
@@ -40,10 +46,8 @@ const BlogDetails = ({ params }) => {
       }
       setLoading(false);
     };
-    if (session?.status === 'authenticated') {
-        
-      fetchBlogDetails();
-    }
+
+    fetchBlogDetails();
   }, [params.id, session?.status]);
 
   if (loading) return <Loader />;
@@ -52,13 +56,19 @@ const BlogDetails = ({ params }) => {
 
   // Handle Upvote
   const handleUpvote = async () => {
-    if (hasVoted === "upvote") return; // Prevent multiple upvotes
-    
+    if(session?.status !== "authenticated"){
+        return toast.error("Login to vote")
+    }
+    if (hasVoted === "upvote") return toast.error("Already Upvoted"); // Prevent multiple upvotes
+
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/blog/${blog._id}/vote`, {
-        voteType: "upvote",
-        email: session?.data?.user?.email,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/blog/${blog._id}/vote`,
+        {
+          voteType: "upvote",
+          email: session?.data?.user?.email,
+        }
+      );
       if (response.status === 200) {
         setBlog((prev) => ({
           ...prev,
@@ -67,6 +77,7 @@ const BlogDetails = ({ params }) => {
             hasVoted === "downvote" ? prev.downvotes - 1 : prev.downvotes,
         }));
         setHasVoted("upvote");
+        toast.success("Upvoted successfuly")
       }
     } catch (error) {
       console.error("Error while upvoting:", error);
@@ -75,13 +86,19 @@ const BlogDetails = ({ params }) => {
 
   // Handle Downvote
   const handleDownvote = async () => {
-    if (hasVoted === "downvote") return; // Prevent multiple downvotes
+    if(session?.status !== "authenticated"){
+        return toast.error("Login to vote")
+    }
+    if (hasVoted === "downvote") return toast.error("Already Downvoted"); // Prevent multiple downvotes
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/blog/${blog._id}/vote`, {
-        voteType: "downvote",
-        email: session?.data?.user?.email,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/blog/${blog._id}/vote`,
+        {
+          voteType: "downvote",
+          email: session?.data?.user?.email,
+        }
+      );
       if (response.status === 200) {
         setBlog((prev) => ({
           ...prev,
@@ -89,6 +106,7 @@ const BlogDetails = ({ params }) => {
           upvotes: hasVoted === "upvote" ? prev.upvotes - 1 : prev.upvotes,
         }));
         setHasVoted("downvote");
+        toast.success("Downvoted successfuly")
       }
     } catch (error) {
       console.error("Error while downvoting:", error);
@@ -101,18 +119,20 @@ const BlogDetails = ({ params }) => {
         <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
         <div className="flex justify-between items-center mb-4">
           <p className="text-gray-600">By {blog?.author}</p>
-          <p className="text-gray-600">{new Date(blog?.publishedDate).toLocaleDateString()}</p>
+          <p className="text-gray-600">
+            {new Date(blog?.publishedDate).toLocaleDateString()}
+          </p>
         </div>
         {blog.blogImage && (
           <Image
-            src={blog.blogImage}
-            alt={blog.title}
+            src={blog?.blogImage}
+            alt={blog?.title}
             width={1000}
             height={200}
             className="rounded-md w-full h-full"
           />
         )}
-        <p className="mt-4 text-lg">{blog.content}</p>
+        <p className="mt-4 text-lg">{blog?.content}</p>
 
         {/* Upvote and Downvote Section */}
         <div className="flex items-center mt-6 space-x-4">
@@ -122,17 +142,25 @@ const BlogDetails = ({ params }) => {
               hasVoted === "upvote" ? "bg-green-400 text-white" : "bg-gray-200"
             }`}
           >
-            {hasVoted === "upvote" ? <BiSolidUpvote  className="mr-2"/>: <BiUpvote className="mr-2"/>} {blog.upvotes}
+            {hasVoted === "upvote" ? (
+              <BiSolidUpvote className="mr-2" />
+            ) : (
+              <BiUpvote className="mr-2" />
+            )}{" "}
+            {blog.upvotes}
           </button>
           <button
             onClick={handleDownvote}
             className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${
-              hasVoted === "downvote"
-                ? "bg-red-400 text-white"
-                : "bg-gray-200"
+              hasVoted === "downvote" ? "bg-red-400 text-white" : "bg-gray-200"
             }`}
           >
-            {hasVoted === "downvote" ? <BiSolidDownvote  className="mr-2"/>: <BiDownvote className="mr-2"/>} {blog.downvotes}
+            {hasVoted === "downvote" ? (
+              <BiSolidDownvote className="mr-2" />
+            ) : (
+              <BiDownvote className="mr-2" />
+            )}{" "}
+            {blog.downvotes}
           </button>
         </div>
       </div>
