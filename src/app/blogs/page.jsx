@@ -96,7 +96,7 @@ const BlogPage = () => {
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
+          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-secondary hover:bg-hover rounded-lg text-white"
         >
           <GrPrevious/>
         </button>
@@ -105,8 +105,8 @@ const BlogPage = () => {
             <button
               key={index + 1}
               onClick={() => setCurrentPage(index + 1)}
-              className={`btn px-4 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white ${
-                currentPage === index + 1 ? "bg-primary " : ""
+              className={`btn px-3 py-1 border-2 text-xs lg:text-lg font-semibold  hover:bg-hover rounded-lg text-white ${
+                currentPage === index + 1 ? "bg-primary" : "bg-secondary"
               }`}
             >
               {index + 1}
@@ -116,7 +116,7 @@ const BlogPage = () => {
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold   bg-primary hover:bg-hover rounded-lg text-white"
+          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold   bg-secondary hover:bg-hover rounded-lg text-white"
         >
           <GrNext/>
         </button>
