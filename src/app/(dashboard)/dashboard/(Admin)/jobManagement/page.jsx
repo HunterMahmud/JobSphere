@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Countdown from "react-countdown";
 
 const JobTable = () => {
   const [jobDetails, setJobDetails] = useState([]);
@@ -13,20 +14,21 @@ const JobTable = () => {
   const [page, setPage] = useState(1); // current page
   const [limit, setLimit] = useState(10); // items per page
   const [total, setTotal] = useState(0); // total number of jobs
+  const currentTime = Date.now(); // Current time in milliseconds
 
   // Fetch jobs from the API
   const fetchJobs = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:3000/dashboard/jobManagement/api/allJobs`,
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/jobManagement/api/allJobs`,
         {
           params: {
             jobType: jobTypeFilter,
             sort: sortOrder,
             jobTitle: searchTerm,
-            page,   // current page
-            limit,  // items per page
+            page, // current page
+            limit, // items per page
           },
         }
       );
@@ -81,17 +83,16 @@ const JobTable = () => {
           </select>
 
           {/* Search by Job Title */}
-<input
-  type="text"
-  placeholder="Search by Job Title and press Enter..."
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      setSearchTerm(e.target.value);
-    }
-  }}
-  className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
-/>
-
+          <input
+            type="text"
+            placeholder="Search by Job Title and press Enter..."
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setSearchTerm(e.target.value);
+              }
+            }}
+            className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+          />
         </div>
       </div>
 
@@ -99,11 +100,21 @@ const JobTable = () => {
       <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden">
         <thead className="bg-gray-200">
           <tr>
-            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">Job Title</th>
-            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">Job Type</th>
-            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">Salary Scale</th>
-            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">Experience Needed</th>
-            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">Deadline</th>
+            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">
+              Job Title
+            </th>
+            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">
+              Job Type
+            </th>
+            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">
+              Salary Scale
+            </th>
+            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">
+              Experience Needed
+            </th>
+            <th className="py-4 px-6 border-b border-gray-300 text-left text-gray-700 font-bold">
+              Deadline
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -114,15 +125,30 @@ const JobTable = () => {
                 job.status === "Approved"
                   ? "bg-green-100"
                   : job.status === "Rejected"
-                  ? "bg-red-100"
-                  : "bg-yellow-100"
+                  ? ""
+                  : ""
               }`}
             >
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">{job.jobTitle}</td>
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">{job.jobType}</td>
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">{job.salaryScale}</td>
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">{job.experience}</td>
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">{job.deadline}</td>
+              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                {job.jobTitle}
+              </td>
+              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                {job.jobType}
+              </td>
+              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                {job.salaryScale}
+              </td>
+              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                {job.experience}
+              </td>
+              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+        {/* Conditionally render countdown if the deadline is greater than 1 second from now */}
+        {new Date(job.deadline).getTime() - currentTime > 1000 ? (
+          <Countdown date={new Date(job.deadline)} />
+        ) : (
+          "Deadline has passed"
+        )}
+      </td>
             </tr>
           ))}
         </tbody>
@@ -132,9 +158,12 @@ const JobTable = () => {
       <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
         <div className="flex items-center space-x-2">
           <span className="text-gray-700">View</span>
-          <select 
-            value={limit} 
-            onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }} 
+          <select
+            value={limit}
+            onChange={(e) => {
+              setLimit(parseInt(e.target.value));
+              setPage(1);
+            }}
             className="border border-gray-300 rounded-md py-1 px-3"
           >
             <option value="10">10</option>
@@ -144,10 +173,10 @@ const JobTable = () => {
           <span className="text-gray-700 block w-full pr-6">Jobs per page</span>
         </div>
         <div className="flex items-center space-x-2">
-          <button 
-            disabled={page === 1} 
-            onClick={() => setPage(page - 1)} 
-            className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className={`text-gray-700 ${page === 1 && "cursor-not-allowed"}`}
           >
             Previous
           </button>
@@ -156,16 +185,20 @@ const JobTable = () => {
               <button
                 key={index + 1}
                 onClick={() => setPage(index + 1)}
-                className={`btn px-3 py-2 border-2 text-xs font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""}`}
+                className={`btn px-3 py-2 border-2 text-xs font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${
+                  page === index + 1 ? "bg-sky-500 text-white" : ""
+                }`}
               >
                 {index + 1}
               </button>
             ))}
           </div>
-          <button 
-            disabled={page === Math.ceil(total / limit)} 
-            onClick={() => setPage(page + 1)} 
-            className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}
+          <button
+            disabled={page === Math.ceil(total / limit)}
+            onClick={() => setPage(page + 1)}
+            className={`text-gray-700 ${
+              page === Math.ceil(total / limit) && "cursor-not-allowed"
+            }`}
           >
             Next
           </button>
@@ -177,14 +210,12 @@ const JobTable = () => {
 
 export default JobTable;
 
-
-
-
-
-{/* <td className="border border-gray-300 px-4 py-2">
+{
+  /* <td className="border border-gray-300 px-4 py-2">
                   {contest.deadline ? (
                     <Countdown date={contest.deadline} />
                   ) : (
                     "Contest Ended"
                   )}
-                </td> */}
+                </td> */
+}
