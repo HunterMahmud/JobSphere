@@ -19,8 +19,6 @@ const ApplyedAJob = ({ params }) => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [total, setTotal] = useState(1);
-    // 
-    const [task, setTask] = useState('');
     const [id, setId] = useState('');
 
     const fetchJobs = async () => {
@@ -88,23 +86,35 @@ const ApplyedAJob = ({ params }) => {
 
     const handleSubmitTask = async (e) => {
         e.preventDefault();
+        const form = e.target;
+        const taskLink = form.taskLink.value;
+        const submissionDate = form.submissionDate.value;
+
+        const task = {
+            taskLink,
+            submissionDate
+        }
 
         if (!id) {
             return toast.error('Something os Wrong')
         }
 
         try {
+            setIsLoading(true)
             const { data } = await axios.put(
-                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task: task });
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'task' });
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
                 toast.success('Successful')
+                setIsLoading(false)
                 // Re-fetch the jobs after deletion
                 fetchJobs();
             }
+            setIsLoading(false)
         } catch (error) {
             // Handle error
+            setIsLoading(false)
             setShowModal(!showModal)
             console.log(error.message);
             Swal.fire({
@@ -231,18 +241,27 @@ const ApplyedAJob = ({ params }) => {
             <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
                 <div>
                     <form onSubmit={handleSubmitTask}>
-                        <div className='grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2'>
+                        <div className='flex flex-col gap-3'>
+                            <div className="">
+                                <label className='font-medium' htmlFor='job_title'>
+                                    Last date for task submission
+                                </label>
+                                <input
+                                    name='submissionDate'
+                                    type='date'
+                                    required
+                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                />
+                            </div>
 
-                            <div className="md:col-span-2">
-                                <label className='' htmlFor='job_title'>
+                            <div className="">
+                                <label className='font-medium' htmlFor='job_title'>
                                     Task Link
                                 </label>
                                 <input
                                     placeholder="Submit job task link"
-                                    id='jobTitle'
-                                    name='resume'
+                                    name='taskLink'
                                     type='text'
-                                    onChange={e => setTask(e.target.value)}
                                     required
                                     className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                                 />

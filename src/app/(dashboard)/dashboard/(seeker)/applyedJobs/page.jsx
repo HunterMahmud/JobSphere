@@ -1,13 +1,15 @@
 "use client";
 import Loader from '@/app/loading';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { MdOutlineCancel, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
+import Modal from '@/components/Modal/Modal';
 
 const ApplyedJobs = () => {
+  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const session = useSession();
   const [jobs, setJobs] = useState([]);
@@ -45,7 +47,7 @@ const ApplyedJobs = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [session?.data?.user?.email, sort, search, jobType,page,limit]);
+  }, [session?.data?.user?.email, sort, search, jobType, page, limit]);
 
   // handle Remove Applyed job
   const handleRemove = async (id) => {
@@ -89,136 +91,172 @@ const ApplyedJobs = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4">
-      {/* Page Title */}
-      <h1 className="text-2xl font-bold text-center mb-8">Applyed Jobs</h1>
+    <Fragment>
+      <div className="max-w-7xl mx-auto py-8 px-4">
+        {/* Page Title */}
+        <h1 className="text-2xl font-bold text-center mb-8">Applyed Jobs</h1>
 
-      {/* Filter Section */}
-      <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
-        <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
+        {/* Filter Section */}
+        <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
+          <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
 
-          <select
-            onChange={e => {
-              setSort(e.target.value)
-            }}
-            value={sort}
-            name='category'
-            id='category'
-            className='border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300'
-          >
-            <option value=''>Sort by Applyed Date</option>
-            <option value='dsc'>Descending Order</option>
-            <option value='asc'>Ascending Order</option>
-          </select>
-
-          <select
-            onChange={(e) => setJobType(e.target.value)}
-            className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
-          >
-            <option value="">Filter by Job Type</option>
-            <option value="Full-Time">Full-Time</option>
-            <option value="Part-Time">Part-Time</option>
-            <option value="Contract-Based">Contract-Based</option>
-          </select>
-
-          <div className="flex gap-2 w-full">
-            <input
-              type="text"
-              placeholder="Search by job title..."
-              onChange={(e) => { setSearch(e.target.value), setPage(1) }}
-              className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="overflow-x-auto border rounded-lg shadow-md">
-        {
-          loading ? <Loader /> : <table className="min-w-full bg-white">
-            {/* Table Header */}
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
-                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Title</th>
-                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
-                <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
-                <th className="px-6 py-4 text-left font-medium text-gray-700">Job applyed Date</th>
-                <th className="px-6 py-4 text-center font-medium text-gray-700">Actions</th>
-              </tr>
-            </thead>
-
-            {/* Table Body */}
-            <tbody>
-              {jobs?.map((job, index) => (
-                <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
-                  <td className="px-6 py-4">{index + 1}</td>
-
-                  <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
-                    {job?.jobTitle}
-                  </td>
-
-                  <td className="px-1 md:px-3 lg:px-6 py-4">
-                    <span className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
-                      {job?.jobStatus}
-                    </span>
-                  </td>
-
-                  <td className="px-6 py-4">{job?.jobType}</td>
-
-                  <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
-                  <td className="pl-6 py-4 text-right flex gap-2">
-                    <button
-                      onClick={() => handleRemove(job?._id)}
-                      className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
-                    >
-                      <MdOutlineCancel className="text-lg flex items-center justify-center" />
-                    </button>
-                    <Link href={`/jobs/${job?.jobId}`}>
-                      <button
-                        className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
-                      >
-                        <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
-                      </button>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        }
-
-        {/* Pagination */}
-        <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
-          <div className="flex items-center space-x-2">
-            <span className="text-gray-700">View</span>
-            <select value={limit} onChange={(e) => {setLimit(parseInt(e.target.value)),setPage(1)}} className="border border-gray-300 rounded-md py-1 px-3">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
+            <select
+              onChange={e => {
+                setSort(e.target.value)
+              }}
+              value={sort}
+              name='category'
+              id='category'
+              className='border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300'
+            >
+              <option value=''>Sort by Applyed Date</option>
+              <option value='dsc'>Descending Order</option>
+              <option value='asc'>Ascending Order</option>
             </select>
-            <span className="text-gray-700 block w-full pr-6">Applicants per page</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
-            <div className="space-x-2 flex">
-              {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => setPage(index + 1)}
-                  className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
-                    }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
 
-            <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
+            <select
+              onChange={(e) => setJobType(e.target.value)}
+              className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
+            >
+              <option value="">Filter by Job Type</option>
+              <option value="Full-Time">Full-Time</option>
+              <option value="Part-Time">Part-Time</option>
+              <option value="Contract-Based">Contract-Based</option>
+            </select>
+
+            <div className="flex gap-2 w-full">
+              <input
+                type="text"
+                placeholder="Search by job title..."
+                onChange={(e) => { setSearch(e.target.value), setPage(1) }}
+                className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto border rounded-lg shadow-md">
+          {
+            loading ? <Loader /> : <table className="min-w-full bg-white">
+              {/* Table Header */}
+              <thead className="bg-gray-50 border-b">
+                <tr>
+                  <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job Title</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job applyed Date</th>
+                  <th className="px-6 py-4 text-center font-medium text-gray-700">Actions</th>
+                </tr>
+              </thead>
+
+              {/* Table Body */}
+              <tbody>
+                {jobs?.map((job, index) => (
+                  <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
+                    <td className="px-6 py-4">{index + 1}</td>
+
+                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
+                      {job?.jobTitle}
+                    </td>
+
+                    <td className="px-1 md:px-3 lg:px-6 py-4 text-center">
+                      <span
+                        onClick={() => { job?.jobStatus === 'task' && setShowModal(!showModal) }}
+                        className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600 cursor-pointer'} inline-block px-2 py-1 font-medium rounded-full `}>
+                        {job?.jobStatus}
+                      </span>
+                    </td>
+
+                    <td className="px-6 py-4">{job?.jobType}</td>
+
+                    <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
+                    <td className="pl-6 py-4 text-right flex gap-2">
+                      <button
+                        onClick={() => handleRemove(job?._id)}
+                        className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
+                      >
+                        <MdOutlineCancel className="text-lg flex items-center justify-center" />
+                      </button>
+                      <Link href={`/jobs/${job?.jobId}`}>
+                        <button
+                          className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
+                        >
+                          <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
+                        </button>
+                      </Link>
+                      {console.log(job?.task)}
+                    </td>
+                    {/* Modal */}
+                    <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                      <div>
+                        <form >
+                          <p>Your Task link please complete this 10-22-2222
+                            <a href={job?.task} target='_blank' className='text-primary'> Task Link</a>
+                          </p>
+                          <div className='space-y-4 mt-4'>
+
+                            <input
+                              placeholder="Submit job task link"
+                              id='jobTitle'
+                              name='resume'
+                              type='text'
+                              // onChange={e => setTask(e.target.value)}
+                              required
+                              className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                            />
+
+                            <div className='flex justify-end md:col-span-2'>
+                              <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                {/* {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'} */}
+                                Submit
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </Modal>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          }
+
+          {/* Pagination */}
+          <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-700">View</span>
+              <select value={limit} onChange={(e) => { setLimit(parseInt(e.target.value)), setPage(1) }} className="border border-gray-300 rounded-md py-1 px-3">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+              </select>
+              <span className="text-gray-700 block w-full pr-6">Applicants per page</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
+              <div className="space-x-2 flex">
+                {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => setPage(index + 1)}
+                    className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
+                      }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+
+              <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+
+    </Fragment>
   );
 };
 
