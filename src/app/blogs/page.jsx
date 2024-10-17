@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
+import { GrNext } from "react-icons/gr";
+import { GrPrevious } from "react-icons/gr";
 import BlogsCard from "@/components/Blogs/BlogsCard";
 import axios from "axios";
 import Loader from './../loading';
@@ -67,7 +69,7 @@ const BlogPage = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Blogs</h1>
 
       {/* Search Function */}
-      <div className="flex items-center bg-white rounded-l-lg border-2 border-sky-500 w-[300px] mx-auto my-8 p-2">
+      <div className="flex items-center bg-white rounded-l-lg border-2 border-accent w-[300px] mx-auto my-8 p-2">
         <FaSearch className="ml-3 text-gray-400" />
         <input
           type="text"
@@ -94,17 +96,17 @@ const BlogPage = () => {
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className="btn px-4 py-2 border-2 text-xs lg:text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg"
+          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
         >
-          Previous
+          <GrPrevious/>
         </button>
         <div className="space-x-2">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index + 1}
               onClick={() => setCurrentPage(index + 1)}
-              className={`btn px-4 py-2 border-2 text-xs lg:text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${
-                currentPage === index + 1 ? "bg-sky-500 text-white" : ""
+              className={`btn px-4 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white ${
+                currentPage === index + 1 ? "bg-primary " : ""
               }`}
             >
               {index + 1}
@@ -114,9 +116,9 @@ const BlogPage = () => {
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg"
+          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold   bg-primary hover:bg-hover rounded-lg text-white"
         >
-          Next
+          <GrNext/>
         </button>
       </div>
     </div>

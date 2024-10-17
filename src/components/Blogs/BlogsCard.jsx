@@ -14,7 +14,7 @@ const BlogsCard = ({ blog }) => {
   } = blog;
   return (
     <div>
-      <article className="bg-accent transition hover:shadow-xl  border-sky-600 md:min-h-[340px] dark:shadow-gray-800/25 rounded-lg border-2 p-2">
+      <article className="bg-accent transition hover:shadow-xl  border-accent md:min-h-[340px] dark:shadow-gray-800/25 rounded-lg border-2 p-2">
         <div className="p-2 ">
           <time className="items-center p-2 gap-4 text-xs font-bold uppercase text-sky-900 dark:text-sky-900">
             <span>Date :</span>
