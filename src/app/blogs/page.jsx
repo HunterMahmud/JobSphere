@@ -72,7 +72,7 @@ const BlogPage = () => {
         <input
           type="text"
           className="w-[300px] p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
-          placeholder="Search with job title"
+          placeholder="Search with blog title"
           onChange={(e) => handleSearch(e)}
         />
       </div>
