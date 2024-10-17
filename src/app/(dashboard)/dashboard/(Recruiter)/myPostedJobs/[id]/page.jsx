@@ -9,6 +9,7 @@ import { GiNotebook } from 'react-icons/gi';
 import toast from 'react-hot-toast';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import Modal from '@/components/Modal/Modal';
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 
 const ApplyedAJob = ({ params }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -210,7 +211,30 @@ const ApplyedAJob = ({ params }) => {
                                         {
                                             interView ? <>
                                                 <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                                                    Helllo
+                                                    <div>
+                                                        <Tabs>
+                                                            <TabList className="flex justify-center items-center">
+                                                                <Tab className="mr-2 p-2 cursor-pointer" selectedClassName="bg-primary p-2 rounded text-white border-0">
+                                                                    Offline
+                                                                </Tab>
+                                                                <Tab className="mr-2 p-2 cursor-pointer" selectedClassName="bg-primary p-2 rounded text-white border-0">
+                                                                    Online
+                                                                </Tab>
+                                                            </TabList>
+
+                                                            <TabPanel>
+                                                               <div>
+
+                                                               </div>
+                                                            </TabPanel>
+
+                                                            <TabPanel>
+                                                                <div>
+
+                                                                </div>
+                                                            </TabPanel>
+                                                        </Tabs>
+                                                    </div>
                                                 </Modal>
                                             </> : <>
                                                 <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
