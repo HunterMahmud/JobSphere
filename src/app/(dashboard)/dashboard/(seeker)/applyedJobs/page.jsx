@@ -7,8 +7,11 @@ import { MdOutlineCancel, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 import Modal from '@/components/Modal/Modal';
+import toast from 'react-hot-toast';
+import { TbFidgetSpinner } from 'react-icons/tb';
 
 const ApplyedJobs = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const session = useSession();
@@ -16,12 +19,13 @@ const ApplyedJobs = () => {
   const [sort, setSort] = useState('');
   const [search, setSearch] = useState('');
   const [jobType, setJobType] = useState('');
+  const [id, setId] = useState('');
   // for pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(1);
+  const [task, setTask] = useState('');
 
-  console.log(search, sort, jobType)
   const fetchJobs = async () => {
     setLoading(true);
     try {
@@ -89,6 +93,39 @@ const ApplyedJobs = () => {
       }
     });
   };
+
+  // TASK Related
+  const taskSubmission = async (e) => {
+    e.preventDefault();
+    const taskSubmissionLink = e.target.taskSubmissionLink.value;
+
+    try {
+      setIsLoading(true)
+      const { data } = await axios.put(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
+        { task: { taskSubmissionLink, ...task }, jobStatus: 'submitted' }
+      );
+
+      if (data.modifiedCount > 0) {
+        setShowModal(!showModal)
+        toast.success('Successful')
+        setIsLoading(false)
+        // Re-fetch the jobs after deletion
+        fetchJobs();
+      }
+      setIsLoading(false)
+    } catch (error) {
+      // Handle error
+      setIsLoading(false)
+      setShowModal(!showModal)
+      console.log(error.message);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to delete the job.",
+        icon: "error",
+      });
+    }
+  }
 
   return (
     <Fragment>
@@ -163,8 +200,8 @@ const ApplyedJobs = () => {
 
                     <td className="px-1 md:px-3 lg:px-6 py-4 text-center">
                       <span
-                        onClick={() => { job?.jobStatus === 'task' && setShowModal(!showModal) }}
-                        className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600 cursor-pointer'} inline-block px-2 py-1 font-medium rounded-full `}>
+                        onClick={() => { job?.jobStatus === 'task' && setShowModal(!showModal), setId(job?._id), setTask(job?.task) }}
+                        className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'} cursor-pointer inline-block px-2 py-1 font-medium rounded-full `}>
                         {job?.jobStatus}
                       </span>
                     </td>
@@ -186,21 +223,19 @@ const ApplyedJobs = () => {
                           <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
                         </button>
                       </Link>
-                      {console.log(job?.task)}
                     </td>
                     {/* Modal */}
                     <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
                       <div>
-                        <form >
-                          <p>Your Task link please complete this 10-22-2222
-                            <a href={job?.task} target='_blank' className='text-primary'> Task Link</a>
+                        <form onSubmit={taskSubmission}>
+                          <p>You are given a TASK to pass to the next step.Please Do it before {new Date(task?.submissionDate).toLocaleDateString()}
+                            <a href={task?.taskLink} target='_blank' className='text-blue-600 font-semibold'> Task Link</a>
                           </p>
                           <div className='space-y-4 mt-4'>
 
                             <input
                               placeholder="Submit job task link"
-                              id='jobTitle'
-                              name='resume'
+                              name='taskSubmissionLink'
                               type='text'
                               // onChange={e => setTask(e.target.value)}
                               required
@@ -209,8 +244,7 @@ const ApplyedJobs = () => {
 
                             <div className='flex justify-end md:col-span-2'>
                               <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                {/* {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'} */}
-                                Submit
+                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
                               </button>
                             </div>
                           </div>

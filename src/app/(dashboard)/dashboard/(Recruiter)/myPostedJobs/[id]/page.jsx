@@ -133,7 +133,7 @@ const ApplyedAJob = ({ params }) => {
         <Fragment>
             <div className="max-w-7xl mx-auto py-8 px-4">
                 {/* Page Title */}
-                <h1 className="text-2xl font-bold text-center mb-8">{jobs[1]?.jobTitle}</h1>
+                <h1 className="text-2xl font-bold text-center mb-8">{jobs?.[1]?.jobTitle}</h1>
 
                 {/* Table */}
                 <div className="overflow-x-auto border rounded-lg shadow-md">
