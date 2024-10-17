@@ -57,7 +57,7 @@ const JobCard = ({ job }) => {
               {skills?.map((skill, index) => (
                 <span
                   key={index}
-                  className="badge badge-outline badge-primary bg-blue-200 px-3 rounded-lg border-2 border-blue-400"
+                  className="badge badge-outline badge-primary bg-accent px-3 rounded-lg border-2 border-blue-400"
                 >
                   {skill}
                 </span>
@@ -66,7 +66,7 @@ const JobCard = ({ job }) => {
           </div>
         </div>
         <div className="flex justify-center mt-3">
-          <button className="bg-purple-600 btn hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg w-auto">
+          <button className="bg-primary btn hover:bg-hover text-white font-semibold py-2 px-6 rounded-lg w-auto">
             <Link href={`/jobs/${_id}`}>View Details</Link>
           </button>
         </div>
