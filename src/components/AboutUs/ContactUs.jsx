@@ -46,7 +46,7 @@ const ContactUs = () => {
           alt="Team Member 1"
           width={600} 
           height={400} 
-          className="w-10/12 mb-4 shadow-lg rounded-lg"
+          className="md:w-10/12 mb-4 shadow-lg rounded-lg"
         />
       </div>
       <div>
