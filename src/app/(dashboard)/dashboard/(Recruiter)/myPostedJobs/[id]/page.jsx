@@ -129,8 +129,60 @@ const ApplyedAJob = ({ params }) => {
         }
     }
 
-    const handleOfflineInterView = (e) => {
+    const handleOfflineInterView = async (e) => {
         e.preventDefault();
+        const form = e.target;
+        const date = form.date.value;
+        const time = form.time.value;
+        const location = form.location.value;
+        const contactPerson = form.contactPerson.value;
+        const contactEmail = form.contactEmail.value;
+        const contactPhone = form.contactPhone.value;
+        const interviewFormat = form.interviewFormat.value;
+        const documents = form.documents.value;
+
+        const offlineInterView = {
+            date,
+            time,
+            location,
+            contact: {
+                contactPerson,
+                contactPhone,
+                contactEmail
+            },
+            interviewFormat,
+            documents
+        }
+
+        console.log(offlineInterView);
+        if (!id) {
+            return toast.error('Something os Wrong')
+        }
+
+        try {
+            setIsLoading(true)
+            const { data } = await axios.put(
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview Scheduled' });
+
+            if (data.modifiedCount > 0) {
+                setShowModal(!showModal)
+                toast.success('Successful')
+                setIsLoading(false)
+                // Re-fetch the jobs after deletion
+                fetchJobs();
+            }
+            setIsLoading(false)
+        } catch (error) {
+            // Handle error
+            setIsLoading(false)
+            setShowModal(!showModal)
+            console.log(error.message);
+            Swal.fire({
+                title: "Error!",
+                text: "Failed to delete the job.",
+                icon: "error",
+            });
+        }
     }
 
     return (
@@ -192,7 +244,7 @@ const ApplyedAJob = ({ params }) => {
                                             <button
                                                 onClick={() => {
                                                     setShowModal(!showModal)
-                                                    setId(id)
+                                                    setId(job?._id)
                                                     setInterView(true)
                                                 }}
                                                 className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
