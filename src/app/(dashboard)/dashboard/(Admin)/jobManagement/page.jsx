@@ -149,7 +149,7 @@ const JobTable = () => {
                 {new Date(job.deadline).getTime() - currentTime > 1000 ? (
                   <Countdown date={new Date(job.deadline)} />
                 ) : (
-                  "Deadline has passed"
+                  "closed"
                 )}
               </td>
             </tr>

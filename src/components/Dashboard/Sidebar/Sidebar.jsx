@@ -80,8 +80,8 @@ const Sidebar = () => {
               <nav>
                 <MenuItem icon={FaUserCog} label="User Management" address="/dashboard/userManagement" />
                 <MenuItem icon={MdOutlineManageSearch} label="Job Management" address="/dashboard/jobManagement" />
-                <MenuItem icon={GoCodeReview} label="Interview" address="/dashboard/interview" />
-                <MenuItem icon={FcStatistics} label="Statistics" address="/dashboard/statistics" />
+                {/* <MenuItem icon={GoCodeReview} label="Interview" address="/dashboard/interview" />
+                <MenuItem icon={FcStatistics} label="Statistics" address="/dashboard/statistics" /> */}
               </nav>
             }
           </div>
