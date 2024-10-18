@@ -1,4 +1,3 @@
-
 import Banner from './Banner'
 import Companies from './Companies';
 import RecentJobs from './RecentJobs';
@@ -10,7 +9,7 @@ const Homepage = () => {
      <RecentJobs/>
     
      <Companies/>
-     <Reviews></Reviews>
+     <Reviews />
     </div>
   );
 };
