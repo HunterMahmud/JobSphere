@@ -221,12 +221,12 @@ const ApplyedAJob = ({ params }) => {
     // for online interview
     const handleOnlineInterview = async (e) => {
         e.preventDefault();
-        // Ensure user is authenticated before creating event
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+        
         if (!isSignedIn) {
             await gapi.auth2.getAuthInstance().signIn();
         }
-
+    
         // Create Google Calendar Event
         const event = {
             summary: 'Interview with ' + formData.contactPerson,
@@ -242,71 +242,66 @@ const ApplyedAJob = ({ params }) => {
             attendees: [{ email: formData.contactEmail }],
             conferenceData: {
                 createRequest: {
-                    requestId: "sample123",
+                    requestId: "sample123", // This should be unique per request
                     conferenceSolutionKey: { type: "hangoutsMeet" },
                     status: { statusCode: "success" },
                 },
             },
         };
-
+    
         try {
-            const { result } = await gapi.client.calendar.events
-                .insert({
-                    calendarId: "primary",
-                    resource: event,
-                    conferenceDataVersion: 1,
-                })
-            if (result) {
-                const meetLink = await result.hangoutLink;
-                setMeetingLink(meetLink);
+            setIsLoading(true);
+            const { result } = await gapi.client.calendar.events.insert({
+                calendarId: "primary",
+                resource: event,
+                conferenceDataVersion: 1, // Ensure conference data is requested
+            });
+    
+            // Ensure the event is created and contains a hangout link
+            if (result && result.hangoutLink) {
+                const meetLink = result.hangoutLink; // Use the meet link directly
                 toast.success("Google Meet link created: " + meetLink);
+    
+                // Use the meet link for further actions, no need for state update to rely on it
+                const onlineInterview = {
+                    interviewDate: formData.interviewDate,
+                    interviewTime: formData.interviewTime,
+                    contact: {
+                        contactPerson: formData.contactPerson,
+                        contactPhone: formData.contactPhone,
+                        contactEmail: formData.contactEmail,
+                    },
+                    interviewFormat: formData.interviewFormat,
+                    meetingLink: meetLink, // Directly use the link here
+                };
+    
+                // Proceed to update the job status with the created meeting link
+                const { data } = await axios.put(
+                    `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, 
+                    { onlineInterview, jobStatus: 'Interview' }
+                );
+    
+                if (data.modifiedCount > 0) {
+                    setShowModal(!showModal);
+                    toast.success('Job interview successfully scheduled!');
+                    fetchJobs(); // Fetch updated jobs list
+                } else {
+                    toast.error('No jobs were updated.');
+                }
+    
+            } else {
+                throw new Error("Google Meet link was not returned. Please try again.");
             }
         } catch (err) {
             console.error("Error creating event: ", err.message);
-            toast.error(err?.message)
-        };
-
-        const onlineInterview = {
-            interviewDate: formData.interviewDate,
-            interviewTime: formData.interviewTime,
-            contact: {
-                contactPerson: formData.contactPerson,
-                contactPhone: formData.contactPhone,
-                contactEmail: formData.contactEmail
-            },
-            interviewFormat: formData.interviewFormat,
-            meetingLink
-        }
-
-        if (!meetingLink) {
-            return toast.error('Something os Wrong! try again')
-        }
-
-        try {
-            setIsLoading(true)
-            const { data } = await axios.put(
-                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { onlineInterview, jobStatus: 'Interview' });
-
-            if (data.modifiedCount > 0) {
-                setShowModal(!showModal)
-                toast.success('Successful')
-                setIsLoading(false)
-                // Re-fetch the jobs after deletion
-                fetchJobs();
-            }
-            setIsLoading(false)
-        } catch (error) {
-            // Handle error
-            setIsLoading(false)
-            setShowModal(!showModal)
-            console.log(error.message);
-            Swal.fire({
-                title: "Error!",
-                text: "Failed to delete the job.",
-                icon: "error",
-            });
+            toast.error(err.message || "Failed to create the event.");
+        } finally {
+            setIsLoading(false); // Reset loading state
         }
     };
+    
+    
+    
 
     return (
         <Fragment>
@@ -500,12 +495,9 @@ const ApplyedAJob = ({ params }) => {
                                                                             </div>
 
                                                                             {/* Submit Button */}
-                                                                            <div className="flex justify-end col-span-2">
-                                                                                <button
-                                                                                    type="submit"
-                                                                                    className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                                >
-                                                                                    Send Interview Details
+                                                                            <div className='flex justify-end md:col-span-2'>
+                                                                                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                                    {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
                                                                                 </button>
                                                                             </div>
                                                                         </form>
@@ -601,12 +593,9 @@ const ApplyedAJob = ({ params }) => {
                                                                         </div>
 
                                                                         {/* Submit Button */}
-                                                                        <div className="flex col-span-2 justify-end">
-                                                                            <button
-                                                                                type="submit"
-                                                                                className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                            >
-                                                                                Send Interview Details
+                                                                        <div className='flex justify-end md:col-span-2'>
+                                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
                                                                             </button>
                                                                         </div>
                                                                     </form>
