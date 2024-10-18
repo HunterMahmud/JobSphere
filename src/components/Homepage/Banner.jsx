@@ -11,6 +11,7 @@ import "swiper/css/autoplay";
 
 // import required modules
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import Link from "next/link";
 
 
 
@@ -21,16 +22,22 @@ const Banner = () => {
     <div className="relative mb-10 ">
       <div
         data-aos="fade-up"
-        className="absolute  top-[30%] sm:top-[40%] left-12 md:left-20 z-10"
+        className="absolute top-[20%] md:top-[30%] left-12 right-12 md:left-20 z-10"
       >
-        <div className=" h-[40%] max-w-[900px] text-white bg-black bg-opacity-30 rounded-lg p-2">
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl   font-Bebas font-extrabold">
+        <div className="md:h-[40%] max-w-[900px] text-white bg-black bg-opacity-30 rounded-lg p-2">
+          <h1 className="text-2xl sm:text-2xl lg:text-5xl font-Bebas font-extrabold">
             {" "}
-            Discover <br />More than  <span className="text-blue-400">
+            Discover <br />More than  <span className="text-secondary">
               5000+ Jobs
             </span>
           </h1>
           <p className="max-w-[500px] mt-5 hidden sm:block"> Achieve peak fitness with expert training, personalized workouts, and a supportive community for all fitness levels. Join us today!</p>
+
+          <div className="flex mx-auto justify-center mt-4">
+                        <button className="bg-primary btn hover:bg-secondary text-white font-semibold py-3 my-4 px-8 rounded-lg w-auto justify-center">
+                            <Link href={`/jobs`}>View Jobs</Link>
+                        </button>
+                    </div>
           
 {/*           
           <div className="flex flex-col md:flex-row items-center p-4 bg-gray-100 rounded-lg shadow-md w-full md:w-4/5 space-y-2 md:space-y-0"> */}
