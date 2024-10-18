@@ -41,11 +41,6 @@ const links = [
     title: "Blogs",
     path: "/blogs",
   },
-
-  {
-    title: "About Us",
-    path: "/aboutus",
-  },
 ];
 
 const Navbar = () => {
@@ -92,8 +87,8 @@ const Navbar = () => {
                   href={link.path}
                   className={`${
                     pathName === link.path
-                      ? "bg-blue-600 text-white font-semibold shadow-lg"
-                      : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                      ? "bg-primary text-white font-semibold shadow-lg"
+                      : "text-gray-300 hover:bg-hover hover:text-white"
                   } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
                 >
                   {link.title}
@@ -102,20 +97,9 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Right Section ( Profile, Notifications) */}
+          {/* Right Section ( Profile ) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {/* Notifications */}
-            {session?.status === "authenticated" && (
-              <>
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon aria-hidden="true" className="h-6 w-6" />
-                </button>
-              </>
-            )}
+            
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
               {session?.status === "authenticated" ? (
@@ -131,7 +115,7 @@ const Navbar = () => {
                             ? loggedInUser?.userIMG
                             : "https://i.ibb.co/3BY9Fks/profile.png"
                         }
-                        className="rounded-full"
+                        className="rounded-full w-10"
                         height={40}
                         width={40}
                       />
