@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai"; // Import icons
 import Swal from "sweetalert2";
-import Loader from '@/app/loading';
+import Loader from "@/app/loading";
 
 // User Management Component
 const UserManagement = () => {
@@ -18,24 +18,24 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true); // Set loading state to true before the request
-  
+
       // Fetch user data from the API with pagination parameters
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/userManagement/api/allUsers`, // Ensure this is the correct endpoint
         {
           params: {
-            page,  // Current page for pagination
+            page, // Current page for pagination
             limit, // Number of items per page
           },
         }
       );
-  
+
       console.log("Fetched users: ", response.data); // Log to see if data is coming
-  
+
       // Set users and total user count from the response
       setUsers(response.data.users);
       setTotalUsers(response.data.pagination.totalItems); // Use total items from the response
-  
+
       setLoading(false); // Set loading to false after fetching data
     } catch (err) {
       console.error("Error fetching users:", err); // Log the error for debugging
@@ -43,12 +43,12 @@ const UserManagement = () => {
       setLoading(false); // Ensure loading is set to false even in case of an error
     }
   };
-  
+
   // useEffect to call fetchUsers when the component mounts or when page or limit changes
   useEffect(() => {
     fetchUsers();
   }, [page, limit]); // Dependencies that will trigger the fetch when changed
-  
+
   const handleDelete = async (userEmail) => {
     Swal.fire({
       title: "Are you sure?",
@@ -111,59 +111,68 @@ const UserManagement = () => {
       </div>
 
       <div className="overflow-x-auto">
-      {
-            loading ? <Loader /> :
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50 border-b">
-            <tr>
-            <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-700">
-                Name
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-700">
-                Role
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-700">
-                Email
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-700">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {users.map((user, index) => (
-              <tr
-              key={index}
-              className="border-b hover:bg-gray-50 text-xs md:text-sm"
-            >
-              <td className="px-6 py-4">{index + 1}</td>
-                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                  {user.name || user.fullName || user.userName}
-                </td>
-                <td className="px-6 py-4">
-                                        <span className="inline-block px-2 py-1 font-medium rounded-full  bg-blue-100 text-blue-600">
-                                            {user?.role}
-                                        </span>
-                                    </td>
-                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                  {user.email}
-                </td>
-                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                  <div className="flex items-center gap-x-6">
-                    <button
-                      className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
-                      onClick={() => handleDelete(user.email)}
-                    >
-                      <AiFillDelete className="text-lg flex items-center justify-center" />
-                    </button>
-                  </div>
-                </td>
+        {loading ? (
+          <Loader />
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50 border-b">
+              <tr>
+                <th className="px-6 py-4 text-left font-medium text-gray-700">
+                  #
+                </th>
+                <th className="px-6 py-4 text-left font-medium text-gray-700">
+                  Name
+                </th>
+                <th className="px-6 py-4 text-left font-medium text-gray-700">
+                  Role
+                </th>
+                <th className="px-6 py-4 text-left font-medium text-gray-700">
+                  Email
+                </th>
+                <th className="px-6 py-4 text-left font-medium text-gray-700">
+                  Action
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        }
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {users.map((user, index) => (
+                <tr
+                  key={index}
+                  className="border-b hover:bg-gray-50 text-xs md:text-sm"
+                >
+                  <td className="px-6 py-4">{index + 1}</td>
+                  <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    {user.name || user.fullName || user.userName}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-block px-2 py-1 font-medium rounded-full  bg-blue-100 text-blue-600">
+                      {user?.role}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    {user.email}
+                  </td>
+                  <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <div className="flex items-center gap-x-6">
+                      <button
+                        className={`flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md transition mx-2 
+      ${
+        user?.role === "admin"
+          ? "cursor-not-allowed opacity-50"
+          : "hover:bg-red-600"
+      }`}
+                        onClick={() => handleDelete(user.email)}
+                        disabled={user?.role === "admin"}
+                      >
+                        <AiFillDelete className="text-lg flex items-center justify-center" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* Pagination Controls */}
@@ -210,7 +219,9 @@ const UserManagement = () => {
           <button
             disabled={page === totalPages}
             onClick={() => setPage(page + 1)}
-            className={`text-gray-700 ${page === totalPages && "cursor-not-allowed"}`}
+            className={`text-gray-700 ${
+              page === totalPages && "cursor-not-allowed"
+            }`}
           >
             Next
           </button>
