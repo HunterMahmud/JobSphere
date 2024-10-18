@@ -114,24 +114,34 @@ const BlogDetails = ({ params }) => {
   };
 
   return (
-    <div className="container mx-auto my-10 p-6">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-        <div className="flex justify-between items-center mb-4">
-          <p className="text-gray-600">By {blog?.author}</p>
-          <p className="text-gray-600">
-            {new Date(blog?.publishedDate).toLocaleDateString()}
-          </p>
-        </div>
-        {blog.blogImage && (
+    <div className="custom-container mx-auto my-10 p-2 md:p-4 lg:p-6">
+      <div className="bg-white rounded-lg shadow-lg p-2 md:p-4 lg:p-6">
+       
+        {blog.blogImage && ( 
+        <div>
           <Image
             src={blog?.blogImage}
             alt={blog?.title}
             width={1000}
             height={200}
-            className="rounded-md w-full h-[600px] object-cover"
+            className="rounded-md w-full h-[300px] object-cover"
           />
+        </div>
         )}
+     
+        <h1 className="text-2xl md:text-3xl lg:text-4xl mt-4 font-bold mb-4">{blog.title}</h1>
+        <div className="flex justify-between items-center mb-4">
+          <div>
+          <p className="text-gray-600 font-bold">{blog?.author}</p>
+          <p className="text-gray-600">
+            {new Date(blog?.publishedDate).toLocaleDateString()}
+          </p>
+          </div>
+          <div>
+            {/* todo: eikhane share options dite hobe */}
+          </div>
+        </div>
+        
         <p className="mt-4 text-lg">{blog?.content}</p>
 
         {/* Upvote and Downvote Section */}
@@ -147,7 +157,7 @@ const BlogDetails = ({ params }) => {
             ) : (
               <BiUpvote className="mr-2" />
             )}{" "}
-            {blog.upvotes}
+            {blog?.upvotes}
           </button>
           <button
             onClick={handleDownvote}
@@ -160,7 +170,7 @@ const BlogDetails = ({ params }) => {
             ) : (
               <BiDownvote className="mr-2" />
             )}{" "}
-            {blog.downvotes}
+            {blog?.downvotes}
           </button>
         </div>
       </div>
