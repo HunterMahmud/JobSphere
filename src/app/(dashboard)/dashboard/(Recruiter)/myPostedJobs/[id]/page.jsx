@@ -129,8 +129,8 @@ const ApplyedAJob = ({ params }) => {
         }
     }
 
-    const handleInterView = (id) => {
-
+    const handleOfflineInterView = (e) => {
+        e.preventDefault();
     }
 
     return (
@@ -215,23 +215,126 @@ const ApplyedAJob = ({ params }) => {
                                                         <Tabs>
                                                             <TabList className="flex justify-center items-center">
                                                                 <Tab className="mr-2 p-2 cursor-pointer" selectedClassName="bg-primary p-2 rounded text-white border-0">
-                                                                    Offline
+                                                                    Offline InterView
                                                                 </Tab>
                                                                 <Tab className="mr-2 p-2 cursor-pointer" selectedClassName="bg-primary p-2 rounded text-white border-0">
-                                                                    Online
+                                                                    Online InterView
                                                                 </Tab>
                                                             </TabList>
 
                                                             <TabPanel>
-                                                               <div>
+                                                                <div>
+                                                                    <div className="mt-5 overflow-y-auto h-[80vh] md:h-full">
+                                                                        <h2 className="text-xl md:text-2xl font-bold mb-6 text-center">Interview Details Form</h2>
+                                                                        <form onSubmit={handleOfflineInterView} className="md:grid grid-cols-1 md:grid-cols-2 gap-5 bg-white rounded">
 
-                                                               </div>
+                                                                            {/* Date and Time */}
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Interview Date</label>
+                                                                                <input
+                                                                                    type="date"
+                                                                                    name="date"
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Interview Time</label>
+                                                                                <input
+                                                                                    type="time"
+                                                                                    name="time"
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            {/* Location */}
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Interview Location</label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    name="location"
+                                                                                    placeholder="Office Address"
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            {/* Contact Information */}
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Contact Person</label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    name="contactPerson"
+                                                                                    placeholder="HR or Recruiter's Name"
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Contact Email</label>
+                                                                                <input
+                                                                                    type="email"
+                                                                                    name="contactEmail"
+                                                                                    placeholder="example@email.com"
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Contact Phone</label>
+                                                                                <input
+                                                                                    type="tel"
+                                                                                    name="contactPhone"
+                                                                                    placeholder="Phone Number"
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            {/* Interview Format */}
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Interview Format</label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    name="interviewFormat"
+                                                                                    placeholder="Technical Test, Panel Interview, etc."
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            {/* Documents to Bring */}
+                                                                            <div className="mb-4">
+                                                                                <label className="block text-gray-700 font-bold mb-2">Documents to Bring</label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    name="documents"
+                                                                                    placeholder="Resume, ID, Portfolio"
+                                                                                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                    required
+                                                                                />
+                                                                            </div>
+
+                                                                            {/* Submit Button */}
+                                                                            <div className="flex justify-end col-span-2">
+                                                                                <button
+                                                                                    type="submit"
+                                                                                    className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                >
+                                                                                    Send Interview Details
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
                                                             </TabPanel>
 
                                                             <TabPanel>
-                                                                <div>
-
-                                                                </div>
+                                                                Online Inter View
                                                             </TabPanel>
                                                         </Tabs>
                                                     </div>
