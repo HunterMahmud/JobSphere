@@ -114,8 +114,8 @@ const BlogDetails = ({ params }) => {
   };
 
   return (
-    <div className="custom-container mx-auto my-10 p-2 md:p-4 lg:p-6">
-      <div className="bg-white rounded-lg shadow-lg p-2 md:p-4 lg:p-6">
+    <div className="custom-container mx-auto my-10 p-2 md:p-4">
+      <div className="bg-white rounded-lg shadow-lg p-2 md:p-4">
        
         {blog.blogImage && ( 
         <div>
