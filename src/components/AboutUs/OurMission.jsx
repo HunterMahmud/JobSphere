@@ -28,7 +28,7 @@ const OurMission = () => {
                 {/* Text Section */}
                 <div className="lg:w-1/2 px-4 lg:pb-32 mt-12 md:mt-28 lg:mt-0">
                     <h2 className="lg:text-5xl text-2xl text-black lg:text-left font-bold pt-5">
-                        Our Mission <span className="text-indigo-600">and Vision</span>
+                        Our Mission <span className="text-primary">and Vision</span>
                     </h2>
                     <p className="py-6 text-lg text-gray-700 leading-relaxed">
                         JobSphere is a next-generation hiring and communication platform designed to streamline the recruitment process for both businesses and job seekers. We aim to bridge the gap between companies and potential candidates by offering an intuitive, real-time system for job postings, applications, and communication.

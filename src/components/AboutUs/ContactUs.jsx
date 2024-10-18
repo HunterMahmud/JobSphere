@@ -39,18 +39,18 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex flex-col items-center md:flex-row md:p-10 bg-sky-50  shadow-md rounded-lg">
+    <div className="flex flex-col items-center md:flex-row md:p-10 shadow-md rounded-lg">
       <div className='md:w-1/2 rounded-lg'>
         <Image
           src="/images/img10.jpg" // Ensure the image exists at this path
           alt="Team Member 1"
           width={600} 
           height={400} 
-          className="w-10/12 mb-4 shadow-lg rounded-lg"
+          className="md:w-10/12 mb-4 shadow-lg rounded-lg"
         />
       </div>
       <div>
-        <div className="flex flex-col items-center justify-center bg-sky-100 rounded-xl p-6">
+        <div className="flex flex-col items-center justify-center border border-secondary shadow-md rounded-xl p-6">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
           <p className="text-lg text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
           <form 
@@ -104,7 +104,7 @@ const ContactUs = () => {
             </div>
             <div className="flex items-center justify-between">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
                 disabled={isSubmitting} // Disable button while submitting
               >
