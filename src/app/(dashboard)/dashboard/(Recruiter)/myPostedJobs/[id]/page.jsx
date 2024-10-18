@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import Modal from '@/components/Modal/Modal';
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { gapi } from 'gapi-script';
 
 const ApplyedAJob = ({ params }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -23,6 +24,39 @@ const ApplyedAJob = ({ params }) => {
     const [id, setId] = useState('');
     const [task, setTask] = useState('');
     const [interView, setInterView] = useState(false);
+    const [meetingLink, setMeetingLink] = useState('')
+
+    const CLIENT_ID = '731063756669-rq2lnmv7jequqra3rtnh15n74uvqisni.apps.googleusercontent.com'; // Replace with your Google Client ID
+    const API_KEY = 'AIzaSyALBfjATmpmY3Wyag_4ls9jGruUSafUErY'; // Replace with your Google API Key
+    const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+    const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+
+    const [formData, setFormData] = useState({
+        interviewDate: '',
+        interviewTime: '',
+        contactPerson: '',
+        contactEmail: '',
+        contactPhone: '',
+        interviewFormat: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    // Load the Google API client
+    useEffect(() => {
+        function start() {
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES,
+            });
+        }
+        gapi.load("client:auth2", start);
+    }, []);
 
     const fetchJobs = async () => {
         setLoading(true);
@@ -128,7 +162,7 @@ const ApplyedAJob = ({ params }) => {
             });
         }
     }
-
+    // for Offline interview
     const handleOfflineInterView = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -142,9 +176,9 @@ const ApplyedAJob = ({ params }) => {
         const documents = form.documents.value;
 
         const offlineInterView = {
-            date,
-            time,
-            location,
+            interviewDate: date,
+            interviewTime: time,
+            interviewlocation: location,
             contact: {
                 contactPerson,
                 contactPhone,
@@ -162,7 +196,7 @@ const ApplyedAJob = ({ params }) => {
         try {
             setIsLoading(true)
             const { data } = await axios.put(
-                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview Scheduled' });
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
@@ -184,6 +218,95 @@ const ApplyedAJob = ({ params }) => {
             });
         }
     }
+    // for online interview
+    const handleOnlineInterview = async (e) => {
+        e.preventDefault();
+        // Ensure user is authenticated before creating event
+        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+        if (!isSignedIn) {
+            await gapi.auth2.getAuthInstance().signIn();
+        }
+
+        // Create Google Calendar Event
+        const event = {
+            summary: 'Interview with ' + formData.contactPerson,
+            description: 'This is an online interview.',
+            start: {
+                dateTime: `${formData.interviewDate}T${formData.interviewTime}:00`,
+                timeZone: 'Asia/Dhaka',
+            },
+            end: {
+                dateTime: `${formData.interviewDate}T${parseInt(formData.interviewTime.split(":")[0]) + 1}:${formData.interviewTime.split(":")[1]}:00`,
+                timeZone: 'Asia/Dhaka',
+            },
+            attendees: [{ email: formData.contactEmail }],
+            conferenceData: {
+                createRequest: {
+                    requestId: "sample123",
+                    conferenceSolutionKey: { type: "hangoutsMeet" },
+                    status: { statusCode: "success" },
+                },
+            },
+        };
+
+        try {
+            const { result } = await gapi.client.calendar.events
+                .insert({
+                    calendarId: "primary",
+                    resource: event,
+                    conferenceDataVersion: 1,
+                })
+            if (result) {
+                const meetLink = await result.hangoutLink;
+                setMeetingLink(meetLink);
+                toast.success("Google Meet link created: " + meetLink);
+            }
+        } catch (err) {
+            console.error("Error creating event: ", err.message);
+            toast.error(err?.message)
+        };
+
+        const onlineInterview = {
+            interviewDate: formData.interviewDate,
+            interviewTime: formData.interviewTime,
+            contact: {
+                contactPerson: formData.contactPerson,
+                contactPhone: formData.contactPhone,
+                contactEmail: formData.contactEmail
+            },
+            interviewFormat: formData.interviewFormat,
+            meetingLink
+        }
+
+        if (!meetingLink) {
+            return toast.error('Something os Wrong! try again')
+        }
+
+        try {
+            setIsLoading(true)
+            const { data } = await axios.put(
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { onlineInterview, jobStatus: 'Interview' });
+
+            if (data.modifiedCount > 0) {
+                setShowModal(!showModal)
+                toast.success('Successful')
+                setIsLoading(false)
+                // Re-fetch the jobs after deletion
+                fetchJobs();
+            }
+            setIsLoading(false)
+        } catch (error) {
+            // Handle error
+            setIsLoading(false)
+            setShowModal(!showModal)
+            console.log(error.message);
+            Swal.fire({
+                title: "Error!",
+                text: "Failed to delete the job.",
+                icon: "error",
+            });
+        }
+    };
 
     return (
         <Fragment>
@@ -243,9 +366,14 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    setShowModal(!showModal)
-                                                    setId(job?._id)
-                                                    setInterView(true)
+
+                                                    if (job?.offlineInterView || job?.onlineInterview) {
+                                                        return toast.error('Already Added')
+                                                    } else {
+                                                        setShowModal(!showModal)
+                                                        setId(job?._id)
+                                                        setInterView(true)
+                                                    }
                                                 }}
                                                 className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
                                             >
@@ -386,7 +514,103 @@ const ApplyedAJob = ({ params }) => {
                                                             </TabPanel>
 
                                                             <TabPanel>
-                                                                Online Inter View
+                                                                <div className="mt-5 overflow-y-auto h-[80vh] md:h-full">
+
+                                                                    <h2 className="text-xl md:text-2xl font-bold mb-6 text-center">Online Interview Details Form</h2>
+                                                                    <form onSubmit={handleOnlineInterview} className="md:grid grid-cols-1 md:grid-cols-2 gap-5 bg-white rounded">
+
+                                                                        {/* Date */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Date</label>
+                                                                            <input
+                                                                                type="date"
+                                                                                name="interviewDate"
+                                                                                value={formData.interviewDate}
+                                                                                onChange={handleChange}
+                                                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Time */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Time</label>
+                                                                            <input
+                                                                                type="time"
+                                                                                name="interviewTime"
+                                                                                value={formData.interviewTime}
+                                                                                onChange={handleChange}
+                                                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+
+                                                                        {/* Contact Information */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Person</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="contactPerson"
+                                                                                value={formData.contactPerson}
+                                                                                onChange={handleChange}
+                                                                                placeholder="Recruiter's Name"
+                                                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Email</label>
+                                                                            <input
+                                                                                type="email"
+                                                                                name="contactEmail"
+                                                                                value={formData.contactEmail}
+                                                                                onChange={handleChange}
+                                                                                placeholder="recruiter@example.com"
+                                                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Phone</label>
+                                                                            <input
+                                                                                type="tel"
+                                                                                name="contactPhone"
+                                                                                value={formData.contactPhone}
+                                                                                onChange={handleChange}
+                                                                                placeholder="Phone Number"
+                                                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Interview Format */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Format</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="interviewFormat"
+                                                                                value={formData.interviewFormat}
+                                                                                onChange={handleChange}
+                                                                                placeholder="One-on-one, Panel, etc."
+                                                                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Submit Button */}
+                                                                        <div className="flex col-span-2 justify-end">
+                                                                            <button
+                                                                                type="submit"
+                                                                                className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                            >
+                                                                                Send Interview Details
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
                                                             </TabPanel>
                                                         </Tabs>
                                                     </div>
