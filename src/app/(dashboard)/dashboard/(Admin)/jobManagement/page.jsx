@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Countdown from "react-countdown";
+import Loader from '@/app/loading';
 
 const JobTable = () => {
   const [jobDetails, setJobDetails] = useState([]);
@@ -45,9 +46,9 @@ const JobTable = () => {
     fetchJobs();
   }, [sortOrder, jobTypeFilter, searchTerm, page, limit]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
   if (error) {
     return <p>{error}</p>;
@@ -97,6 +98,8 @@ const JobTable = () => {
       </div>
 
       {/* Table */}
+      {
+            loading ? <Loader /> :
       <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden">
         <thead className="bg-gray-50 border-b">
           <tr>
@@ -153,6 +156,7 @@ const JobTable = () => {
           ))}
         </tbody>
       </table>
+       }
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">

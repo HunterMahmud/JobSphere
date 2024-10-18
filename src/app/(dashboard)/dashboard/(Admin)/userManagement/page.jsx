@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai"; // Import icons
 import Swal from "sweetalert2";
+import Loader from '@/app/loading';
 
 // User Management Component
 const UserManagement = () => {
@@ -90,9 +91,9 @@ const UserManagement = () => {
   // Calculate pagination
   const totalPages = Math.ceil(totalUsers / limit); // Use totalUsers for pagination
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
   if (error) {
     return <p>{error}</p>;
@@ -110,6 +111,8 @@ const UserManagement = () => {
       </div>
 
       <div className="overflow-x-auto">
+      {
+            loading ? <Loader /> :
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50 border-b">
             <tr>
@@ -160,6 +163,7 @@ const UserManagement = () => {
             ))}
           </tbody>
         </table>
+        }
       </div>
 
       {/* Pagination Controls */}
