@@ -87,8 +87,8 @@ const Navbar = () => {
                   href={link.path}
                   className={`${
                     pathName === link.path
-                      ? "bg-blue-600 text-white font-semibold shadow-lg"
-                      : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                      ? "bg-primary text-white font-semibold shadow-lg"
+                      : "text-gray-300 hover:bg-hover hover:text-white"
                   } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
                 >
                   {link.title}
