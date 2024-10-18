@@ -9,6 +9,8 @@ import { GiNotebook } from 'react-icons/gi';
 import toast from 'react-hot-toast';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import Modal from '@/components/Modal/Modal';
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { gapi } from 'gapi-script';
 
 const ApplyedAJob = ({ params }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -20,7 +22,41 @@ const ApplyedAJob = ({ params }) => {
     const [limit, setLimit] = useState(10);
     const [total, setTotal] = useState(1);
     const [id, setId] = useState('');
-    const [task, setTask] = useState('')
+    const [task, setTask] = useState('');
+    const [interView, setInterView] = useState(false);
+    const [meetingLink, setMeetingLink] = useState('')
+
+    const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
+    const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+    const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+    const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+
+    const [formData, setFormData] = useState({
+        interviewDate: '',
+        interviewTime: '',
+        contactPerson: '',
+        contactEmail: '',
+        contactPhone: '',
+        interviewFormat: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    // Load the Google API client
+    useEffect(() => {
+        function start() {
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES,
+            });
+        }
+        gapi.load("client:auth2", start);
+    }, []);
 
     const fetchJobs = async () => {
         setLoading(true);
@@ -83,6 +119,7 @@ const ApplyedAJob = ({ params }) => {
     const handleTask = (id) => {
         setShowModal(!showModal)
         setId(id)
+        setInterView(false)
     }
 
     const handleSubmitTask = async (e) => {
@@ -125,10 +162,144 @@ const ApplyedAJob = ({ params }) => {
             });
         }
     }
+    // for Offline interview
+    const handleOfflineInterView = async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const date = form.date.value;
+        const time = form.time.value;
+        const location = form.location.value;
+        const contactPerson = form.contactPerson.value;
+        const contactEmail = form.contactEmail.value;
+        const contactPhone = form.contactPhone.value;
+        const interviewFormat = form.interviewFormat.value;
+        const documents = form.documents.value;
 
-    const handleInterView = (id) => {
+        const offlineInterView = {
+            interviewDate: date,
+            interviewTime: time,
+            interviewlocation: location,
+            contact: {
+                contactPerson,
+                contactPhone,
+                contactEmail
+            },
+            interviewFormat,
+            documents
+        }
 
+        console.log(offlineInterView);
+        if (!id) {
+            return toast.error('Something os Wrong')
+        }
+
+        try {
+            setIsLoading(true)
+            const { data } = await axios.put(
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
+
+            if (data.modifiedCount > 0) {
+                setShowModal(!showModal)
+                toast.success('Successful')
+                setIsLoading(false)
+                // Re-fetch the jobs after deletion
+                fetchJobs();
+            }
+            setIsLoading(false)
+        } catch (error) {
+            // Handle error
+            setIsLoading(false)
+            setShowModal(!showModal)
+            console.log(error.message);
+            Swal.fire({
+                title: "Error!",
+                text: "Failed to delete the job.",
+                icon: "error",
+            });
+        }
     }
+    // for online interview
+    const handleOnlineInterview = async (e) => {
+        e.preventDefault();
+        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+
+        if (!isSignedIn) {
+            await gapi.auth2.getAuthInstance().signIn();
+        }
+
+        // Create Google Calendar Event
+        const event = {
+            summary: 'Interview with ' + formData.contactPerson,
+            description: 'This is an online interview.',
+            start: {
+                dateTime: `${formData.interviewDate}T${formData.interviewTime}:00`,
+                timeZone: 'Asia/Dhaka',
+            },
+            end: {
+                dateTime: `${formData.interviewDate}T${parseInt(formData.interviewTime.split(":")[0]) + 1}:${formData.interviewTime.split(":")[1]}:00`,
+                timeZone: 'Asia/Dhaka',
+            },
+            attendees: [{ email: formData.contactEmail }],
+            conferenceData: {
+                createRequest: {
+                    requestId: "sample123", // This should be unique per request
+                    conferenceSolutionKey: { type: "hangoutsMeet" },
+                    status: { statusCode: "success" },
+                },
+            },
+        };
+
+        try {
+            setIsLoading(true);
+            const { result } = await gapi.client.calendar.events.insert({
+                calendarId: "primary",
+                resource: event,
+                conferenceDataVersion: 1, // Ensure conference data is requested
+            });
+
+            // Ensure the event is created and contains a hangout link
+            if (result && result.hangoutLink) {
+                const meetLink = result.hangoutLink; // Use the meet link directly
+
+                const onlineInterview = {
+                    interviewDate: formData.interviewDate,
+                    interviewTime: formData.interviewTime,
+                    contact: {
+                        contactPerson: formData.contactPerson,
+                        contactPhone: formData.contactPhone,
+                        contactEmail: formData.contactEmail,
+                    },
+                    interviewFormat: formData.interviewFormat,
+                    meetingLink: meetLink, // Directly use the link here
+                };
+
+                // Proceed to update the job status with the created meeting link
+                const { data } = await axios.put(
+                    `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
+                    { onlineInterview, jobStatus: 'Interview' }
+                );
+
+                if (data.modifiedCount > 0) {
+                    setShowModal(!showModal);
+                    toast.success('Job interview successfully scheduled!');
+                    fetchJobs(); // Fetch updated jobs list
+                } else {
+                    toast.error('No jobs were updated.');
+                }
+
+            } else {
+                throw new Error("Google Meet link was not returned. Please try again.");
+            }
+        } catch (err) {
+            console.error("Error creating event: ", err.message);
+            toast.error(err.message || "Failed to create the event.");
+        } finally {
+            setIsLoading(false); // Reset loading state
+        }
+    };
+
+
+
 
     return (
         <Fragment>
@@ -187,7 +358,16 @@ const ApplyedAJob = ({ params }) => {
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
                                             </button>
                                             <button
-                                                onClick={() => handleInterView(job?._id)}
+                                                onClick={() => {
+
+                                                    if (job?.offlineInterView || job?.onlineInterview) {
+                                                        return toast.error('Already Added')
+                                                    } else {
+                                                        setShowModal(!showModal)
+                                                        setId(job?._id)
+                                                        setInterView(true)
+                                                    }
+                                                }}
                                                 className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
                                             >
                                                 <MdInterpreterMode className="text-lg flex items-center justify-center" />
@@ -200,54 +380,277 @@ const ApplyedAJob = ({ params }) => {
                                                 <MdOutlineCancel className="text-lg flex items-center justify-center" />
                                             </button>
                                         </td>
-
-                                        <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                                            {task?.taskSubmissionLink ? <>
-                                                <div>
-                                                    <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
-                                                </div>
-                                            </>
-                                                :
-                                                <>
-                                                    <form onSubmit={handleSubmitTask}>
-                                                        <div className='flex flex-col gap-3'>
-                                                            <div className="">
-                                                                <label className='font-medium' htmlFor='job_title'>
-                                                                    Last date for task submission
-                                                                </label>
-                                                                <input
-                                                                    defaultValue={job?.task?.submissionDate}
-                                                                    name='submissionDate'
-                                                                    type='date'
-                                                                    required
-                                                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                />
-                                                            </div>
-
-                                                            <div className="">
-                                                                <label className='font-medium' htmlFor='job_title'>
-                                                                    Task Link
-                                                                </label>
-                                                                <input
-                                                                    placeholder="Submit job task link"
-                                                                    defaultValue={job?.task?.taskLink} name='taskLink'
-                                                                    type='text'
-                                                                    required
-                                                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                />
-                                                            </div>
-
-                                                            <div className='flex justify-end md:col-span-2'>
-                                                                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                                                    {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </>
-                                            }
-                                        </Modal>
                                         {/* Modal */}
+                                        {
+                                            interView ? <>
+                                                <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                                    <div>
+                                                        <Tabs>
+                                                            <TabList className="flex justify-center items-center">
+                                                                <Tab className="mr-2 p-2 cursor-pointer" selectedClassName="bg-primary p-2 rounded text-white border-0">
+                                                                    Offline InterView
+                                                                </Tab>
+                                                                <Tab className="mr-2 p-2 cursor-pointer" selectedClassName="bg-primary p-2 rounded text-white border-0">
+                                                                    Online InterView
+                                                                </Tab>
+                                                            </TabList>
+
+                                                            <TabPanel>
+                                                                <div className="mt-5 overflow-y-auto h-[80vh] md:h-[500px]">
+                                                                    <h2 className="text-xl md:text-2xl font-bold mb-6 text-center">Interview Details Form</h2>
+                                                                    <form onSubmit={handleOfflineInterView} className="md:grid grid-cols-1 md:grid-cols-2 gap-5 bg-white rounded">
+
+                                                                        {/* Date and Time */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Date</label>
+                                                                            <input
+                                                                                type="date"
+                                                                                name="date"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Time</label>
+                                                                            <input
+                                                                                type="time"
+                                                                                name="time"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Location */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Location</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="location"
+                                                                                placeholder="Office Address"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Contact Information */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Person</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="contactPerson"
+                                                                                placeholder="HR or Recruiter's Name"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Email</label>
+                                                                            <input
+                                                                                type="email"
+                                                                                name="contactEmail"
+                                                                                placeholder="example@email.com"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Phone</label>
+                                                                            <input
+                                                                                type="tel"
+                                                                                name="contactPhone"
+                                                                                placeholder="Phone Number"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Interview Format */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Format</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="interviewFormat"
+                                                                                placeholder="Technical Test, Panel Interview, etc."
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Documents to Bring */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Documents to Bring</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="documents"
+                                                                                placeholder="Resume, ID, Portfolio"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Submit Button */}
+                                                                        <div className='flex justify-end md:col-span-2'>
+                                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </TabPanel>
+
+                                                            <TabPanel>
+                                                                <div className="mt-5 overflow-y-auto h-[80vh] md:h-[500px]">
+
+                                                                    <h2 className="text-xl md:text-2xl font-bold mb-6 text-center">Online Interview Details Form</h2>
+                                                                    <form onSubmit={handleOnlineInterview} className="md:grid grid-cols-1 md:grid-cols-2 gap-5 bg-white rounded w-full">
+
+                                                                        {/* Date */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Date</label>
+                                                                            <input
+                                                                                type="date"
+                                                                                name="interviewDate"
+                                                                                value={formData.interviewDate}
+                                                                                onChange={handleChange}
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Time */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Time</label>
+                                                                            <input
+                                                                                type="time"
+                                                                                name="interviewTime"
+                                                                                value={formData.interviewTime}
+                                                                                onChange={handleChange}
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+
+                                                                        {/* Contact Information */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Person</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="contactPerson"
+                                                                                value={formData.contactPerson}
+                                                                                onChange={handleChange}
+                                                                                placeholder="Recruiter's Name"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Email</label>
+                                                                            <input
+                                                                                type="email"
+                                                                                name="contactEmail"
+                                                                                value={formData.contactEmail}
+                                                                                onChange={handleChange}
+                                                                                placeholder="recruiter@example.com"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Contact Phone</label>
+                                                                            <input
+                                                                                type="tel"
+                                                                                name="contactPhone"
+                                                                                value={formData.contactPhone}
+                                                                                onChange={handleChange}
+                                                                                placeholder="Phone Number"
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Interview Format */}
+                                                                        <div className="mb-4">
+                                                                            <label className="block text-gray-700 font-bold mb-2">Interview Format</label>
+                                                                            <input
+                                                                                type="text"
+                                                                                name="interviewFormat"
+                                                                                value={formData.interviewFormat}
+                                                                                onChange={handleChange}
+                                                                                placeholder="One-on-one, Panel, etc."
+                                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                                required
+                                                                            />
+                                                                        </div>
+
+                                                                        {/* Submit Button */}
+                                                                        <div className='flex justify-end md:col-span-2'>
+                                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </TabPanel>
+                                                        </Tabs>
+                                                    </div>
+                                                </Modal>
+                                            </> : <>
+                                                <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                                    {task?.taskSubmissionLink ? <>
+                                                        <div>
+                                                            <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
+                                                        </div>
+                                                    </>
+                                                        :
+                                                        <>
+                                                            <form onSubmit={handleSubmitTask}>
+                                                                <div className='flex flex-col gap-3'>
+                                                                    <div className="">
+                                                                        <label className='font-medium' htmlFor='job_title'>
+                                                                            Last date for task submission
+                                                                        </label>
+                                                                        <input
+                                                                            defaultValue={job?.task?.submissionDate}
+                                                                            name='submissionDate'
+                                                                            type='date'
+                                                                            required
+                                                                            className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                        />
+                                                                    </div>
+
+                                                                    <div className="">
+                                                                        <label className='font-medium' htmlFor='job_title'>
+                                                                            Task Link
+                                                                        </label>
+                                                                        <input
+                                                                            placeholder="Submit job task link"
+                                                                            defaultValue={job?.task?.taskLink} name='taskLink'
+                                                                            type='text'
+                                                                            required
+                                                                            className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                        />
+                                                                    </div>
+
+                                                                    <div className='flex justify-end md:col-span-2'>
+                                                                        <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                            {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </>
+                                                    }
+                                                </Modal>
+                                            </>
+                                        }
+
+
 
                                     </tr>
                                 ))}
