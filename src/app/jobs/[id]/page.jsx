@@ -12,7 +12,7 @@ import {
   FaPhone,
   FaGlobe,
 } from "react-icons/fa";
-import { TbFidgetSpinner } from 'react-icons/tb' // Icons from react-icons
+import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
 import { useSession } from "next-auth/react";
 import Loader from "@/app/loading";
 import Swal from "sweetalert2";
@@ -21,12 +21,15 @@ import Modal from "@/components/Modal/Modal";
 import useSeekerInfo from "@/components/Hooks/useSeekerInfo";
 import toast from "react-hot-toast";
 import useRole from "@/components/Hooks/useRole";
+import Link from "next/link";
 
 const JobDetails = ({ params }) => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [job, setJob] = useState(null); // State to store job details
-  const [applicantsNumber, setApplicantsNumber] = useState(job?.applicantsNumber)
+  const [applicantsNumber, setApplicantsNumber] = useState(
+    job?.applicantsNumber
+  );
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [error, setError] = useState(null); // State to handle errors
   const { data: session } = useSession();
@@ -53,7 +56,7 @@ const JobDetails = ({ params }) => {
     const fetchJobDetails = async () => {
       const details = await getServicesDetails(params.id);
       if (details) {
-        setApplicantsNumber(details?.applicantsNumber)
+        setApplicantsNumber(details?.applicantsNumber);
         setJob(details);
       }
       setLoading(false); // Stop loading once data is fetched
@@ -77,13 +80,13 @@ const JobDetails = ({ params }) => {
 
   const handleApplyNow = () => {
     if (loggedInUser?.role === "recruiter") {
-      return toast.error('Action not permitted!')
+      return toast.error("Action not permitted!");
     } else if (loggedInUser?.role === "admin") {
-      return toast.error('Action not permitted!')
+      return toast.error("Action not permitted!");
     } else {
-      setShowModal(!showModal)
+      setShowModal(!showModal);
     }
-  }
+  };
 
   const handleApplyJob = async (e) => {
     e.preventDefault();
@@ -92,65 +95,80 @@ const JobDetails = ({ params }) => {
     // check resume isLink
     try {
       new URL(resume);
-      console.log('Ok');
+      console.log("Ok");
     } catch (_) {
-      return toast.error('Please Provide Valid Link');
+      return toast.error("Please Provide Valid Link");
     }
 
     if (today > deadline) {
-      toast.error('job deadline is over')
-      return
+      toast.error("job deadline is over");
+      return;
     }
 
     if (Object.keys(seekerInfo).length <= 3) {
-      return toast.error('Please update your profile information first..!');
+      return toast.error("Please update your profile information first..!");
     }
 
-    if (!seekerInfo?.contactInformation?.email || !seekerInfo?.contactInformation?.phoneNumber || !seekerInfo?.contactInformation?.socialLinks) {
-      return toast.error('Please update your profile Contact Information first..!');
+    if (
+      !seekerInfo?.contactInformation?.email ||
+      !seekerInfo?.contactInformation?.phoneNumber ||
+      !seekerInfo?.contactInformation?.socialLinks
+    ) {
+      return toast.error(
+        "Please update your profile Contact Information first..!"
+      );
     }
 
     // Check if required social links are filled
-    if (!seekerInfo?.contactInformation?.socialLinks?.linkedin || !seekerInfo?.contactInformation?.socialLinks?.github) {
-      return toast.error('Please update your profile Contact Information first..!');
+    if (
+      !seekerInfo?.contactInformation?.socialLinks?.linkedin ||
+      !seekerInfo?.contactInformation?.socialLinks?.github
+    ) {
+      return toast.error(
+        "Please update your profile Contact Information first..!"
+      );
     }
 
     const applyedJob = {
       applicantInfo: {
         contactInformation: seekerInfo?.contactInformation,
-        resume
+        resume,
       },
       jobId: job?._id,
       jobTitle: job?.jobTitle,
       applicationDate: today,
-      jobStatus: 'pending',
-      jobType: job?.jobType
-    }
+      jobStatus: "pending",
+      jobType: job?.jobType,
+    };
 
     try {
-      setIsLoading(true)
-      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi`, applyedJob);
-      console.log(data)
+      setIsLoading(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi`,
+        applyedJob
+      );
+      console.log(data);
       if (data.acknowledged) {
-        await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${job?._id}`,
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${job?._id}`,
           { applicantsNumber: job?.applicantsNumber + 1 }
         );
-        toast.success('Apply Successfully')
+        toast.success("Apply Successfully");
         setApplicantsNumber(applicantsNumber + 1);
-        setShowModal(!showModal)
-        setIsLoading(false)
+        setShowModal(!showModal);
+        setIsLoading(false);
       }
       if (data.status === 400) {
-        setIsLoading(false)
-        setShowModal(!showModal)
-        toast.error('You have applied this job!')
+        setIsLoading(false);
+        setShowModal(!showModal);
+        toast.error("You have applied this job!");
       }
     } catch (err) {
-      setIsLoading(false)
+      setIsLoading(false);
       console.log(err?.message);
       toast.error(err?.message);
     }
-  }
+  };
 
   const handleSaveJob = async () => {
     const newJob = { user: session?.user, job };
@@ -203,7 +221,7 @@ const JobDetails = ({ params }) => {
 
   return (
     <Fragment>
-      <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-100">
+      <div className="custom-container mx-auto px-4 py-8 ">
         {/* Job Details Section */}
         <div className="bg-white shadow-md p-6 rounded-lg mb-8">
           <div className="flex items-start justify-between mb-6">
@@ -216,21 +234,22 @@ const JobDetails = ({ params }) => {
                 alt="Company Logo"
                 width={64}
                 height={64}
-                className="rounded-full"
+                className="rounded-full w-16 h-16"
               />
               <div>
-                <h2 className="text-2xl font-bold">{job?.jobTitle}</h2>
-                <p className="text-gray-500">
+                <h2 className="text-lg md:text-xl font-bold">
+                  {job?.jobTitle}
+                </h2>
+                <p className="text-sm md:text-md text-gray-500">
                   {job?.compnayInforamtion?.companyInfo?.companyName}
                 </p>
               </div>
             </div>
             <button
               onClick={handleSaveJob}
-              className="flex items-center text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition"
+              className="flex items-center text-primary border border-primary px-2 py-1 rounded-lg hover:bg-primary hover:text-white transition"
             >
-              <FaBookmark className="w-5 h-5 mr-2" />
-              Save Job
+              <FaBookmark className="w-5 h-5" />
             </button>
           </div>
 
@@ -280,13 +299,11 @@ const JobDetails = ({ params }) => {
           <div className="flex justify-between items-center">
             <button
               onClick={handleApplyNow}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+              className="bg-primary text-sm md:text-base text-white px-4 md:px-6 py-2 rounded-lg hover:bg-hover transition"
             >
               Apply Now
             </button>
-            <p className="text-gray-500">
-              {applicantsNumber || 0} applicants
-            </p>
+            <p className="text-gray-500">{applicantsNumber || 0} applicants</p>
           </div>
         </div>
 
@@ -317,92 +334,98 @@ const JobDetails = ({ params }) => {
                 <strong>Size:</strong>{" "}
                 {job?.compnayInforamtion?.employmentInfo?.companySize} employees
               </p>
-            </div>
-            <div>
               <p>
                 <strong>Address:</strong>{" "}
                 {job?.compnayInforamtion?.companyInfo?.address},{" "}
-                {job?.compnayInforamtion?.companyInfo?.city},{" "}
-                {job?.compnayInforamtion?.companyInfo?.country}
               </p>
             </div>
           </div>
-          <div className="flex items-start space-x-4">
-            <FaEnvelope className="w-6 h-6 text-gray-500" />
-            <div>
-              <p>{job?.compnayInforamtion?.contactInformation?.email}</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-4 mt-4">
-            <FaPhone className="w-6 h-6 text-gray-500" />
-            <div>
-              <p>{job?.compnayInforamtion?.contactInformation?.phone}</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-4 mt-4">
-            <FaGlobe className="w-6 h-6 text-gray-500" />
+          <div className="flex items-center gap-5">
             <a
+              rel="noopener"
+              target="_blank"
+              href={`mailto:${job?.compnayInforamtion?.contactInformation?.email}`}
+            >
+              <FaEnvelope className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+            </a>
+
+            <a
+              rel="noopener"
+              target="_blank"
+              href={`tel:${job?.compnayInforamtion?.contactInformation?.phone}`}
+            >
+              <FaPhone className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+            </a>
+
+            <Link
               href={job?.compnayInforamtion?.contactInformation?.website}
               className="text-blue-600"
               target="_blank"
               rel="noreferrer"
             >
-              {job?.compnayInforamtion?.contactInformation?.website}
-            </a>
+              <FaGlobe className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+            </Link>
           </div>
         </div>
       </div>
       {/* Modal */}
-      <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+      <Modal
+        isVisible={showModal}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      >
         <div>
           <form onSubmit={handleApplyJob}>
-            <div className='grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2'>
-
+            <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
               <div>
-                <label className='' htmlFor='emailAddress'>
+                <label className="" htmlFor="emailAddress">
                   Name
                 </label>
                 <input
-                  id='name'
-                  type='text'
-                  name='name'
+                  id="name"
+                  type="text"
+                  name="name"
                   defaultValue={seekerInfo?.profileOverview?.fullName}
                   disabled
-                  className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                  className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
                 />
               </div>
 
               <div>
-                <label className='' htmlFor='emailAddress'>
+                <label className="" htmlFor="emailAddress">
                   Email Address
                 </label>
                 <input
-                  id='emailAddress'
-                  type='email'
-                  name='email'
+                  id="emailAddress"
+                  type="email"
+                  name="email"
                   defaultValue={seekerInfo?.contactInformation?.email}
                   disabled
-                  className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                  className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className='' htmlFor='job_title'>
+                <label className="" htmlFor="job_title">
                   Resume Link
                 </label>
                 <input
                   placeholder="Submit your resume link"
-                  id='jobTitle'
-                  name='resume'
-                  type='text'
+                  id="jobTitle"
+                  name="resume"
+                  type="text"
                   required
-                  className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                  className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
                 />
               </div>
 
-              <div className='flex justify-end md:col-span-2'>
-                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                  {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Apply'}
+              <div className="flex justify-end md:col-span-2">
+                <button className="py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]">
+                  {isLoading ? (
+                    <TbFidgetSpinner className="animate-spin m-auto" />
+                  ) : (
+                    "Apply"
+                  )}
                 </button>
               </div>
             </div>

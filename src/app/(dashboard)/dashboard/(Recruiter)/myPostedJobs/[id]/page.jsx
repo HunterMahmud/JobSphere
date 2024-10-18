@@ -19,9 +19,8 @@ const ApplyedAJob = ({ params }) => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [total, setTotal] = useState(1);
-    // 
-    const [task, setTask] = useState('');
     const [id, setId] = useState('');
+    const [task, setTask] = useState('')
 
     const fetchJobs = async () => {
         setLoading(true);
@@ -88,23 +87,35 @@ const ApplyedAJob = ({ params }) => {
 
     const handleSubmitTask = async (e) => {
         e.preventDefault();
+        const form = e.target;
+        const taskLink = form.taskLink.value;
+        const submissionDate = form.submissionDate.value;
+
+        const task = {
+            taskLink,
+            submissionDate
+        }
 
         if (!id) {
             return toast.error('Something os Wrong')
         }
 
         try {
+            setIsLoading(true)
             const { data } = await axios.put(
-                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task: task });
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'task' });
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
                 toast.success('Successful')
+                setIsLoading(false)
                 // Re-fetch the jobs after deletion
                 fetchJobs();
             }
+            setIsLoading(false)
         } catch (error) {
             // Handle error
+            setIsLoading(false)
             setShowModal(!showModal)
             console.log(error.message);
             Swal.fire({
@@ -123,7 +134,7 @@ const ApplyedAJob = ({ params }) => {
         <Fragment>
             <div className="max-w-7xl mx-auto py-8 px-4">
                 {/* Page Title */}
-                <h1 className="text-2xl font-bold text-center mb-8">{jobs[1]?.jobTitle}</h1>
+                <h1 className="text-2xl font-bold text-center mb-8">{jobs?.[1]?.jobTitle}</h1>
 
                 {/* Table */}
                 <div className="overflow-x-auto border rounded-lg shadow-md">
@@ -170,7 +181,7 @@ const ApplyedAJob = ({ params }) => {
 
                                         <td className="pl-6 py-4 text-right flex gap-2">
                                             <button
-                                                onClick={() => handleTask(job?._id)}
+                                                onClick={() => { handleTask(job?._id), setTask(job?.task) }}
                                                 className="flex items-center justify-center gap-1 bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-600 transition"
                                             >
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
@@ -189,6 +200,55 @@ const ApplyedAJob = ({ params }) => {
                                                 <MdOutlineCancel className="text-lg flex items-center justify-center" />
                                             </button>
                                         </td>
+
+                                        <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                            {task?.taskSubmissionLink ? <>
+                                                <div>
+                                                    <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
+                                                </div>
+                                            </>
+                                                :
+                                                <>
+                                                    <form onSubmit={handleSubmitTask}>
+                                                        <div className='flex flex-col gap-3'>
+                                                            <div className="">
+                                                                <label className='font-medium' htmlFor='job_title'>
+                                                                    Last date for task submission
+                                                                </label>
+                                                                <input
+                                                                    defaultValue={job?.task?.submissionDate}
+                                                                    name='submissionDate'
+                                                                    type='date'
+                                                                    required
+                                                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                />
+                                                            </div>
+
+                                                            <div className="">
+                                                                <label className='font-medium' htmlFor='job_title'>
+                                                                    Task Link
+                                                                </label>
+                                                                <input
+                                                                    placeholder="Submit job task link"
+                                                                    defaultValue={job?.task?.taskLink} name='taskLink'
+                                                                    type='text'
+                                                                    required
+                                                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                />
+                                                            </div>
+
+                                                            <div className='flex justify-end md:col-span-2'>
+                                                                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                    {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </>
+                                            }
+                                        </Modal>
+                                        {/* Modal */}
+
                                     </tr>
                                 ))}
                             </tbody>
@@ -226,37 +286,6 @@ const ApplyedAJob = ({ params }) => {
                     </div>
                 </div>
             </div>
-
-            {/* Modal */}
-            <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                <div>
-                    <form onSubmit={handleSubmitTask}>
-                        <div className='grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2'>
-
-                            <div className="md:col-span-2">
-                                <label className='' htmlFor='job_title'>
-                                    Task Link
-                                </label>
-                                <input
-                                    placeholder="Submit job task link"
-                                    id='jobTitle'
-                                    name='resume'
-                                    type='text'
-                                    onChange={e => setTask(e.target.value)}
-                                    required
-                                    className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                />
-                            </div>
-
-                            <div className='flex justify-end md:col-span-2'>
-                                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                    {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </Modal>
         </Fragment>
     );
 };
