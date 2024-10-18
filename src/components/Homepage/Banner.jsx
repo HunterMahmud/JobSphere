@@ -18,12 +18,12 @@ const Banner = () => {
   const [location, setLocation] = useState("Location");
   const [jobTitle, setJobTitle] = useState('');
   return (
-    <div className="relative mb-10">
+    <div className="relative mb-10 ">
       <div
         data-aos="fade-up"
-        className="absolute  top-[30%] sm:top-[40%] left-12 md:left-20 w-[70%]  z-10"
+        className="absolute  top-[30%] sm:top-[40%] left-12 md:left-20 z-10"
       >
-        <div className=" h-[40%] max-w-[900px] text-white p-5">
+        <div className=" h-[40%] max-w-[900px] text-white bg-black bg-opacity-30 rounded-lg p-2">
           <h1 className="text-2xl sm:text-4xl lg:text-5xl   font-Bebas font-extrabold">
             {" "}
             Discover <br />More than  <span className="text-blue-400">
@@ -32,8 +32,8 @@ const Banner = () => {
           </h1>
           <p className="max-w-[500px] mt-5 hidden sm:block"> Achieve peak fitness with expert training, personalized workouts, and a supportive community for all fitness levels. Join us today!</p>
           
-          
-          <div className="flex flex-col md:flex-row items-center p-4 bg-gray-100 rounded-lg shadow-md w-full md:w-4/5 space-y-2 md:space-y-0">
+{/*           
+          <div className="flex flex-col md:flex-row items-center p-4 bg-gray-100 rounded-lg shadow-md w-full md:w-4/5 space-y-2 md:space-y-0"> */}
             
             {/* Job Title Input */}
             {/* <div className="flex items-center bg-white rounded-l-lg border border-gray-300 w-full ">
@@ -64,8 +64,8 @@ const Banner = () => {
             {/* Search Button */}
             {/* <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-r-lg w-auto md:w-1/2">
               Search job
-            </button> */}
-          </div>
+            </button> 
+          </div> */}
 
         </div>
 
