@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const CompanyCard = ({ company }) => {
   return (
-    <div className="min-w-full mx-auto bg-white  ring ring-accent shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 md:hover:scale-110 hover:shadow-xl">
+    <div className="min-w-full mx-auto bg-white  ring ring-accent shadow-lg rounded-lg overflow-hidden hover:shadow-xl">
       <div className="flex items-center p-3 border-b">
         {/* Company Logo */}
         <div className="w-24 h-24 bg-gray-200 rounded-full flex justify-start items-center overflow-hidden relative">
