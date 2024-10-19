@@ -28,6 +28,7 @@ const ApplyedJobs = () => {
   const [task, setTask] = useState('');
   const [onlineInterView, setOnlineInterView] = useState([]);
   const [offlineInterView, setOfflineInterView] = useState([]);
+  const [status, setStatus] = useState('')  // for modal problem
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -197,9 +198,9 @@ const ApplyedJobs = () => {
                 <tr>
                   <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
                   <th className="px-6 py-4 text-left font-medium text-gray-700">Job Title</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
                   <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job applyed Date</th>
+                  <th className="px-6 py-4 font-medium text-gray-700">Job applyed Date</th>
+                  <th className="px-6 py-4 font-medium text-gray-700">Job Status</th>
                   <th className="px-6 py-4 text-center font-medium text-gray-700">Actions</th>
                 </tr>
               </thead>
@@ -210,13 +211,18 @@ const ApplyedJobs = () => {
                   <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                     <td className="px-6 py-4">{index + 1}</td>
 
-                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
-                      {job?.jobTitle}
+                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2 hover:underline">
+                      <Link href={`/jobs/${job?.jobId}`}>
+                        {job?.jobTitle}
+                      </Link>
                     </td>
-
+                    <td className="px-6 py-4">{job?.jobType}</td>
+                    <td className="px-6 py-4 text-center">{new Date(job?.applicationDate).toLocaleDateString()}</td>
+                    {/* job Status */}
                     <td className="px-1 md:px-3 lg:px-6 py-4 text-center">
                       <span
                         onClick={() => {
+                          setStatus(job?.jobStatus)
                           if (job?.jobStatus === 'Pending') {
                             return toast.loading('This job is pending..!',
                               {
@@ -253,7 +259,7 @@ const ApplyedJobs = () => {
                             );
                           }
 
-                          else { //if (job?.jobStatus === 'Task')
+                          else {
                             setOfflineInterView(job?.offlineInterView)
                             setOnlineInterView(job?.onlineInterView)
                             setShowModal(!showModal)
@@ -266,9 +272,6 @@ const ApplyedJobs = () => {
                       </span>
                     </td>
 
-                    <td className="px-6 py-4">{job?.jobType}</td>
-
-                    <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
                     <td className="pl-6 py-4 text-right flex gap-2">
                       <button
                         onClick={() => handleRemove(job?._id)}
@@ -276,18 +279,10 @@ const ApplyedJobs = () => {
                       >
                         <MdOutlineCancel className="text-lg flex items-center justify-center" />
                       </button>
-                      <Link href={`/jobs/${job?.jobId}`}>
-                        <button
-                          className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
-                        >
-                          <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
-                        </button>
-                      </Link>
                     </td>
-
                     {/* Modal */}
                     {
-                      job?.jobStatus === "Task" &&
+                      status === 'Task' &&
                       <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
                         <div>
                           <form onSubmit={taskSubmission}>
@@ -314,8 +309,9 @@ const ApplyedJobs = () => {
                         </div>
                       </Modal>
                     }
-
+                    {/* modal for interview  */}
                     {
+                      status === 'Interview' &&
                       <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
                         <div className={`${offlineInterView && 'hidden'}`}>
                           <h2 className="text-2xl font-bold text-gray-800 text-center">Online Interview</h2>
