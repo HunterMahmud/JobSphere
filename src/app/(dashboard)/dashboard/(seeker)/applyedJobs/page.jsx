@@ -103,7 +103,7 @@ const ApplyedJobs = () => {
       setIsLoading(true)
       const { data } = await axios.put(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
-        { task: { taskSubmissionLink, ...task }, jobStatus: 'submitted' }
+        { task: { taskSubmissionLink, ...task }, jobStatus: 'Submitted' }
       );
 
       if (data.modifiedCount > 0) {
@@ -136,6 +136,18 @@ const ApplyedJobs = () => {
         {/* Filter Section */}
         <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
           <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
+
+            <select
+              onChange={(e) => setJobType(e.target.value)}
+              className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
+            >
+              <option value="">Filter by Job Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Task">Task</option>
+              <option value="Interview">Interview</option>
+              <option value="Rejected">Rejected</option>
+            </select>
 
             <select
               onChange={e => {
@@ -200,8 +212,20 @@ const ApplyedJobs = () => {
 
                     <td className="px-1 md:px-3 lg:px-6 py-4 text-center">
                       <span
-                        onClick={() => { job?.jobStatus === 'task' && setShowModal(!showModal), setId(job?._id), setTask(job?.task) }}
-                        className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'} cursor-pointer inline-block px-2 py-1 font-medium rounded-full `}>
+                        onClick={() => {
+                          if (job?.jobStatus === 'Pending') {
+                            return toast.error('This job is pending')
+                          }
+                          else if (job?.jobStatus === 'Submitted') {
+                            return toast.error('Already task is submitted')
+                          }
+                          else if (job?.jobStatus === 'Task') {
+                            setShowModal(!showModal)
+                            setId(job?._id)
+                            setTask(job?.task)
+                          }
+                        }}
+                        className={`${job?.jobStatus === 'Pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'Rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'} cursor-pointer inline-block px-2 py-1 font-medium rounded-full `}>
                         {job?.jobStatus}
                       </span>
                     </td>
@@ -224,6 +248,7 @@ const ApplyedJobs = () => {
                         </button>
                       </Link>
                     </td>
+
                     {/* Modal */}
                     <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
                       <div>
@@ -237,7 +262,6 @@ const ApplyedJobs = () => {
                               placeholder="Submit job task link"
                               name='taskSubmissionLink'
                               type='text'
-                              // onChange={e => setTask(e.target.value)}
                               required
                               className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
                             />
@@ -251,6 +275,7 @@ const ApplyedJobs = () => {
                         </form>
                       </div>
                     </Modal>
+
                   </tr>
                 ))}
               </tbody>
@@ -288,8 +313,6 @@ const ApplyedJobs = () => {
           </div>
         </div>
       </div>
-
-
     </Fragment>
   );
 };

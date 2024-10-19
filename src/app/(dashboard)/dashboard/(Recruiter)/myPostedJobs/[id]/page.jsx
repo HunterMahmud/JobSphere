@@ -96,7 +96,7 @@ const ApplyedAJob = ({ params }) => {
             if (result.isConfirmed) {
                 try {
                     const { data } = await axios.put(
-                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "rejected" });
+                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Rejected" });
 
                     if (data.modifiedCount > 0) {
                         toast.success('Successful')
@@ -140,7 +140,7 @@ const ApplyedAJob = ({ params }) => {
         try {
             setIsLoading(true)
             const { data } = await axios.put(
-                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'task' });
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'Task' });
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
@@ -336,7 +336,7 @@ const ApplyedAJob = ({ params }) => {
                                         <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
 
                                         <td className="px-1 md:px-3 lg:px-6 py-4">
-                                            <span className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
+                                            <span className={`${job?.jobStatus === 'Pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'Rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
                                                 {job?.jobStatus}
                                             </span>
                                         </td>
@@ -366,7 +366,6 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
                                             <button
                                                 onClick={() => {
-
                                                     if (job?.offlineInterView || job?.onlineInterview) {
                                                         return toast.error('Already Added')
                                                     } else {
@@ -380,9 +379,9 @@ const ApplyedAJob = ({ params }) => {
                                                 <MdInterpreterMode className="text-lg flex items-center justify-center" />
                                             </button>
                                             <button
-                                                disabled={job?.jobStatus === 'rejected'}
+                                                disabled={job?.jobStatus === 'Rejected'}
                                                 onClick={() => handleRemove(job?._id)}
-                                                className={`${job?.jobStatus === 'rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
+                                                className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
                                             >
                                                 <MdOutlineCancel className="text-lg flex items-center justify-center" />
                                             </button>
@@ -656,9 +655,6 @@ const ApplyedAJob = ({ params }) => {
                                                 </Modal>
                                             </>
                                         }
-
-
-
                                     </tr>
                                 ))}
                             </tbody>
