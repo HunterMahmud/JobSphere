@@ -9,7 +9,6 @@ import CreatableSelect from "react-select/creatable";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
-
 const JobForm = () => {
   const session = useSession();
   const {
@@ -22,21 +21,23 @@ const JobForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  
   const onSubmit = async (data) => {
     setLoading(true);
-    const jobData = { ...data, applicantsNumber:0, email: session?.data?.user?.email, postedDate: new Date() };
-  
+    const jobData = {
+      ...data,
+      applicantsNumber: 0,
+      email: session?.data?.user?.email,
+      postedDate: new Date(),
+    };
+
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/postAJob/api`,
         jobData
       );
-      // console.log(response.data);
       toast.success("Job successfully posted!");
       reset(); // Clear form fields after submission
     } catch (error) {
-      // console.log(error);
       toast.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
@@ -46,9 +47,7 @@ const JobForm = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-8 text-center">
-          Create A Job Post
-        </h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">Post A Job</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Job Title & Vacancy */}
@@ -121,23 +120,43 @@ const JobForm = () => {
               )}
             </div>
           </div>
-
-          {/* Salary Scale */}
-          <div>
-            <label className="block text-sm font-medium">Salary Scale</label>
-            <input
-              {...register("salaryScale", {
-                required: "Salary Scale is required",
-              })}
-              type="text"
-              className="w-full mt-1 p-2 border rounded-lg"
-              placeholder="e.g. $80,000 - $100,000"
-            />
-            {errors.salaryScale && (
-              <p className="text-red-500 text-sm">
-                {errors.salaryScale.message}
-              </p>
-            )}
+          {/* Salary Scale and Scale Type */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Salary Scale */}
+            <div>
+              <label className="block text-sm font-medium">Salary Scale</label>
+              <input
+                {...register("salaryScale", {
+                  required: "Salary Scale is required",
+                })}
+                type="text"
+                className="w-full mt-1 p-2 border rounded-lg"
+                placeholder="e.g. $80,000 - $100,000"
+              />
+              {errors.salaryScale && (
+                <p className="text-red-500 text-sm">
+                  {errors.salaryScale.message}
+                </p>
+              )}
+            </div>
+                {/* Salary Type */}
+            <div>
+              <label className="block text-sm font-medium">Scale Type</label>
+              <select
+                {...register("scaleType", {
+                  required: "Scale Type is required",
+                })}
+                className="w-full mt-1 p-2 border rounded-lg"
+              >
+                <option value="Monthly">Monthly</option>
+                <option value="Yearly">Yearly</option>
+              </select>
+              {errors.scaleType && (
+                <p className="text-red-500 text-sm">
+                  {errors.scaleType.message}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Education & Experience */}
