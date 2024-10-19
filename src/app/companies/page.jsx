@@ -70,7 +70,7 @@ const Companies = () => {
 
       {/* Companies Cards */}
         {
-          loading?<Loader/> :<div>   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-around md:gap-10">
+          loading?<Loader/> :<div>   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-around gap-10">
           {Array.isArray(companies) && companies.length > 0 ? (
             companies.map((company, index) => (
               <CompanyCard key={index} company={company} />
