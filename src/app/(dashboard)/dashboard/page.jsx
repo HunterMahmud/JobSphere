@@ -49,11 +49,8 @@ const DashboardPage = () => {
                             </div>
                         </div>
                         <div>
-                            <strong className="rounded border border-indigo-500 bg-[#3C4757] px-3 py-1.5 text-[10px] font-medium text-white">
-                                Feature #101
-                            </strong>
-
-                            <h3 className="mt-4 text-lg font-medium sm:text-xl">
+                            
+                            <h3 className=" text-lg font-medium sm:text-xl">
                                 Total Users
                             </h3>
                             <h1 className='text-2xl font-extrabold text-gray-900 ml-2'>
@@ -68,15 +65,11 @@ const DashboardPage = () => {
                     <div className="flex justify-center items-center gap-5 ">
                         <div className="grid size-20 place-content-center rounded-full border-2 border-indigo-500">
                             <div className="flex items-center gap-1">
-                                <FaBriefcase  className='text-4xl text-[#007ACC] font-bold' />
+                                <FaBriefcase  className='text-4xl text-primary font-bold' />
                             </div>
                         </div>
                         <div>
-                            <strong className="rounded border border-indigo-500 bg-[#3C4757] px-3 py-1.5 text-[10px] font-medium text-white">
-                                Feature #102
-                            </strong>
-
-                            <h3 className="mt-4 text-lg font-medium sm:text-xl">
+                            <h3 className=" text-lg font-medium sm:text-xl">
                                 Total Jobs
                             </h3>
                             <h1 className='text-2xl font-extrabold text-gray-900'>
@@ -99,11 +92,8 @@ const DashboardPage = () => {
                             </div>
                         </div>
                         <div>
-                            <strong className="rounded border border-indigo-500 bg-[#3C4757] px-3 py-1.5 text-[10px] font-medium text-white">
-                                Feature #103
-                            </strong>
-
-                            <h3 className="mt-4 text-lg font-medium sm:text-xl">
+                           
+                            <h3 className=" text-lg font-medium sm:text-xl">
                                 Companies
                             </h3>
                             <h1 className='text-2xl font-extrabold text-gray-900'>
