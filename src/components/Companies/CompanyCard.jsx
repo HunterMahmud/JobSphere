@@ -1,5 +1,6 @@
 import { FaBuilding, FaMapMarkerAlt, FaBriefcase } from 'react-icons/fa';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const CompanyCard = ({ company }) => {
   return (
@@ -37,9 +38,11 @@ const CompanyCard = ({ company }) => {
         </div>
         {/* View Details Button */}
         <div className="text-right">
-          <button className="bg-primary bg-opacity-90z text-white px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-hover hover:shadow-md">
-            View Details
-          </button>
+          <Link href={`companies/${company?._id}`}>
+            <button className="bg-primary bg-opacity-90z text-white px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-hover hover:shadow-md">
+              View Details
+            </button>
+          </Link>
         </div>
       </div>
     </div>
