@@ -96,7 +96,7 @@ const ApplyedAJob = ({ params }) => {
             if (result.isConfirmed) {
                 try {
                     const { data } = await axios.put(
-                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "rejected" });
+                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Rejected" });
 
                     if (data.modifiedCount > 0) {
                         toast.success('Successful')
@@ -140,7 +140,7 @@ const ApplyedAJob = ({ params }) => {
         try {
             setIsLoading(true)
             const { data } = await axios.put(
-                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'task' });
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'Task' });
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
@@ -261,7 +261,7 @@ const ApplyedAJob = ({ params }) => {
             if (result && result.hangoutLink) {
                 const meetLink = result.hangoutLink; // Use the meet link directly
 
-                const onlineInterview = {
+                const onlineInterView = {
                     interviewDate: formData.interviewDate,
                     interviewTime: formData.interviewTime,
                     contact: {
@@ -276,7 +276,7 @@ const ApplyedAJob = ({ params }) => {
                 // Proceed to update the job status with the created meeting link
                 const { data } = await axios.put(
                     `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
-                    { onlineInterview, jobStatus: 'Interview' }
+                    { onlineInterView, jobStatus: 'Interview' }
                 );
 
                 if (data.modifiedCount > 0) {
@@ -336,7 +336,7 @@ const ApplyedAJob = ({ params }) => {
                                         <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
 
                                         <td className="px-1 md:px-3 lg:px-6 py-4">
-                                            <span className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
+                                            <span className={`${job?.jobStatus === 'Pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'Rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
                                                 {job?.jobStatus}
                                             </span>
                                         </td>
@@ -352,14 +352,20 @@ const ApplyedAJob = ({ params }) => {
 
                                         <td className="pl-6 py-4 text-right flex gap-2">
                                             <button
-                                                onClick={() => { handleTask(job?._id), setTask(job?.task) }}
+                                                onClick={() => {
+                                                    if (job?.jobStatus === 'Interview') {
+                                                        return toast.error('Allready selected for interview')
+                                                    } else {
+                                                        handleTask(job?._id)
+                                                        setTask(job?.task)
+                                                    }
+                                                }}
                                                 className="flex items-center justify-center gap-1 bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-600 transition"
                                             >
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
                                             </button>
                                             <button
                                                 onClick={() => {
-
                                                     if (job?.offlineInterView || job?.onlineInterview) {
                                                         return toast.error('Already Added')
                                                     } else {
@@ -373,9 +379,9 @@ const ApplyedAJob = ({ params }) => {
                                                 <MdInterpreterMode className="text-lg flex items-center justify-center" />
                                             </button>
                                             <button
-                                                disabled={job?.jobStatus === 'rejected'}
+                                                disabled={job?.jobStatus === 'Rejected'}
                                                 onClick={() => handleRemove(job?._id)}
-                                                className={`${job?.jobStatus === 'rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
+                                                className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
                                             >
                                                 <MdOutlineCancel className="text-lg flex items-center justify-center" />
                                             </button>
@@ -649,9 +655,6 @@ const ApplyedAJob = ({ params }) => {
                                                 </Modal>
                                             </>
                                         }
-
-
-
                                     </tr>
                                 ))}
                             </tbody>

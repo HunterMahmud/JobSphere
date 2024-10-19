@@ -7,6 +7,7 @@ export const GET = async (request, { params }) => {
     const url = new URL(request.url);
     const jobTitle = url.searchParams.get("jobTitle");
     const jobType = url.searchParams.get("jobType");
+    const jobStatus = url.searchParams.get("jobStatus");
     const sort = url.searchParams.get("sort");
     const page = parseInt(url.searchParams.get("page")) || 1;
     const limit = parseInt(url.searchParams.get("limit")) || 10;
@@ -23,6 +24,10 @@ export const GET = async (request, { params }) => {
     if (jobType) {
         query.jobType = jobType
     }
+    if (jobStatus) {
+        query.jobStatus = jobStatus
+    }
+
     let options = {};
     if (sort) {
         options = {
