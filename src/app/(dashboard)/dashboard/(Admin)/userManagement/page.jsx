@@ -87,7 +87,7 @@ const UserManagement = () => {
 
   return (
     <section className="container mx-auto px-4 py-8">
-      <div className="flex items-center gap-x-3 mb-6">
+      <div className="flex justify-center items-center gap-x-3 mb-6">
         <h2 className="text-2xl font-semibold text-gray-800">User Management</h2>
         <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">
           {totalUsers} users
