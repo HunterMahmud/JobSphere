@@ -8,12 +8,17 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import Terms from '@/components/termsAndConditions/Terms';
 
 const RegisterUser = () => {
   const pathName = usePathname();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter(); // Next.js router from 'next/navigation'
+  const [isOpen, setIsOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -102,22 +107,28 @@ const RegisterUser = () => {
     }
   };
 
+  // Function to close the modal
+  const closeModal = () => setIsOpen(false);
+
+  // Function to open the modal
+  const openModal = () => setIsOpen(true);
+
   return (
-    <div className="flex justify-center items-center custom-container">
+    <div className="flex justify-center items-center custom-container min-h-[550px]">
       <div className="flex flex-col p-3 rounded-md sm:p-10 bg-white text-black shadow-lg border my-5 w-full lg:w-[90%]">
-        <div className="flex justify-center items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap dark:bg-gray-100 dark:text-gray-800">
+        <div className="mb-8 flex justify-center items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap">
           <a
             rel="noopener noreferrer"
             href="/register-user"
             className={`${pathName === "/register-user" && "border-b-primary"
-              } flex items-center flex-shrink-0 px-5 py-2 border-b-4  dark:text-gray-600`}
+              } flex items-center flex-shrink-0 px-5 py-2 border-b-4`}
           >
             Job Seeker
           </a>
           <a
             rel="noopener noreferrer"
             href="/register-recruiter"
-            className="flex items-center flex-shrink-0 px-5 py-2 border-b-4 dark:border-gray-300 dark:text-gray-600"
+            className="flex items-center flex-shrink-0 px-5 py-2 border-b-4"
           >
             Recruiter
           </a>
@@ -214,7 +225,7 @@ const RegisterUser = () => {
                 id="image"
                 name="image"
                 accept="image/*"
-                className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full dark:file:bg-gray-800 dark:file:text-gray-200 dark:text-gray-300 placeholder-gray-400/70 dark:placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:focus:border-blue-300"
+                className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 "
               />
               {errors?.name?.message && (
                 <span className="block text-red-500 text-sm">
@@ -302,6 +313,95 @@ const RegisterUser = () => {
               </div>
             </div>
           </div>
+          
+          <div>
+      <div className="flex items-start md:justify-center">
+        <input
+          id="acceptTerms"
+          type="checkbox"
+          {...register('acceptTerms', {
+            required: {
+              value: true,
+              message: 'This field is required.',
+            },
+          })}
+          className="mt-1 mr-1"
+        />
+
+        <label htmlFor="acceptTerms" className="text-sm">
+          By clicking &apos;Continue&apos;, you acknowledge that you have read and accept the{' '}
+          <span
+            className="font-medium text-blue-600 cursor-pointer"
+            onClick={openModal}
+          >
+            Terms and Conditions
+          </span>{' '}
+          and <span className="font-medium">Privacy Policy</span>.
+        </label>
+      </div>
+
+      {/* Error Message */}
+      {errors?.acceptTerms?.message && (
+        <span className="text-red-500 flex items-start md:justify-center">
+          {errors?.acceptTerms?.message}
+        </span>
+      )}
+
+      {/* Modal for Terms of Service */}
+<Transition appear show={isOpen} as={Fragment}>
+  <Dialog as="div" className="relative z-10" onClose={closeModal}>
+    <Transition.Child
+      as={Fragment}
+      enter="ease-out duration-300"
+      enterFrom="opacity-0"
+      enterTo="opacity-100"
+      leave="ease-in duration-200"
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
+    >
+      <div className="fixed inset-0 bg-black bg-opacity-25" />
+    </Transition.Child>
+
+    <div className="fixed inset-0 overflow-y-auto">
+      <div className="flex min-h-[550px] items-center justify-center p-16 text-center">
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0 scale-95"
+          enterTo="opacity-100 scale-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-95"
+        >
+          <Dialog.Panel className="w-full lg:w-[75%] transform overflow-hidden rounded-none bg-white p-6 text-left align-middle shadow-xl transition-all">
+            <Dialog.Title
+              as="h3"
+              className="text-lg font-medium leading-6 text-gray-900"
+            >
+              
+            </Dialog.Title>
+
+            <div className="mt-2">
+              <Terms /> {/* Your Terms Component */}
+            </div>
+
+            <div className="mt-4">
+              <button
+                type="button"
+                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200"
+                onClick={closeModal}
+              >
+                Close
+              </button>
+            </div>
+          </Dialog.Panel>
+        </Transition.Child>
+      </div>
+    </div>
+  </Dialog>
+</Transition>
+
+    </div>
 
           <div>
             <button

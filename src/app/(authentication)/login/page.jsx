@@ -51,7 +51,7 @@ const LoginPage = () => {
 
 
     return (
-        <div className='flex justify-center items-center my-10'>
+        <div className='flex justify-center items-center my-10 min-h-[550px]'>
             <div className='flex w-full  mx-auto overflow-hidden bg-white rounded-lg shadow-lg border lg:max-w-4xl '>
                 <div
                     className=' bg-cover bg-center md:block md:w-1/2'
