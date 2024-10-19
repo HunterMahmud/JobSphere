@@ -261,7 +261,7 @@ const ApplyedAJob = ({ params }) => {
             if (result && result.hangoutLink) {
                 const meetLink = result.hangoutLink; // Use the meet link directly
 
-                const onlineInterview = {
+                const onlineInterView = {
                     interviewDate: formData.interviewDate,
                     interviewTime: formData.interviewTime,
                     contact: {
@@ -276,7 +276,7 @@ const ApplyedAJob = ({ params }) => {
                 // Proceed to update the job status with the created meeting link
                 const { data } = await axios.put(
                     `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
-                    { onlineInterview, jobStatus: 'Interview' }
+                    { onlineInterView, jobStatus: 'Interview' }
                 );
 
                 if (data.modifiedCount > 0) {

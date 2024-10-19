@@ -26,6 +26,8 @@ const ApplyedJobs = () => {
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(1);
   const [task, setTask] = useState('');
+  const [onlineInterView, setOnlineInterView] = useState([]);
+  const [offlineInterView, setOfflineInterView] = useState([]);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -238,7 +240,22 @@ const ApplyedJobs = () => {
                               }
                             );
                           }
-                          else if (job?.jobStatus === 'Task') {
+
+                          else if (job?.jobStatus === 'Rejected') {
+                            return toast('You have been rejected for this job..!',
+                              {
+                                icon: '😥',
+                                style: {
+                                  background: '#fff',
+                                  color: 'red',
+                                },
+                              }
+                            );
+                          }
+
+                          else { //if (job?.jobStatus === 'Task')
+                            setOfflineInterView(job?.offlineInterView)
+                            setOnlineInterView(job?.onlineInterView)
                             setShowModal(!showModal)
                             setId(job?._id)
                             setTask(job?.task)
@@ -269,32 +286,117 @@ const ApplyedJobs = () => {
                     </td>
 
                     {/* Modal */}
-                    <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                      <div>
-                        <form onSubmit={taskSubmission}>
-                          <p>You are given a TASK to pass to the next step.Please Do it before {new Date(task?.submissionDate).toLocaleDateString()}
-                            <a href={task?.taskLink} target='_blank' className='text-blue-600 font-semibold'> Task Link</a>
-                          </p>
-                          <div className='space-y-4 mt-4'>
+                    {
+                      job?.jobStatus === "Task" &&
+                      <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                        <div>
+                          <form onSubmit={taskSubmission}>
+                            <p>You are given a TASK to pass to the next step.Please Do it before {new Date(task?.submissionDate).toLocaleDateString()}
+                              <a href={task?.taskLink} target='_blank' className='text-blue-600 font-semibold'> Task Link</a>
+                            </p>
+                            <div className='space-y-4 mt-4'>
 
-                            <input
-                              placeholder="Submit job task link"
-                              name='taskSubmissionLink'
-                              type='text'
-                              required
-                              className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                            />
+                              <input
+                                placeholder="Submit job task link"
+                                name='taskSubmissionLink'
+                                type='text'
+                                required
+                                className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                              />
 
-                            <div className='flex justify-end md:col-span-2'>
-                              <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
-                              </button>
+                              <div className='flex justify-end md:col-span-2'>
+                                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                  {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </Modal>
+                    }
+
+                    {
+                      <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                        <div className={`${offlineInterView && 'hidden'}`}>
+                          <h2 className="text-2xl font-bold text-gray-800 text-center">Online Interview</h2>
+                          <div className="space-y-4 mt-5">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Date:</span>
+                              <span className="text-gray-800">{onlineInterView?.interviewDate}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Time:</span>
+                              <span className="text-gray-800">{onlineInterView?.interviewTime}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Person:</span>
+                              <span className="text-gray-800">{onlineInterView?.contact?.contactPerson}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Phone:</span>
+                              <span className="text-gray-800">{onlineInterView?.contact?.contactPhone}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Email:</span>
+                              <span className="text-gray-800">{onlineInterView?.contact?.contactEmail}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Format:</span>
+                              <span className="text-gray-800">{onlineInterView?.interviewFormat}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Meeting Link:</span>
+                              <a
+                                href={onlineInterView?.meetingLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-500 underline"
+                              >
+                                Join Google Meet
+                              </a>
                             </div>
                           </div>
-                        </form>
-                      </div>
-                    </Modal>
+                        </div>
 
+                        <div className={`${onlineInterView && 'hidden'}`}>
+                          <h2 className="text-2xl font-bold text-gray-800 text-center">Offline Interview</h2>
+                          <div className="space-y-4 mt-5">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Date:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewDate}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Time:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewTime}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Location:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewlocation}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Person:</span>
+                              <span className="text-gray-800">{offlineInterView?.contact?.contactPerson}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Phone:</span>
+                              <span className="text-gray-800">{offlineInterView?.contact?.contactPhone}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Email:</span>
+                              <span className="text-gray-800">{offlineInterView?.contact?.contactEmail}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Format:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewFormat}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Documents:</span>
+                              <span className="text-gray-800">{offlineInterView?.documents}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Modal>
+                    }
                   </tr>
                 ))}
               </tbody>
@@ -332,7 +434,7 @@ const ApplyedJobs = () => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </Fragment >
   );
 };
 
