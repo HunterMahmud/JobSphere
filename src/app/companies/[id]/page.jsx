@@ -1,5 +1,5 @@
 "use client"
-import { FaPhone, FaEnvelope, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
+import { FaPhone, FaEnvelope, FaLinkedin, FaTwitter, FaGlobe, FaBuilding, FaMapMarkerAlt, FaUsers, FaBriefcase } from "react-icons/fa"; // Added more icons
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loader from "@/app/loading";
@@ -57,14 +57,14 @@ const DetailedCompanyPage = ({ params }) => {
         {/* Company Information */}
         <div className="mt-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Company Information</h2>
-          <p className="text-gray-600">
-            <span className="font-medium">Founded Year:</span> {company?.companyInfo?.foundedYear || "N/A"}
+          <p className="text-gray-600 flex items-center space-x-2">
+            <FaBuilding  className="text-primary font-bold"/> <span><span className="font-medium">Founded Year:</span> {company?.companyInfo?.foundedYear || "N/A"}</span>
           </p>
-          <p className="text-gray-600">
-            <span className="font-medium">Type:</span> {company?.companyInfo?.companyType || "N/A"}
+          <p className="text-gray-600 flex items-center space-x-2">
+            <FaBriefcase className="text-secondary font-bold" /> <span><span className="font-medium">Type:</span> {company?.companyInfo?.companyType || "N/A"}</span>
           </p>
-          <p className="text-gray-600">
-            <span className="font-medium">Address:</span> {company?.companyInfo?.address || "N/A"}, {company?.companyInfo?.city || "N/A"}, {company?.companyInfo?.country || "N/A"}
+          <p className="text-gray-600 flex items-center space-x-2">
+            <FaMapMarkerAlt className="text-primary font-bold" /> <span><span className="font-medium">Address:</span> {company?.companyInfo?.address || "N/A"}, {company?.companyInfo?.city || "N/A"}, {company?.companyInfo?.country || "N/A"}</span>
           </p>
         </div>
 
@@ -72,10 +72,10 @@ const DetailedCompanyPage = ({ params }) => {
         <div className="mt-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Contact Information</h2>
           <p className="text-gray-600 flex items-center space-x-2">
-            <FaEnvelope /> <span>{company?.contactInformation?.email || "N/A"}</span>
+            <FaEnvelope className="text-primary font-bold " /> <span>{company?.contactInformation?.email || "N/A"}</span>
           </p>
           <p className="text-gray-600 flex items-center space-x-2">
-            <FaPhone /> <span>{company?.contactInformation?.phone || "N/A"}</span>
+            <FaPhone className="text-secondary font-bold" /> <span>{company?.contactInformation?.phone || "N/A"}</span>
           </p>
           <p className="text-gray-600 flex items-center space-x-2">
             <FaGlobe />{" "}
@@ -100,17 +100,15 @@ const DetailedCompanyPage = ({ params }) => {
         {/* Employment Information */}
         <div className="mt-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Employment Information</h2>
-          <p className="text-gray-600">
-            <span className="font-medium">Company Size:</span> {company?.employmentInfo?.companySize || "N/A"}
+          <p className="text-gray-600 flex items-center space-x-2">
+            <FaUsers className="text-primary font-bold" /> <span><span className="font-medium">Company Size:</span> {company?.employmentInfo?.companySize || "N/A"}</span>
           </p>
-          <p className="text-gray-600">
-            <span className="font-medium">Jobs Offered:</span> {company?.employmentInfo?.typesOfJobs || "N/A"}
+          <p className="text-gray-600 flex items-center space-x-2">
+            <FaBriefcase className="text-secondary font-bold"/> <span><span className="font-medium">Jobs Offered:</span> {company?.employmentInfo?.typesOfJobs || "N/A"}</span>
           </p>
         </div>
       </div>
     </div>
-
-
   );
 };
 

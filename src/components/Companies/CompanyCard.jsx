@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const CompanyCard = ({ company }) => {
   return (
-    <div className="min-w-full mx-auto bg-white  ring ring-accent shadow-lg rounded-lg overflow-hidden hover:shadow-xl">
+    <div className="min-w-full mx-auto bg-white  ring ring-accent shadow-lg rounded-lg overflow-hidden duration-300 hover:shadow-2xl hover:scale-[1.01] transition-all">
       <div className="flex items-center p-3 border-b">
         {/* Company Logo */}
         <div className="w-24 h-24 bg-gray-200 rounded-full flex justify-start items-center overflow-hidden relative">
@@ -37,9 +37,9 @@ const CompanyCard = ({ company }) => {
           <span>{company?.employmentInfo?.typesOfJobs}</span>
         </div>
         {/* View Details Button */}
-        <div className="text-right">
+        <div className="text-center">
           <Link href={`companies/${company?._id}`}>
-            <button className="bg-primary bg-opacity-90z text-white px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-hover hover:shadow-md">
+            <button className="w-full bg-primary bg-opacity-90z text-white px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-hover hover:shadow-md">
               View Details
             </button>
           </Link>
