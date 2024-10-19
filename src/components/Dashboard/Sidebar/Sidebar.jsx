@@ -71,7 +71,6 @@ const Sidebar = () => {
               <nav>
                 <MenuItem icon={MdAssignmentAdd} label="Post A Job" address="/dashboard/postAJob" />
                 <MenuItem icon={TfiWrite} label="Write A Blog" address="/dashboard/writeABlog" />
-                <MenuItem icon={ImProfile} label="Job Seekers" address="/dashboard/jobSeekers" />
                 <MenuItem icon={MdOutlineWorkOutline} label="My Posted Jobs" address="/dashboard/myPostedJobs" />
               </nav>
             }
