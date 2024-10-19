@@ -352,7 +352,14 @@ const ApplyedAJob = ({ params }) => {
 
                                         <td className="pl-6 py-4 text-right flex gap-2">
                                             <button
-                                                onClick={() => { handleTask(job?._id), setTask(job?.task) }}
+                                                onClick={() => {
+                                                    if (job?.jobStatus === 'Interview') {
+                                                        return toast.error('Allready selected for interview')
+                                                    } else {
+                                                        handleTask(job?._id)
+                                                        setTask(job?.task)
+                                                    }
+                                                }}
                                                 className="flex items-center justify-center gap-1 bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-600 transition"
                                             >
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
