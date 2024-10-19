@@ -46,7 +46,7 @@ const JobForm = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+      <div className="w-full  bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-8 text-center">Post A Job</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -60,9 +60,9 @@ const JobForm = () => {
                 className="w-full mt-1 p-2 border rounded-lg"
                 placeholder="e.g. Backend Developer"
               />
-              {errors.jobTitle && (
+              {errors?.jobTitle && (
                 <p className="text-red-500 text-sm">
-                  {errors.jobTitle.message}
+                  {errors?.jobTitle?.message}
                 </p>
               )}
             </div>
@@ -78,8 +78,8 @@ const JobForm = () => {
                 className="w-full mt-1 p-2 border rounded-lg"
                 placeholder="e.g. 3"
               />
-              {errors.vacancy && (
-                <p className="text-red-500 text-sm">{errors.vacancy.message}</p>
+              {errors?.vacancy && (
+                <p className="text-red-500 text-sm">{errors?.vacancy?.message}</p>
               )}
             </div>
           </div>
@@ -98,9 +98,9 @@ const JobForm = () => {
                 <option value="On-Site">On-Site</option>
                 <option value="Hybrid">Hybrid</option>
               </select>
-              {errors.locationType && (
+              {errors?.locationType && (
                 <p className="text-red-500 text-sm">
-                  {errors.locationType.message}
+                  {errors?.locationType?.message}
                 </p>
               )}
             </div>
@@ -115,8 +115,8 @@ const JobForm = () => {
                 <option value="Part-Time">Part-Time</option>
                 <option value="Contract-Based">Contract-Based</option>
               </select>
-              {errors.jobType && (
-                <p className="text-red-500 text-sm">{errors.jobType.message}</p>
+              {errors?.jobType && (
+                <p className="text-red-500 text-sm">{errors?.jobType?.message}</p>
               )}
             </div>
           </div>
@@ -133,9 +133,9 @@ const JobForm = () => {
                 className="w-full mt-1 p-2 border rounded-lg"
                 placeholder="e.g. $80,000 - $100,000"
               />
-              {errors.salaryScale && (
+              {errors?.salaryScale && (
                 <p className="text-red-500 text-sm">
-                  {errors.salaryScale.message}
+                  {errors?.salaryScale?.message}
                 </p>
               )}
             </div>
@@ -151,9 +151,9 @@ const JobForm = () => {
                 <option value="Monthly">Monthly</option>
                 <option value="Yearly">Yearly</option>
               </select>
-              {errors.scaleType && (
+              {errors?.scaleType && (
                 <p className="text-red-500 text-sm">
-                  {errors.scaleType.message}
+                  {errors?.scaleType?.message}
                 </p>
               )}
             </div>
@@ -171,9 +171,9 @@ const JobForm = () => {
                 className="w-full mt-1 p-2 border rounded-lg"
                 placeholder="e.g. Bachelor's in Computer Science"
               />
-              {errors.education && (
+              {errors?.education && (
                 <p className="text-red-500 text-sm">
-                  {errors.education.message}
+                  {errors?.education?.message}
                 </p>
               )}
             </div>
@@ -191,9 +191,9 @@ const JobForm = () => {
                 className="w-full mt-1 p-2 border rounded-lg"
                 placeholder="e.g. 4"
               />
-              {errors.experience && (
+              {errors?.experience && (
                 <p className="text-red-500 text-sm">
-                  {errors.experience.message}
+                  {errors?.experience?.message}
                 </p>
               )}
             </div>
@@ -211,9 +211,9 @@ const JobForm = () => {
               className="w-full mt-1 p-2 border rounded-lg"
               placeholder="e.g. Proficient in Node.js, SQL, and AWS"
             ></textarea>
-            {errors.additionalRequirements && (
+            {errors?.additionalRequirements && (
               <p className="text-red-500 text-sm">
-                {errors.additionalRequirements.message}
+                {errors?.additionalRequirements?.message}
               </p>
             )}
           </div>
@@ -229,9 +229,9 @@ const JobForm = () => {
               className="w-full mt-1 p-2 border rounded-lg"
               placeholder="e.g. Details about job responsibilities"
             ></textarea>
-            {errors.responsibility && (
+            {errors?.responsibility && (
               <p className="text-red-500 text-sm">
-                {errors.responsibility.message}
+                {errors?.responsibility?.message}
               </p>
             )}
           </div>
@@ -253,8 +253,8 @@ const JobForm = () => {
                 />
               )}
             />
-            {errors.deadline && (
-              <p className="text-red-500 text-sm">{errors.deadline.message}</p>
+            {errors?.deadline && (
+              <p className="text-red-500 text-sm">{errors?.deadline?.message}</p>
             )}
           </div>
 
@@ -275,8 +275,8 @@ const JobForm = () => {
                 />
               )}
             />
-            {errors.skills && (
-              <p className="text-red-500 text-sm">{errors.skills.message}</p>
+            {errors?.skills && (
+              <p className="text-red-500 text-sm">{errors?.skills?.message}</p>
             )}
           </div>
 
@@ -285,7 +285,7 @@ const JobForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-primary hover:bg-hover text-white py-2 px-4 rounded-lg"
             >
               Post Job
             </button>
