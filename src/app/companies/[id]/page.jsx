@@ -34,7 +34,7 @@ const DetailedCompanyPage = ({ params }) => {
   }
   return (
     <div className="custom-container">
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg my-10 ">
+      <div className="max-w-4xl mx-auto p-8 bg-opacity-40 bg-accent shadow-lg rounded-lg my-10 ">
         {/* Header */}
         <div className="flex items-center space-x-4">
           {company?.companyInfo?.logo && (
