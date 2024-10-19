@@ -19,12 +19,16 @@ const ApplyedJobs = () => {
   const [sort, setSort] = useState('');
   const [search, setSearch] = useState('');
   const [jobType, setJobType] = useState('');
+  const [jobStatus, setJobStatus] = useState('');
   const [id, setId] = useState('');
   // for pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(1);
   const [task, setTask] = useState('');
+  const [onlineInterView, setOnlineInterView] = useState([]);
+  const [offlineInterView, setOfflineInterView] = useState([]);
+  const [status, setStatus] = useState('')  // for modal problem
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -36,6 +40,7 @@ const ApplyedJobs = () => {
             jobType,
             sort,
             jobTitle: search,
+            jobStatus,
             page,
             limit
           }
@@ -51,7 +56,7 @@ const ApplyedJobs = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [session?.data?.user?.email, sort, search, jobType, page, limit]);
+  }, [session?.data?.user?.email, sort, search, jobType, jobStatus, page, limit]);
 
   // handle Remove Applyed job
   const handleRemove = async (id) => {
@@ -103,7 +108,7 @@ const ApplyedJobs = () => {
       setIsLoading(true)
       const { data } = await axios.put(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
-        { task: { taskSubmissionLink, ...task }, jobStatus: 'submitted' }
+        { task: { taskSubmissionLink, ...task }, jobStatus: 'Submitted' }
       );
 
       if (data.modifiedCount > 0) {
@@ -129,13 +134,25 @@ const ApplyedJobs = () => {
 
   return (
     <Fragment>
-      <div className="max-w-7xl mx-auto py-8 px-4">
+      <div className="max-w-7xl mx-auto py-8 md:px-4">
         {/* Page Title */}
         <h1 className="text-2xl font-bold text-center mb-8">Applyed Jobs</h1>
 
         {/* Filter Section */}
-        <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
+        <div className="mb-6 md:p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
           <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
+
+            <select
+              onChange={(e) => setJobStatus(e.target.value)}
+              className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
+            >
+              <option value="">Filter by Job Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Task">Task</option>
+              <option value="Interview">Interview</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Rejected">Rejected</option>
+            </select>
 
             <select
               onChange={e => {
@@ -181,9 +198,9 @@ const ApplyedJobs = () => {
                 <tr>
                   <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
                   <th className="px-6 py-4 text-left font-medium text-gray-700">Job Title</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job Status</th>
                   <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-700">Job applyed Date</th>
+                  <th className="px-6 py-4 font-medium text-gray-700">Job applyed Date</th>
+                  <th className="px-6 py-4 font-medium text-gray-700">Job Status</th>
                   <th className="px-6 py-4 text-center font-medium text-gray-700">Actions</th>
                 </tr>
               </thead>
@@ -194,63 +211,188 @@ const ApplyedJobs = () => {
                   <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                     <td className="px-6 py-4">{index + 1}</td>
 
-                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
-                      {job?.jobTitle}
+                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2 hover:underline">
+                      <Link href={`/jobs/${job?.jobId}`}>
+                        {job?.jobTitle}
+                      </Link>
                     </td>
-
+                    <td className="px-6 py-4">{job?.jobType}</td>
+                    <td className="px-6 py-4 text-center">{new Date(job?.applicationDate).toLocaleDateString()}</td>
+                    {/* job Status */}
                     <td className="px-1 md:px-3 lg:px-6 py-4 text-center">
                       <span
-                        onClick={() => { job?.jobStatus === 'task' && setShowModal(!showModal), setId(job?._id), setTask(job?.task) }}
-                        className={`${job?.jobStatus === 'pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'} cursor-pointer inline-block px-2 py-1 font-medium rounded-full `}>
+                        onClick={() => {
+                          setStatus(job?.jobStatus)
+                          if (job?.jobStatus === 'Pending') {
+                            return toast.loading('This job is pending..!',
+                              {
+                                duration: 3000,
+                                style: {
+                                  background: '#2557a7',
+                                  color: '#fff',
+                                },
+                              }
+                            )
+
+                          }
+                          else if (job?.jobStatus === 'Submitted') {
+                            return toast('Already task is submitted..!',
+                              {
+                                icon: '👏',
+                                style: {
+                                  background: '#2557a7',
+                                  color: '#fff',
+                                },
+                              }
+                            );
+                          }
+
+                          else if (job?.jobStatus === 'Rejected') {
+                            return toast('You have been rejected for this job..!',
+                              {
+                                icon: '😥',
+                                style: {
+                                  background: '#fff',
+                                  color: 'red',
+                                },
+                              }
+                            );
+                          }
+
+                          else {
+                            setOfflineInterView(job?.offlineInterView)
+                            setOnlineInterView(job?.onlineInterView)
+                            setShowModal(!showModal)
+                            setId(job?._id)
+                            setTask(job?.task)
+                          }
+                        }}
+                        className={`${job?.jobStatus === 'Pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'Rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'} cursor-pointer inline-block px-2 py-1 font-medium rounded-full `}>
                         {job?.jobStatus}
                       </span>
                     </td>
 
-                    <td className="px-6 py-4">{job?.jobType}</td>
-
-                    <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
-                    <td className="pl-6 py-4 text-right flex gap-2">
+                    <td className="pl-6 py-4 gap-2">
                       <button
                         onClick={() => handleRemove(job?._id)}
                         className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
                       >
                         <MdOutlineCancel className="text-lg flex items-center justify-center" />
                       </button>
-                      <Link href={`/jobs/${job?.jobId}`}>
-                        <button
-                          className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
-                        >
-                          <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
-                        </button>
-                      </Link>
                     </td>
                     {/* Modal */}
-                    <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                      <div>
-                        <form onSubmit={taskSubmission}>
-                          <p>You are given a TASK to pass to the next step.Please Do it before {new Date(task?.submissionDate).toLocaleDateString()}
-                            <a href={task?.taskLink} target='_blank' className='text-blue-600 font-semibold'> Task Link</a>
-                          </p>
-                          <div className='space-y-4 mt-4'>
+                    {
+                      status === 'Task' &&
+                      <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                        <div>
+                          <form onSubmit={taskSubmission}>
+                            <p>You are given a TASK to pass to the next step.Please Do it before {new Date(task?.submissionDate).toLocaleDateString()}
+                              <a href={task?.taskLink} target='_blank' className='text-blue-600 font-semibold'> Task Link</a>
+                            </p>
+                            <div className='space-y-4 mt-4'>
 
-                            <input
-                              placeholder="Submit job task link"
-                              name='taskSubmissionLink'
-                              type='text'
-                              // onChange={e => setTask(e.target.value)}
-                              required
-                              className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                            />
+                              <input
+                                placeholder="Submit job task link"
+                                name='taskSubmissionLink'
+                                type='text'
+                                required
+                                className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                              />
 
-                            <div className='flex justify-end md:col-span-2'>
-                              <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
-                              </button>
+                              <div className='flex justify-end md:col-span-2'>
+                                <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                  {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </Modal>
+                    }
+                    {/* modal for interview  */}
+                    {
+                      status === 'Interview' &&
+                      <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                        <div className={`${offlineInterView && 'hidden'}`}>
+                          <h2 className="text-2xl font-bold text-gray-800 text-center">Online Interview</h2>
+                          <div className="space-y-4 mt-5">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Date:</span>
+                              <span className="text-gray-800">{onlineInterView?.interviewDate}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Time:</span>
+                              <span className="text-gray-800">{onlineInterView?.interviewTime}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Person:</span>
+                              <span className="text-gray-800">{onlineInterView?.contact?.contactPerson}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Phone:</span>
+                              <span className="text-gray-800">{onlineInterView?.contact?.contactPhone}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Email:</span>
+                              <span className="text-gray-800">{onlineInterView?.contact?.contactEmail}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Format:</span>
+                              <span className="text-gray-800">{onlineInterView?.interviewFormat}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Meeting Link:</span>
+                              <a
+                                href={onlineInterView?.meetingLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-500 underline"
+                              >
+                                Join Google Meet
+                              </a>
                             </div>
                           </div>
-                        </form>
-                      </div>
-                    </Modal>
+                        </div>
+
+                        <div className={`${onlineInterView && 'hidden'}`}>
+                          <h2 className="text-2xl font-bold text-gray-800 text-center">Offline Interview</h2>
+                          <div className="space-y-4 mt-5">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Date:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewDate}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Time:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewTime}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Location:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewlocation}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Person:</span>
+                              <span className="text-gray-800">{offlineInterView?.contact?.contactPerson}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Phone:</span>
+                              <span className="text-gray-800">{offlineInterView?.contact?.contactPhone}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Contact Email:</span>
+                              <span className="text-gray-800">{offlineInterView?.contact?.contactEmail}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Format:</span>
+                              <span className="text-gray-800">{offlineInterView?.interviewFormat}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">Documents:</span>
+                              <span className="text-gray-800">{offlineInterView?.documents}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Modal>
+                    }
                   </tr>
                 ))}
               </tbody>
@@ -275,7 +417,7 @@ const ApplyedJobs = () => {
                   <button
                     key={index + 1}
                     onClick={() => setPage(index + 1)}
-                    className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
+                    className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-hover bg-primary hover:bg-hover rounded-lg ${page === index + 1 ? "bg-primary text-white" : ""
                       }`}
                   >
                     {index + 1}
@@ -288,9 +430,7 @@ const ApplyedJobs = () => {
           </div>
         </div>
       </div>
-
-
-    </Fragment>
+    </Fragment >
   );
 };
 
