@@ -70,7 +70,7 @@ const Companies = () => {
 
       {/* Companies Cards */}
         {
-          loading?<Loader/> :<div>   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-around gap-10">
+          loading?<Loader/> :<div>   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-around gap-11">
           {Array.isArray(companies) && companies.length > 0 ? (
             companies.map((company, index) => (
               <CompanyCard key={index} company={company} />
@@ -85,7 +85,7 @@ const Companies = () => {
           <button
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 1}
-            className="btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg"
+            className="btn px-4 py-2 border-2 text-lg font-semibold hover:border duration-300 hover:border-accent bg-secondary hover:bg-hover hover:text-white rounded-lg"
           >
             Previous
           </button>
@@ -95,7 +95,7 @@ const Companies = () => {
               <button
                 key={index}
                 onClick={() => handlePageChange(index + 1)}
-                className={`btn px-4 py-2 border-2 text-lg font-semibold ${page === index + 1 ? "bg-sky-500" : "bg-sky-300"} hover:border hover:border-sky-700 hover:bg-sky-400 rounded-lg`}
+                className={`btn px-4 py-2 border-2 text-lg font-semibold ${page === index + 1 ? "bg-primary  text-white" : "bg-secondary"} hover:border hover:bg-hover duration-300 hover:text-white rounded-lg`}
               >
                 {index + 1}
               </button>
@@ -105,7 +105,7 @@ const Companies = () => {
           <button
             onClick={() => handlePageChange(page + 1)}
             disabled={page === totalPages}
-            className="btn px-4 py-2 border-2 text-lg font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg"
+            className="btn px-4 py-2 border-2 text-lg font-semibold hover:border duration-300 hover:border-accent bg-secondary hover:bg-hover hover:text-white rounded-lg"
           >
             Next
           </button>

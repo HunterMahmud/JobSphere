@@ -3,10 +3,10 @@ import Image from 'next/image';
 
 const CompanyCard = ({ company }) => {
   return (
-    <div className="min-w-full mx-auto bg-white  ring ring-accent shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
-      <div className="flex items-center p-5 border-b">
+    <div className="min-w-full mx-auto bg-white  ring ring-accent shadow-lg rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 md:hover:scale-110 hover:shadow-xl">
+      <div className="flex items-center p-3 border-b">
         {/* Company Logo */}
-        <div className="w-20 h-20 bg-gray-200 rounded-full flex justify-center items-center overflow-hidden relative">
+        <div className="w-24 h-24 bg-gray-200 rounded-full flex justify-start items-center overflow-hidden relative">
           <Image
             height={100}
             width={100}
@@ -37,7 +37,7 @@ const CompanyCard = ({ company }) => {
         </div>
         {/* View Details Button */}
         <div className="text-right">
-          <button className="bg-primary bg-opacity-90 text-white px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-hover hover:shadow-md">
+          <button className="bg-primary bg-opacity-90z text-white px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-hover hover:shadow-md">
             View Details
           </button>
         </div>
