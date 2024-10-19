@@ -19,6 +19,7 @@ const ApplyedJobs = () => {
   const [sort, setSort] = useState('');
   const [search, setSearch] = useState('');
   const [jobType, setJobType] = useState('');
+  const [jobStatus, setJobStatus] = useState('');
   const [id, setId] = useState('');
   // for pagination
   const [page, setPage] = useState(1);
@@ -36,6 +37,7 @@ const ApplyedJobs = () => {
             jobType,
             sort,
             jobTitle: search,
+            jobStatus,
             page,
             limit
           }
@@ -51,7 +53,7 @@ const ApplyedJobs = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [session?.data?.user?.email, sort, search, jobType, page, limit]);
+  }, [session?.data?.user?.email, sort, search, jobType, jobStatus, page, limit]);
 
   // handle Remove Applyed job
   const handleRemove = async (id) => {
@@ -129,23 +131,23 @@ const ApplyedJobs = () => {
 
   return (
     <Fragment>
-      <div className="max-w-7xl mx-auto py-8 px-4">
+      <div className="max-w-7xl mx-auto py-8 md:px-4">
         {/* Page Title */}
         <h1 className="text-2xl font-bold text-center mb-8">Applyed Jobs</h1>
 
         {/* Filter Section */}
-        <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
+        <div className="mb-6 md:p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
           <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
 
             <select
-              onChange={(e) => setJobType(e.target.value)}
+              onChange={(e) => setJobStatus(e.target.value)}
               className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
             >
               <option value="">Filter by Job Status</option>
               <option value="Pending">Pending</option>
-              <option value="Submitted">Submitted</option>
               <option value="Task">Task</option>
               <option value="Interview">Interview</option>
+              <option value="Submitted">Submitted</option>
               <option value="Rejected">Rejected</option>
             </select>
 
