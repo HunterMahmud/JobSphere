@@ -34,11 +34,11 @@ const DetailedCompanyPage = ({ params }) => {
   }
   return (
     <div className="custom-container">
-      <div className="max-w-4xl mx-auto p-8 bg-opacity-40 bg-accent shadow-lg rounded-lg my-10 ">
+      <div className="max-w-4xl mx-auto p-8 bg-opacity-50 bg-accent shadow-lg rounded-lg my-10 ">
         {/* Header */}
         <div className="flex items-center space-x-4">
           {company?.companyInfo?.logo && (
-            <div className="relative w-20 h-20">
+            <div className="relative w-32 h-32">
               <Image
                 src={company.companyInfo.logo}
                 alt={`${company?.companyInfo?.companyName} Logo`}
