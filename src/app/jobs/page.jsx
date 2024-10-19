@@ -50,8 +50,6 @@ const JobPage = () => {
 
   return (
     <div className="w-11/12 md:w-5/6 lg:w-4/5 mx-auto my-12">
-      <h1 className="text-3xl font-bold text-center mb-8 underline underline-offset-2">Jobs</h1>
-
       {/* Search Function */}
       <div className="flex items-center bg-white rounded-l-lg border-2 border-sky-500 w-[300px] mx-auto my-8 p-2">
         <FaSearch className="ml-3 text-gray-400" />
