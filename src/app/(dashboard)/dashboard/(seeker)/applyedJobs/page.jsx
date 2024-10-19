@@ -272,7 +272,7 @@ const ApplyedJobs = () => {
                       </span>
                     </td>
 
-                    <td className="pl-6 py-4 text-right flex gap-2">
+                    <td className="pl-6 py-4 gap-2">
                       <button
                         onClick={() => handleRemove(job?._id)}
                         className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
@@ -417,7 +417,7 @@ const ApplyedJobs = () => {
                   <button
                     key={index + 1}
                     onClick={() => setPage(index + 1)}
-                    className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-sky-700 bg-sky-300 hover:bg-sky-400 rounded-lg ${page === index + 1 ? "bg-sky-500 text-white" : ""
+                    className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-hover bg-primary hover:bg-hover rounded-lg ${page === index + 1 ? "bg-primary text-white" : ""
                       }`}
                   >
                     {index + 1}
