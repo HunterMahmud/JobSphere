@@ -216,10 +216,27 @@ const ApplyedJobs = () => {
                       <span
                         onClick={() => {
                           if (job?.jobStatus === 'Pending') {
-                            return toast.error('This job is pending')
+                            return toast.loading('This job is pending..!',
+                              {
+                                duration: 3000,
+                                style: {
+                                  background: '#2557a7',
+                                  color: '#fff',
+                                },
+                              }
+                            )
+
                           }
                           else if (job?.jobStatus === 'Submitted') {
-                            return toast.error('Already task is submitted')
+                            return toast('Already task is submitted..!',
+                              {
+                                icon: '👏',
+                                style: {
+                                  background: '#2557a7',
+                                  color: '#fff',
+                                },
+                              }
+                            );
                           }
                           else if (job?.jobStatus === 'Task') {
                             setShowModal(!showModal)
