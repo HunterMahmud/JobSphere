@@ -39,10 +39,12 @@ const DetailedCompanyPage = ({ params }) => {
       <div className="relative bg-cover bg-center rounded-lg h-96" style={{ backgroundImage: `url('https://via.placeholder.com/1200x400')` }}>
         <div className="absolute rounded-lg inset-0 bg-primary bg-opacity-80   flex items-center justify-center">
           <div className="text-center text-white">
-            <img
+            <Image
               src={company?.companyInfo?.logo || "/default-logo.png"}
               alt={company?.companyInfo?.companyName}
-              className="w-24 h-24 mx-auto mb-4 rounded-full bg-white p-2"
+              width={96} 
+              height={96} 
+              className="mx-auto mb-4 rounded-full bg-white p-2"
             />
             <h1 className="text-5xl font-bold">{company?.companyInfo?.companyName || "Company Name"}</h1>
             <p className="text-lg mt-2">{company?.companyInfo?.companyMission || "Company Mission Statement"}</p>
