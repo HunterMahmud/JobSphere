@@ -7,15 +7,51 @@ import { FaBookmark, FaClock, FaRegBookmark } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { PiBagSimpleFill } from 'react-icons/pi';
 import { FaLocationDot } from 'react-icons/fa6';
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 export const getPostedTimeAgo = (postedDate) => {
     return formatDistanceToNow(new Date(postedDate), { addSuffix: true });
 };
 
 const JobCard = ({ job }) => {
-    const [love, setLove] = useState(false)
-
+    const [save, setSave] = useState(false);
+    const { data } = useSession();
     const { _id, jobTitle, jobType, postedDate, salaryScale, applicantsNumber, compnayInforamtion } = job
+
+    const handleSave = async () => {
+        if (!data?.user?.email) {
+            return toast('Please Login or Register first!', {
+                icon: '🔐',
+            });
+        }
+
+        try {
+            const { data } = await axios.post(
+                `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi`,
+                applyedJob
+            );
+            console.log(data);
+            if (data.acknowledged) {
+                await axios.put(
+                    `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${job?._id}`,
+                    { applicantsNumber: job?.applicantsNumber + 1 }
+                );
+                toast.success("Save Successfully");
+            }
+            if (data.status === 409) {
+                toast.error("You have applied this job!");
+            }
+        } catch (err) {
+            setIsLoading(false);
+            console.log(err?.message);
+            toast.error(err?.message);
+        }
+        setSave(!save)
+    }
+
+   
+
     return (
         <div className="border w-full max-w-sm px-3 py-4 bg-[url('https://i.ibb.co/hch8Kbm/ix-GTl1715763309.png')] rounded-md shadow-md hover:shadow-xl hover:scale-[1.01] transition-all space-y-2 text-black">
             <div className='flex justify-between'>
@@ -34,9 +70,9 @@ const JobCard = ({ job }) => {
                     </p>
                 </div>
 
-                <div onClick={() => setLove(!love)} className='text-[22px] cursor-pointer'>
+                <div onClick={handleSave} className='text-[22px] cursor-pointer'>
                     {
-                        love ?
+                        save ?
                             <FaBookmark /> :
                             <FaRegBookmark />
                     }

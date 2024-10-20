@@ -7,12 +7,11 @@ export const POST = async (req) => {
 
   try {
     const data = await req.json(); // Get the data from the request body
-   
-   
+
     const id = data?.job?._id
+    const email = data?.user?.email
     // Check if a job with the same title already exists
-    const existingJob = await SaveJobsCollection.findOne({"job._id":id });
-    
+    const existingJob = await SaveJobsCollection.findOne({ "job._id": id, 'user.email': email });
 
     if (existingJob) {
       return NextResponse.json({ message: "This Job already added" }, { status: 409 }); // 409 Conflict status code
@@ -21,7 +20,7 @@ export const POST = async (req) => {
     // If no job exists, insert the new job into the collection
     const result = await SaveJobsCollection.insertOne(data);
 
-    return NextResponse.json({ message: "Job Added Successfully"});
+    return NextResponse.json({ message: "Job Added Successfully" }, result);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Failed to Add Job", error }, { status: 500 });
