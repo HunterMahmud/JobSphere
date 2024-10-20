@@ -1,6 +1,6 @@
 'use client'
 import { AiOutlineDollarCircle, AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaBookmark, FaClock, FaRegBookmark } from 'react-icons/fa';
@@ -19,12 +19,23 @@ const JobCard = ({ job }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [save, setSave] = useState(false);
     const { data } = useSession();
-    const { _id, jobTitle, jobType, postedDate, salaryScale, applicantsNumber, compnayInforamtion } = job
-    console.log(data?.user)
+    const { _id, jobTitle, jobType, postedDate, salaryScale, applicantsNumber, compnayInforamtion, saveUsers } = job;
+    const email = data?.user?.email
+
+    useEffect(() => {
+        if (Array.isArray(saveUsers) && saveUsers.includes(email)) {
+            setSave(true);
+        }
+    }, [job, email]);
+
     const handleSave = async () => {
         const newJob = { user: data?.user, job };
+        const saveInfo = [
+            ...saveUsers || [],
+            email
+        ]
 
-        if (!data?.user?.email) {
+        if (!email) {
             return toast('Please Login or Register first!', {
                 icon: '🔐',
             });
@@ -38,13 +49,19 @@ const JobCard = ({ job }) => {
             );
             if (data?.result?.acknowledged) {
                 setSave(!save)
-                toast.success("Save Successfully");
+                await axios.put(
+                    `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${_id}`,
+                    { saveUsers: saveInfo }
+                );
                 setIsLoading(false);
+                toast.success("Save Successfully");
             }
         } catch (err) {
             if (err.response.status === 409) {
                 setIsLoading(false);
-                toast.error("You have already save this job!");
+                toast('You have already save this job!', {
+                    icon: '🫵',
+                });
             } else {
                 setIsLoading(false);
                 toast.error(err?.message);
@@ -72,10 +89,10 @@ const JobCard = ({ job }) => {
 
                 <div onClick={handleSave} className='text-[22px] cursor-pointer'>
                     {
-                        isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" />:
-                        save ?
-                            <FaBookmark /> :
-                            <FaRegBookmark />
+                        isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" /> :
+                            save ?
+                                <FaBookmark /> :
+                                <FaRegBookmark />
                     }
                 </div>
             </div>
