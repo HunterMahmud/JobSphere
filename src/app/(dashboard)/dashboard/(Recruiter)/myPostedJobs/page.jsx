@@ -18,22 +18,34 @@ const PostedJobs = () => {
   const { data: session } = useSession(); // Access session object
   const [search, setSearch] = useState('');
   const [jobStatus, setJobStatus] = useState('');
+  const [jobType, setJobType] = useState('');
 
   const fetchJobs = async () => {
     try {
       if (session?.user?.email) {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`
-        );
+        const {data} = await axios.get(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`,
+          {
+            params: {
+              jobType,
+              sort,
+              jobTitle: search,
+              jobStatus,
+              page,
+              limit
+            }
+          });
 
         // Ensure the response is an array
         // console.log(response?.data?.myJobs);
-        const jobsData = Array.isArray(response?.data?.myJobs)
-          ? response?.data?.myJobs
+        const jobsData = Array.isArray(data?.myJobs)
+          ? data?.myJobs
           : [];
         setJobs(jobsData); // Set jobs state with the correct array
+        // setTotal(data?.total);
       }
     } catch (error) {
+      console.log(error)
       setError("Error fetching jobs");
     } finally {
       setLoading(false);
