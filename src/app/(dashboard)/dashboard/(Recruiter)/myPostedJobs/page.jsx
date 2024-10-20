@@ -57,7 +57,7 @@ const PostedJobs = () => {
     // Function to fetch jobs
 
     fetchJobs();
-  }, [session?.user?.email, search]);
+  }, [session?.user?.email, search, sort, jobStatus]);
 
   const handleDelete = async (jobId) => {
     Swal.fire({
