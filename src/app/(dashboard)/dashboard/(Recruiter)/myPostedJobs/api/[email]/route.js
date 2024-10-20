@@ -28,7 +28,7 @@ export const GET = async (request, {params}) => {
     let options = {};
     if (sort) {
         options = {
-            sort: { applicationDate: sort === 'asc' ? 1 : -1 }
+            sort: { applicantsNumber: sort === 'asc' ? 1 : -1 }
         }
     }
     const db =await connectDB()
