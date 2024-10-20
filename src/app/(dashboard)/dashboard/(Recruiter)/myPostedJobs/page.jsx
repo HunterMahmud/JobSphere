@@ -17,6 +17,7 @@ const PostedJobs = () => {
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Access session object
   const [search, setSearch] = useState('');
+  const [jobStatus, setJobStatus] = useState('');
 
   const fetchJobs = async () => {
     try {
@@ -104,11 +105,8 @@ const PostedJobs = () => {
               className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
             >
               <option value="">Filter by Job Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Task">Task</option>
-              <option value="Interview">Interview</option>
-              <option value="Submitted">Submitted</option>
-              <option value="Rejected">Rejected</option>
+              <option value="Live">Live</option>
+              <option value="Closed">Closed</option>
             </select>
 
             <select
@@ -120,7 +118,7 @@ const PostedJobs = () => {
               id="category"
               className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
             >
-              <option value="">Sort by Applyed Date</option>
+              <option value="">Sort by Applicants Number</option>
               <option value="dsc">Descending Order</option>
               <option value="asc">Ascending Order</option>
             </select>
