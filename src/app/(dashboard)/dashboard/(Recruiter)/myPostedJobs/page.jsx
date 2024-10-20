@@ -16,6 +16,7 @@ const PostedJobs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Access session object
+  const [search, setSearch] = useState('');
 
   const fetchJobs = async () => {
     try {
@@ -43,7 +44,7 @@ const PostedJobs = () => {
     // Function to fetch jobs
 
     fetchJobs();
-  }, [session?.user?.email]);
+  }, [session?.user?.email, search]);
 
   const handleDelete = async (jobId) => {
     Swal.fire({
@@ -190,9 +191,13 @@ const PostedJobs = () => {
                     <td className="px-6 py-4">{index + 1}</td>
 
                     <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2 hover:underline">
-                      <Link href={`/jobs/${job._id}`}>{job?.jobTitle}</Link>
+                      <Link href={`/jobs/${job?._id}`}>{job?.jobTitle}</Link>
                     </td>
-                    <td className="px-6 py-4">{job?.jobType}</td>
+                    <td className="px-6 py-4">
+                    <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
+                                            {job?.jobType}
+                                        </span>
+                      </td>
                     <td className="px-6 py-4 text-center">
                       {new Date(job?.deadline).toLocaleDateString()}
                     </td>
@@ -213,21 +218,22 @@ const PostedJobs = () => {
                     <td className="px-6 py-4 text-center">
                       <Link
                         href={`/dashboard/myPostedJobs/${job?._id}`}
-                        className="bg-primary text-white px-5 py-1 rounded-lg"
+                        className="inline-block px-4 py-1 font-medium rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200"
                       >
                         {job?.applicantsNumber}
                       </Link>
-                    </td>
+
+                      </td>
                     <td className="pl-6 py-4 gap-2 px-6 text-center flex justify-center">
                       <Link
-                        href={`/dashboard/myPostedJobs/api/update/${job._id}`}
+                        href={`/dashboard/myPostedJobs/api/update/${job?._id}`}
                         className="flex items-center justify-center gap-1 bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition"
                       >
                         <AiFillEdit className="text-lg flex items-center justify-center" />
                       </Link>
                       <button
                         className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
-                        onClick={() => handleDelete(job._id)}
+                        onClick={() => handleDelete(job?._id)}
                       >
                         <AiFillDelete className="text-lg flex items-center justify-center" />
                       </button>
@@ -336,7 +342,7 @@ export default PostedJobs;
           <tbody>
             {Array.isArray(jobs) &&
               jobs.map((job) => (
-                <tr key={job._id} className="hover:bg-gray-50 border-b">
+                <tr key={job?._id} className="hover:bg-gray-50 border-b">
                   <td className="py-3 px-6">{job?.jobTitle}</td>
                   <td className="py-3 px-6">
                     {job?.compnayInforamtion?.companyInfo?.companyName}
@@ -352,21 +358,21 @@ export default PostedJobs;
                   </td>
                   <td className="py-3 px-6 text-center flex justify-center gap-2">
                     <Link
-                      href={`/dashboard/myPostedJobs/api/update/${job._id}`}
+                      href={`/dashboard/myPostedJobs/api/update/${job?._id}`}
                       className="flex items-center justify-center gap-1 bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition"
                     >
                       <AiFillEdit className="text-lg flex items-center justify-center" />
                     </Link>
                     <button
                       className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
-                      onClick={() => handleDelete(job._id)}
+                      onClick={() => handleDelete(job?._id)}
                     >
                       <AiFillDelete className="text-lg flex items-center justify-center" />
                     </button>
                     <button
                       className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
                       onClick={() =>
-                        (window.location.href = `/jobs/${job._id}`)
+                        (window.location.href = `/jobs/${job?._id}`)
                       }
                     >
                       <AiFillEye className="text-lg flex items-center justify-center" />
