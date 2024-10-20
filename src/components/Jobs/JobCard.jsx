@@ -17,16 +17,20 @@ const JobCard = ({ job }) => {
 
     const { _id, jobTitle, jobType, postedDate, salaryScale, applicantsNumber, compnayInforamtion } = job
     return (
-        <div className="border w-full max-w-sm px-3 py-4 bg-[url('https://i.ibb.co/hch8Kbm/ix-GTl1715763309.png')] rounded-md shadow-md hover:shadow-2xl hover:scale-[1.01] transition-all space-y-2 text-black">
+        <div className="border w-full max-w-sm px-3 py-4 bg-[url('https://i.ibb.co/hch8Kbm/ix-GTl1715763309.png')] rounded-md shadow-md hover:shadow-xl hover:scale-[1.01] transition-all space-y-2 text-black">
             <div className='flex justify-between'>
 
                 <div className='flex gap-3'>
-                    <Image className='border rounded-full' src={compnayInforamtion?.companyInfo?.logo} width={60} height={50} />
-                    <p className='flex flex-col gap-1'>
+                    <div className="">
+                        <Image className='border rounded-full' src={compnayInforamtion?.companyInfo?.logo} width={60} height={50} />
+                    </div>
+                    <p className='flex-1 flex flex-col gap-1'>
                         <h1 className='text-xl font-semibold '>
-                            {jobTitle}
+                            {jobTitle.slice(0, 20)}{jobTitle.length > 20 && '...'}
                         </h1>
-                        <p className='text-start'>{compnayInforamtion?.companyInfo?.companyName}</p>
+                        <p className='text-start'>
+                            {compnayInforamtion?.companyInfo?.companyName.slice(0, 30)}{compnayInforamtion?.companyInfo?.companyName.length > 20 && '...'}
+                        </p>
                     </p>
                 </div>
 
