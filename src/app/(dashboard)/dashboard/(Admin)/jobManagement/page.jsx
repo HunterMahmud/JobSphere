@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Countdown from "react-countdown";
-import Loader from '@/app/loading';
+import Loader from "@/app/loading";
 
 const JobTable = () => {
   const [jobDetails, setJobDetails] = useState([]);
@@ -86,77 +86,76 @@ const JobTable = () => {
           {/* Search by Job Title */}
           <input
             type="text"
-            placeholder="Search by Job Title and press Enter..."
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                setSearchTerm(e.target.value);
-              }
-            }}
+            placeholder="Search by Job Title..."
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
       </div>
 
       {/* Table */}
-      {
-            loading ? <Loader /> :
-      <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden">
-        <thead className="bg-gray-50 border-b">
-          <tr>
-            <th className="px-6 py-4 text-left font-medium text-gray-700">#</th>
-            <th className="px-6 py-4 text-left font-medium text-gray-700">
-              Job Title
-            </th>
-            <th className="px-6 py-4 text-left font-medium text-gray-700">
-              Job Type
-            </th>
-            <th className="px-6 py-4 text-left font-medium text-gray-700">
-              Salary Scale
-            </th>
-            <th className="px-6 py-4 text-left font-medium text-gray-700">
-              Experience Needed
-            </th>
-            <th className="px-6 py-4 text-left font-medium text-gray-700">
-              Deadline
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobDetails?.map((job, index) => (
-            <tr
-              key={index}
-              className="border-b hover:bg-gray-50 text-xs md:text-sm"
-            >
-              <td className="px-6 py-4">{index + 1}</td>
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                {job.jobTitle}
-              </td>
-              <td className="px-1 md:px-3 lg:px-6 py-4">
-                <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
-                  {job?.jobType}
-                </span>
-              </td>
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                {job.salaryScale}
-              </td>
-              <td className="px-6 py-4">
-                                        <span className="inline-block px-2 py-1 font-medium rounded-full bg-green-100 text-green-600">
-                                            {job?.experience}
-                                        </span>
-                                    </td>
-              <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                {/* Conditionally render countdown if the deadline is greater than 1 second from now */}
-                {new Date(job.deadline).getTime() - currentTime > 1000 ? (
-                  <Countdown date={new Date(job.deadline)} />
-                ) : (
-                  "closed"
-                )}
-              </td>
+      {loading ? (
+        <Loader />
+      ) : (
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden">
+          <thead className="bg-gray-50 border-b">
+            <tr>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
+                #
+              </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
+                Job Title
+              </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
+                Job Type
+              </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
+                Salary Scale
+              </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
+                Experience Needed
+              </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
+                Deadline
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-       }
+          </thead>
+          <tbody>
+            {jobDetails?.map((job, index) => (
+              <tr
+                key={index}
+                className="border-b hover:bg-gray-50 text-xs md:text-sm"
+              >
+                <td className="px-6 py-4">{index + 1}</td>
+                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                  {job.jobTitle}
+                </td>
+                <td className="px-1 md:px-3 lg:px-6 py-4">
+                  <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
+                    {job?.jobType}
+                  </span>
+                </td>
+                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                  {job.salaryScale}
+                </td>
+                <td className="px-6 py-4">
+                  <span className="inline-block px-2 py-1 font-medium rounded-full bg-green-100 text-green-600">
+                    {job?.experience}
+                  </span>
+                </td>
+                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                  {/* Conditionally render countdown if the deadline is greater than 1 second from now */}
+                  {new Date(job.deadline).getTime() - currentTime > 1000 ? (
+                    <Countdown date={new Date(job.deadline)} />
+                  ) : (
+                    "closed"
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">

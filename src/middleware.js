@@ -5,6 +5,7 @@ const secret = process.env.NEXT_PUBLIC_AUTH_SECRET; // Use your NextAuth secret
 
 // Define route-role mapping
 const roleBasedRoutes = {
+  "/dashboard": ["admin", "recruiter", "seeker"],
   "/dashboard/statistics": ["admin"],
   "/dashboard/userManagement": ["admin"],
   "/dashboard/jobManagement": ["admin"],
@@ -59,17 +60,23 @@ export const middleware = async (request) => {
 
 // Define the matcher for the middleware
 export const config = {
-  matcher: [
-    "/dashboard/statistics",
-    "/dashboard/userManagement",
-    "/dashboard/jobManagement",
-    "/dashboard/interview",
-    "/dashboard/postAJob",
-    "/dashboard/myPostedJobs",
-    "/dashboard/jobSeekers",
-     "/dashboard/writeABlog",
-    "/dashboard/savedJobs",
-    "/dashboard/appliedJobs",
-    // Add more routes here if needed
-  ],
+  matcher: ["/dashboard/:path*"], // Match all routes under /dashboard
 };
+
+// // Define the matcher for the middleware
+// export const config = {
+//   matcher: [
+//     "/dashboard",
+//     "/dashboard/statistics",
+//     "/dashboard/userManagement",
+//     "/dashboard/jobManagement",
+//     "/dashboard/interview",
+//     "/dashboard/postAJob",
+//     "/dashboard/myPostedJobs",
+//     "/dashboard/jobSeekers",
+//     "/dashboard/writeABlog",
+//     "/dashboard/savedJobs",
+//     "/dashboard/appliedJobs",
+//     // Add more routes here if needed
+//   ],
+// };
