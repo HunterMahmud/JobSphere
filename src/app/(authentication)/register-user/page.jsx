@@ -10,7 +10,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import TermsConditions from "@/components/termsAndConditions/TermsConditions";
+// import TermsConditions from "@/components/termsAndConditions/TermsConditions";
 import Terms from "@/app/termsCondition/page";
 // import Terms from "../termsCondition/page";
 
