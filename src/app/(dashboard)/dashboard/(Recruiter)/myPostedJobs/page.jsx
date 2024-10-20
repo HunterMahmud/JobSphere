@@ -150,7 +150,12 @@ const PostedJobs = () => {
         <div className="overflow-x-auto border rounded-lg shadow-md">
           {loading ? (
             <Loader />
-          ) : (
+          ) : 
+            jobs?.length === 0 ? (
+              <div className="text-center text-gray-500">
+                You haven&apos;t posted any jobs yet.
+              </div>
+            ):(
             <table className="min-w-full bg-white">
               {/* Table Header  */}
               <thead className="bg-gray-50 border-b">
@@ -240,7 +245,8 @@ const PostedJobs = () => {
                 ))}
               </tbody>
             </table>
-          )}
+            )
+          }
 
           {/* Pagination  */}
           <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
