@@ -8,9 +8,11 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
-import Terms from '@/components/termsAndConditions/Terms';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
+import TermsConditions from "@/components/termsAndConditions/TermsConditions";
+// import Terms from "../termsCondition/page";
+
 
 const RegisterUser = () => {
   const pathName = usePathname();
@@ -63,7 +65,7 @@ const RegisterUser = () => {
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/register/api`,
         newUser
       );
-      
+
       if (result.status === 200) {
         toast.success("User created successfully");
 
@@ -83,18 +85,20 @@ const RegisterUser = () => {
         }
       }
 
-        const seekerInformation = {
-          contactInformation: {
-            email,
-            phoneNumber: mobileNumber
-          },
-          profileOverview: {
-            fullName: name,
-            profilePicture: data?.data?.display_url,
-          }
-        }
-        await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${email}`, { ...seekerInformation });
-        
+      const seekerInformation = {
+        contactInformation: {
+          email,
+          phoneNumber: mobileNumber,
+        },
+        profileOverview: {
+          fullName: name,
+          profilePicture: data?.data?.display_url,
+        },
+      };
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${email}`,
+        { ...seekerInformation }
+      );
     } catch (err) {
       console.log(err);
       if (err.response && err?.response?.status === 409) {
@@ -120,8 +124,9 @@ const RegisterUser = () => {
           <a
             rel="noopener noreferrer"
             href="/register-user"
-            className={`${pathName === "/register-user" && "border-b-primary"
-              } flex items-center flex-shrink-0 px-5 py-2 border-b-4`}
+            className={`${
+              pathName === "/register-user" && "border-b-primary"
+            } flex items-center flex-shrink-0 px-5 py-2 border-b-4`}
           >
             Job Seeker
           </a>
@@ -313,95 +318,94 @@ const RegisterUser = () => {
               </div>
             </div>
           </div>
-          
+
           <div>
-      <div className="flex items-start md:justify-center">
-        <input
-          id="acceptTerms"
-          type="checkbox"
-          {...register('acceptTerms', {
-            required: {
-              value: true,
-              message: 'This field is required.',
-            },
-          })}
-          className="mt-1 mr-1"
-        />
+            <div className="flex items-start md:justify-center">
+              <input
+                id="acceptTerms"
+                type="checkbox"
+                {...register("acceptTerms", {
+                  required: {
+                    value: true,
+                    message: "This field is required.",
+                  },
+                })}
+                className="mt-1 mr-1"
+              />
 
-        <label htmlFor="acceptTerms" className="text-sm">
-          By clicking &apos;Continue&apos;, you acknowledge that you have read and accept the{' '}
-          <span
-            className="font-medium text-blue-600 cursor-pointer"
-            onClick={openModal}
-          >
-            Terms and Conditions
-          </span>{' '}
-          and <span className="font-medium">Privacy Policy</span>.
-        </label>
-      </div>
-
-      {/* Error Message */}
-      {errors?.acceptTerms?.message && (
-        <span className="text-red-500 flex items-start md:justify-center">
-          {errors?.acceptTerms?.message}
-        </span>
-      )}
-
-      {/* Modal for Terms of Service */}
-<Transition appear show={isOpen} as={Fragment}>
-  <Dialog as="div" className="relative z-10" onClose={closeModal}>
-    <Transition.Child
-      as={Fragment}
-      enter="ease-out duration-300"
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave="ease-in duration-200"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <div className="fixed inset-0 bg-black bg-opacity-25" />
-    </Transition.Child>
-
-    <div className="fixed inset-0 overflow-y-auto">
-      <div className="flex min-h-[550px] items-center justify-center p-16 text-center">
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0 scale-95"
-          enterTo="opacity-100 scale-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-95"
-        >
-          <Dialog.Panel className="w-full lg:w-[75%] transform overflow-hidden rounded-none bg-white p-6 text-left align-middle shadow-xl transition-all">
-            <Dialog.Title
-              as="h3"
-              className="text-lg font-medium leading-6 text-gray-900"
-            >
-              
-            </Dialog.Title>
-
-            <div className="mt-2">
-              <Terms /> {/* Your Terms Component */}
+              <label htmlFor="acceptTerms" className="text-sm">
+                By clicking &apos;Continue&apos;, you acknowledge that you have
+                read and accept the{" "}
+                <span
+                  className="font-medium text-blue-600 cursor-pointer"
+                  onClick={openModal}
+                >
+                  Terms and Conditions
+                </span>{" "}
+                and <span className="font-medium">Privacy Policy</span>.
+              </label>
             </div>
 
-            <div className="mt-4">
-              <button
-                type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </div>
-          </Dialog.Panel>
-        </Transition.Child>
-      </div>
-    </div>
-  </Dialog>
-</Transition>
+            {/* Error Message */}
+            {errors?.acceptTerms?.message && (
+              <span className="text-red-500 flex items-start md:justify-center">
+                {errors?.acceptTerms?.message}
+              </span>
+            )}
 
-    </div>
+            {/* Modal for Terms of Service */}
+            <Transition appear show={isOpen} as={Fragment}>
+              <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <div className="fixed inset-0 bg-black bg-opacity-25" />
+                </Transition.Child>
+
+                <div className="fixed inset-0 overflow-y-auto">
+                  <div className="flex min-h-[550px] items-center justify-center p-16 text-center">
+                    <Transition.Child
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="opacity-0 scale-95"
+                      enterTo="opacity-100 scale-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="opacity-100 scale-100"
+                      leaveTo="opacity-0 scale-95"
+                    >
+                      <Dialog.Panel className="w-full lg:w-[75%] transform overflow-hidden rounded-none bg-white p-6 text-left align-middle shadow-xl transition-all">
+                        <Dialog.Title
+                          as="h3"
+                          className="text-lg font-medium leading-6 text-gray-900"
+                        ></Dialog.Title>
+
+                        <div className="mt-2">
+                          {/* <Terms /> Your Terms Component */}
+                          <TermsConditions/>
+                        </div>
+
+                        <div className="mt-4">
+                          <button
+                            type="button"
+                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200"
+                            onClick={closeModal}
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </Dialog.Panel>
+                    </Transition.Child>
+                  </div>
+                </div>
+              </Dialog>
+            </Transition>
+          </div>
 
           <div>
             <button
@@ -416,7 +420,10 @@ const RegisterUser = () => {
 
         <p className="px-6 mt-3 text-sm text-center text-black">
           Already have an account?{" "}
-          <Link href={"/login"} className="hover:underline text-gray-600 font-medium">
+          <Link
+            href={"/login"}
+            className="hover:underline text-gray-600 font-medium"
+          >
             Login
           </Link>
         </p>

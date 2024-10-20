@@ -10,7 +10,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import Terms from "@/components/termsAndConditions/Terms";
+import TermsConditions from "@/components/termsAndConditions/TermsConditions";
+// import Terms from "../termsCondition/page";
 
 const RegisterRecruiter = () => {
   const pathName = usePathname();
@@ -340,7 +341,8 @@ const RegisterRecruiter = () => {
                       ></Dialog.Title>
 
                       <div className="mt-2">
-                        <Terms /> {/* Your Terms Component */}
+                        {/* <Terms /> Your Terms Component */}
+                        <TermsConditions />
                       </div>
 
                       <div className="mt-4">
