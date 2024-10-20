@@ -20,7 +20,7 @@ export const POST = async (req) => {
     // If no job exists, insert the new job into the collection
     const result = await SaveJobsCollection.insertOne(data);
 
-    return NextResponse.json({ message: "Job Added Successfully" }, result);
+    return NextResponse.json({ message: "Job Added Successfully", result });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Failed to Add Job", error }, { status: 500 });
