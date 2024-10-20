@@ -11,8 +11,8 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export const getPostedTimeAgo = (postedDate) => {
-    return formatDistanceToNow(new Date(postedDate), { addSuffix: true });
+export const getPostedTimeAgo = (date) => {
+    return formatDistanceToNow(new Date(date), { addSuffix: true });
 };
 
 const JobCard = ({ job }) => {
@@ -29,11 +29,12 @@ const JobCard = ({ job }) => {
     }, [job, email]);
 
     const handleSave = async () => {
-        const newJob = { user: data?.user, job };
         const saveInfo = [
             ...saveUsers || [],
             email
         ]
+
+        const newJob = { user: data?.user, job: { ...job, saveUsers: saveInfo } };
 
         if (!email) {
             return toast('Please Login or Register first!', {
@@ -79,22 +80,22 @@ const JobCard = ({ job }) => {
                     </div>
                     <p className='flex-1 flex flex-col gap-1'>
                         <h1 className='text-xl font-semibold '>
-                            {jobTitle.slice(0, 20)}{jobTitle.length > 20 && '...'}
+                            {jobTitle?.slice(0, 20)}{jobTitle?.length > 20 && '...'}
                         </h1>
                         <p className='text-start'>
-                            {compnayInforamtion?.companyInfo?.companyName.slice(0, 30)}{compnayInforamtion?.companyInfo?.companyName.length > 20 && '...'}
+                            {compnayInforamtion?.companyInfo?.companyName?.slice(0, 30)}{compnayInforamtion?.companyInfo?.companyName?.length > 20 && '...'}
                         </p>
                     </p>
                 </div>
 
-                <div onClick={handleSave} className='text-[22px] cursor-pointer'>
+                <button disabled={isLoading} onClick={handleSave} className={`${isLoading && 'cursor-not-allowed'} text-[22px] cursor-pointer`}>
                     {
                         isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" /> :
                             save ?
                                 <FaBookmark /> :
                                 <FaRegBookmark />
                     }
-                </div>
+                </button>
             </div>
 
             <div className='flex items-center gap-1'>
