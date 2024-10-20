@@ -1,5 +1,5 @@
 'use client'
-import { AiOutlineDollarCircle } from "react-icons/ai";
+import { AiOutlineDollarCircle, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,6 +16,7 @@ export const getPostedTimeAgo = (postedDate) => {
 };
 
 const JobCard = ({ job }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [save, setSave] = useState(false);
     const { data } = useSession();
     const { _id, jobTitle, jobType, postedDate, salaryScale, applicantsNumber, compnayInforamtion } = job
@@ -30,6 +31,7 @@ const JobCard = ({ job }) => {
         }
 
         try {
+            setIsLoading(true)
             const { data } = await axios.post(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/saveJob`,
                 newJob
@@ -37,11 +39,14 @@ const JobCard = ({ job }) => {
             if (data?.result?.acknowledged) {
                 setSave(!save)
                 toast.success("Save Successfully");
+                setIsLoading(false);
             }
         } catch (err) {
             if (err.response.status === 409) {
+                setIsLoading(false);
                 toast.error("You have already save this job!");
             } else {
+                setIsLoading(false);
                 toast.error(err?.message);
             }
         }
@@ -67,6 +72,7 @@ const JobCard = ({ job }) => {
 
                 <div onClick={handleSave} className='text-[22px] cursor-pointer'>
                     {
+                        isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" />:
                         save ?
                             <FaBookmark /> :
                             <FaRegBookmark />
