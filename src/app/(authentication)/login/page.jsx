@@ -19,25 +19,28 @@ const LoginPage = () => {
 
     const handleLogIn = async (data) => {
         const { email, password } = data;
-   
+    
         try {
             const resp = await signIn("credentials", {
                 email,
                 password,
-                redirect: true,
-                callbackUrl: path ? path : "/",
+                redirect: false,  // Disable automatic redirect
             });
-   
-            if (resp?.error) {
-                toast.error("Enter correct email or password");
-            } else {
+    
+            // If login is successful, redirect to the desired page
+            if (resp?.ok) {
                 toast.success('SignIn Successful');
-                router.push("/");
+                router.push(path ? path : "/");  // Redirect to the target path or home
+            } 
+            // If there is an error, display a message
+            else if (resp?.error) {
+                toast.error("Enter correct email or password");
             }
         } catch (err) {
-            toast.error(err?.message);
+            toast.error("Something went wrong. Please try again.");
         }
-    }
+    };
+    
    
     const handleSignInWithGoogle = async () => {
         try {
