@@ -1,5 +1,5 @@
 "use client"
-import { FaPhone, FaEnvelope, FaLinkedin, FaTwitter, FaGlobe, FaBuilding, FaMapMarkerAlt, FaUsers, FaBriefcase } from "react-icons/fa"; // Added more icons
+import { FaPhone, FaEnvelope, FaLinkedin, FaTwitter, FaGlobe, FaBuilding, FaMapMarkerAlt, FaUsers, FaBriefcase, FaExternalLinkAlt } from "react-icons/fa"; // Added more icons
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loader from "@/app/loading";
@@ -33,10 +33,11 @@ const DetailedCompanyPage = ({ params }) => {
     return <h2 className="text-2xl font-bold text-center pt-14">No Data Found</h2>
   }
   return (
-    <div className="custom-container">
-      <div className="max-w-4xl mx-auto p-8 bg-opacity-50 bg-accent shadow-lg rounded-lg my-10 ">
-        {/* Header */}
-        <div className="flex items-center space-x-4">
+
+    <div className="custom-container p-8 bg-opacity-50 bg-accent shadow-lg rounded-lg my-10 ">
+
+      <div className="p-6 bg-gradient-to-r from-green-400 to-green-600 text-white">
+        <div className="flex items-center">
           {company?.companyInfo?.logo && (
             <div className="relative w-32 h-32">
               <Image
@@ -48,66 +49,93 @@ const DetailedCompanyPage = ({ params }) => {
               />
             </div>
           )}
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">{company?.companyInfo?.companyName || "N/A"}</h1>
-            <p className="text-sm text-gray-500">{company?.companyInfo?.companyMission || "N/A"}</p>
+          <div className="ml-6">
+            <h1 className="text-4xl font-bold">
+              {company?.companyInfo?.companyName || "Company Name"}
+            </h1>
+            <p className="text-lg mt-2">
+              {company?.companyInfo?.companyMission || "Company mission"}
+            </p>
+            <div className="flex space-x-4 mt-2">
+              <span>Founded: {company?.companyInfo?.foundedYear || "N/A"}</span>
+              <span>Company Size: {company?.employmentInfo?.companySize || "N/A"} employees</span>
+              <span>Location: {company?.companyInfo?.address || "Unknown"}</span>
+            </div>
           </div>
-        </div>
-
-        {/* Company Information */}
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Company Information</h2>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaBuilding  className="text-primary font-bold"/> <span><span className="font-medium">Founded Year:</span> {company?.companyInfo?.foundedYear || "N/A"}</span>
-          </p>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaBriefcase className="text-secondary font-bold" /> <span><span className="font-medium">Type:</span> {company?.companyInfo?.companyType || "N/A"}</span>
-          </p>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaMapMarkerAlt className="text-primary font-bold" /> <span><span className="font-medium">Address:</span> {company?.companyInfo?.address || "N/A"}, {company?.companyInfo?.city || "N/A"}, {company?.companyInfo?.country || "N/A"}</span>
-          </p>
-        </div>
-
-        {/* Contact Information */}
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Contact Information</h2>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaEnvelope className="text-primary font-bold " /> <span>{company?.contactInformation?.email || "N/A"}</span>
-          </p>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaPhone className="text-secondary font-bold" /> <span>{company?.contactInformation?.phone || "N/A"}</span>
-          </p>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaGlobe />{" "}
-            <a href={company?.contactInformation?.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              {company?.contactInformation?.website || "N/A"}
+          {company?.contactInformation?.website && (
+            <a
+              href={company.contactInformation.website}
+              className="ml-auto bg-white text-green-700 px-4 py-2 rounded inline-flex items-center"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit Website <FaExternalLinkAlt className="ml-2" />
             </a>
-          </p>
-          <div className="flex space-x-4 mt-2">
-            {company?.contactInformation?.socialLinks?.linkedin && (
-              <a href={company.contactInformation.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                <FaLinkedin className="text-blue-600" size={24} />
-              </a>
-            )}
-            {company?.contactInformation?.socialLinks?.twitter && (
-              <a href={company.contactInformation.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
-                <FaTwitter className="text-blue-400" size={24} />
-              </a>
-            )}
-          </div>
-        </div>
-
-        {/* Employment Information */}
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Employment Information</h2>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaUsers className="text-primary font-bold" /> <span><span className="font-medium">Company Size:</span> {company?.employmentInfo?.companySize || "N/A"}</span>
-          </p>
-          <p className="text-gray-600 flex items-center space-x-2">
-            <FaBriefcase className="text-secondary font-bold"/> <span><span className="font-medium">Jobs Offered:</span> {company?.employmentInfo?.typesOfJobs || "N/A"}</span>
-          </p>
+          )}
         </div>
       </div>
+      <div className="p-8">
+        <h2 className="text-3xl font-semibold">
+          About {company?.companyInfo?.companyName || "the Company"}
+        </h2>
+        <p className="mt-4 text-gray-600">
+          {company?.companyInfo?.companyMission || "This company aims to create a better future."}
+        </p>
+      </div>
+
+      <div className="p-8 bg-gray-100">
+        <h2 className="text-3xl font-semibold">Employment Opportunities</h2>
+        <div className="mt-4 text-gray-600">
+          <p>Types of Jobs: {company?.employmentInfo?.typesOfJobs || "N/A"}</p>
+          <p>Company Size: {company?.employmentInfo?.companySize || "N/A"} employees</p>
+        </div>
+      </div>
+
+
+      <div className="p-8">
+        <h2 className="text-3xl font-semibold">Contact Information</h2>
+        <div className="mt-4 space-y-2">
+          {company?.contactInformation?.phone && (
+            <div className="flex items-center">
+              <FaPhone className="text-green-600 mr-2" />
+              <p className="text-gray-600">{company.contactInformation.phone}</p>
+            </div>
+          )}
+          {company?.contactInformation?.email && (
+            <div className="flex items-center">
+              <FaEnvelope className="text-green-600 mr-2" />
+              <p className="text-gray-600">{company.contactInformation.email}</p>
+            </div>
+          )}
+          {company?.contactInformation?.socialLinks?.linkedin && (
+            <div className="flex items-center">
+              <FaLinkedin className="text-green-600 mr-2" />
+              <a
+                href={company.contactInformation.socialLinks.linkedin}
+                className="text-blue-600"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+            </div>
+          )}
+          {company?.contactInformation?.socialLinks?.twitter && (
+            <div className="flex items-center">
+              <FaTwitter className="text-green-600 mr-2" />
+              <a
+                href={company.contactInformation.socialLinks.twitter}
+                className="text-blue-600"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Twitter
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+
     </div>
   );
 };
