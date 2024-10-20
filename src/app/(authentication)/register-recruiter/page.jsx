@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import TermsConditions from "@/components/termsAndConditions/TermsConditions";
+import Terms from "@/app/termsCondition/page";
 // import Terms from "../termsCondition/page";
 
 const RegisterRecruiter = () => {
@@ -341,8 +342,8 @@ const RegisterRecruiter = () => {
                       ></Dialog.Title>
 
                       <div className="mt-2">
-                        {/* <Terms /> Your Terms Component */}
-                        <TermsConditions />
+                        <Terms /> 
+                        {/* <TermsConditions /> */}
                       </div>
 
                       <div className="mt-4">
