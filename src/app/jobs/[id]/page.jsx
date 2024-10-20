@@ -38,6 +38,8 @@ const JobDetails = ({ params }) => {
   const { seekerInfo } = useSeekerInfo();
   const today = new Date();
   const deadline = new Date(job?.deadline);
+  // const { saveUsers } = job;
+  const email = session?.user?.email
 
   const getServicesDetails = async (id) => {
     try {
@@ -171,22 +173,34 @@ const JobDetails = ({ params }) => {
   };
 
   const handleSaveJob = async () => {
-    const newJob = { user: session?.user, job };
+    const saveInfo = [
+      ...job?.saveUsers || [],
+      email
+    ]
+    // const newJob = { user: session?.user, job };
+    const newJob = { user: session?.user, job: { ...job, saveUsers: saveInfo } };
+
     try {
       // Use axios to make the POST request
-      const response = await axios.post("/api/saveJob", newJob, {
+      const { data } = await axios.post("/api/saveJob", newJob, {
         headers: {
           "Content-Type": "application/json", // Set the content type
         },
       });
 
-      Swal.fire({
-        position: "top",
-        icon: "success",
-        title: "Job Added Successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      if (data?.result?.acknowledged) {
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${job?._id}`,
+          { saveUsers: saveInfo }
+        );
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: "Job Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     } catch (error) {
       if (error.response) {
         if (error.response.status === 409) {

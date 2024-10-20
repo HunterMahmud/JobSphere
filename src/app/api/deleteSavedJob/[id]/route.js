@@ -14,12 +14,7 @@ export const DELETE = async (request, { params }) => {
 
   try {
     const result = await SaveJobsCollection.deleteOne({ _id: new ObjectId(id) });
-
-    if (result.deletedCount === 1) {
-      return NextResponse.json({ message: "Job deleted successfully" });
-    } else {
-      return NextResponse.json({ error: "Job not found" }, { status: 404 });
-    }
+    return Response.json(result)
   } catch (error) {
     console.error("Error deleting job:", error);
     return NextResponse.json({ error: "Failed to delete job" }, { status: 500 });
