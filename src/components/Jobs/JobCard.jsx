@@ -12,8 +12,12 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 export const getPostedTimeAgo = (date) => {
+    if (!date || isNaN(new Date(date).getTime())) {
+        return "Invalid date";  // Return a fallback or default value
+    }
     return formatDistanceToNow(new Date(date), { addSuffix: true });
 };
+
 
 const JobCard = ({ job }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +92,7 @@ const JobCard = ({ job }) => {
                     </p>
                 </div>
 
-                <button disabled={isLoading} onClick={handleSave} className={`${isLoading && 'cursor-not-allowed'} text-[22px] cursor-pointer`}>
+                <button disabled={isLoading} onClick={handleSave} className={`${isLoading && 'cursor-not-allowed'} text-[22px] cursor-pointer mb-4`}>
                     {
                         isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" /> :
                             save ?
