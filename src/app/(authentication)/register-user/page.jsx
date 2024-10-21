@@ -14,9 +14,8 @@ import { useSession } from "next-auth/react";
 // import Terms from "../termsCondition/page";
 // import TermsConditions from "@/components/Modal/ModalOfTerms";
 // import ModalOfTerms from '../../components/Modal/ModalOfTerms';
-import ModalOfTerms from '../../../components/Modal/ModalOfTerms';
-import ModalOfSecurity from '../../../components/Modal/ModalOfSecurity';
-
+import ModalOfTerms from "../../../components/Modal/ModalOfTerms";
+import ModalOfSecurity from "../../../components/Modal/ModalOfSecurity";
 
 const RegisterUser = () => {
   const pathName = usePathname();
@@ -26,12 +25,12 @@ const RegisterUser = () => {
   const [isOpenTerms, setIsOpenTerms] = useState(false);
   const [isOpenSecurity, setIsOpenSecurity] = useState(false);
   const session = useSession();
-  console.log(session)
+  console.log(session);
 
   useEffect(() => {
-    if (session?.status==="authenticated") {
+    if (session?.status === "authenticated") {
       // If user is logged in, redirect to home page
-      router.push('/');
+      router.push("/");
     }
   }, [session?.status, router]);
 
@@ -362,7 +361,14 @@ const RegisterUser = () => {
                 >
                   Terms and Conditions
                 </span>{" "}
-                and <span className="font-medium text-blue-600 cursor-pointer" onClick={openModalSecurity}>Privacy Policy</span>.
+                and{" "}
+                <span
+                  className="font-medium text-blue-600 cursor-pointer"
+                  onClick={openModalSecurity}
+                >
+                  Privacy Policy
+                </span>
+                .
               </label>
             </div>
 
@@ -374,11 +380,16 @@ const RegisterUser = () => {
             )}
 
             {/* Modal for Terms of Service */}
-            <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
+            <ModalOfTerms
+              isOpenTerms={isOpenTerms}
+              closeModalTerms={closeModalTerms}
+            />
 
             {/* Modal for Terms of Privacy */}
-            <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
-            
+            <ModalOfSecurity
+              isOpenSecurity={isOpenSecurity}
+              closeModalSecurity={closeModalSecurity}
+            />
           </div>
 
           <div>
