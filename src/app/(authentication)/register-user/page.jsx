@@ -376,7 +376,7 @@ const RegisterUser = () => {
             {/* Modal for Terms of Service */}
             <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
 
-            {/* Modal for Terms of Service */}
+            {/* Modal for Terms of Privacy */}
             <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
             
           </div>
