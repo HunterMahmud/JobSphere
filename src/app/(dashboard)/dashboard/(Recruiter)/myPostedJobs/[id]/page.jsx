@@ -203,6 +203,8 @@ const ApplyedAJob = ({ params }) => {
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
+                const { data } = await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
+                console.log(data)
                 toast.success('Successful')
                 setIsLoading(false)
                 // Re-fetch the jobs after deletion
