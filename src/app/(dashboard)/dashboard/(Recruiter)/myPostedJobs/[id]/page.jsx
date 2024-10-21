@@ -12,6 +12,7 @@ import Modal from '@/components/Modal/Modal';
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { gapi } from 'gapi-script';
 import { useSession } from 'next-auth/react';
+import { GrCheckboxSelected } from 'react-icons/gr';
 
 const ApplyedAJob = ({ params }) => {
     const session = useSession();
@@ -309,6 +310,42 @@ const ApplyedAJob = ({ params }) => {
         }
     };
 
+    // handleSelected
+
+    const handleSelected = async (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to select this applicant?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const { data } = await axios.put(
+                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected" });
+
+                    if (data.modifiedCount > 0) {
+                        toast.success('Successful')
+                        // Re-fetch the jobs after deletion
+                        fetchJobs();
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.log(error.message);
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Failed to delete the job.",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    };
+
+
     return (
         <Fragment>
             <div className="max-w-7xl mx-auto py-8 px-4">
@@ -362,7 +399,9 @@ const ApplyedAJob = ({ params }) => {
                                             <button
                                                 onClick={() => {
                                                     if (job?.jobStatus === 'Interview') {
-                                                        return toast.error('Allready selected for interview')
+                                                        return toast.error('Already selected for interview')
+                                                    } if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
                                                     } else {
                                                         handleTask(job?._id)
                                                         setTask(job?.task)
@@ -374,7 +413,10 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    if (job?.offlineInterView || job?.onlineInterView) {
+                                                    if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
+                                                    }
+                                                    else if (job?.offlineInterView || job?.onlineInterView) {
                                                         return toast.error('Already Added')
                                                     } else {
                                                         setShowModal(!showModal)
@@ -387,9 +429,22 @@ const ApplyedAJob = ({ params }) => {
                                             >
                                                 <MdInterpreterMode className="text-lg flex items-center justify-center" />
                                             </button>
+
+                                            <button
+                                                onClick={() => handleSelected(job?._id)}
+                                                className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-primary text-white py-2 px-3 rounded-md`}
+                                            >
+                                                <GrCheckboxSelected className="text-lg flex items-center justify-center" />
+                                            </button>
+
                                             <button
                                                 disabled={job?.jobStatus === 'Rejected'}
-                                                onClick={() => handleRemove(job?._id)}
+                                                onClick={() => {
+                                                    if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
+                                                    }
+                                                    handleRemove(job?._id)
+                                                }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
                                             >
                                                 <MdOutlineCancel className="text-lg flex items-center justify-center" />
