@@ -30,7 +30,7 @@ const ModalOfSecurity = ({ isOpenSecurity, closeModalSecurity }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full lg:w-[75%] transform overflow-hidden rounded-none bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full lg:w-[75%] transform overflow-hidden rounded-md bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
@@ -41,10 +41,10 @@ const ModalOfSecurity = ({ isOpenSecurity, closeModalSecurity }) => {
                     {/* <TermsConditions/> */}
                   </div>
 
-                  <div className="mt-4">
-                    <button
+                  <div className="mt-4 text-end">
+                  <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white"
                       onClick={closeModalSecurity}
                     >
                       Close
