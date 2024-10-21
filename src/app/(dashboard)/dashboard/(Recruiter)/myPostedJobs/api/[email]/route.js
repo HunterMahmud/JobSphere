@@ -11,7 +11,6 @@ export const GET = async (request, {params}) => {
     const page = parseInt(url.searchParams.get("page")) || 1;
     const limit = parseInt(url.searchParams.get("limit")) || 10;
     const skip = (page - 1) * limit;
-    const today = new Date();
 
     let query = {email : params?.email}
 

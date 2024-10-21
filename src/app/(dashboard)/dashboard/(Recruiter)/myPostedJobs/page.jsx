@@ -3,10 +3,9 @@ import Loader from "@/app/loading";
 import { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { AiFillEdit, AiFillDelete, AiFillEye } from "react-icons/ai"; // Import icons
+import { AiFillEdit, AiFillDelete } from "react-icons/ai"; // Import icons
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 
 const PostedJobs = () => {
   const [jobs, setJobs] = useState([]); // Initialize jobs as an empty array
