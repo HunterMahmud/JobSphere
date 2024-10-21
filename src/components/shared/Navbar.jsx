@@ -85,11 +85,10 @@ const Navbar = () => {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className={`${
-                    pathName === link.path
-                      ? "bg-primary text-white font-semibold shadow-lg"
-                      : "text-gray-300 hover:bg-hover hover:text-white"
-                  } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
+                  className={`${pathName === link.path
+                    ? "bg-primary text-white font-semibold shadow-lg"
+                    : "text-gray-300 hover:bg-hover hover:text-white"
+                    } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
                 >
                   {link.title}
                 </Link>
@@ -99,7 +98,7 @@ const Navbar = () => {
 
           {/* Right Section ( Profile ) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            
+
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
               {session?.status === "authenticated" ? (
@@ -111,7 +110,7 @@ const Navbar = () => {
                         alt="Profile"
                         src={
                           session?.status === "authenticated" &&
-                          loggedInUser?.userIMG
+                            loggedInUser?.userIMG
                             ? loggedInUser?.userIMG
                             : "https://i.ibb.co/3BY9Fks/profile.png"
                         }
@@ -121,86 +120,87 @@ const Navbar = () => {
                       />
                     </MenuButton>
                   </div>
-                  <MenuItems className="absolute right-0 z-10 mt-2 w-[300px] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems className="absolute right-0 z-50 mt-3 w-[250px] origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     {/* If there is user */}
                     {session?.status === "authenticated" && (
                       <>
                         <MenuItem>
-                          <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">
-                            {loggedInUser?.userName} {loggedInUser?.name}{" "} {loggedInUser?.fullName}
-                          </p>
+                          <div className="p-5 flex flex-col justify-center items-center">
+                            <Image className='border rounded-full' src={loggedInUser?.userIMG} width={60} height={50} />
+                            <p className="block font-semibold text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">
+                              {loggedInUser?.userName} {loggedInUser?.name}{" "} {loggedInUser?.fullName}
+                            </p>
+                            <p className="block text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">
+                              {session?.data?.user?.email}
+                            </p>
+                          </div>
                         </MenuItem>
                         {/* Divider */}
-                        <div className="border-t border-gray-200"></div>
-                        <MenuItem>
-                          <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">
-                            {session?.data?.user?.email}
-                          </p>
-                        </MenuItem>
-                        {/* Divider */}
-                        <div className="border-t border-gray-200"></div>
-                        <MenuItem>
-                          <a
-                            href="/dashboard"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                          >
-                            My Dashboards
-                          </a>
-                        </MenuItem>
-                        {loggedInUser?.role === "recruiter" && (
-                          <>
-                            {/* Divider */}
-                            <div className="border-t border-gray-200"></div>
-                            <MenuItem>
-                              <a
-                                href="/profile/company-information"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                              >
-                                Company Profile
-                              </a>
-                            </MenuItem>
-                          </>
-                        )}
-                        {loggedInUser?.role === "recruiter" && (
-                          <>
-                            {/* Divider */}
-                            <div className="border-t border-gray-200"></div>
-                            <MenuItem>
-                              <a
-                                href="/profile/premiumMembership"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                              >
-                                Premium Membership
-                              </a>
-                            </MenuItem>
-                          </>
-                        )}
-                        {loggedInUser?.role === "seeker" && (
-                          <>
-                            {/* Divider */}
-                            <div className="border-t border-gray-200"></div>
-                            <MenuItem>
-                              <a
-                                href="/profile/profile-overview"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
-                              >
-                                My Profile
-                              </a>
-                            </MenuItem>
-                          </>
-                        )}
-                        {/* Divider */}
-                        <div className="border-t border-gray-200"></div>
-                        <MenuItem>
-                          <>
-                            <button
-                              onClick={() => signOut()}
-                              className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-start hover:text-red-800 transition-colors duration-200"
+                        <div className="border-t-2 border-gray-200"></div>
+                        <div className="px-3">
+                          <MenuItem>
+                            <a
+                              href="/dashboard"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                             >
-                              Logout
-                            </button>
-                          </>
-                        </MenuItem>
+                              My Dashboards
+                            </a>
+                          </MenuItem>
+                          {loggedInUser?.role === "recruiter" && (
+                            <>
+                              {/* Divider */}
+                              <div className="border-t border-gray-200"></div>
+                              <MenuItem>
+                                <a
+                                  href="/profile/company-information"
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                                >
+                                  Company Profile
+                                </a>
+                              </MenuItem>
+                            </>
+                          )}
+                          {loggedInUser?.role === "recruiter" && (
+                            <>
+                              {/* Divider */}
+                              <div className="border-t border-gray-200"></div>
+                              <MenuItem>
+                                <a
+                                  href="/profile/premiumMembership"
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                                >
+                                  Premium Membership
+                                </a>
+                              </MenuItem>
+                            </>
+                          )}
+                          {loggedInUser?.role === "seeker" && (
+                            <>
+                              {/* Divider */}
+                              <div className="border-t border-gray-200"></div>
+                              <MenuItem>
+                                <a
+                                  href="/profile/profile-overview"
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                                >
+                                  My Profile
+                                </a>
+                              </MenuItem>
+                            </>
+                          )}
+                          {/* Divider */}
+                          <div className="border-t border-gray-200"></div>
+                          <MenuItem>
+                            <>
+                              <button
+                                onClick={() => signOut()}
+                                className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-start hover:text-red-800 transition-colors duration-200"
+                              >
+                                Logout
+                              </button>
+                            </>
+                          </MenuItem>
+                        </div>
                       </>
                     )}
                   </MenuItems>
@@ -227,11 +227,10 @@ const Navbar = () => {
             <Link
               key={link.path}
               href={link.path}
-              className={`${
-                pathName === link.path
-                  ? "bg-blue-600 text-white font-semibold shadow-lg"
-                  : "text-gray-300 hover:bg-blue-500 hover:text-white"
-              } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
+              className={`${pathName === link.path
+                ? "bg-blue-600 text-white font-semibold shadow-lg"
+                : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
             >
               {link.title}
             </Link>

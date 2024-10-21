@@ -7,6 +7,7 @@ import { FaReact } from 'react-icons/fa';
 import { MdBookmarkRemove, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const JobListTable = () => {
     const [loading, setLoading] = useState(true);
@@ -20,6 +21,7 @@ const JobListTable = () => {
     const [total, setTotal] = useState(1);
     const [reFetch, setReFetch] = useState(true)
     const today = new Date();
+    const email = session?.data?.user?.email;
 
     useEffect(() => {
         const fetchJobs = async () => {
@@ -50,7 +52,7 @@ const JobListTable = () => {
     }, [session?.data?.user?.email, selectedStatus, selectedType, searchQuery, page, limit, reFetch]);
 
 
-    const handleDelete = async (jobId) => {
+    const handleDelete = async (jobId, id, job) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -62,15 +64,20 @@ const JobListTable = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await axios.delete(`/api/deleteSavedJob/${jobId}`); // Correct endpoint for DELETE
-                    Swal.fire({
-                        position: "top",
-                        icon: "success",
-                        title: "Your Job has been Removed",
-                        showConfirmButton: false,
-                        timer: 1500
-                      });
-                    setReFetch(!reFetch)
+                    const removeSaveInfo = job?.saveUsers?.filter(e => e !== email);
+
+                    const { data } = await axios.put(
+                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${id}`,
+                        { saveUsers: removeSaveInfo }
+                    );
+                    if (data?.response?.modifiedCount > 0) {
+                        const { data } = await axios.delete(`/api/deleteSavedJob/${jobId}`); // Correct endpoint for DELETE
+                        if (data.deletedCount > 0) {
+                            // delete save user email
+                            toast.success('Your Job has been Removed')
+                            setReFetch(!reFetch)
+                        }
+                    }
                 } catch (error) {
                     Swal.fire({
                         title: "Error!",
@@ -84,6 +91,8 @@ const JobListTable = () => {
 
 
     };
+
+
     const handleSearch = (e) => {
         setSearchQuery(e.target.value)
         setPage(1); // Reset to first page on new search
@@ -186,7 +195,9 @@ const JobListTable = () => {
                                     <td className="px-6 py-4">{new Date(job.job?.deadline).toLocaleDateString()}</td>
                                     <td className="pl-6 py-4 text-right flex gap-2">
                                         <button
-                                            onClick={() => handleDelete(job?._id)}
+                                            onClick={() => {
+                                                handleDelete(job?._id, job?.job?._id, job?.job)
+                                            }}
                                             className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
                                         >
                                             <MdBookmarkRemove className="text-lg flex items-center justify-center" />
@@ -237,7 +248,7 @@ const JobListTable = () => {
                 </div>
 
             </div>
-        </div>
+        </div >
     );
 };
 

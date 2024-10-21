@@ -19,25 +19,28 @@ const LoginPage = () => {
 
     const handleLogIn = async (data) => {
         const { email, password } = data;
-   
+    
         try {
             const resp = await signIn("credentials", {
                 email,
                 password,
-                redirect: true,
-                callbackUrl: path ? path : "/",
+                redirect: false,  // Disable automatic redirect
             });
-   
-            if (resp?.error) {
-                toast.error("Enter correct email or password");
-            } else {
+    
+            // If login is successful, redirect to the desired page
+            if (resp?.ok) {
                 toast.success('SignIn Successful');
-                router.push("/");
+                router.push(path ? path : "/");  // Redirect to the target path or home
+            } 
+            // If there is an error, display a message
+            else if (resp?.error) {
+                toast.error("Enter correct email or password");
             }
         } catch (err) {
-            toast.error(err?.message);
+            toast.error("Something went wrong. Please try again.");
         }
-    }
+    };
+    
    
     const handleSignInWithGoogle = async () => {
         try {
@@ -51,7 +54,7 @@ const LoginPage = () => {
 
 
     return (
-        <div className='flex justify-center items-center my-10'>
+        <div className='flex justify-center items-center my-10 min-h-[550px]'>
             <div className='flex w-full  mx-auto overflow-hidden bg-white rounded-lg shadow-lg border lg:max-w-4xl '>
                 <div
                     className=' bg-cover bg-center md:block md:w-1/2'
