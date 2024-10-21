@@ -150,8 +150,8 @@ const UpdateJobs = ({ params }) => {
                 <option value="Part-Time">Part-Time</option>
                 <option value="Contract-Based">Contract-Based</option>
               </select>
-              {errors.jobType && (
-                <p className="text-red-500 text-sm">{errors.jobType.message}</p>
+              {errors?.jobType && (
+                <p className="text-red-500 text-sm">{errors?.jobType?.message}</p>
               )}
             </div>
           </div>
@@ -292,7 +292,7 @@ const UpdateJobs = ({ params }) => {
                 />
               )}
             />
-            {errors.skills && (
+            {errors?.skills && (
               <p className="text-red-500 text-sm">{errors?.skills?.message}</p>
             )}
           </div>
