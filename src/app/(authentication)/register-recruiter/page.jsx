@@ -2,7 +2,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
@@ -10,16 +10,29 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useSession } from "next-auth/react";
 // import TermsConditions from "@/components/termsAndConditions/TermsConditions";
-import Terms from "@/app/termsCondition/page";
+// import Terms from "@/app/termsCondition/page";
 // import Terms from "../termsCondition/page";
+import ModalOfTerms from "../../../components/Modal/ModalOfTerms";
+import ModalOfSecurity from "../../../components/Modal/ModalOfSecurity";
 
 const RegisterRecruiter = () => {
   const pathName = usePathname();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenTerms, setIsOpenTerms] = useState(false);
+  const [isOpenSecurity, setIsOpenSecurity] = useState(false);
+  const session = useSession();
+  console.log(session);
+
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      // If user is logged in, redirect to home page
+      router.push("/");
+    }
+  }, [session?.status, router]);
 
   const {
     register,
@@ -103,13 +116,19 @@ const RegisterRecruiter = () => {
   console.log(pathName);
 
   // Function to close the modal
-  const closeModal = () => setIsOpen(false);
+  const closeModalTerms = () => setIsOpenTerms(false);
 
   // Function to open the modal
-  const openModal = () => setIsOpen(true);
+  const openModalTerms = () => setIsOpenTerms(true);
+
+  // Function to close the modal
+  const closeModalSecurity = () => setIsOpenSecurity(false);
+
+  // Function to open the modal
+  const openModalSecurity = () => setIsOpenSecurity(true);
 
   return (
-    <div className="flex justify-center items-center custom-container min-h-[550px]">
+    <div className="flex justify-center items-center custom-container min-h-screen">
       <div className="flex flex-col p-3 rounded-md sm:p-10 bg-white  text-black shadow-lg border my-5 w-full lg:w-[90%]">
         <div className="mb-8 flex justify-center items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap">
           <a
@@ -296,11 +315,18 @@ const RegisterRecruiter = () => {
               read and accept the{" "}
               <span
                 className="font-medium text-blue-600 cursor-pointer"
-                onClick={openModal}
+                onClick={openModalTerms}
               >
                 Terms and Conditions
               </span>{" "}
-              and <span className="font-medium">Privacy Policy</span>.
+              and{" "}
+              <span
+                className="font-medium text-blue-600 cursor-pointer"
+                onClick={openModalSecurity}
+              >
+                Privacy Policy
+              </span>
+              .
             </label>
           </div>
           {errors?.acceptTerms?.message && (
@@ -310,57 +336,16 @@ const RegisterRecruiter = () => {
           )}
 
           {/* Modal for Terms of Service */}
-          <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={closeModal}>
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <div className="fixed inset-0 bg-black bg-opacity-25" />
-              </Transition.Child>
+          <ModalOfTerms
+            isOpenTerms={isOpenTerms}
+            closeModalTerms={closeModalTerms}
+          />
 
-              <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex min-h-[550px] items-center justify-center p-16 text-center">
-                  <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0 scale-95"
-                    enterTo="opacity-100 scale-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100 scale-100"
-                    leaveTo="opacity-0 scale-95"
-                  >
-                    <Dialog.Panel className="w-full lg:w-[75%] transform overflow-hidden rounded-none bg-white p-6 text-left align-middle shadow-xl transition-all">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-lg font-medium leading-6 text-gray-900"
-                      ></Dialog.Title>
-
-                      <div className="mt-2">
-                        <Terms /> 
-                        {/* <TermsConditions /> */}
-                      </div>
-
-                      <div className="mt-4">
-                        <button
-                          type="button"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200"
-                          onClick={closeModal}
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </Dialog.Panel>
-                  </Transition.Child>
-                </div>
-              </div>
-            </Dialog>
-          </Transition>
+          {/* Modal for Terms of Privacy */}
+          <ModalOfSecurity
+            isOpenSecurity={isOpenSecurity}
+            closeModalSecurity={closeModalSecurity}
+          />
 
           {/* Submit button */}
           <div>
