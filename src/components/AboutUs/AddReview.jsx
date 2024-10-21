@@ -48,15 +48,15 @@ const AddReview = ({ rating }) => {
     return (
         <div className='md:mx-4 mx-2'>
             <h1 className="text-3xl font-bold text-center mb-2 underline underline-offset-2">Post a Review</h1>
-            <div className="flex flex-col justify-around md:flex-row md:px-10 md:py-4  shadow-md rounded-lg gap-10">
+            <div className="flex flex-col justify-around md:flex-row md:px-10 md:py-4   rounded-lg gap-10">
 
                 <div className='md:w-1/2 mx-2'>
-                    <div className="flex flex-col items-center justify-center border border-accent shadow-md rounded-xl md:p-4 ">
+                    <div className="flex flex-col items-center justify-center border border-accent  rounded-xl md:p-4 ">
                         <h1 className="text-4xl font-bold my-2">Review Us</h1>
                         <p className="text-lg text-center text-gray-600 mb-4">We had love to hear from you! Please fill out the form below.</p>
                         <form
                             onSubmit={handleSubmit}  // Adding submit handler
-                            className="bg-white shadow-md rounded-lg px-8 pt-2 pb-4 mb-4 max-w-lg w-full"
+                            className="bg-white  rounded-lg px-8 pt-2 pb-4 mb-4 max-w-lg w-full"
                         >
                             <div className="mb-4">
                                 <div className='flex flex-col items-center mx-auto my-2'>
