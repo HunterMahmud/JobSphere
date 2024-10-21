@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "next-auth/react";
+
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -20,7 +20,7 @@ const UpdateJobs = ({ params }) => {
     const loadJob = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params?.id}`
         );
         setJob(response.data.data); // Update state with job details
       } catch (error) {
@@ -62,7 +62,7 @@ const UpdateJobs = ({ params }) => {
         toast.error("Make change to update");
       }
     } catch (error) {
-      console.log("error: ", error);
+      // console.log("error: ", error);
       toast.error("Failed to update job");
     }
     setLoading(false);
