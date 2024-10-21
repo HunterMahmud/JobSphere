@@ -11,8 +11,10 @@ import { TbFidgetSpinner } from 'react-icons/tb';
 import Modal from '@/components/Modal/Modal';
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { gapi } from 'gapi-script';
+import { useSession } from 'next-auth/react';
 
 const ApplyedAJob = ({ params }) => {
+    const session = useSession();
     const [isLoading, setIsLoading] = useState(false)
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -24,7 +26,8 @@ const ApplyedAJob = ({ params }) => {
     const [id, setId] = useState('');
     const [task, setTask] = useState('');
     const [interView, setInterView] = useState(false);
-    const [meetingLink, setMeetingLink] = useState('')
+    const email = session?.data?.user?.email;
+    const [to, setTo] = useState('')
 
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
     const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -282,10 +285,14 @@ const ApplyedAJob = ({ params }) => {
                 if (data.modifiedCount > 0) {
                     setShowModal(!showModal);
                     toast.success('Job interview successfully scheduled!');
-                    fetchJobs(); // Fetch updated jobs list
+                    const { data: hello } = await axios.post('/dashboard/myPostedJobs/api/sendEmail/onlineInterView', { onlineInterView, from: email, to });
+                    console.log(hello)
+                    // fetchJobs(); // Fetch updated jobs list
                 } else {
                     toast.error('No jobs were updated.');
                 }
+
+
 
             } else {
                 throw new Error("Google Meet link was not returned. Please try again.");
@@ -371,6 +378,7 @@ const ApplyedAJob = ({ params }) => {
                                                     } else {
                                                         setShowModal(!showModal)
                                                         setId(job?._id)
+                                                        setTo(job?.applicantInfo?.contactInformation?.email)
                                                         setInterView(true)
                                                     }
                                                 }}
