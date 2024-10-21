@@ -3,6 +3,7 @@ import StarRating from './StarRating';
 import Link from 'next/link';
 import Image from 'next/image';
 
+
 const AddReview = ({ rating }) => {
 
     const [formData, setFormData] = useState({
@@ -145,11 +146,7 @@ const AddReview = ({ rating }) => {
                             className="mb-4 shadow-lg rounded-lg"
                         />
                     </div>
-                    <div className="flex mx-auto justify-center mt-4">
-                        <button className="bg-primary btn hover:bg-secondary text-white font-semibold py-3 my-4 px-8 rounded-lg w-auto justify-center">
-                            <Link href={`/usersReview`}>View All Reviews</Link>
-                        </button>
-                    </div>
+                    
                 </div>
             </div>
         </div>

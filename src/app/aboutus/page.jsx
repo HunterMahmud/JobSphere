@@ -9,7 +9,7 @@ import OurMission from '@/components/AboutUs/OurMission';
 
 const AboutUsPage = () => {
     return (
-        <div className="">
+        <div className="custom-container">
                 <h1 className='text-4xl my-6 underline font-bold text-center text-gray-800'>About Us</h1>
             <OurMission/>
 
