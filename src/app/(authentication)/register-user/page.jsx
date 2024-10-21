@@ -8,12 +8,13 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
 import { useSession } from "next-auth/react";
 // import TermsConditions from "@/components/termsAndConditions/TermsConditions";
-import Terms from "@/app/termsCondition/page";
+// import Terms from "@/app/termsCondition/page";
 // import Terms from "../termsCondition/page";
+// import TermsConditions from "@/components/Modal/ModalOfTerms";
+// import ModalOfTerms from '../../components/Modal/ModalOfTerms';
+import ModalOfTerms from '../../../components/Modal/ModalOfTerms';
 
 
 const RegisterUser = () => {
@@ -21,7 +22,7 @@ const RegisterUser = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter(); // Next.js router from 'next/navigation'
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenTerms, setIsOpenTerms] = useState(false);
   const session = useSession();
   console.log(session)
 
@@ -123,10 +124,10 @@ const RegisterUser = () => {
   };
 
   // Function to close the modal
-  const closeModal = () => setIsOpen(false);
+  const closeModalTerms = () => setIsOpenTerms(false);
 
   // Function to open the modal
-  const openModal = () => setIsOpen(true);
+  const openModalTerms = () => setIsOpenTerms(true);
 
   return (
     <div className="flex justify-center items-center custom-container min-h-[550px]">
@@ -349,7 +350,7 @@ const RegisterUser = () => {
                 read and accept the{" "}
                 <span
                   className="font-medium text-blue-600 cursor-pointer"
-                  onClick={openModal}
+                  onClick={openModalTerms}
                 >
                   Terms and Conditions
                 </span>{" "}
@@ -365,57 +366,8 @@ const RegisterUser = () => {
             )}
 
             {/* Modal for Terms of Service */}
-            <Transition appear show={isOpen} as={Fragment}>
-              <Dialog as="div" className="relative z-10" onClose={closeModal}>
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-                  <div className="fixed inset-0 bg-black bg-opacity-25" />
-                </Transition.Child>
-
-                <div className="fixed inset-0 overflow-y-auto">
-                  <div className="flex min-h-[550px] items-center justify-center p-16 text-center">
-                    <Transition.Child
-                      as={Fragment}
-                      enter="ease-out duration-300"
-                      enterFrom="opacity-0 scale-95"
-                      enterTo="opacity-100 scale-100"
-                      leave="ease-in duration-200"
-                      leaveFrom="opacity-100 scale-100"
-                      leaveTo="opacity-0 scale-95"
-                    >
-                      <Dialog.Panel className="w-full lg:w-[75%] transform overflow-hidden rounded-none bg-white p-6 text-left align-middle shadow-xl transition-all">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-lg font-medium leading-6 text-gray-900"
-                        ></Dialog.Title>
-
-                        <div className="mt-2">
-                          <Terms /> 
-                          {/* <TermsConditions/> */}
-                        </div>
-
-                        <div className="mt-4">
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200"
-                            onClick={closeModal}
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </Dialog.Panel>
-                    </Transition.Child>
-                  </div>
-                </div>
-              </Dialog>
-            </Transition>
+            <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
+            
           </div>
 
           <div>
