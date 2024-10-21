@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 // import TermsConditions from "@/components/Modal/ModalOfTerms";
 // import ModalOfTerms from '../../components/Modal/ModalOfTerms';
 import ModalOfTerms from '../../../components/Modal/ModalOfTerms';
+import ModalOfSecurity from '../../../components/Modal/ModalOfSecurity';
 
 
 const RegisterUser = () => {
@@ -23,6 +24,7 @@ const RegisterUser = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter(); // Next.js router from 'next/navigation'
   const [isOpenTerms, setIsOpenTerms] = useState(false);
+  const [isOpenSecurity, setIsOpenSecurity] = useState(false);
   const session = useSession();
   console.log(session)
 
@@ -128,6 +130,12 @@ const RegisterUser = () => {
 
   // Function to open the modal
   const openModalTerms = () => setIsOpenTerms(true);
+
+  // Function to close the modal
+  const closeModalSecurity = () => setIsOpenSecurity(false);
+
+  // Function to open the modal
+  const openModalSecurity = () => setIsOpenSecurity(true);
 
   return (
     <div className="flex justify-center items-center custom-container min-h-[550px]">
@@ -354,7 +362,7 @@ const RegisterUser = () => {
                 >
                   Terms and Conditions
                 </span>{" "}
-                and <span className="font-medium">Privacy Policy</span>.
+                and <span className="font-medium text-blue-600 cursor-pointer" onClick={openModalSecurity}>Privacy Policy</span>.
               </label>
             </div>
 
@@ -367,6 +375,9 @@ const RegisterUser = () => {
 
             {/* Modal for Terms of Service */}
             <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
+
+            {/* Modal for Terms of Service */}
+            <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
             
           </div>
 
