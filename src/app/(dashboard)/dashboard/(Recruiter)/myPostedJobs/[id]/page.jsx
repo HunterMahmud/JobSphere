@@ -13,6 +13,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { gapi } from 'gapi-script';
 import { useSession } from 'next-auth/react';
 import { GrCheckboxSelected } from 'react-icons/gr';
+import { Tooltip } from 'react-tooltip';
 
 const ApplyedAJob = ({ params }) => {
     const session = useSession();
@@ -397,6 +398,7 @@ const ApplyedAJob = ({ params }) => {
 
                                         <td className="pl-6 py-4 text-right flex gap-2">
                                             <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Task"
                                                 onClick={() => {
                                                     if (job?.jobStatus === 'Interview') {
                                                         return toast.error('Already selected for interview')
@@ -412,6 +414,7 @@ const ApplyedAJob = ({ params }) => {
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
                                             </button>
                                             <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="InterView"
                                                 onClick={() => {
                                                     if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
@@ -431,6 +434,7 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
 
                                             <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Select Aoolicant"
                                                 onClick={() => handleSelected(job?._id)}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-primary text-white py-2 px-3 rounded-md`}
                                             >
@@ -438,6 +442,7 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
 
                                             <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Rejected"
                                                 disabled={job?.jobStatus === 'Rejected'}
                                                 onClick={() => {
                                                     if (job?.jobStatus === 'Selected') {
@@ -756,6 +761,7 @@ const ApplyedAJob = ({ params }) => {
                     </div>
                 </div>
             </div>
+            <Tooltip id="my-tooltip" />
         </Fragment>
     );
 };
