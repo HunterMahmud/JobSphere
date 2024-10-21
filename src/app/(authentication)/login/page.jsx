@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
@@ -15,6 +15,13 @@ const LoginPage = () => {
     const session = useSession();
     const searchParams = useSearchParams();
     const path = searchParams.get("redirect");
+  
+    useEffect(() => {
+      if (session?.status==="authenticated") {
+        // If user is logged in, redirect to home page
+        router.push('/');
+      }
+    }, [session?.status, router]);
 
 
     const handleLogIn = async (data) => {

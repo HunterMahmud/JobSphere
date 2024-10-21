@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
@@ -10,6 +10,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useSession } from "next-auth/react";
 // import TermsConditions from "@/components/termsAndConditions/TermsConditions";
 import Terms from "@/app/termsCondition/page";
 // import Terms from "../termsCondition/page";
@@ -21,6 +22,15 @@ const RegisterUser = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter(); // Next.js router from 'next/navigation'
   const [isOpen, setIsOpen] = useState(false);
+  const session = useSession();
+  console.log(session)
+
+  useEffect(() => {
+    if (session?.status==="authenticated") {
+      // If user is logged in, redirect to home page
+      router.push('/');
+    }
+  }, [session?.status, router]);
 
   const {
     register,
