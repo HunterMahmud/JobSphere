@@ -38,7 +38,7 @@ if (jobStatus === "Live") {
       ]
     };
   }
-    console.log(query)
+
     let options = {};
     if (sort) {
         options = {

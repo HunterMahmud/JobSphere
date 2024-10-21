@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { AiFillEdit, AiFillDelete, AiFillEye } from "react-icons/ai"; // Import icons
 import Link from "next/link";
 import Swal from "sweetalert2";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 
 const PostedJobs = () => {
   const [jobs, setJobs] = useState([]); // Initialize jobs as an empty array
@@ -16,14 +17,14 @@ const PostedJobs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { data: session } = useSession(); // Access session object
-  const [search, setSearch] = useState('');
-  const [jobStatus, setJobStatus] = useState('');
-  const [jobType, setJobType] = useState('');
+  const [search, setSearch] = useState("");
+  const [jobStatus, setJobStatus] = useState("");
+  const [jobType, setJobType] = useState("");
 
   const fetchJobs = async () => {
     try {
       if (session?.user?.email) {
-        const {data} = await axios.get(
+        const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/${session?.user?.email}`,
           {
             params: {
@@ -32,20 +33,19 @@ const PostedJobs = () => {
               jobTitle: search,
               jobStatus,
               page,
-              limit
-            }
-          });
+              limit,
+            },
+          }
+        );
 
         // Ensure the response is an array
         // console.log(response?.data?.myJobs);
-        const jobsData = Array.isArray(data?.myJobs)
-          ? data?.myJobs
-          : [];
+        const jobsData = Array.isArray(data?.myJobs) ? data?.myJobs : [];
         setJobs(jobsData); // Set jobs state with the correct array
-        // setTotal(data?.total);
+        setTotal(data?.total);
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       setError("Error fetching jobs");
     } finally {
       setLoading(false);
@@ -55,12 +55,9 @@ const PostedJobs = () => {
   // Call fetchJobs on component mount and when email changes
   useEffect(() => {
     // Function to fetch jobs
-
     fetchJobs();
-  }, [session?.user?.email, search, sort, jobType, jobStatus,  page, limit]);
+  }, [session?.user?.email, search, sort, jobType, jobStatus, page, limit]);
 
-
-  /// todo: live niye kaj korte hobe and console log tule dite hobe
   const handleDelete = async (jobId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -100,7 +97,7 @@ const PostedJobs = () => {
     });
   };
 
-  console.log(jobs);
+  // console.log(jobs);
 
   if (loading) return <Loader />;
   if (error) return <div>{error}</div>;
@@ -164,12 +161,11 @@ const PostedJobs = () => {
         <div className="overflow-x-auto border rounded-lg shadow-md">
           {loading ? (
             <Loader />
-          ) : 
-            jobs?.length === 0 ? (
-              <div className="text-center text-gray-500">
-                You haven&apos;t posted any jobs yet.
-              </div>
-            ):(
+          ) : jobs?.length === 0 ? (
+            <div className="text-center text-gray-500">
+              You haven&apos;t posted any jobs yet.
+            </div>
+          ) : (
             <table className="min-w-full bg-white">
               {/* Table Header  */}
               <thead className="bg-gray-50 border-b">
@@ -211,10 +207,10 @@ const PostedJobs = () => {
                       <Link href={`/jobs/${job?._id}`}>{job?.jobTitle}</Link>
                     </td>
                     <td className="px-6 py-4">
-                    <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
-                                            {job?.jobType}
-                                        </span>
-                      </td>
+                      <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
+                        {job?.jobType}
+                      </span>
+                    </td>
                     <td className="px-6 py-4 text-center">
                       {new Date(job?.deadline).toLocaleDateString()}
                     </td>
@@ -239,8 +235,7 @@ const PostedJobs = () => {
                       >
                         {job?.applicantsNumber}
                       </Link>
-
-                      </td>
+                    </td>
                     <td className="pl-6 py-4 gap-2 px-6 text-center flex justify-center">
                       <Link
                         href={`/dashboard/myPostedJobs/api/update/${job?._id}`}
@@ -259,8 +254,7 @@ const PostedJobs = () => {
                 ))}
               </tbody>
             </table>
-            )
-          }
+          )}
 
           {/* Pagination  */}
           <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
@@ -285,37 +279,52 @@ const PostedJobs = () => {
               <button
                 disabled={page === 1}
                 onClick={() => setPage(page - 1)}
-                className={`text-gray-700 ${
-                  page === 1 && "cursor-not-allowed"
+                className={`${
+                  page === 1 ? "cursor-not-allowed text-gray-400": "text-gray-700"
                 }`}
               >
-                Previous
+                <span className="sr-only">Prev Page</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
               </button>
               <div className="space-x-2 flex">
-                {Array.from(
-                  { length: Math.ceil(total / limit) },
-                  (_, index) => (
-                    <button
-                      key={index + 1}
-                      onClick={() => setPage(index + 1)}
-                      className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-hover bg-primary hover:bg-hover rounded-lg ${
-                        page === index + 1 ? "bg-primary text-white" : ""
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  )
-                )}
+                <p className="text-base text-gray-900">
+                  {page}
+                  <span className="mx-0.25">/</span>
+                  {Math.ceil(total / limit)}
+                </p>
               </div>
 
               <button
                 disabled={page === Math.ceil(total / limit)}
                 onClick={() => setPage(page + 1)}
-                className={`text-gray-700 ${
-                  page === Math.ceil(total / limit) && "cursor-not-allowed"
+                className={`${
+                  page === Math.ceil(total / limit) ? "cursor-not-allowed text-gray-400": "text-gray-700 "
                 }`}
               >
-                Next
+                <span className="sr-only">Next Page</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
               </button>
             </div>
           </div>
@@ -329,84 +338,20 @@ export default PostedJobs;
 
 /*
 
- <div className="max-w-5xl mx-auto py-10 overflow-x-auto">
-      <h1 className="text-3xl font-semibold mb-6">My Posted Jobs</h1>
-      {jobs.length === 0 ? (
-        <div className="text-center text-gray-500">
-          You haven&apos;t posted any jobs yet.
-        </div>
-      ) : (
-        <table className="min-w-full bg-white shadow-lg rounded-lg">
-          <thead>
-            <tr className="bg-gray-100 border-b">
-              <th className="py-3 px-6 text-left text-gray-600 font-bold">
-                Job Title
-              </th>
-              <th className="py-3 px-6 text-left text-gray-600 font-bold">
-                Company
-              </th>
-              <th className="py-3 px-6 text-left text-gray-600 font-bold">
-                Type
-              </th>
-              <th className="py-3 px-6 text-left text-gray-600 font-bold">
-                Total Applicants
-              </th>
 
-              <th className="py-3 px-6 text-center text-gray-600 font-bold">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(jobs) &&
-              jobs.map((job) => (
-                <tr key={job?._id} className="hover:bg-gray-50 border-b">
-                  <td className="py-3 px-6">{job?.jobTitle}</td>
-                  <td className="py-3 px-6">
-                    {job?.compnayInforamtion?.companyInfo?.companyName}
-                  </td>
-                  <td className="py-3 px-6">{job?.jobType}</td>
-                  <td className="py-3 px-6 text-center">
-                    <Link
-                    href={`/dashboard/myPostedJobs/${job?._id}`}
-                    className="bg-primary text-white px-5 py-1 rounded-lg"
-                    >
-                      {job?.applicantsNumber}
-                    </Link>
-                  </td>
-                  <td className="py-3 px-6 text-center flex justify-center gap-2">
-                    <Link
-                      href={`/dashboard/myPostedJobs/api/update/${job?._id}`}
-                      className="flex items-center justify-center gap-1 bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition"
-                    >
-                      <AiFillEdit className="text-lg flex items-center justify-center" />
-                    </Link>
+{Array.from(
+                  { length: Math.ceil(total / limit) },
+                  (_, index) => (
                     <button
-                      className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
-                      onClick={() => handleDelete(job?._id)}
+                      key={index + 1}
+                      onClick={() => setPage(index + 1)}
+                      className={`btn px-3 py-2 border-2 text-xs  font-semibold  bg-primary hover:bg-hover rounded-lg ${
+                        page === index + 1 ? "bg-primary text-white" : ""
+                      }`}
                     >
-                      <AiFillDelete className="text-lg flex items-center justify-center" />
+                      {index + 1}
                     </button>
-                    <button
-                      className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
-                      onClick={() =>
-                        (window.location.href = `/jobs/${job?._id}`)
-                      }
-                    >
-                      <AiFillEye className="text-lg flex items-center justify-center" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-
-*/
-
-/*
-
-
+                  )
+                )}
 
 */
