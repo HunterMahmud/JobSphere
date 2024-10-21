@@ -147,6 +147,7 @@ const ApplyedJobs = () => {
               className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
             >
               <option value="">Filter by Job Status</option>
+              <option value="Selected">Selected</option>
               <option value="Pending">Pending</option>
               <option value="Task">Task</option>
               <option value="Interview">Interview</option>

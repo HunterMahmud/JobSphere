@@ -11,8 +11,12 @@ import { TbFidgetSpinner } from 'react-icons/tb';
 import Modal from '@/components/Modal/Modal';
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { gapi } from 'gapi-script';
+import { useSession } from 'next-auth/react';
+import { GrCheckboxSelected } from 'react-icons/gr';
+import { Tooltip } from 'react-tooltip';
 
 const ApplyedAJob = ({ params }) => {
+    const session = useSession();
     const [isLoading, setIsLoading] = useState(false)
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -24,7 +28,8 @@ const ApplyedAJob = ({ params }) => {
     const [id, setId] = useState('');
     const [task, setTask] = useState('');
     const [interView, setInterView] = useState(false);
-    const [meetingLink, setMeetingLink] = useState('')
+    const email = session?.data?.user?.email;
+    const [to, setTo] = useState('')
 
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
     const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -162,6 +167,7 @@ const ApplyedAJob = ({ params }) => {
             });
         }
     }
+
     // for Offline interview
     const handleOfflineInterView = async (e) => {
         e.preventDefault();
@@ -188,7 +194,6 @@ const ApplyedAJob = ({ params }) => {
             documents
         }
 
-        console.log(offlineInterView);
         if (!id) {
             return toast.error('Something os Wrong')
         }
@@ -199,11 +204,14 @@ const ApplyedAJob = ({ params }) => {
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
 
             if (data.modifiedCount > 0) {
-                setShowModal(!showModal)
-                toast.success('Successful')
-                setIsLoading(false)
-                // Re-fetch the jobs after deletion
-                fetchJobs();
+                await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
+                setTimeout(() => {
+                    setShowModal(!showModal);
+                    toast.success('Job interview successfully scheduled!');
+                    setIsLoading(false);
+                    // Re-fetch the jobs after scheduling
+                    fetchJobs();
+                }, 1500);
             }
             setIsLoading(false)
         } catch (error) {
@@ -218,6 +226,7 @@ const ApplyedAJob = ({ params }) => {
             });
         }
     }
+
     // for online interview
     const handleOnlineInterview = async (e) => {
         e.preventDefault();
@@ -280,13 +289,17 @@ const ApplyedAJob = ({ params }) => {
                 );
 
                 if (data.modifiedCount > 0) {
-                    setShowModal(!showModal);
-                    toast.success('Job interview successfully scheduled!');
-                    fetchJobs(); // Fetch updated jobs list
+                    await axios.post('/dashboard/myPostedJobs/api/sendEmail/onlineInterView', { onlineInterView, from: email, to });
+
+                    setTimeout(() => {
+                        setShowModal(!showModal);
+                        toast.success('Job interview successfully scheduled!');
+                        // Re-fetch the jobs after scheduling
+                        fetchJobs();
+                    }, 1500);
                 } else {
                     toast.error('No jobs were updated.');
                 }
-
             } else {
                 throw new Error("Google Meet link was not returned. Please try again.");
             }
@@ -298,7 +311,40 @@ const ApplyedAJob = ({ params }) => {
         }
     };
 
+    // handleSelected
 
+    const handleSelected = async (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to select this applicant?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, it!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const { data } = await axios.put(
+                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected" });
+
+                    if (data.modifiedCount > 0) {
+                        toast.success('Successful')
+                        // Re-fetch the jobs after deletion
+                        fetchJobs();
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.log(error.message);
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Failed to delete the job.",
+                        icon: "error",
+                    });
+                }
+            }
+        });
+    };
 
 
     return (
@@ -352,9 +398,12 @@ const ApplyedAJob = ({ params }) => {
 
                                         <td className="pl-6 py-4 text-right flex gap-2">
                                             <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Task"
                                                 onClick={() => {
                                                     if (job?.jobStatus === 'Interview') {
-                                                        return toast.error('Allready selected for interview')
+                                                        return toast.error('Already selected for interview')
+                                                    } if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
                                                     } else {
                                                         handleTask(job?._id)
                                                         setTask(job?.task)
@@ -365,12 +414,17 @@ const ApplyedAJob = ({ params }) => {
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
                                             </button>
                                             <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="InterView"
                                                 onClick={() => {
-                                                    if (job?.offlineInterView || job?.onlineInterview) {
+                                                    if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
+                                                    }
+                                                    else if (job?.offlineInterView || job?.onlineInterView) {
                                                         return toast.error('Already Added')
                                                     } else {
                                                         setShowModal(!showModal)
                                                         setId(job?._id)
+                                                        setTo(job?.applicantInfo?.contactInformation?.email)
                                                         setInterView(true)
                                                     }
                                                 }}
@@ -378,9 +432,24 @@ const ApplyedAJob = ({ params }) => {
                                             >
                                                 <MdInterpreterMode className="text-lg flex items-center justify-center" />
                                             </button>
+
                                             <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Select Aoolicant"
+                                                onClick={() => handleSelected(job?._id)}
+                                                className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-primary text-white py-2 px-3 rounded-md`}
+                                            >
+                                                <GrCheckboxSelected className="text-lg flex items-center justify-center" />
+                                            </button>
+
+                                            <button
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Rejected"
                                                 disabled={job?.jobStatus === 'Rejected'}
-                                                onClick={() => handleRemove(job?._id)}
+                                                onClick={() => {
+                                                    if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
+                                                    }
+                                                    handleRemove(job?._id)
+                                                }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
                                             >
                                                 <MdOutlineCancel className="text-lg flex items-center justify-center" />
@@ -692,6 +761,7 @@ const ApplyedAJob = ({ params }) => {
                     </div>
                 </div>
             </div>
+            <Tooltip id="my-tooltip" />
         </Fragment>
     );
 };
