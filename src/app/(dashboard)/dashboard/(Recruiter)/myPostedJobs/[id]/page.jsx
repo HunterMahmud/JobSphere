@@ -202,12 +202,14 @@ const ApplyedAJob = ({ params }) => {
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
 
             if (data.modifiedCount > 0) {
-                setShowModal(!showModal)
-                toast.success('Successful')
                 await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
-                setIsLoading(false)
-                // Re-fetch the jobs after deletion
-                fetchJobs();
+                setTimeout(() => {
+                    setShowModal(!showModal);
+                    toast.success('Job interview successfully scheduled!');
+                    setIsLoading(false);
+                    // Re-fetch the jobs after scheduling
+                    fetchJobs();
+                }, 1500);
             }
             setIsLoading(false)
         } catch (error) {
@@ -285,10 +287,14 @@ const ApplyedAJob = ({ params }) => {
                 );
 
                 if (data.modifiedCount > 0) {
-                    setShowModal(!showModal);
-                    toast.success('Job interview successfully scheduled!');
                     await axios.post('/dashboard/myPostedJobs/api/sendEmail/onlineInterView', { onlineInterView, from: email, to });
-                    fetchJobs(); // Fetch updated jobs list
+
+                    setTimeout(() => {
+                        setShowModal(!showModal);
+                        toast.success('Job interview successfully scheduled!');
+                        // Re-fetch the jobs after scheduling
+                        fetchJobs();
+                    }, 1500);
                 } else {
                     toast.error('No jobs were updated.');
                 }
@@ -368,7 +374,7 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    if (job?.offlineInterView || job?.onlineInterview) {
+                                                    if (job?.offlineInterView || job?.onlineInterView) {
                                                         return toast.error('Already Added')
                                                     } else {
                                                         setShowModal(!showModal)
