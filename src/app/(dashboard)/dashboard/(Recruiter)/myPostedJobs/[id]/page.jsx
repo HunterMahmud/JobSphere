@@ -165,6 +165,7 @@ const ApplyedAJob = ({ params }) => {
             });
         }
     }
+
     // for Offline interview
     const handleOfflineInterView = async (e) => {
         e.preventDefault();
@@ -191,7 +192,6 @@ const ApplyedAJob = ({ params }) => {
             documents
         }
 
-        console.log(offlineInterView);
         if (!id) {
             return toast.error('Something os Wrong')
         }
@@ -203,9 +203,8 @@ const ApplyedAJob = ({ params }) => {
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
-                const { data } = await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
-                console.log(data)
                 toast.success('Successful')
+                await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
                 setIsLoading(false)
                 // Re-fetch the jobs after deletion
                 fetchJobs();
@@ -223,6 +222,7 @@ const ApplyedAJob = ({ params }) => {
             });
         }
     }
+
     // for online interview
     const handleOnlineInterview = async (e) => {
         e.preventDefault();
@@ -287,15 +287,11 @@ const ApplyedAJob = ({ params }) => {
                 if (data.modifiedCount > 0) {
                     setShowModal(!showModal);
                     toast.success('Job interview successfully scheduled!');
-                    const { data: hello } = await axios.post('/dashboard/myPostedJobs/api/sendEmail/onlineInterView', { onlineInterView, from: email, to });
-                    console.log(hello)
-                    // fetchJobs(); // Fetch updated jobs list
+                    await axios.post('/dashboard/myPostedJobs/api/sendEmail/onlineInterView', { onlineInterView, from: email, to });
+                    fetchJobs(); // Fetch updated jobs list
                 } else {
                     toast.error('No jobs were updated.');
                 }
-
-
-
             } else {
                 throw new Error("Google Meet link was not returned. Please try again.");
             }
@@ -306,9 +302,6 @@ const ApplyedAJob = ({ params }) => {
             setIsLoading(false); // Reset loading state
         }
     };
-
-
-
 
     return (
         <Fragment>

@@ -1,13 +1,16 @@
 import nodemailer from 'nodemailer';
 
+const EMAIL_USER = process.env.NEXT_PUBLIC_EMAIL_USER;
+const EMAIL_PASS = process.env.NEXT_PUBLIC_EMAIL_PASS;
+
 export const POST = async (request) => {
     const { onlineInterView, from, to } = await request.json();
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'rafizulislam896@gmail.com', // Gmail address
-            pass: 'atdh eapt phxk dipj', // Gmail App Password (not regular Gmail password)
+            user: EMAIL_USER, // Gmail address
+            pass: EMAIL_PASS, // Gmail App Password (not regular Gmail password)
         },
     });
 
