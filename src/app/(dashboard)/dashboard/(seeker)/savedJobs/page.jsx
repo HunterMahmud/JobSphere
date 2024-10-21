@@ -156,7 +156,7 @@ const JobListTable = () => {
                                 <th className="px-6 py-4 text-left font-medium text-gray-700">Job Type</th>
                                 <th className="px-6 py-4 text-left font-medium text-gray-700">Vacancy</th>
                                 <th className="px-6 py-4 text-left font-medium text-gray-700">Job Deadline</th>
-                                <th className="px-6 py-4 text-right font-medium text-gray-700">Actions</th>
+                                <th className="px-6 py-4 font-medium text-gray-700">Actions</th>
                             </tr>
                         </thead>
 
@@ -165,9 +165,10 @@ const JobListTable = () => {
                             {jobData?.map((job, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                                     <td className="px-6 py-4">{index + 1}</td>
-                                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2">
-                                        <FaReact className="text-blue-500" />
-                                        {job.job?.jobTitle}
+                                    <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2 hover:underline">
+                                        <Link href={`/jobs/${job?.job?._id}`}>
+                                            {job.job?.jobTitle}
+                                        </Link>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span
@@ -193,7 +194,7 @@ const JobListTable = () => {
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">{new Date(job.job?.deadline).toLocaleDateString()}</td>
-                                    <td className="pl-6 py-4 text-right flex gap-2">
+                                    <td className="pl-6 py-4 text-center">
                                         <button
                                             onClick={() => {
                                                 handleDelete(job?._id, job?.job?._id, job?.job)
@@ -202,13 +203,6 @@ const JobListTable = () => {
                                         >
                                             <MdBookmarkRemove className="text-lg flex items-center justify-center" />
                                         </button>
-                                        <Link href={`/jobs/${job?.job?._id}`}>
-                                            <button
-                                                className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
-                                            >
-                                                <MdOutlineRemoveRedEye className="text-lg flex items-center justify-center" />
-                                            </button>
-                                        </Link>
                                     </td>
                                 </tr>
                             ))}
