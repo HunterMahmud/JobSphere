@@ -1,19 +1,21 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import {
-    GoogleGenerativeAI,
+    
     HarmCategory,
     HarmBlockThreshold,
+    GoogleGenerativeAI,
 } from '@google/generative-ai';
+ const genAI = new GoogleGenerativeAI();
 const page = () => {
-    const [messages, setMessages] = useState();
+    const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState("");
     const [chat, setChat] = useState(null);
     const [theme, setTheme] = useState("light");
-    const [error, setError] = useState(null);
+    const [err, setError] = useState(null);
 
     const apiKey = process.env.GEMINI_API_KEY;
-    const genAI = new GoogleGenerativeAI(apiKey);
+   
 
     const model = genAI.getGenerativeModel({
         model: "gemini-1.5-pro-002",
@@ -96,7 +98,8 @@ const page = () => {
             setError(error.message || "An error occurred while sending the message.");
         }
     };
-
+ console.log(messages ,err);
+ 
     return (
         <div className={`flex flex-col h-screen p-4 custom-container bg-accent`}>
             <div className="flex justify-between items-center mb-4">
@@ -121,22 +124,22 @@ const page = () => {
                 {messages?.map((msg, index) => (
                     <div
                         key={index}
-                        className={`mb-4 ${msg.role === "user" ? "text-right" : "text-left"}`}
+                        className={`mb-4 ${msg?.role === "user" ? "text-right" : "text-left"}`}
                     >
                         <span
-                            className={`p-2 rounded-lg ${msg.role === "user" ? ` text-white` : ` text-gray-950`
+                            className={`p-2 rounded-lg ${msg?.role === "user" ? ` text-white` : ` text-gray-950`
                                 }`}
                         >
-                            {msg.text}
+                            {msg?.text}
                         </span>
                         <p className={`text-xs text-gray-950 mt-1`}>
-                            {msg.role === "bot" ? "Bot" : "You"} {" "}
-                            {msg.timestamp.toLocaleTimeString()}
+                            {msg?.role === "bot" ? "Bot" : "You"} {" "}
+                            {msg?.timestamp?.toLocaleTimeString()}
                         </p>
                     </div>
                 ))}
             </div>
-            {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+            {err && <div className="text-red-500 text-sm mb-4">{"sime thing wrong"}</div>}
             <div className="flex items-center mt-5">
                 <input
                     type="text"
