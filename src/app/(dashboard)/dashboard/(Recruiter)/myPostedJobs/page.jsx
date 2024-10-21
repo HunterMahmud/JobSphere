@@ -59,6 +59,8 @@ const PostedJobs = () => {
     fetchJobs();
   }, [session?.user?.email, search, sort, jobType, jobStatus,  page, limit]);
 
+
+  /// todo: live niye kaj korte hobe and console log tule dite hobe
   const handleDelete = async (jobId) => {
     Swal.fire({
       title: "Are you sure?",

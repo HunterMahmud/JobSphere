@@ -11,6 +11,7 @@ export const GET = async (request, {params}) => {
     const page = parseInt(url.searchParams.get("page")) || 1;
     const limit = parseInt(url.searchParams.get("limit")) || 10;
     const skip = (page - 1) * limit;
+    const today = new Date();
 
     let query = {email : params?.email}
 
@@ -21,10 +22,23 @@ export const GET = async (request, {params}) => {
     if (jobType) {
         query.jobType = jobType
     }
-    // if (jobStatus) {
-    //     query.jobStatus = jobStatus
-    // }
-
+    // Convert string-based deadline field to a Date object for comparison
+if (jobStatus === "Live") {
+    query.$expr = {
+      $gt: [
+        { $dateFromString: { dateString: "$deadline" } }, // Convert deadline from string to Date
+        new Date() // Compare with today's date
+      ]
+    };
+  } else if (jobStatus === "Closed") {
+    query.$expr = {
+      $lte: [
+        { $dateFromString: { dateString: "$deadline" } }, // Convert deadline from string to Date
+        new Date() // Compare with today's date
+      ]
+    };
+  }
+    console.log(query)
     let options = {};
     if (sort) {
         options = {
