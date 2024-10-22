@@ -434,7 +434,7 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
 
                                             <button
-                                                data-tooltip-id="my-tooltip" data-tooltip-content="Select Aoolicant"
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Select Applicant"
                                                 onClick={() => handleSelected(job?._id)}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-primary text-white py-2 px-3 rounded-md`}
                                             >
