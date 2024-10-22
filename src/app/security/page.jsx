@@ -1,6 +1,6 @@
 import React from 'react';
 
-const security = () => {
+const Security  = () => {
     return (
         <div className='mx-2 md:my-6 my-8 space-y-3 md:w-[80%] md:mx-auto'>
             <div className='mb-6'>
@@ -84,4 +84,4 @@ Use secure cloud storage for resumes and other files uploaded by users. Ensure t
     );
 };
 
-export default security;
+export default Security ;
