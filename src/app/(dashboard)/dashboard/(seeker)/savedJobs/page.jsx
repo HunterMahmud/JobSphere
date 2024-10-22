@@ -137,7 +137,6 @@ const JobListTable = () => {
                             onChange={(e) => handleSearch(e)}
                             className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
                         />
-                        <button onClick={handleSearch} className="px-4 py-2 bg-blue-600 text-white rounded-md">Search</button>
                     </div>
                 </div>
             </div>
