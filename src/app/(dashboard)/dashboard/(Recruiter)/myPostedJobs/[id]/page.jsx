@@ -320,10 +320,11 @@ const ApplyedAJob = ({ params }) => {
         const form = e.target;
         const responseDate = form.responseDate.value;
         const offerLetterLink = form.offerLetterLink.value;
+        const offerLetter = `Congratulations! You have been selected for the position ${jobTitle}.Kindly confirm your acceptance by ${responseDate}.Please review the offer letter and other details using the link below. Offer Letter:`
 
         try {
             setIsLoading(true)
-            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected" });
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected", offerLetter,offerLetterLink });
             if (data.modifiedCount > 0) {
                 await axios.post('/dashboard/myPostedJobs/api/sendEmail/jobOffer', { jobTitle, responseDate, offerLetterLink, from: email, to });
 
@@ -436,11 +437,15 @@ const ApplyedAJob = ({ params }) => {
                                             <button
                                                 data-tooltip-id="my-tooltip" data-tooltip-content="Select Applicant"
                                                 onClick={() => {
-                                                    setShowModal(!showModal)
-                                                    setId(job?._id)
-                                                    setJobTitle(job?.jobTitle)
-                                                    setTo(job?.applicantInfo?.contactInformation?.email)
-                                                    setJobOffer(true)
+                                                    if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
+                                                    } else {
+                                                        setShowModal(!showModal)
+                                                        setId(job?._id)
+                                                        setJobTitle(job?.jobTitle)
+                                                        setTo(job?.applicantInfo?.contactInformation?.email)
+                                                        setJobOffer(true)
+                                                    }
                                                 }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-primary text-white py-2 px-3 rounded-md`}
                                             >
