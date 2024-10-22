@@ -21,7 +21,13 @@ const JobPage = () => {
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}&page=${page}&limit=9`
         );
-        setJobs(data.jobs);
+        // Filter out jobs with a passed deadline
+        const filteredJobs = data.jobs.filter((job) => {
+          const deadlineDate = new Date(job.deadline);
+          return deadlineDate >= new Date(); // Keep jobs where deadline is today or in the future
+        });
+
+        setJobs(filteredJobs);
         setTotalPages(data.totalPages); // Set total pages from response
         setLoading(false);
       } catch (error) {
@@ -47,6 +53,8 @@ const JobPage = () => {
     setCurrentPage(1)
     setSearch(e.target.value)
   };
+
+  console.log(jobs)
 
   return (
     <div className="w-11/12 md:w-5/6 lg:w-4/5 mx-auto my-12">
