@@ -102,7 +102,7 @@ const page = () => {
  
     return (
         <div className={`flex flex-col h-screen p-4 custom-container bg-accent`}>
-            <div className="flex justify-between items-center mb-4">
+            {/* <div className="flex justify-between items-center mb-4">
                 <h1 className={`text-2xl font-bold text-primary`}>Gemini Chat</h1>
             </div>
 
@@ -157,7 +157,7 @@ const page = () => {
                     Send
                 </button>
 
-            </div>
+            </div> */}
 
         </div>
     );
