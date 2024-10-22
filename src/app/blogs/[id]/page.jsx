@@ -15,15 +15,12 @@ import {
   FacebookShareButton,
   LinkedinShareButton,
   TwitterShareButton,
-  FacebookMessengerShareButton,
   FacebookIcon,
   LinkedinIcon,
   TwitterIcon,
-  FacebookMessengerIcon
 } from "react-share";
-import { FiCopy } from "react-icons/fi"; // Added Share and Copy icon
 import { AiOutlineClose } from "react-icons/ai"; // Close icon for modal
-import { FaLink, FaShare } from "react-icons/fa";
+import { FaLink } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 
 const BlogDetails = ({ params }) => {

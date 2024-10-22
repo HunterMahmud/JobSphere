@@ -1,5 +1,5 @@
 "use client";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import {
   FaBookmark,
@@ -12,6 +12,18 @@ import {
   FaPhone,
   FaGlobe,
 } from "react-icons/fa";
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  FacebookIcon,
+  LinkedinIcon,
+  TwitterIcon,
+} from "react-share";
+import { AiOutlineClose } from "react-icons/ai"; // Close icon for modal
+import { FaLink } from "react-icons/fa";
+import { FaShareFromSquare } from "react-icons/fa6";
+
 import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
 import { useSession } from "next-auth/react";
 import Loader from "@/app/loading";
@@ -36,6 +48,8 @@ const JobDetails = ({ params }) => {
   const { loggedInUser } = useRole();
   const [message, setMessage] = useState();
   const { seekerInfo } = useSeekerInfo();
+  const [showModal2, setShowModal2] = useState(false); // Track modal visibility
+  const modalRef = useRef(); // Ref for modal
   const today = new Date();
   const deadline = new Date(job?.deadline);
   // const { saveUsers } = job;
@@ -66,6 +80,23 @@ const JobDetails = ({ params }) => {
 
     fetchJobDetails();
   }, [params.id]); // Dependency on params.id to fetch details when it changes
+
+  // Handle outside click close
+  const handleOutsideClick = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      setShowModal2(false);
+    }
+  };
+  // Add event listener to detect clicks outside modal
+  useEffect(() => {
+    if (showModal2) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [showModal2]);
 
   if (loading) {
     return <Loader />; // Loading state
@@ -232,6 +263,26 @@ const JobDetails = ({ params }) => {
       }
     }
   };
+  // Handle Copy Link
+  const handleCopyLink = () => {
+    const blogUrl = `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`;
+    navigator.clipboard.writeText(blogUrl).then(() => {
+      toast.success("Link copied to clipboard!");
+      setShowModal2(!showModal2)
+    }).catch((error) => {
+      toast.error("Failed to copy link.");
+      console.error("Copy failed:", error);
+    });
+  };
+
+  // Toggle Modal
+  const toggleModal = () => {
+    setShowModal2(!showModal2);
+  };
+
+
+
+
 
   return (
     <Fragment>
@@ -354,31 +405,39 @@ const JobDetails = ({ params }) => {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-5">
-            <a
-              rel="noopener"
-              target="_blank"
-              href={`mailto:${job?.compnayInforamtion?.contactInformation?.email}`}
-            >
-              <FaEnvelope className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-            </a>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-5">
+              <a
+                rel="noopener"
+                target="_blank"
+                href={`mailto:${job?.compnayInforamtion?.contactInformation?.email}`}
+              >
+                <FaEnvelope className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+              </a>
 
-            <a
-              rel="noopener"
-              target="_blank"
-              href={`tel:${job?.compnayInforamtion?.contactInformation?.phone}`}
-            >
-              <FaPhone className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-            </a>
+              <a
+                rel="noopener"
+                target="_blank"
+                href={`tel:${job?.compnayInforamtion?.contactInformation?.phone}`}
+              >
+                <FaPhone className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+              </a>
 
-            <Link
-              href={job?.compnayInforamtion?.contactInformation?.website}
-              className="text-blue-600"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <FaGlobe className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-            </Link>
+              <Link
+                href={job?.compnayInforamtion?.contactInformation?.website}
+                className="text-blue-600"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaGlobe className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+              </Link>
+
+            </div>
+            {/* Share Icon */}
+            <button onClick={toggleModal} className=" flex duration-300 items-center text-primary justify-center gap-3  hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
+
+              <FaShareFromSquare size={24} />
+            </button>
           </div>
         </div>
       </div>
