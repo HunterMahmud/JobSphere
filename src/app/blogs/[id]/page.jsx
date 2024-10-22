@@ -11,6 +11,17 @@ import axios from "axios";
 import Image from "next/image";
 import Loader from "@/app/loading";
 import { toast } from 'react-hot-toast';
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton, // Added Twitter share button
+  FacebookIcon,
+  LinkedinIcon,
+  TwitterIcon, // Added Twitter icon
+  FacebookMessengerShareButton,
+  FacebookMessengerIcon
+} from "react-share";
+import { FiCopy } from "react-icons/fi"; // Copy icon
 
 const BlogDetails = ({ params }) => {
   const session = useSession(); // Access session data
@@ -25,7 +36,6 @@ const BlogDetails = ({ params }) => {
       const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/api/${id}`
       );
-
       return data.blog;
     } catch (error) {
       setError("Could not fetch blog details.");
@@ -56,8 +66,8 @@ const BlogDetails = ({ params }) => {
 
   // Handle Upvote
   const handleUpvote = async () => {
-    if(session?.status !== "authenticated"){
-        return toast.error("Login to vote")
+    if (session?.status !== "authenticated") {
+      return toast.error("Login to vote")
     }
     if (hasVoted === "upvote") return toast.error("Already Upvoted"); // Prevent multiple upvotes
 
@@ -77,7 +87,7 @@ const BlogDetails = ({ params }) => {
             hasVoted === "downvote" ? prev.downvotes - 1 : prev.downvotes,
         }));
         setHasVoted("upvote");
-        toast.success("Upvoted successfuly")
+        toast.success("Upvoted successfully");
       }
     } catch (error) {
       console.error("Error while upvoting:", error);
@@ -86,8 +96,8 @@ const BlogDetails = ({ params }) => {
 
   // Handle Downvote
   const handleDownvote = async () => {
-    if(session?.status !== "authenticated"){
-        return toast.error("Login to vote")
+    if (session?.status !== "authenticated") {
+      return toast.error("Login to vote")
     }
     if (hasVoted === "downvote") return toast.error("Already Downvoted"); // Prevent multiple downvotes
 
@@ -106,51 +116,106 @@ const BlogDetails = ({ params }) => {
           upvotes: hasVoted === "upvote" ? prev.upvotes - 1 : prev.upvotes,
         }));
         setHasVoted("downvote");
-        toast.success("Downvoted successfuly")
+        toast.success("Downvoted successfully");
       }
     } catch (error) {
       console.error("Error while downvoting:", error);
     }
   };
 
+  // Handle Copy Link
+  const handleCopyLink = () => {
+    const blogUrl = `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`;
+    navigator.clipboard.writeText(blogUrl).then(() => {
+      toast.success("Link copied to clipboard!");
+    }).catch((error) => {
+      toast.error("Failed to copy link.");
+      console.error("Copy failed:", error);
+    });
+  };
+
   return (
     <div className="custom-container mx-auto my-10 p-2 md:p-4">
       <div className="bg-white rounded-lg shadow-lg p-2 md:p-4">
-       
-        {blog.blogImage && ( 
-        <div>
-          <Image
-            src={blog?.blogImage}
-            alt={blog?.title}
-            width={1000}
-            height={200}
-            className="rounded-md w-full h-[300px] object-cover"
-          />
-        </div>
+
+        {blog.blogImage && (
+          <div>
+            <Image
+              src={blog?.blogImage}
+              alt={blog?.title}
+              width={1000}
+              height={200}
+              className="rounded-md w-full h-[300px] object-cover"
+            />
+          </div>
         )}
-     
+
         <h1 className="text-2xl md:text-3xl lg:text-4xl mt-4 font-bold mb-4">{blog.title}</h1>
         <div className="flex justify-between items-center mb-4">
           <div>
-          <p className="text-gray-600 font-bold">{blog?.author}</p>
-          <p className="text-gray-600">
-            {new Date(blog?.publishedDate).toLocaleDateString()}
-          </p>
+            <p className="text-gray-600 font-bold">{blog?.author}</p>
+            <p className="text-gray-600">
+              {new Date(blog?.publishedDate).toLocaleDateString()}
+            </p>
           </div>
           <div>
-            {/* todo: eikhane share options dite hobe */}
+            {/* Share Options */}
+            <div className="flex space-x-4">
+              <FacebookShareButton
+                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                quote={blog?.title}
+                className="hover:opacity-80"
+              >
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+
+              <LinkedinShareButton
+                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                title={blog?.title}
+                className="hover:opacity-80"
+              >
+                <LinkedinIcon size={32} round />
+              </LinkedinShareButton>
+
+              {/* Twitter Share Button */}
+              <TwitterShareButton
+                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                title={blog?.title}
+                className="hover:opacity-80"
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+
+              {/* Facebook Messenger Share Button */}
+              <FacebookMessengerShareButton
+                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} // Facebook App ID needed
+                className="hover:opacity-80"
+              >
+                <FacebookMessengerIcon size={32} round />
+              </FacebookMessengerShareButton>
+
+
+              {/* Copy Link Button */}
+              <button
+                onClick={handleCopyLink}
+                className="flex items-center space-x-2 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg"
+              >
+                <FiCopy size={24} />
+                <span>Copy Link</span>
+              </button>
+            </div>
           </div>
         </div>
-        
+
         <p className="mt-4 text-lg">{blog?.content}</p>
 
         {/* Upvote and Downvote Section */}
         <div className="flex items-center mt-6 space-x-4">
           <button
             onClick={handleUpvote}
-            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${
-              hasVoted === "upvote" ? "bg-green-400 text-white" : "bg-gray-200"
-            }`}
+            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${hasVoted === "upvote" ? "bg-green-400 text-white" : "bg-gray-200"
+              }`}
           >
             {hasVoted === "upvote" ? (
               <BiSolidUpvote className="mr-2" />
@@ -161,9 +226,8 @@ const BlogDetails = ({ params }) => {
           </button>
           <button
             onClick={handleDownvote}
-            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${
-              hasVoted === "downvote" ? "bg-red-400 text-white" : "bg-gray-200"
-            }`}
+            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${hasVoted === "downvote" ? "bg-red-400 text-white" : "bg-gray-200"
+              }`}
           >
             {hasVoted === "downvote" ? (
               <BiSolidDownvote className="mr-2" />
