@@ -24,6 +24,7 @@ import {
 import { FiCopy } from "react-icons/fi"; // Added Share and Copy icon
 import { AiOutlineClose } from "react-icons/ai"; // Close icon for modal
 import { FaLink, FaShare } from "react-icons/fa";
+import { FaShareFromSquare } from "react-icons/fa6";
 
 const BlogDetails = ({ params }) => {
   const session = useSession(); // Access session data
@@ -218,9 +219,9 @@ const BlogDetails = ({ params }) => {
             </button>
           </div>
           {/* Share Icon */}
-          <button onClick={toggleModal} className="text-gray-600 hover:text-gray-100 mt-6 flex items-center justify-center gap-3 bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
-            <span className="font-bold">Share</span>
-            <FaShare size={24} className="text-secondary" />
+          <button onClick={toggleModal} className=" mt-6 flex items-center justify-center gap-3 bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
+            
+            <FaShareFromSquare size={24} className="text-primary hover:text-white" />
           </button>
         </div>
       </div>
