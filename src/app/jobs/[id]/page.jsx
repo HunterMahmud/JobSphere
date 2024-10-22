@@ -265,7 +265,7 @@ const JobDetails = ({ params }) => {
   };
   // Handle Copy Link
   const handleCopyLink = () => {
-    const blogUrl = `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`;
+    const blogUrl = `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/${job._id}`;
     navigator.clipboard.writeText(blogUrl).then(() => {
       toast.success("Link copied to clipboard!");
       setShowModal2(!showModal2)
@@ -440,6 +440,64 @@ const JobDetails = ({ params }) => {
             </button>
           </div>
         </div>
+        {/* Modal */}
+        {showModal2 && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+            <div ref={modalRef} className="bg-white rounded-lg p-6 relative">
+              <button onClick={toggleModal} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
+                <AiOutlineClose size={24} />
+              </button>
+
+              <h2 className="text-xl font-bold mb-4">Share this blog</h2>
+
+              <div className="flex space-x-4">
+                <div className="hover:bg-accent p-2 duration-200 rounded-lg">
+                  <FacebookShareButton
+                    onClick={() => setShowModal2(!showModal2)}
+                    url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/${job._id}`}
+                    quote={job?.title}
+                    className="hover:opacity-80 p-3 hover:bg-accent flex flex-col items-center justify-center "
+                  >
+                    <FacebookIcon size={32} round />
+                    <span className="text-xs text-center">Facebook</span>
+                  </FacebookShareButton>
+
+                </div>
+                <div className="hover:bg-accent p-2 duration-200 rounded-lg">
+                  <LinkedinShareButton
+                    onClick={() => setShowModal2(!showModal2)}
+                    url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/${job._id}`}
+                    title={job?.title}
+                    className="hover:opacity-80 flex flex-col items-center justify-center"
+                  >
+                    <LinkedinIcon size={32} round />
+                    <span className="text-xs text-center">LinkedIn</span>
+                  </LinkedinShareButton>
+                </div>
+
+                <div className="hover:bg-accent px-3 py-2 duration-200 rounded-lg">
+                  <TwitterShareButton
+                    onClick={() => setShowModal2(!showModal2)}
+                    url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/${job._id}`}
+                    title={job?.title}
+                    className="hover:opacity-80 hover:bg-accent duration-200 flex flex-col items-center justify-center"
+                  >
+                    <TwitterIcon size={32} round />
+                    <span className="text-xs text-center">Twitter</span>
+                  </TwitterShareButton>
+                </div>
+                {/* Copy Link Button */}
+                <button
+                  onClick={handleCopyLink}
+                  className="flex flex-col items-center space-x-2  hover:bg-accent px-1 py-2 rounded-lg"
+                >
+                  <FaLink size={32} className="text-primary" />
+                  <span className="text-xs">Copy Link</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       {/* Modal */}
       <Modal
