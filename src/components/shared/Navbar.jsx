@@ -114,7 +114,7 @@ const Navbar = () => {
                             ? loggedInUser?.userIMG
                             : "https://i.ibb.co/3BY9Fks/profile.png"
                         }
-                        className="rounded-full w-10"
+                        className="rounded-full w-10 h-10 object-cover"
                         height={40}
                         width={40}
                       />
@@ -126,7 +126,7 @@ const Navbar = () => {
                       <>
                         <MenuItem>
                           <div className="p-5 flex flex-col justify-center items-center">
-                            <Image className='border rounded-full' src={loggedInUser?.userIMG} width={60} height={50} />
+                            <Image className='border rounded-full w-20 h-20 object-cover' src={loggedInUser?.userIMG ||  "https://i.ibb.co/3BY9Fks/profile.png"} width={60} height={50} />
                             <p className="block font-semibold text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">
                               {loggedInUser?.userName} {loggedInUser?.name}{" "} {loggedInUser?.fullName}
                             </p>
