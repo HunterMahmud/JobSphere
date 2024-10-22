@@ -29,7 +29,9 @@ const ApplyedAJob = ({ params }) => {
     const [task, setTask] = useState('');
     const [interView, setInterView] = useState(false);
     const email = session?.data?.user?.email;
-    const [to, setTo] = useState('')
+    const [to, setTo] = useState('');
+    const [jobOffer, setJobOffer] = useState(false);
+    const [jobTitle, setJobTitle] = useState('');
 
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
     const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -313,39 +315,38 @@ const ApplyedAJob = ({ params }) => {
 
     // handleSelected
 
-    const handleSelected = async (id) => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to select this applicant?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, it!",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const { data } = await axios.put(
-                        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected" });
+    const handleSelected = async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const responseDate = form.responseDate.value;
+        const offerLetterLink = form.offerLetterLink.value;
+        const offerLetter = `Congratulations! You have been selected for the position ${jobTitle}.Kindly confirm your acceptance by ${responseDate}.Please review the offer letter and other details using the link below. Offer Letter:`
 
-                    if (data.modifiedCount > 0) {
-                        toast.success('Successful')
-                        // Re-fetch the jobs after deletion
-                        fetchJobs();
-                    }
-                } catch (error) {
-                    // Handle error
-                    console.log(error.message);
-                    Swal.fire({
-                        title: "Error!",
-                        text: "Failed to delete the job.",
-                        icon: "error",
-                    });
-                }
+        try {
+            setIsLoading(true)
+            const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected", offerLetter,offerLetterLink });
+            if (data.modifiedCount > 0) {
+                await axios.post('/dashboard/myPostedJobs/api/sendEmail/jobOffer', { jobTitle, responseDate, offerLetterLink, from: email, to });
+
+                setTimeout(() => {
+                    setShowModal(!showModal);
+                    toast.success('Successful')
+                    // Re-fetch the jobs after scheduling
+                    fetchJobs();
+                }, 1500);
             }
-        });
-    };
-
+        } catch (error) {
+            // Handle error
+            setShowModal(!showModal)
+            setIsLoading(false)
+            console.log(error?.message);
+            Swal.fire({
+                title: "Error!",
+                text: "Failed to offer Letter send this job.",
+                icon: "error",
+            });
+        }
+    }
 
     return (
         <Fragment>
@@ -434,8 +435,18 @@ const ApplyedAJob = ({ params }) => {
                                             </button>
 
                                             <button
-                                                data-tooltip-id="my-tooltip" data-tooltip-content="Select Aoolicant"
-                                                onClick={() => handleSelected(job?._id)}
+                                                data-tooltip-id="my-tooltip" data-tooltip-content="Select Applicant"
+                                                onClick={() => {
+                                                    if (job?.jobStatus === 'Selected') {
+                                                        return toast.error('This applicant has already been selected')
+                                                    } else {
+                                                        setShowModal(!showModal)
+                                                        setId(job?._id)
+                                                        setJobTitle(job?.jobTitle)
+                                                        setTo(job?.applicantInfo?.contactInformation?.email)
+                                                        setJobOffer(true)
+                                                    }
+                                                }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-primary text-white py-2 px-3 rounded-md`}
                                             >
                                                 <GrCheckboxSelected className="text-lg flex items-center justify-center" />
@@ -676,53 +687,91 @@ const ApplyedAJob = ({ params }) => {
                                                     </div>
                                                 </Modal>
                                             </> : <>
-                                                <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                                                    {task?.taskSubmissionLink ? <>
-                                                        <div>
-                                                            <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
-                                                        </div>
-                                                    </>
-                                                        :
-                                                        <>
-                                                            <form onSubmit={handleSubmitTask}>
-                                                                <div className='flex flex-col gap-3'>
-                                                                    <div className="">
-                                                                        <label className='font-medium' htmlFor='job_title'>
-                                                                            Last date for task submission
-                                                                        </label>
-                                                                        <input
-                                                                            defaultValue={job?.task?.submissionDate}
-                                                                            name='submissionDate'
-                                                                            type='date'
-                                                                            required
-                                                                            className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="">
-                                                                        <label className='font-medium' htmlFor='job_title'>
-                                                                            Task Link
-                                                                        </label>
-                                                                        <input
-                                                                            placeholder="Submit job task link"
-                                                                            defaultValue={job?.task?.taskLink} name='taskLink'
-                                                                            type='text'
-                                                                            required
-                                                                            className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className='flex justify-end md:col-span-2'>
-                                                                        <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                                                            {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
+                                                {task &&
+                                                    <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                                        {task?.taskSubmissionLink ? <>
+                                                            <div>
+                                                                <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
+                                                            </div>
                                                         </>
-                                                    }
-                                                </Modal>
+                                                            :
+                                                            <>
+                                                                <form onSubmit={handleSubmitTask}>
+                                                                    <div className='flex flex-col gap-3'>
+                                                                        <div className="">
+                                                                            <label className='font-medium' htmlFor='job_title'>
+                                                                                Last date for task submission
+                                                                            </label>
+                                                                            <input
+                                                                                defaultValue={job?.task?.submissionDate}
+                                                                                name='submissionDate'
+                                                                                type='date'
+                                                                                required
+                                                                                className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className="">
+                                                                            <label className='font-medium' htmlFor='job_title'>
+                                                                                Task Link
+                                                                            </label>
+                                                                            <input
+                                                                                placeholder="Submit job task link"
+                                                                                defaultValue={job?.task?.taskLink} name='taskLink'
+                                                                                type='text'
+                                                                                required
+                                                                                className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                            />
+                                                                        </div>
+
+                                                                        <div className='flex justify-end md:col-span-2'>
+                                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </>
+                                                        }
+                                                    </Modal>
+                                                }
                                             </>
+                                        }
+                                        {
+                                            jobOffer && <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                                <h2 className="text-xl text-center font-semibold mb-4">Send Job Offer</h2>
+                                                <form onSubmit={handleSelected}>
+                                                    {/* responseDate */}
+                                                    <div className='w-full'>
+                                                        <div className="mb-4">
+                                                            <label className='font-medium'>Response Date</label>
+                                                            <input
+                                                                type="date"
+                                                                name="responseDate"
+                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        {/* Offer Letter Link*/}
+                                                        <div className="mb-4">
+                                                            <label className='font-medium'>Offer Letter Link</label>
+                                                            <input
+                                                                type="text"
+                                                                name="offerLetterLink"
+                                                                placeholder='Enter Offer Letter Link'
+                                                                className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                                                                required
+                                                            />
+                                                        </div>
+
+                                                        <div className='flex justify-end md:col-span-2'>
+                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </Modal>
                                         }
                                     </tr>
                                 ))}
@@ -755,7 +804,6 @@ const ApplyedAJob = ({ params }) => {
                                     </button>
                                 ))}
                             </div>
-
                             <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
                         </div>
                     </div>

@@ -15,15 +15,12 @@ import {
   FacebookShareButton,
   LinkedinShareButton,
   TwitterShareButton,
-  FacebookMessengerShareButton,
   FacebookIcon,
   LinkedinIcon,
   TwitterIcon,
-  FacebookMessengerIcon
 } from "react-share";
-import { FiCopy } from "react-icons/fi"; // Added Share and Copy icon
 import { AiOutlineClose } from "react-icons/ai"; // Close icon for modal
-import { FaLink, FaShare } from "react-icons/fa";
+import { FaLink } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
 
 const BlogDetails = ({ params }) => {
@@ -219,9 +216,9 @@ const BlogDetails = ({ params }) => {
             </button>
           </div>
           {/* Share Icon */}
-          <button onClick={toggleModal} className=" mt-6 flex items-center justify-center gap-3 bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
+          <button onClick={toggleModal} className=" mt-6 flex items-center text-primary justify-center gap-3  hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
             
-            <FaShareFromSquare size={24} className="text-primary hover:text-white" />
+            <FaShareFromSquare size={24}/>
           </button>
         </div>
       </div>
@@ -271,17 +268,6 @@ const BlogDetails = ({ params }) => {
                   <TwitterIcon size={32} round />
                   <span className="text-xs text-center">Twitter</span>
                 </TwitterShareButton>
-              </div>
-              <div className="hover:bg-accent p-2 duration-200 rounded-lg">
-                <FacebookMessengerShareButton
-                  onClick={() => setShowModal(!showModal)}
-                  url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
-                  appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} // Facebook App ID needed
-                  className="hover:opacity-80 flex flex-col items-center justify-center"
-                >
-                  <FacebookMessengerIcon size={32} round />
-                  <span className="text-xs text-center">Messenger</span>
-                </FacebookMessengerShareButton>
               </div>
               {/* Copy Link Button */}
               <button
