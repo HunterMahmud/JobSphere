@@ -128,6 +128,7 @@ const BlogDetails = ({ params }) => {
     const blogUrl = `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`;
     navigator.clipboard.writeText(blogUrl).then(() => {
       toast.success("Link copied to clipboard!");
+      setShowModal(!showModal)
     }).catch((error) => {
       toast.error("Failed to copy link.");
       console.error("Copy failed:", error);
@@ -237,6 +238,7 @@ const BlogDetails = ({ params }) => {
             <div className="flex space-x-4">
               <div className="hover:bg-accent p-2 duration-200 rounded-lg">
                 <FacebookShareButton
+                  onClick={() => setShowModal(!showModal)}
                   url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
                   quote={blog?.title}
                   className="hover:opacity-80 p-3 hover:bg-accent flex flex-col items-center justify-center "
@@ -248,6 +250,7 @@ const BlogDetails = ({ params }) => {
               </div>
               <div className="hover:bg-accent p-2 duration-200 rounded-lg">
                 <LinkedinShareButton
+                  onClick={() => setShowModal(!showModal)}
                   url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
                   title={blog?.title}
                   className="hover:opacity-80 flex flex-col items-center justify-center"
@@ -259,6 +262,7 @@ const BlogDetails = ({ params }) => {
 
               <div className="hover:bg-accent px-3 py-2 duration-200 rounded-lg">
                 <TwitterShareButton
+                  onClick={() => setShowModal(!showModal)}
                   url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
                   title={blog?.title}
                   className="hover:opacity-80 hover:bg-accent duration-200 flex flex-col items-center justify-center"
@@ -269,6 +273,7 @@ const BlogDetails = ({ params }) => {
               </div>
               <div className="hover:bg-accent p-2 duration-200 rounded-lg">
                 <FacebookMessengerShareButton
+                  onClick={() => setShowModal(!showModal)}
                   url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
                   appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} // Facebook App ID needed
                   className="hover:opacity-80 flex flex-col items-center justify-center"
