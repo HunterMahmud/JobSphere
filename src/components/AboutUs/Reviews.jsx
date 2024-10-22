@@ -100,7 +100,7 @@ const Reviews = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+              className="w-full bg-primary hover:bg-hover text-white py-2 rounded-md transition-colors"
               disabled={loading}
             >
               {loading ? "Submitting..." : "Submit Review"}
