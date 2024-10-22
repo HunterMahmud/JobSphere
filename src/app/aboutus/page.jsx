@@ -3,13 +3,13 @@ import FAQ from '@/components/shared/FAQ';
 import ContactUs from '@/components/AboutUs/ContactUs';
 import Image from 'next/image';
 import React from 'react';
-import AddReview from '@/components/AboutUs/AddReview';
 import OurTeam from '@/components/AboutUs/OurTeam';
 import OurMission from '@/components/AboutUs/OurMission';
+import Reviews from '@/components/AboutUs/Reviews';
 
 const AboutUsPage = () => {
     return (
-        <div className="">
+        <div className="custom-container">
                 <h1 className='text-4xl my-6 underline font-bold text-center text-gray-800'>About Us</h1>
             <OurMission/>
 
@@ -55,7 +55,7 @@ const AboutUsPage = () => {
             </div>
 
             <FAQ></FAQ>
-            <AddReview></AddReview>
+            <Reviews/>
 
             <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
                 <ContactUs />

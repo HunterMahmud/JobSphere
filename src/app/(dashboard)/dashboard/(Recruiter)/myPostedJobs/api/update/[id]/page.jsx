@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "next-auth/react";
+
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -8,16 +8,19 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "react-datepicker/dist/react-datepicker.css";
 import CreatableSelect from "react-select/creatable";
+import { useRouter } from 'next/navigation';
+
 
 const UpdateJobs = ({ params }) => {
   const [job, setJob] = useState(null); // Initialize job state to null
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const loadJob = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params.id}`
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/dashboard/myPostedJobs/api/postedJobs/${params?.id}`
         );
         setJob(response.data.data); // Update state with job details
       } catch (error) {
@@ -54,11 +57,12 @@ const UpdateJobs = ({ params }) => {
       );
       if (data?.response?.modifiedCount === 1) {
         toast.success("Updated Successfully");
+        router.push('/dashboard/myPostedJobs');
       } else {
         toast.error("Make change to update");
       }
     } catch (error) {
-      console.log("error: ", error);
+      // console.log("error: ", error);
       toast.error("Failed to update job");
     }
     setLoading(false);
@@ -77,7 +81,7 @@ const UpdateJobs = ({ params }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+      <div className="w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-8 text-center">Update Job</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -146,8 +150,8 @@ const UpdateJobs = ({ params }) => {
                 <option value="Part-Time">Part-Time</option>
                 <option value="Contract-Based">Contract-Based</option>
               </select>
-              {errors.jobType && (
-                <p className="text-red-500 text-sm">{errors.jobType.message}</p>
+              {errors?.jobType && (
+                <p className="text-red-500 text-sm">{errors?.jobType?.message}</p>
               )}
             </div>
           </div>
@@ -288,7 +292,7 @@ const UpdateJobs = ({ params }) => {
                 />
               )}
             />
-            {errors.skills && (
+            {errors?.skills && (
               <p className="text-red-500 text-sm">{errors?.skills?.message}</p>
             )}
           </div>
@@ -297,7 +301,7 @@ const UpdateJobs = ({ params }) => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-primary hover:bg-hover text-white py-2 px-4 rounded-lg"
             >
               Update Job
             </button>
