@@ -434,7 +434,7 @@ const JobDetails = ({ params }) => {
 
             </div>
             {/* Share Icon */}
-            <button onClick={toggleModal} className=" flex duration-300 items-center text-primary justify-center gap-3  hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
+            <button onClick={toggleModal} className=" flex items-center text-primary justify-center gap-3  hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
 
               <FaShareFromSquare size={24} />
             </button>
