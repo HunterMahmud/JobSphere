@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import {
   BiUpvote,
@@ -14,14 +14,16 @@ import { toast } from 'react-hot-toast';
 import {
   FacebookShareButton,
   LinkedinShareButton,
-  TwitterShareButton, // Added Twitter share button
+  TwitterShareButton,
+  FacebookMessengerShareButton,
   FacebookIcon,
   LinkedinIcon,
-  TwitterIcon, // Added Twitter icon
-  FacebookMessengerShareButton,
+  TwitterIcon,
   FacebookMessengerIcon
 } from "react-share";
-import { FiCopy } from "react-icons/fi"; // Copy icon
+import { FiCopy } from "react-icons/fi"; // Added Share and Copy icon
+import { AiOutlineClose } from "react-icons/ai"; // Close icon for modal
+import { FaLink, FaShare } from "react-icons/fa";
 
 const BlogDetails = ({ params }) => {
   const session = useSession(); // Access session data
@@ -29,6 +31,8 @@ const BlogDetails = ({ params }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [hasVoted, setHasVoted] = useState(null); // Track user's vote status
+  const [showModal, setShowModal] = useState(false); // Track modal visibility
+  const modalRef = useRef(); // Ref for modal
 
   // Fetch blog details
   const getBlogDetails = async (id) => {
@@ -60,14 +64,10 @@ const BlogDetails = ({ params }) => {
     fetchBlogDetails();
   }, [params.id, session?.status]);
 
-  if (loading) return <Loader />;
-  if (error) return <div>{error}</div>;
-  if (!blog) return <div>No blog found.</div>;
-
   // Handle Upvote
   const handleUpvote = async () => {
     if (session?.status !== "authenticated") {
-      return toast.error("Login to vote")
+      return toast.error("Login to vote");
     }
     if (hasVoted === "upvote") return toast.error("Already Upvoted"); // Prevent multiple upvotes
 
@@ -97,7 +97,7 @@ const BlogDetails = ({ params }) => {
   // Handle Downvote
   const handleDownvote = async () => {
     if (session?.status !== "authenticated") {
-      return toast.error("Login to vote")
+      return toast.error("Login to vote");
     }
     if (hasVoted === "downvote") return toast.error("Already Downvoted"); // Prevent multiple downvotes
 
@@ -134,10 +134,36 @@ const BlogDetails = ({ params }) => {
     });
   };
 
+  // Toggle Modal
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  // Handle outside click close
+  const handleOutsideClick = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      setShowModal(false);
+    }
+  };
+
+  // Add event listener to detect clicks outside modal
+  useEffect(() => {
+    if (showModal) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [showModal]);
+
+  if (loading) return <Loader />;
+  if (error) return <div>{error}</div>;
+  if (!blog) return <div>No blog found.</div>;
+
   return (
     <div className="custom-container mx-auto my-10 p-2 md:p-4">
       <div className="bg-white rounded-lg shadow-lg p-2 md:p-4">
-
         {blog.blogImage && (
           <div>
             <Image
@@ -158,86 +184,111 @@ const BlogDetails = ({ params }) => {
               {new Date(blog?.publishedDate).toLocaleDateString()}
             </p>
           </div>
-          <div>
-            {/* Share Options */}
-            <div className="flex space-x-4">
-              <FacebookShareButton
-                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
-                quote={blog?.title}
-                className="hover:opacity-80"
-              >
-                <FacebookIcon size={32} round />
-              </FacebookShareButton>
-
-              <LinkedinShareButton
-                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
-                title={blog?.title}
-                className="hover:opacity-80"
-              >
-                <LinkedinIcon size={32} round />
-              </LinkedinShareButton>
-
-              {/* Twitter Share Button */}
-              <TwitterShareButton
-                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
-                title={blog?.title}
-                className="hover:opacity-80"
-              >
-                <TwitterIcon size={32} round />
-              </TwitterShareButton>
-
-              {/* Facebook Messenger Share Button */}
-              <FacebookMessengerShareButton
-                url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
-                appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} // Facebook App ID needed
-                className="hover:opacity-80"
-              >
-                <FacebookMessengerIcon size={32} round />
-              </FacebookMessengerShareButton>
-
-
-              {/* Copy Link Button */}
-              <button
-                onClick={handleCopyLink}
-                className="flex items-center space-x-2 bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg"
-              >
-                <FiCopy size={24} />
-                <span>Copy Link</span>
-              </button>
-            </div>
-          </div>
         </div>
 
         <p className="mt-4 text-lg">{blog?.content}</p>
 
         {/* Upvote and Downvote Section */}
-        <div className="flex items-center mt-6 space-x-4">
-          <button
-            onClick={handleUpvote}
-            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${hasVoted === "upvote" ? "bg-green-400 text-white" : "bg-gray-200"
-              }`}
-          >
-            {hasVoted === "upvote" ? (
-              <BiSolidUpvote className="mr-2" />
-            ) : (
-              <BiUpvote className="mr-2" />
-            )}{" "}
-            {blog?.upvotes}
-          </button>
-          <button
-            onClick={handleDownvote}
-            className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${hasVoted === "downvote" ? "bg-red-400 text-white" : "bg-gray-200"
-              }`}
-          >
-            {hasVoted === "downvote" ? (
-              <BiSolidDownvote className="mr-2" />
-            ) : (
-              <BiDownvote className="mr-2" />
-            )}{" "}
-            {blog?.downvotes}
+        <div className="flex justify-between items-start">
+          <div className="flex items-center mt-6 space-x-4">
+            <button
+              onClick={handleUpvote}
+              className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${hasVoted === "upvote" ? "bg-green-400 text-white" : "bg-gray-200"
+                }`}
+            >
+              {hasVoted === "upvote" ? (
+                <BiSolidUpvote className="mr-2" />
+              ) : (
+                <BiUpvote className="mr-2" />
+              )}{" "}
+              {blog?.upvotes}
+            </button>
+            <button
+              onClick={handleDownvote}
+              className={`flex flex-row items-center justify-between px-4 py-2 rounded-lg ${hasVoted === "downvote" ? "bg-red-400 text-white" : "bg-gray-200"
+                }`}
+            >
+              {hasVoted === "downvote" ? (
+                <BiSolidDownvote className="mr-2" />
+              ) : (
+                <BiDownvote className="mr-2" />
+              )}{" "}
+              {blog?.downvotes}
+            </button>
+          </div>
+          {/* Share Icon */}
+          <button onClick={toggleModal} className="text-gray-600 hover:text-gray-100 mt-6 flex items-center justify-center gap-3 bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
+            <span className="font-bold">Share</span>
+            <FaShare size={24} className="text-secondary" />
           </button>
         </div>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div ref={modalRef} className="bg-white rounded-lg p-6 relative">
+            <button onClick={toggleModal} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
+              <AiOutlineClose size={24} />
+            </button>
+
+            <h2 className="text-xl font-bold mb-4">Share this blog</h2>
+
+            <div className="flex space-x-4">
+              <div className="hover:bg-accent p-2 duration-200 rounded-lg">
+                <FacebookShareButton
+                  url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                  quote={blog?.title}
+                  className="hover:opacity-80 p-3 hover:bg-accent flex flex-col items-center justify-center "
+                >
+                  <FacebookIcon size={32} round />
+                  <span className="text-xs text-center">Facebook</span>
+                </FacebookShareButton>
+
+              </div>
+              <div className="hover:bg-accent p-2 duration-200 rounded-lg">
+                <LinkedinShareButton
+                  url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                  title={blog?.title}
+                  className="hover:opacity-80 flex flex-col items-center justify-center"
+                >
+                  <LinkedinIcon size={32} round />
+                  <span className="text-xs text-center">LinkedIn</span>
+                </LinkedinShareButton>
+              </div>
+
+              <div className="hover:bg-accent px-3 py-2 duration-200 rounded-lg">
+                <TwitterShareButton
+                  url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                  title={blog?.title}
+                  className="hover:opacity-80 hover:bg-accent duration-200 flex flex-col items-center justify-center"
+                >
+                  <TwitterIcon size={32} round />
+                  <span className="text-xs text-center">Twitter</span>
+                </TwitterShareButton>
+              </div>
+              <div className="hover:bg-accent p-2 duration-200 rounded-lg">
+                <FacebookMessengerShareButton
+                  url={`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/${blog._id}`}
+                  appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} // Facebook App ID needed
+                  className="hover:opacity-80 flex flex-col items-center justify-center"
+                >
+                  <FacebookMessengerIcon size={32} round />
+                  <span className="text-xs text-center">Messenger</span>
+                </FacebookMessengerShareButton>
+              </div>
+              {/* Copy Link Button */}
+              <button
+                onClick={handleCopyLink}
+                className="flex flex-col items-center space-x-2  hover:bg-accent px-1 py-2 rounded-lg"
+              >
+                <FaLink size={32} className="text-primary" />
+                <span className="text-xs">Copy Link</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
