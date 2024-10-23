@@ -366,7 +366,7 @@ const RegisterUser = () => {
                   className="font-medium text-blue-600 cursor-pointer"
                   onClick={openModalSecurity}
                 >
-                  Privacy Policy
+                  Security & Privacy
                 </span>
                 .
               </label>
