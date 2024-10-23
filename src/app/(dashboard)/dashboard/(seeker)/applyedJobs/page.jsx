@@ -58,8 +58,9 @@ const ApplyedJobs = () => {
     fetchJobs();
   }, [session?.data?.user?.email, sort, search, jobType, jobStatus, page, limit]);
 
+
   // handle Remove Applyed job
-  const handleRemove = async (id) => {
+  const handleRemove = async (id, job_Id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "Do you want to cancel the application?",
@@ -77,6 +78,8 @@ const ApplyedJobs = () => {
           );
 
           if (data.deletedCount > 0) {
+            await axios.put(`/api/applicantCountDecrease/${job_Id}`);
+
             Swal.fire({
               title: "Deleted!",
               text: "Your file has been deleted.",
@@ -211,7 +214,6 @@ const ApplyedJobs = () => {
                 {jobs?.map((job, index) => (
                   <tr key={index} className="border-b hover:bg-gray-50 text-xs md:text-sm">
                     <td className="px-6 py-4">{index + 1}</td>
-
                     <td className="px-1 md:px-3 lg:px-6 py-4 flex items-center gap-2 hover:underline">
                       <Link href={`/jobs/${job?.jobId}`}>
                         {job?.jobTitle}
@@ -272,10 +274,11 @@ const ApplyedJobs = () => {
                         {job?.jobStatus}
                       </span>
                     </td>
-
                     <td className="pl-6 py-4 gap-2">
                       <button
-                        onClick={() => handleRemove(job?._id)}
+                        onClick={() => {
+                          handleRemove(job?._id, job?.jobId)
+                        }}
                         className="flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mx-2"
                       >
                         <MdOutlineCancel className="text-lg flex items-center justify-center" />

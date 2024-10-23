@@ -21,7 +21,7 @@ const BlogPage = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/api/?search=${search}&page=${page}&limit=9`
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/api/?search=${search}&page=${page}&limit=6`
           );
           
         setBlogs(data.blogs);
@@ -29,7 +29,7 @@ const BlogPage = () => {
         setLoading(false);
       } catch (error) {
         // console.error("Error fetching data: ", error);
-        // setError(error?.message);
+        setError("Error fetching data.");
         setLoading(false);
       }
     };
@@ -79,7 +79,7 @@ const BlogPage = () => {
         />
       </div>
       {/* Blog Cards */}
-       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {loading ? (
           <div className="md:grid-cols-2 lg:col-span-3">
             <Loader />
@@ -96,7 +96,7 @@ const BlogPage = () => {
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-secondary hover:bg-hover rounded-lg text-white"
+          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
         >
           <GrPrevious/>
         </button>
@@ -105,8 +105,8 @@ const BlogPage = () => {
             <button
               key={index + 1}
               onClick={() => setCurrentPage(index + 1)}
-              className={`btn px-3 py-1 border-2 text-xs lg:text-lg font-semibold  hover:bg-hover rounded-lg text-white ${
-                currentPage === index + 1 ? "bg-primary" : "bg-secondary"
+              className={`btn px-3 py-1 border-2 text-xs lg:text-lg font-semibold hover:bg-hover  rounded-lg  ${
+                currentPage === index + 1 ? "text-primary bg-white border hover:text-white border-primary" : "bg-primary text-white"
               }`}
             >
               {index + 1}
@@ -116,7 +116,7 @@ const BlogPage = () => {
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold   bg-secondary hover:bg-hover rounded-lg text-white"
+          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold   bg-primary hover:bg-hover rounded-lg text-white"
         >
           <GrNext/>
         </button>
