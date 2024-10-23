@@ -44,22 +44,21 @@ export const GET = async (request) => {
     // }
 
     // Handle skills filter: check if skills is a string or an array
-if (skills) {
-  let skillsArray;
-  try {
-    skillsArray = JSON.parse(skills); // Try to parse if it's a JSON string
-    if (!Array.isArray(skillsArray)) {
-      skillsArray = [skills]; // Treat as a single skill if it's not an array
-    }
-  } catch (error) {
-    skillsArray = [skills]; // If it's a plain string, wrap it into an array
-  }
+    if (skills) {
+      let skillsArray;
+      try {
+        skillsArray = JSON.parse(skills); // Try to parse if it's a JSON string
+        if (!Array.isArray(skillsArray)) {
+          skillsArray = [skills]; // Treat as a single skill if it's not an array
+        }
+      } catch (error) {
+        skillsArray = [skills]; // If it's a plain string, wrap it into an array
+      }
 
-  query.$or = skillsArray.map((skill) => ({
-    skills: skill // Directly match the skills field with the skill
-  }));
-  
-}
+      query.$or = skillsArray.map((skill) => ({
+        skills: skill, // Directly match the skills field with the skill
+      }));
+    }
 
     // Filter based on deadline (future jobs)
     query.$expr = {
