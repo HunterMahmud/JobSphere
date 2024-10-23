@@ -1,80 +1,48 @@
 import React from 'react';
-import ReviewsCard from '../AboutUs/ReviewsCard';
-import Link from 'next/link';
 
 const Reviews = () => {
-
-
-  const userReviews = [
-    {
-      "name": "Hasan Al Mahmud",
-      "role": "Software Developer",
-      "image": "https://i.ibb.co.com/54M49Z0/Hasan.jpg",
-      "rating": 5,
-      "date": "10 October 2024",
-      "review": "JobSphere made my job search so much easier! I was able to filter jobs based on my skills, and I found a perfect fit within a week. The user interface is intuitive, and I love how I can track my applications seamlessly."
-    },
-    {
-      "name": "Tanvir Ahamed",
-      "role": "Marketing Manager",
-      "image": "https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg",
-      "rating": 5,
-      "date": "10 October 2024",
-      "review": "I’ve tried a lot of job search platforms, but JobSphere stands out. The tailored recommendations were spot on, and I appreciated the variety of job listings from top companies. The blog section is also a great resource for upgrading my skills."
-    },
-    {
-      "name": "Rafizul Islam.",
-      "role": "Data Scientist",
-      "image": "https://i.ibb.co.com/FH7Yhb6/Rafizul.jpg",
-      "rating": 4,
-      "date": "11 October 2024",
-      "review": "JobSphere’s dynamic search filters helped me land my dream role. The platform's clean design and easy navigation made the entire process smooth. My only suggestion would be to add more insights on the hiring trends."
-    },
-    {
-      "name": "Shohidul Islam",
-      "role": "UX Designer",
-      "image": "https://i.ibb.co.com/Ct6mM6L/Sahidul.jpg",
-      "rating": 5,
-      "date": "11 October 2024",
-      "review": "I found the user experience on JobSphere exceptional. As a designer myself, I appreciate how visually appealing and easy to navigate the platform is. I highly recommend it to anyone looking for new job opportunities."
-    },
-    {
-      "name": "Shamim Hossain",
-      "role": "Marketing Manager",
-      "image": "https://i.ibb.co.com/gz7jjtF/Shamim.jpg",
-      "rating": 5,
-      "date": "12 October 2024",
-      "review": "I’ve tried a lot of job search platforms, but JobSphere stands out. The tailored recommendations were spot on, and I appreciated the variety of job listings from top companies. The blog section is also a great resource for upgrading my skills."
-    },
-    {
-      "name": "Tanvir Jubayer",
-      "role": "Product Manager",
-      "image": "https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg",
-      "rating": 4,
-      "date": "12 October 2024",
-      "review": "JobSphere offers a great range of job listings from top companies. The platform is quite user-friendly, but I think adding more real-time job alerts would be beneficial for staying updated."
-    }
-  ]
-
-
-
   return (
-    <div className='mx-4 my-10 md:m-16'>
-      <h1 className='text-3xl font-bold text-center mb-8 md:mt-20 underline'>Users Reviews</h1>
-      {/* Reviews Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 justify-center md:gap-8 mx-auto items-center">
-        {Array.isArray(userReviews) && userReviews.length > 0 ? (
-          userReviews.slice(0, 4).map((reviews, index) => <ReviewsCard key={index} reviews={reviews} />)
-        ) : (
-          <p>No Data found</p>
-        )}
+    <section className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-extrabold text-center text-gray-900">What Our Users Say</h2>
+        <p className="text-center text-gray-600 mt-2 mb-8">Feedback from job seekers and companies that use Job Sphere</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Review Card */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <div className="flex items-center space-x-4 mb-4">
+              <img className="w-12 h-12 rounded-full" src="/path-to-user-photo.jpg" alt="User Profile" />
+              <div>
+                <h4 className="text-xl font-bold text-gray-900">John Doe</h4>
+                <p className="text-gray-600 text-sm">Software Engineer</p>
+              </div>
+            </div>
+            <div className="flex items-center mb-4">
+              {/* Star Rating */}
+              <span className="flex items-center">
+                <svg className="w-5 h-5 text-yellow-400" fill="currentColor">...</svg>
+                <svg className="w-5 h-5 text-yellow-400" fill="currentColor">...</svg>
+                <svg className="w-5 h-5 text-yellow-400" fill="currentColor">...</svg>
+                <svg className="w-5 h-5 text-yellow-400" fill="currentColor">...</svg>
+                <svg className="w-5 h-5 text-gray-300" fill="currentColor">...</svg>
+              </span>
+              <p className="ml-2 text-gray-600 text-sm">4/5</p>
+            </div>
+            <p className="text-gray-700 mb-4">
+              "Job Sphere has completely changed the way I search for jobs. I found my current position within a week!"
+            </p>
+            <span className="text-gray-500 text-sm">Posted on Oct 10, 2024</span>
+          </div>
+
+          {/* Add more review cards here */}
+        </div>
+
+        <div className="text-center mt-8">
+          <button className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Submit Your Review</button>
+        </div>
       </div>
-      <div className="flex justify-center mt-4">
-        <button className="bg-sky-500 btn hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded-lg w-auto">
-          <Link href={`/usersReview`}>View All Reviews</Link>
-        </button>
-      </div>
-    </div>
+    </section>
+
   );
 };
 
