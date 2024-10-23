@@ -21,7 +21,7 @@ const BlogPage = () => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/api/?search=${search}&page=${page}&limit=9`
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/blogs/api/?search=${search}&page=${page}&limit=6`
           );
           
         setBlogs(data.blogs);
@@ -29,7 +29,7 @@ const BlogPage = () => {
         setLoading(false);
       } catch (error) {
         // console.error("Error fetching data: ", error);
-        // setError(error?.message);
+        setError("Error fetching data.");
         setLoading(false);
       }
     };
