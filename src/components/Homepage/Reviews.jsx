@@ -6,8 +6,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 // import required modules
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 
 const Reviews = () => {
   const reviews = [
@@ -43,51 +45,25 @@ const Reviews = () => {
       review:
         'This course and trainer are so good. I am so appreciative of doing this course.',
     },
-    {
-      id: 5,
-      name: 'Shamim Ahmed',
-      image: 'https://via.placeholder.com/50', // Replace with actual image URL
-      rating: 5,
-      review:
-        'This course and trainer are so good. I am so appreciative of doing this course.',
-    },
-    {
-      id: 3,
-      name: 'Shamim Ahmed',
-      image: 'https://via.placeholder.com/50', // Replace with actual image URL
-      rating: 5,
-      review:
-        'This course and trainer are so good. I am so appreciative of doing this course.',
-    },
-    {
-      id: 6,
-      name: 'Shamim Ahmed',
-      image: 'https://via.placeholder.com/50', // Replace with actual image URL
-      rating: 5,
-      review:
-        'This course and trainer are so good. I am so appreciative of doing this course.',
-    },
-    {
-      id: 7,
-      name: 'Shamim Ahmed',
-      image: 'https://via.placeholder.com/50', // Replace with actual image URL
-      rating: 5,
-      review:
-        'This course and trainer are so good. I am so appreciative of doing this course.',
-    },
   ];
 
   return (
-    <section className="bg-gray-50 py-12">
+    <section className="bg-gray-50 py-12  ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-extrabold text-center text-gray-900">Reviews</h2>
-        <p className="text-center text-gray-600 mt-2 mb-8">What Client Says</p>
+        <p className="text-center text-gray-900 mt-2 mb-8">What Client Says</p>
         <Swiper
           slidesPerView={1}
           spaceBetween={20}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
           pagination={{
             clickable: true,
           }}
+        
+
           breakpoints={{
             640: {
               slidesPerView: 1,
@@ -98,49 +74,38 @@ const Reviews = () => {
               spaceBetween: 40,
             },
           }}
-          modules={[Pagination]}
-          className="mySwiper"
+          modules={[Pagination, Autoplay]}
+          className="mySwiper  " // Ensure the Swiper container is positioned relative
         >
           {reviews.map((review) => (
             <SwiperSlide key={review.id}>
-              <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center">
-                <svg
-                  className="w-8 h-8 text-blue-500 mb-4"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10.293 2.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 10H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <p className="text-gray-700 mb-4">{review.review}</p>
-                <img
-                  className="w-12 h-12 rounded-full mb-4"
-                  src={review.image}
-                  alt={review.name}
-                />
-                <h4 className="text-lg font-bold text-gray-900">{review.name}</h4>
-                <div className="flex justify-center mt-2">
-                  {Array(review.rating)
-                    .fill()
-                    .map((_, index) => (
-                      <svg
-                        key={index}
-                        className="w-5 h-5 text-yellow-400"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.518 4.674a1 1 0 00.95.69h4.905c.969 0 1.371 1.24.588 1.81l-3.976 2.89a1 1 0 00-.364 1.118l1.518 4.674c.3.921-.755 1.688-1.539 1.118l-3.976-2.89a1 1 0 00-1.176 0l-3.976 2.89c-.783.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.364-1.118L2.092 9.1c-.783-.57-.38-1.81.588-1.81h4.905a1 1 0 00.95-.69l1.518-4.674z" />
-                      </svg>
-                    ))}
+              <div className="container flex flex-col w-full max-w-lg  p-6 mx-auto  rounded-lg shadow-lg  bg-accent text-gray-900 min-h-72">
+                <div className="flex justify-between p-4">
+                  <div className="flex space-x-4">
+                    <div>
+                      <img src={review.image} alt={review.name} className="object-cover w-12 h-12 rounded-full " />
+                    </div>
+                    <div>
+                      <h4 className="font-bold">{review.name}</h4>
+                      <span className="text-xs text-gray-400">2 days ago</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2 text-yellow-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-5 h-5 fill-current">
+                      <path d="M494,198.671a40.536,40.536,0,0,0-32.174-27.592L345.917,152.242,292.185,47.828a40.7,40.7,0,0,0-72.37,0L166.083,152.242,50.176,171.079a40.7,40.7,0,0,0-22.364,68.827l82.7,83.368-17.9,116.055a40.672,40.672,0,0,0,58.548,42.538L256,428.977l104.843,52.89a40.69,40.69,0,0,0,58.548-42.538l-17.9-116.055,82.7-83.368A40.538,40.538,0,0,0,494,198.671Zm-32.53,18.7L367.4,312.2l20.364,132.01a8.671,8.671,0,0,1-12.509,9.088L256,393.136,136.744,453.3a8.671,8.671,0,0,1-12.509-9.088L144.6,312.2,50.531,217.37a8.7,8.7,0,0,1,4.778-14.706L187.15,181.238,248.269,62.471a8.694,8.694,0,0,1,15.462,0L324.85,181.238l131.841,21.426A8.7,8.7,0,0,1,461.469,217.37Z"></path>
+                    </svg>
+                    <span className="text-xl font-bold">{review.rating}</span>
+                  </div>
+                </div>
+                <div className="p-4 space-y-2 text-sm text-gray-900">
+                  <p>{review.review}</p>
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
+
     </section>
   );
 };
