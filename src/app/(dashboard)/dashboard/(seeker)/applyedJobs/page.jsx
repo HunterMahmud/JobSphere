@@ -310,6 +310,14 @@ const ApplyedJobs = () => {
                         </div>
                       </Modal>
                     }
+                    {
+                      status === 'Selected' &&
+                      <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                        <div>
+                          {job?.offerLetter} <a target='_blank' href={job?.offerLetterLink} className='text-hover font-medium'>Link</a>
+                        </div>
+                      </Modal>
+                    }
                     {/* modal for interview  */}
                     {
                       status === 'Interview' &&

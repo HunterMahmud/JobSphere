@@ -80,16 +80,16 @@ const JobCard = ({ job }) => {
 
                 <div className='flex gap-3'>
                     <div className="">
-                        <Image className='border rounded-full' src={compnayInforamtion?.companyInfo?.logo} width={60} height={50} />
+                        <Image className='border rounded-full' alt={compnayInforamtion?.companyInfo?.companyName || 'Company Logo'} src={compnayInforamtion?.companyInfo?.logo} width={60} height={50} />
                     </div>
-                    <p className='flex-1 flex flex-col gap-1'>
+                    <div className='flex-1 flex flex-col gap-1'>
                         <h1 className='text-xl font-semibold '>
                             {jobTitle?.slice(0, 20)}{jobTitle?.length > 20 && '...'}
                         </h1>
                         <p className='text-start'>
                             {compnayInforamtion?.companyInfo?.companyName?.slice(0, 30)}{compnayInforamtion?.companyInfo?.companyName?.length > 20 && '...'}
                         </p>
-                    </p>
+                    </div>
                 </div>
 
                 <button disabled={isLoading} onClick={handleSave} className={`${isLoading && 'cursor-not-allowed'} text-[22px] cursor-pointer mb-4`}>
