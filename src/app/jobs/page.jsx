@@ -15,13 +15,15 @@ const JobPage = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [minExperience, setMinExperience] = useState("");
+  const [maxExperience, setMaxExperience] = useState("");
 
   useEffect(() => {
     const fetchJobsCitiesSkills = async (page = 1) => {
       setLoading(true);
       try {
         const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}&city=${city}&skills=${skill}&page=${page}&limit=6`
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}&city=${city}&skills=${skill}&minExperience=${minExperience}&maxExperience=${maxExperience}&page=${page}&limit=6`
         );
 
         // Set jobs from the response
@@ -44,7 +46,7 @@ const JobPage = () => {
     };
 
     fetchJobsCitiesSkills(currentPage);
-  }, [search, city, skill, currentPage]);
+  }, [search, city, skill, minExperience, maxExperience, currentPage]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -73,12 +75,25 @@ const JobPage = () => {
     setSkill(e.target.value); // Handle skill change
   };
 
+    // New Handlers for Experience Inputs
+    const handleMinExperienceChange = (e) => {
+      setCurrentPage(1);
+      setMinExperience(e.target.value);
+    };
+  
+    const handleMaxExperienceChange = (e) => {
+      setCurrentPage(1);
+      setMaxExperience(e.target.value);
+    };
+
   return (
     <div className="w-11/12 md:w-5/6 lg:w-4/5 mx-auto my-12">
       {/* Search Function */}
       <div className="flex justify-center items-center gap-4 flex-wrap mx-auto my-8">
-        {/* Search Input */}
-        <div className="flex items-center bg-white w-[300px] rounded-l-lg border-2 border-sky-500 my-8 p-2">
+  
+        <div className="flex justify-center items-center gap-4 flex-wrap mx-auto">
+          {/* Search Input */}
+        <div className="flex items-center bg-white w-[250px] rounded-lg border-2 border-sky-500  p-2">
           <FaSearch className="ml-3 text-gray-400" />
           <input
             type="text"
@@ -88,8 +103,32 @@ const JobPage = () => {
           />
         </div>
 
-        {/* City Filter Dropdown */}
-        <div className="bg-white rounded-lg border-2 border-sky-500 w-[300px] p-2">
+        {/* Min Experience Input */}
+        <div className="flex items-center bg-white  w-[250px]  rounded-lg border-2 border-sky-500  p-2">
+          <input
+            type="number"
+            value={minExperience}
+            onChange={handleMinExperienceChange}
+            placeholder="Min Experience"
+            className="p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
+          />
+        </div>
+
+        {/* Max Experience Input */}
+        <div className="flex items-center bg-white  w-[250px]  rounded-lg border-2 border-sky-500  p-2">
+          <input
+            type="number"
+            value={maxExperience}
+            onChange={handleMaxExperienceChange}
+            placeholder="Max Experience"
+            className="p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
+          />
+        </div>
+        </div>
+
+    <div className="flex justify-center items-center gap-4 flex-wrap mx-auto">
+      {/* City Filter Dropdown */}
+      <div className="bg-white  w-[250px]  rounded-lg border-2 border-sky-500 p-2">
           <select
             value={city}
             onChange={handleCityChange}
@@ -105,7 +144,7 @@ const JobPage = () => {
         </div>
 
         {/* Skills Filter Dropdown */}
-        <div className="bg-white rounded-lg border-2 border-sky-500 w-[300px] p-2">
+        <div className="bg-white  w-[250px]  rounded-lg border-2 border-sky-500 p-2">
           <select
             value={skill}
             onChange={handleSkillChange} // Handle skill change
@@ -119,6 +158,8 @@ const JobPage = () => {
             ))}
           </select>
         </div>
+    </div>
+                
       </div>
 
       {/* Job Cards */}

@@ -9,6 +9,8 @@ export const GET = async (request) => {
   const search = searchParams.get("search") || "";
   const city = searchParams.get("city") || "";
   const skills = searchParams.get("skills") || ""; // Get skills from query parameters
+  const minExperience = parseInt(searchParams.get("minExperience")) || 0; // Default to 0 if not provided
+  const maxExperience = parseInt(searchParams.get("maxExperience")) || Infinity; // Default to Infinity if not provided
   const page = parseInt(searchParams.get("page")) || 1;
   const limit = parseInt(searchParams.get("limit")) || 6;
   const skip = (page - 1) * limit;
@@ -59,6 +61,12 @@ export const GET = async (request) => {
         skills: skill, // Directly match the skills field with the skill
       }));
     }
+
+    // Filter based on experience (minExperience and maxExperience)
+    query.experience = {
+      $gte: minExperience, // Greater than or equal to minExperience
+      $lte: maxExperience, // Less than or equal to maxExperience
+    };
 
     // Filter based on deadline (future jobs)
     query.$expr = {
