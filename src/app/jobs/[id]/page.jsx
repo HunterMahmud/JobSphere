@@ -448,7 +448,7 @@ const JobDetails = ({ params }) => {
                 <AiOutlineClose size={24} />
               </button>
 
-              <h2 className="text-xl font-bold mb-4">Share this blog</h2>
+              <h2 className="text-xl font-bold mb-4">Share this Job</h2>
 
               <div className="flex space-x-4">
                 <div className="hover:bg-accent p-2 duration-200 rounded-lg">

@@ -75,7 +75,7 @@ const JobCard = ({ job }) => {
     }
 
     return (
-        <div className="border w-full max-w-sm px-3 py-4 bg-[url('https://i.ibb.co/hch8Kbm/ix-GTl1715763309.png')] rounded-md shadow-md hover:shadow-xl hover:scale-[1.01] transition-all space-y-2 text-black">
+        <div className="border w-full px-3 py-4 bg-[url('https://i.ibb.co/hch8Kbm/ix-GTl1715763309.png')] rounded-md shadow-md hover:shadow-xl hover:scale-[1.01] transition-all space-y-2 text-black">
             <div className='flex justify-between'>
 
                 <div className='flex gap-3'>
@@ -121,7 +121,7 @@ const JobCard = ({ job }) => {
 
             <div className="flex justify-between items-center">
                 <p >
-                    Applicants Number: {applicantsNumber}
+                    Applicants: {applicantsNumber}
                 </p>
 
                 <div className="flex items-center">

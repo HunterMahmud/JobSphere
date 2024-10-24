@@ -51,7 +51,7 @@ const DetailedCompanyPage = ({ params }) => {
             {company?.contactInformation?.website && (
               <a
                 href={company?.contactInformation?.website}
-                className="flex justify-center items-center w-1/2 mx-auto bg-secondary hover:bg-green-600 text-white mt-4 px-6 py-3 rounded-md"
+                className="flex justify-center items-center w-1/2 mx-auto bg-secondary hover:bg-accent text-white mt-4 px-6 py-3 rounded-md"
                 target="_blank"
                 rel="noopener noreferrer"
               >
