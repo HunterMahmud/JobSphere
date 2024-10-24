@@ -73,7 +73,7 @@ const RegisterRecruiter = () => {
         cityName,
         companyName,
         contactNumber,
-        companyLogoUrl: data?.data?.display_url,
+        userIMG: data?.data?.display_url,
         websiteURL,
         businessDescription,
         role: "recruiter",
@@ -274,7 +274,7 @@ const RegisterRecruiter = () => {
                 htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Company Image/Logo:
+                Profile Photo:
               </label>
               <input
                 {...register("image", {
