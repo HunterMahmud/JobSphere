@@ -106,8 +106,8 @@ const JobPage = () => {
         isOpen={isDrawerOpen}
         closeDrawer={toggleDrawer}
       />
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="md:flex hidden flex-col items-center gap-6 w-full md:w-1/5">
+      <div className="flex flex-col  md:flex-row gap-6">
+        <div className="md:flex hidden bg-[#f2f2f2] p-6 rounded-md flex-col items-center gap-6 w-full md:w-1/5">
           {/* Experience Range Slider */}
           <div className="flex flex-col items-center gap-4 w-full">
             <div className="text-lg md:text-xl font-bold">Experience Range</div>
@@ -140,7 +140,7 @@ const JobPage = () => {
                     experienceRange[1],
                   ])
                 }
-                className="w-16 text-center bg-white border-2 border-primary rounded-md"
+                className="w-16 text-center bg-white border-2 border-accent rounded-md"
               />
               <input
                 type="number"
@@ -153,12 +153,12 @@ const JobPage = () => {
                     parseInt(e.target.value),
                   ])
                 }
-                className="w-16 text-center bg-white border-2 border-primary rounded-md"
+                className="w-16 text-center bg-white border-2 border-accent rounded-md"
               />
             </div>
 
             {/* City Filter Dropdown */}
-            <div className="bg-white w-full my-4 rounded-lg border-2 border-primary p-2">
+            <div className="bg-white w-full my-4 rounded-lg border-2 border-accent p-2">
               <select
                 value={city}
                 onChange={handleCityChange}
@@ -174,7 +174,7 @@ const JobPage = () => {
             </div>
 
             {/* Skills Filter Dropdown */}
-            <div className="bg-white w-full rounded-lg border-2 border-primary p-2">
+            <div className="bg-white w-full rounded-lg border-2 border-accent p-2">
               <select
                 value={skill}
                 onChange={handleSkillChange}
@@ -193,7 +193,7 @@ const JobPage = () => {
 
         <div className="flex-1">
           {/* Search Input */}
-          <div className="flex items-center bg-white w-full mb-6 rounded-lg border-2 border-primary p-2">
+          <div className="flex items-center bg-white w-full mb-6 rounded-lg border-2 border-accent p-2">
             <FaSearch className="ml-3 text-gray-400" />
             <input
               type="text"
@@ -233,7 +233,7 @@ const JobPage = () => {
               key={index + 1}
               onClick={() => setCurrentPage(index + 1)}
               className={`btn px-3 py-2 border-2 text-xs lg:text-lg font-semibold hover:bg-hover  rounded-lg  ${
-                currentPage === index + 1 ? "text-primary bg-white border hover:text-white border-primary" : "bg-primary text-white"
+                currentPage === index + 1 ? "text-primary bg-white border hover:text-white border-accent" : "bg-primary text-white"
               }`}
             >
               {index + 1}
@@ -366,7 +366,7 @@ export default JobPage;
 //             onChange={(e) =>
 //               setExperienceRange([parseInt(e.target.value), experienceRange[1]])
 //             }
-//             className="w-16 text-center bg-white border-2 border-primary rounded-md"
+//             className="w-16 text-center bg-white border-2 border-accent rounded-md"
 //           />
 //           <input
 //             type="number"
@@ -376,12 +376,12 @@ export default JobPage;
 //             onChange={(e) =>
 //               setExperienceRange([experienceRange[0], parseInt(e.target.value)])
 //             }
-//             className="w-16 text-center bg-white border-2 border-primary rounded-md"
+//             className="w-16 text-center bg-white border-2 border-accent rounded-md"
 //           />
 //         </div>
 
 //         {/* City Filter Dropdown */}
-//         <div className="bg-white w-full rounded-lg border-2 border-primary p-2">
+//         <div className="bg-white w-full rounded-lg border-2 border-accent p-2">
 //           <select
 //             value={city}
 //             onChange={handleCityChange}
@@ -397,7 +397,7 @@ export default JobPage;
 //         </div>
 
 //         {/* Skills Filter Dropdown */}
-//         <div className="bg-white w-full rounded-lg border-2 border-primary p-2">
+//         <div className="bg-white w-full rounded-lg border-2 border-accent p-2">
 //           <select
 //             value={skill}
 //             onChange={handleSkillChange}
@@ -416,7 +416,7 @@ export default JobPage;
 
 //     <div className="flex-1">
 //       {/* Search Input */}
-//       <div className="flex items-center bg-white w-full mb-6 rounded-lg border-2 border-primary p-2">
+//       <div className="flex items-center bg-white w-full mb-6 rounded-lg border-2 border-accent p-2">
 //         <FaSearch className="ml-3 text-gray-400" />
 //         <input
 //           type="text"
@@ -446,7 +446,7 @@ export default JobPage;
 //     <button
 //       onClick={handlePreviousPage}
 //       disabled={currentPage === 1}
-//       className="btn px-4 py-2 text-xs md:text-sm lg:text-lg font-semibold border-2 border-primary bg-sky-300 hover:bg-sky-400 rounded-lg"
+//       className="btn px-4 py-2 text-xs md:text-sm lg:text-lg font-semibold border-2 border-accent bg-sky-300 hover:bg-sky-400 rounded-lg"
 //     >
 //       Previous
 //     </button>
@@ -455,7 +455,7 @@ export default JobPage;
 //         <button
 //           key={index + 1}
 //           onClick={() => setCurrentPage(index + 1)}
-//           className={`btn px-4 py-2 text-xs md:text-sm lg:text-lg font-semibold border-2 border-primary bg-sky-300 hover:bg-sky-400 rounded-lg ${
+//           className={`btn px-4 py-2 text-xs md:text-sm lg:text-lg font-semibold border-2 border-accent bg-sky-300 hover:bg-sky-400 rounded-lg ${
 //             currentPage === index + 1 ? "bg-primary text-white" : ""
 //           }`}
 //         >
@@ -466,7 +466,7 @@ export default JobPage;
 //     <button
 //       onClick={handleNextPage}
 //       disabled={currentPage === totalPages}
-//       className="btn px-4 py-2 text-xs md:text-sm lg:text-lg font-semibold border-2 border-primary bg-sky-300 hover:bg-sky-400 rounded-lg"
+//       className="btn px-4 py-2 text-xs md:text-sm lg:text-lg font-semibold border-2 border-accent bg-sky-300 hover:bg-sky-400 rounded-lg"
 //     >
 //       Next
 //     </button>

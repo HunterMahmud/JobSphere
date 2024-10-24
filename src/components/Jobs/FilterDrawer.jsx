@@ -10,7 +10,7 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      <div className={`fixed left-0 top-0 w-3/4 md:w-1/4 h-full bg-white p-6 transition-transform ${isOpen ? "transform-none" : "-translate-x-full"}`}>
+      <div className={`fixed bg-[#f2f2f2]  left-0 top-0 w-3/4 md:w-1/4 h-full p-6 transition-transform ${isOpen ? "transform-none" : "-translate-x-full"}`}>
         <h2 className="text-xl md:text-xl font-bold my-4">Filters</h2>
 
         {/* Experience Range Slider */}
@@ -43,7 +43,7 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
               onChange={(e) =>
                 setExperienceRange([parseInt(e.target.value), experienceRange[1]])
               }
-              className="w-16 text-center bg-white border-2 border-primary rounded-md"
+              className="w-16 text-center bg-white border-2 border-accent rounded-md"
             />
             <input
               type="number"
@@ -53,13 +53,13 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
               onChange={(e) =>
                 setExperienceRange([experienceRange[0], parseInt(e.target.value)])
               }
-              className="w-16 text-center bg-white border-2 border-primary rounded-md"
+              className="w-16 text-center bg-white border-2 border-accent rounded-md"
             />
           </div>
         </div>
 
         {/* City Filter Dropdown */}
-        <div className="bg-white w-full rounded-lg border-2 border-primary p-2 mb-4">
+        <div className="bg-white w-full rounded-lg border-2 border-accent p-2 mb-4">
           <select
             value={city}
             onChange={handleCityChange}
@@ -75,7 +75,7 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
         </div>
 
         {/* Skills Filter Dropdown */}
-        <div className="bg-white w-full rounded-lg border-2 border-primary p-2">
+        <div className="bg-white w-full rounded-lg border-2 border-accent p-2">
           <select
             value={skill}
             onChange={handleSkillChange}
