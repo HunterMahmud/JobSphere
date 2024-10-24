@@ -14,7 +14,7 @@ const RecentJobs = () => {
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?limit=6`
         );
-        console.log(data);
+        // console.log(data);
         setJobs(data.jobs);
         setLoading(false);
       } catch (error) {
