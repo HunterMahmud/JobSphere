@@ -43,7 +43,7 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
               onChange={(e) =>
                 setExperienceRange([parseInt(e.target.value), experienceRange[1]])
               }
-              className="w-16 text-center bg-white border-2 border-primary rounded-md"
+              className="w-16 text-center bg-white border-2 border-accent rounded-md"
             />
             <input
               type="number"
@@ -53,13 +53,13 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
               onChange={(e) =>
                 setExperienceRange([experienceRange[0], parseInt(e.target.value)])
               }
-              className="w-16 text-center bg-white border-2 border-primary rounded-md"
+              className="w-16 text-center bg-white border-2 border-accent rounded-md"
             />
           </div>
         </div>
 
         {/* City Filter Dropdown */}
-        <div className="bg-white w-full rounded-lg border-2 border-primary p-2 mb-4">
+        <div className="bg-white w-full rounded-lg border-2 border-accent p-2 mb-4">
           <select
             value={city}
             onChange={handleCityChange}
@@ -75,7 +75,7 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
         </div>
 
         {/* Skills Filter Dropdown */}
-        <div className="bg-white w-full rounded-lg border-2 border-primary p-2">
+        <div className="bg-white w-full rounded-lg border-2 border-accent p-2">
           <select
             value={skill}
             onChange={handleSkillChange}
