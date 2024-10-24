@@ -36,11 +36,11 @@ const ProfilePage = ({ params }) => {
 
     return (
         <div className="min-h-screen mt-5 custom-container">
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col md:flex-row w-full">
                 {/* Profile Header */}
                 {profileOverview && (
-                    <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
-                        <div className="flex flex-1 items-center space-x-4">
+                    <div className="bg-white shadow-md rounded-lg p-4 mb-6 border w-full">
+                        <div className="flex flex- items-center space-x-4">
                             <Image
                                 src={profileOverview?.profilePicture || "https://i1.sndcdn.com/artworks-000189080723-ez2uad-t500x500.jpg"}
                                 alt="Profile"
@@ -65,11 +65,11 @@ const ProfilePage = ({ params }) => {
 
                 {/* Contact Information */}
                 {(contactInformation?.email || contactInformation?.phoneNumber || socialLinks) && (
-                    <div className="bg-white md:w-[300px] shadow-md rounded-lg p-4 mb-6 border">
+                    <div className="bg-white shadow-md rounded-lg p-4 mb-6 border w-full">
                         <h3 className="text-xl font-semibold mb-2">Contact Information</h3>
                         {contactInformation?.email && <p className="flex items-center  gap-2"><p><MdOutlineMail /> </p> {contactInformation?.email}</p>}
                         {contactInformation?.phoneNumber && <p className="flex items-center  gap-2"><p><FaPhoneAlt /> </p> {contactInformation?.phoneNumber}</p>}
-                        <div className="flex justify-center items-center mt-2 gap-3">
+                        <div className="flex justify-center md:justify-start items-center mt-2 gap-3">
                             {contactInformation?.socialLinks?.linkedin && <p><a target="_blank" href={contactInformation?.socialLinks?.linkedin} className="text-xl hover:text-primary"><FaLinkedinIn /> </a></p>}
                             {contactInformation?.socialLinks?.github && <p><a target="_blank" href={contactInformation?.socialLinks?.github} className="text-xl hover:text-primary"><IoLogoGithub /> </a></p>}
                             {contactInformation?.socialLinks?.portfolio && <p> <a target="_blank" href={contactInformation?.socialLinks?.portfolio} className="text-xl hover:text-primary"><MdOutlineBrowserUpdated /></a></p>}
