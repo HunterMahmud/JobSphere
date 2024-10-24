@@ -3,10 +3,16 @@
 import React from 'react';
 import { useState } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
 
 const SearchJobs = () => {
-    const [location, setLocation] = useState("Location");
+    const [location, setLocation] = useState("");
     const [jobTitle, setJobTitle] = useState("");
+    const router = useRouter();
+
+    const handleSubmit = ()=>{
+        router.push(`/jobs?search=${jobTitle}&city=${location}`)
+    }
 
     return (
         <div>
@@ -31,14 +37,14 @@ const SearchJobs = () => {
                 onChange={(e) => setLocation(e.target.value)}
               >
                 <option disabled value="">Select Location</option>
-                <option value="New York, USA">New York, USA</option>
+                <option value="Rajshahi">Rajshahi</option>
                 <option value="London, UK">London, UK</option>
                 <option value="Tokyo, Japan">Tokyo, Japan</option>
               </select>
             </div> 
 
           {/* Search Button  */}
-          <button className="bg-primary hover:bg-hover text-white font-semibold py-2 px-6 rounded-r-lg w-auto md:w-1/2">
+          <button onClick={handleSubmit} className="bg-primary hover:bg-hover text-white font-semibold py-2 px-6 rounded-r-lg w-auto md:w-1/2">
               Search
             </button> 
           </div> 
