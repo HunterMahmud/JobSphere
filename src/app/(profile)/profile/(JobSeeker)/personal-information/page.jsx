@@ -51,14 +51,14 @@ const PersonalInformation = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!contactInformation && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!contactInformation && 'hidden'}`} /></>}
             </button>
             <div>
-                <h3 className="text-xl text-center font-semibold">Personal Information</h3>
+                <h3 className="text-xl md:text-center font-semibold mb-5">Personal Information</h3>
                 {
                     edit ?
-                        <form onSubmit={handleSubmit(handleSave)} className="mt-10 grid grid-cols-1 justify-center items-center gap-5">
+                        <form onSubmit={handleSubmit(handleSave)} className="mt-10 grid grid-cols-1 justify-center items-center md:gap-5">
                             <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5">
                                 {/* Email */}
                                 <div>
@@ -129,7 +129,7 @@ const PersonalInformation = () => {
                                     />
                                 </div>
                             </div>
-                            <div className='col-span-2'>
+                            <div className='col-span-2 mt-5 md:mt-0'>
                                 <div className=' flex justify-end items-end'>
                                     <button
                                         type="submit"
@@ -144,38 +144,38 @@ const PersonalInformation = () => {
                         <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                             {
                                 contactInformation ? <>
-                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                        <p><strong>Email:</strong> {contactInformation?.email}</p>
-                                        {contactInformation?.phoneNumber && <p><strong>Phone Number:</strong> {contactInformation?.phoneNumber}</p>}
-                                        <div className="mt-4">
-                                            {contactInformation?.socialLinks?.linkedin &&
-                                                <a
-                                                    href={contactInformation?.socialLinks?.linkedin}
-                                                    className="text-blue-500 hover:underline"
-                                                >
-                                                    LinkedIn
-                                                </a>
-                                            }
-                                            {" "}
-                                            |{" "}
-                                            {contactInformation?.socialLinks?.github &&
-                                                <a
-                                                    href={contactInformation?.socialLinks?.github}
-                                                    className="text-blue-500 hover:underline"
-                                                >
-                                                    GitHub
-                                                </a>
-                                            }{" "}
-                                            |{" "}
-
-                                            {contactInformation?.socialLinks?.portfolio &&
-                                                <a
-                                                    href={contactInformation?.socialLinks?.portfolio}
-                                                    className="text-blue-500 hover:underline"
-                                                >
-                                                    Portfolio
-                                                </a>
-                                            }
+                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto bg-white'>
+                                        <div>
+                                            <p><strong>Email:</strong> {contactInformation?.email}</p>
+                                            {contactInformation?.phoneNumber && <p><strong>Phone Number:</strong> {contactInformation?.phoneNumber}</p>}
+                                            <div className="mt-2 flex justify-center gap-2">
+                                                {contactInformation?.socialLinks?.linkedin &&
+                                                    <a
+                                                        href={contactInformation?.socialLinks?.linkedin}
+                                                        className="text-blue-500 hover:underline"
+                                                    >
+                                                        LinkedIn
+                                                    </a>
+                                                }
+                                                {contactInformation?.socialLinks?.github && <span>|</span>}
+                                                {contactInformation?.socialLinks?.github &&
+                                                    <a
+                                                        href={contactInformation?.socialLinks?.github}
+                                                        className="text-blue-500 hover:underline"
+                                                    >
+                                                        GitHub
+                                                    </a>
+                                                }
+                                                {contactInformation?.socialLinks?.portfolio && <span>|</span>}
+                                                {contactInformation?.socialLinks?.portfolio &&
+                                                    <a
+                                                        href={contactInformation?.socialLinks?.portfolio}
+                                                        className="text-blue-500 hover:underline"
+                                                    >
+                                                        Portfolio
+                                                    </a>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />

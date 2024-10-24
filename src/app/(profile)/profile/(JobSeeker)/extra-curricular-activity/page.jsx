@@ -12,7 +12,7 @@ import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const ExtraCurricularActivity = () => {
     const { data: session } = useSession();
-    const {seekerInfo} = useSeekerInfo();
+    const { seekerInfo } = useSeekerInfo();
     const [edit, setEdit] = useState(false);
     const [extraCurricularActivities, setExtraCurricularActivities] = useState(seekerInfo?.extraCurricularActivities);
 
@@ -60,11 +60,11 @@ const ExtraCurricularActivity = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!extraCurricularActivities && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!extraCurricularActivities && 'hidden'}`} /></>}
             </button>
             <div>
-                <h3 className="text-xl text-center font-semibold mb-2">Extra-Curricular Activities</h3>
+                <h3 className="text-xl md:text-center font-semibold mb-5">Extra-Curricular <span className='hidden md:inline'>Activities</span></h3>
                 {
                     edit ?
                         <form onSubmit={handleSave}>
@@ -114,7 +114,7 @@ const ExtraCurricularActivity = () => {
                                 <button
                                     type="button"
                                     onClick={addActivity}
-                                    className="bg-hoverColor flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
+                                    className="bg-primary flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
                                 >
                                     <IoMdAdd /> <span>Add Activity</span>
                                 </button>
@@ -123,7 +123,7 @@ const ExtraCurricularActivity = () => {
                                 <div className=' flex justify-end items-end'>
                                     <button
                                         type="submit"
-                                        className="bg-primary hover:bg-hoverColor px-5 rounded-md py-3 text-white"
+                                        className="bg-hover hover:bg-hoverColor px-5 rounded-md py-3 text-white"
                                     >
                                         Save
                                     </button>
@@ -131,10 +131,10 @@ const ExtraCurricularActivity = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                        <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                             {
                                 extraCurricularActivities ? <>
-                                    <div className='flex flex-col gap-5 w-full max-w-2xl mx-auto border bg-white p-4'>
+                                    <div className='flex flex-col gap-5 w-full max-w-2xl mx-auto'>
                                         {extraCurricularActivities?.map((activity, index) => (
                                             <div key={index}>
                                                 <p><strong>Activity Name : </strong>{activity.activityName}</p>
