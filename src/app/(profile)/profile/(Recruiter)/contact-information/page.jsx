@@ -54,7 +54,7 @@ const ContactInformation = () => {
                 <h3 className="text-start md:text-center text-xl font-semibold mb-5">Contact Information</h3>
                 {
                     edit ?
-                        <form onSubmit={handleSubmit(handleSave)} className="mt-10 grid grid-cols-1 justify-center items-center gap-5">
+                        <form onSubmit={handleSubmit(handleSave)} className="mt-5 grid grid-cols-1 justify-center items-center md:gap-5">
                             <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5 w-full">
                                 {/* Email */}
                                 <div>
@@ -128,7 +128,7 @@ const ContactInformation = () => {
                                 <div className=' flex justify-end items-end'>
                                     <button
                                         type="submit"
-                                        className="bg-primary hover:bg-hoverColor px-5 rounded-md py-3 text-white"
+                                        className="bg-primary hover:bg-hoverColor px-5 rounded-md py-3 text-white mt-5 md:mt-0"
                                     >
                                         Save
                                     </button>
@@ -139,7 +139,7 @@ const ContactInformation = () => {
                         <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border md:bg-white md:p-4'>
                             {
                                 contactInformation ? <>
-                                    <div className='flex flex-col justify-cente items-center w-full max-w-2xl mx-auto md:bg-white'>
+                                    <div className='flex flex-col justify-cente items-center w-full max-w-2xl mx-auto bg-white p-2 md:p-4'>
                                         <div className='space-y-1'>
                                             {contactInformation?.phone && <p><strong>Phone:</strong> {contactInformation?.phone}</p>}
                                             {contactInformation?.email && <p><strong>Email:</strong> {contactInformation?.email}</p>}
