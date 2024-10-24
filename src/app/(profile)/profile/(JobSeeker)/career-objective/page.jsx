@@ -41,8 +41,8 @@ const CareerObjective = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!careerObjective && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!careerObjective && 'hidden'}`} /></>}
             </button>
             <div>
                 <h3 className="text-xl md:text-center font-semibold">Career Objective</h3>
@@ -78,7 +78,7 @@ const CareerObjective = () => {
                         <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                             {
                                 careerObjective ? <>
-                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto bg-white'>
                                         <p>{careerObjective}</p>
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
