@@ -10,7 +10,7 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      <div className={`fixed left-0 top-0 w-3/4 md:w-1/4 h-full bg-white p-6 transition-transform ${isOpen ? "transform-none" : "-translate-x-full"}`}>
+      <div className={`fixed bg-[#f2f2f2]  left-0 top-0 w-3/4 md:w-1/4 h-full bg-white p-6 transition-transform ${isOpen ? "transform-none" : "-translate-x-full"}`}>
         <h2 className="text-xl md:text-xl font-bold my-4">Filters</h2>
 
         {/* Experience Range Slider */}

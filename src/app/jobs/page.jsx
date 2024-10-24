@@ -106,8 +106,8 @@ const JobPage = () => {
         isOpen={isDrawerOpen}
         closeDrawer={toggleDrawer}
       />
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="md:flex hidden flex-col items-center gap-6 w-full md:w-1/5">
+      <div className="flex flex-col  md:flex-row gap-6">
+        <div className="md:flex hidden bg-[#f2f2f2] p-6 rounded-md flex-col items-center gap-6 w-full md:w-1/5">
           {/* Experience Range Slider */}
           <div className="flex flex-col items-center gap-4 w-full">
             <div className="text-lg md:text-xl font-bold">Experience Range</div>

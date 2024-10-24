@@ -10,13 +10,13 @@ export const GET = async (request) => {
     const upvotedBlogs = await blogsCollection
       .find({})
       .sort({ upvotes: -1 }) // Sort by upvotes in descending order
-      .limit(6)
+      .limit(3)
       .toArray();
 
     let totalBlogs = upvotedBlogs.length;
 
     // If we have less than 6 blogs, fetch additional blogs sorted by most recent
-    if (totalBlogs < 6) {
+    if (totalBlogs < 3) {
       const additionalBlogs = await blogsCollection
         .find({
           _id: { $nin: upvotedBlogs.map((blog) => blog._id) }, // Exclude the already fetched upvoted blogs
