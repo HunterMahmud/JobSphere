@@ -1,8 +1,12 @@
+"use client"
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Image from "next/image";
 import { toast } from 'react-hot-toast';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const Reviews = () => {
   const {
@@ -14,6 +18,10 @@ const Reviews = () => {
   } = useForm();
   const [loading, setLoading] = useState(false);
   const watchRating = watch("rating");
+  const seasons =useSession()
+  const router = useRouter();
+   const User =seasons?.data?.user
+  
 
   // Handle form submission and save to database
   const onSubmit = async (data) => {
@@ -22,10 +30,21 @@ const Reviews = () => {
     const reviewData = {
       ...data,
       rating: parseInt(data?.rating),
+      photoURL:User?.image,
       reviewDateTime: new Date(),
       
     };
-// console.log(reviewData)
+    if (!User) {
+      Swal.fire({
+        position: "top",
+        icon: "info",
+        title: "Please,Login first",
+        showConfirmButton: false,
+        timer: 2000
+      });
+     router.push('/login');
+     return
+    }
     try {
       const response = await axios.post("/api/reviews", reviewData);
       if (response?.status === 200) {
