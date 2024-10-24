@@ -274,7 +274,7 @@ const RegisterRecruiter = () => {
                 htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Company Image/Logo:
+                Profile Photo:
               </label>
               <input
                 {...register("image", {
