@@ -236,7 +236,7 @@ const RegisterUser = () => {
                 htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-600"
               >
-                Select Image:
+                Profile Photo:
               </label>
               <input
                 {...register("image", {
