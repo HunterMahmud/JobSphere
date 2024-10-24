@@ -146,9 +146,9 @@ const ContactInformation = () => {
                                             {contactInformation?.website && <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>}
                                             {
                                                 contactInformation?.socialLinks &&
-                                                <div className="flex flex-col md:flex-row md:gap-5">
+                                                <div className="flex flex-col md:flex-row md:gap-3">
                                                     <strong>Social Links:</strong>
-                                                    <p className='flex gap-5'>
+                                                    <p className='flex gap-3'>
                                                         {contactInformation?.socialLinks?.linkedin && <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>}
                                                         {contactInformation?.socialLinks?.linkedin && contactInformation?.socialLinks?.twitter && <span >||</span>}
                                                         {contactInformation?.socialLinks?.twitter && <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>}

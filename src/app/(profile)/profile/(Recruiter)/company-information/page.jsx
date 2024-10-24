@@ -415,10 +415,10 @@ const CompanyInformation = () => {
                                         }
                                     </div>
                                     <div>
-                                        {companyInfo?.companyName && <h3 className="text-2xl font-bold">{companyInfo?.companyName}</h3>}
+                                        {companyInfo?.companyName && <h3 className="text-2xl font-bold text-center">{companyInfo?.companyName}</h3>}
                                         {companyInfo?.companyMission && <p className='text-center'>{companyInfo?.companyMission}</p>}
                                     </div>
-                                    <div className="mb-2">
+                                    <div className="my-2">
                                         {companyInfo?.companyType && <p><strong>Company Type:</strong> {companyInfo?.companyType}</p>}
                                         {companyInfo?.address && <p><strong>Address:</strong> {companyInfo?.address}, {companyInfo?.city}, {companyInfo?.country}</p>}
                                         {companyInfo?.foundedYear && <p><strong>Founded Year:</strong> {companyInfo?.foundedYear}</p>}
