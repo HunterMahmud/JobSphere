@@ -276,7 +276,7 @@ const CompanyInformation = () => {
     return (
         <div className='relative'>
             <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!companyInfo && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!companyInfo && 'hidden'}`} /></>}
             </button>
             <div>
                 <h2 className='text-start md:text-center text-xl font-semibold mb-5'>Profile Overview</h2>

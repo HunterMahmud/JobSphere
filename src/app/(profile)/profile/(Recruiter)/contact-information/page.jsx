@@ -47,15 +47,15 @@ const ContactInformation = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!contactInformation && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!contactInformation && 'hidden'}`} /></>}
             </button>
             <div>
-                <h3 className="text-xl text-center font-semibold">Contact Information</h3>
+                <h3 className="text-start md:text-center text-xl font-semibold mb-5">Contact Information</h3>
                 {
                     edit ?
                         <form onSubmit={handleSubmit(handleSave)} className="mt-10 grid grid-cols-1 justify-center items-center gap-5">
-                            <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5">
+                            <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5 w-full">
                                 {/* Email */}
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-600 ">
@@ -136,24 +136,26 @@ const ContactInformation = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border md:bg-white md:p-4'>
                             {
                                 contactInformation ? <>
-                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                        {contactInformation?.phone && <p><strong>Phone:</strong> {contactInformation?.phone}</p>}
-                                        {contactInformation?.email && <p><strong>Email:</strong> {contactInformation?.email}</p>}
-                                        {contactInformation?.website && <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>}
-                                        {
-                                            contactInformation?.socialLinks &&
-                                            <div className="mt-2 flex gap-5">
-                                                <strong>Social Links:</strong>
-                                                <p className='flex gap-5'>
-                                                    {contactInformation?.socialLinks?.linkedin && <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>}
-                                                    ||
-                                                    {contactInformation?.socialLinks?.twitter && <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>}
-                                                </p>
-                                            </div>
-                                        }
+                                    <div className='flex flex-col justify-cente items-center w-full max-w-2xl mx-auto md:bg-white'>
+                                        <div className='space-y-1'>
+                                            {contactInformation?.phone && <p><strong>Phone:</strong> {contactInformation?.phone}</p>}
+                                            {contactInformation?.email && <p><strong>Email:</strong> {contactInformation?.email}</p>}
+                                            {contactInformation?.website && <p><strong>Website:</strong> <a href={contactInformation?.website} className="text-blue-500 underline">{contactInformation?.website}</a></p>}
+                                            {
+                                                contactInformation?.socialLinks &&
+                                                <div className="flex flex-col md:flex-row md:gap-5">
+                                                    <strong>Social Links:</strong>
+                                                    <p className='flex gap-5'>
+                                                        {contactInformation?.socialLinks?.linkedin && <a href={contactInformation?.socialLinks?.linkedin} className="text-blue-500 underline">LinkedIn</a>}
+                                                        {contactInformation?.socialLinks?.linkedin && contactInformation?.socialLinks?.twitter && <span >||</span>}
+                                                        {contactInformation?.socialLinks?.twitter && <a href={contactInformation?.socialLinks?.twitter} className="text-blue-500 underline">Twitter</a>}
+                                                    </p>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
                             }
