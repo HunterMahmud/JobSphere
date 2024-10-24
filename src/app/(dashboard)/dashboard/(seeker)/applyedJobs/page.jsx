@@ -411,33 +411,74 @@ const ApplyedJobs = () => {
             </table>
           }
 
-          {/* Pagination */}
+          {/* Pagination  */}
           <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
             <div className="flex items-center space-x-2">
               <span className="text-gray-700">View</span>
-              <select value={limit} onChange={(e) => { setLimit(parseInt(e.target.value)), setPage(1) }} className="border border-gray-300 rounded-md py-1 px-3">
+              <select
+                value={limit}
+                onChange={(e) => {
+                  setLimit(parseInt(e.target.value)), setPage(1);
+                }}
+                className="border border-gray-300 rounded-md py-1 px-3"
+              >
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
               </select>
-              <span className="text-gray-700 block w-full pr-6">Applicants per page</span>
+              <span className="text-gray-700 block w-full pr-6">
+                Applicants per page
+              </span>
             </div>
             <div className="flex items-center space-x-2">
-              <button disabled={page === 1} onClick={() => setPage(page - 1)} className={`text-gray-700 ${page === 1 && 'cursor-not-allowed'}`}>Previous</button>
+              <button
+                disabled={page === 1}
+                onClick={() => setPage(page - 1)}
+                className={`${page === 1 ? "cursor-not-allowed text-gray-400" : "text-gray-700"
+                  }`}
+              >
+                <span className="sr-only">Prev Page</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
               <div className="space-x-2 flex">
-                {Array.from({ length: Math.ceil(total / limit) }, (_, index) => (
-                  <button
-                    key={index + 1}
-                    onClick={() => setPage(index + 1)}
-                    className={`btn px-3 py-2 border-2 text-xs  font-semibold hover:border hover:border-hover bg-primary hover:bg-hover rounded-lg ${page === index + 1 ? "bg-primary text-white" : ""
-                      }`}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
+                <p className="text-base text-gray-900">
+                  {page}
+                  <span className="mx-0.25">/</span>
+                  {Math.ceil(total / limit)}
+                </p>
               </div>
 
-              <button disabled={page === Math.ceil(total / limit)} onClick={() => setPage(page + 1)} className={`text-gray-700 ${page === Math.ceil(total / limit) && 'cursor-not-allowed'}`}>Next</button>
+              <button
+                disabled={page === Math.ceil(total / limit)}
+                onClick={() => setPage(page + 1)}
+                className={`${page === Math.ceil(total / limit) ? "cursor-not-allowed text-gray-400" : "text-gray-700 "
+                  }`}
+              >
+                <span className="sr-only">Next Page</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
