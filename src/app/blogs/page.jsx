@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-import { GrNext } from "react-icons/gr";
-import { GrPrevious } from "react-icons/gr";
+import { GrNext, GrPrevious } from "react-icons/gr";
 import BlogsCard from "@/components/Blogs/BlogsCard";
 import axios from "axios";
 import Loader from './../loading';
