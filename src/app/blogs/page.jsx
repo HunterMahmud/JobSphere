@@ -73,7 +73,7 @@ const BlogPage = () => {
         <FaSearch className="ml-3 text-gray-400" />
         <input
           type="text"
-          className="w-[300px] p-2 text-sky-800 border-sky-600 border-none focus:outline-none"
+          className="w-[300px] p-2 border-none focus:outline-none"
           placeholder="Search with blog title"
           onChange={(e) => handleSearch(e)}
         />
