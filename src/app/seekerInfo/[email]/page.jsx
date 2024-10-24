@@ -1,135 +1,202 @@
 'use client'
-import Loader from "@/app/(profile)/profile/loading";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // Assuming you have a Loader component for loading state
+import Loader from "@/app/loading";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { CgMoveRight } from "react-icons/cg";
+import { MdOutlineBrowserUpdated, MdOutlineMail } from "react-icons/md";
+import { FaLinkedinIn, FaPhoneAlt } from "react-icons/fa";
+import { IoLogoGithub } from "react-icons/io5";
 
-const SeekerDetails = ({ params }) => {
+const ProfilePage = ({ params }) => {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState({});
+
+    const { contactInformation, profileOverview, skills, certifications, extraCurricularActivities, careerObjective, projects, education, workExperience } = user
 
     useEffect(() => {
         const fetchInfo = async () => {
-            setLoading(true)
+            setLoading(true);
             try {
-                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${params.email}`);
+                const { data } = await axios.get(
+                    `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/profile/api/${params.email}`
+                );
                 setUser(data);
-                setLoading(false)
-
+                setLoading(false);
             } catch (error) {
-                setLoading(false)
+                setLoading(false);
                 console.error("Error fetching data: ", error.message);
             }
         };
         fetchInfo();
     }, [params]);
-    if (loading) return <Loader />
-    return (
-        <div className="overflow-x-scroll custom-container">
-            <div id="resume" className="p-4 md:p-10 lg:p-16 border rounded shadow-md bg-white">
-                <h1 className="text-3xl font-bold mb-4 text-center">
-                    {user?.profileOverview?.fullName || " "}
-                </h1>
 
-                <div className="flex items-center mb-4">
-                    <Image height={500} width={500}
-                        src={user?.profileOverview?.profilePicture || "https://i1.sndcdn.com/artworks-000189080723-ez2uad-t500x500.jpg"}
-                        alt="Profile"
-                        className="w-28 h-28 rounded-full mr-4"
-                    />
+
+    if (loading) return <Loader />;
+
+    return (
+        <div className="min-h-screen mt-5 custom-container">
+            <div className="flex flex-col md:flex-row">
+                {/* Profile Header */}
+                {profileOverview && (
+                    <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                        <div className="flex flex-1 items-center space-x-4">
+                            <Image
+                                src={profileOverview?.profilePicture || "https://i1.sndcdn.com/artworks-000189080723-ez2uad-t500x500.jpg"}
+                                alt="Profile"
+                                className="w-24 h-24 rounded-full"
+                                width={500}
+                                height={500}
+                            />
+                            <div>
+                                <h2 className="text-xl md:text-2xl font-bold">{profileOverview?.fullName}</h2>
+                                {profileOverview?.preferredJobPosition && (
+                                    <p className="text-gray-600">{profileOverview?.preferredJobPosition}</p>
+                                )}
+                                {profileOverview?.address && (
+                                    <p className="text-gray-600">
+                                        {profileOverview?.address}, {profileOverview?.city}, {profileOverview?.country}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Contact Information */}
+                {(contactInformation?.email || contactInformation?.phoneNumber || socialLinks) && (
+                    <div className="bg-white md:w-[300px] shadow-md rounded-lg p-4 mb-6 border">
+                        <h3 className="text-xl font-semibold mb-2">Contact Information</h3>
+                        {contactInformation?.email && <p className="flex items-center  gap-2"><p><MdOutlineMail /> </p> {contactInformation?.email}</p>}
+                        {contactInformation?.phoneNumber && <p className="flex items-center  gap-2"><p><FaPhoneAlt /> </p> {contactInformation?.phoneNumber}</p>}
+                        <div className="flex justify-center items-center mt-2 gap-3">
+                            {contactInformation?.socialLinks?.linkedin && <p><a target="_blank" href={contactInformation?.socialLinks?.linkedin} className="text-xl hover:text-primary"><FaLinkedinIn /> </a></p>}
+                            {contactInformation?.socialLinks?.github && <p><a target="_blank" href={contactInformation?.socialLinks?.github} className="text-xl hover:text-primary"><IoLogoGithub /> </a></p>}
+                            {contactInformation?.socialLinks?.portfolio && <p> <a target="_blank" href={contactInformation?.socialLinks?.portfolio} className="text-xl hover:text-primary"><MdOutlineBrowserUpdated /></a></p>}
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Career Objective */}
+            {careerObjective && (
+                <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                    <h2 className="text-xl font-semibold mt-6">Career Objective:</h2>
+                    <p>{careerObjective}</p>
+                </div>
+            )}
+
+            {/* Projects */}
+            {projects && projects.length > 0 && (
+                <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                    <h3 className="text-xl font-semibold mb-2">Projects</h3>
                     <div>
-                        <h2 className="text-2xl">
-                            {user?.profileOverview?.fullName || "N/A"}
-                        </h2>
-                        <p className="text-gray-600">
-                            {user?.profileOverview?.address}, {user?.profileOverview?.city}, {user?.profileOverview?.country}
-                        </p>
-                        <p className="text-gray-600">
-                            Phone: {user?.contactInformation?.phoneNumber}
-                        </p>
-                        <p className="text-gray-600">
-                            Email: {user?.contactInformation?.email}
-                        </p>
-                        <p className="text-gray-600">
-                            LinkedIn:{" "}
-                            <a target='_blank' href={user?.contactInformation?.socialLinks?.linkedin} className="text-blue-600 underline">
-                                Link here
-                            </a>
-                        </p>
-                        <p className="text-gray-600">
-                            GitHub:{" "}
-                            <a target='_blank' href={user?.contactInformation?.socialLinks?.github} className="text-blue-600 underline">
-                                Link here
-                            </a>
-                        </p>
-                        <p className="text-gray-600">
-                            Portfolio:{" "}
-                            <a target='_blank' href={user?.contactInformation?.socialLinks?.portfolio} className="text-blue-600 underline">
-                                Link here
-                            </a>
-                        </p>
+                        {projects.map((project, index) => (
+                            <div key={index}>
+                                <div className='flex items-center gap-1'>
+                                    <CgMoveRight className='text-xl md:text-2xl hidden md:block' />
+                                    <strong>{project?.projectName}:</strong>{" "}
+                                </div>
+                                <a target="_blank" href={project?.projectLink} className="text-hover font-medium">
+                                    Project Link
+                                </a>{" "}
+                                - Made with {project?.projectMadeWith}
+                                <p className="text-gray-700">{project?.projectDetails}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
+            )}
 
-                <h2 className="text-xl font-semibold mt-6">Career Objective :</h2>
-                <p>{user?.careerObjective}</p>
-
-                <h2 className="text-xl font-semibold mt-6">Projects :</h2>
-                {user?.projects?.map((project, index) => (
-                    <div key={index} className="mb-2">
-                        <h3 className="font-bold">{project?.projectName}</h3>
-                        <p>
-                            <strong>Link:</strong>{" "}
-                            <a target='_blank' href={project?.projectLink} className="text-blue-600 underline">
-                                {project?.projectLink}
-                            </a>
-                        </p>
-                        <p>{project?.projectDetails}</p>
+            {/* Skills */}
+            {(skills?.technicalSkills?.length > 0 || skills?.softSkills?.length > 0) && (
+                <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                    <h3 className="text-xl font-semibold mb-2">Skills</h3>
+                    <div className="flex space-x-8">
+                        {skills?.technicalSkills?.length > 0 && (
+                            <div>
+                                <h4 className="font-semibold">Technical Skills</h4>
+                                <ul className="list-decimal list-inside">
+                                    {skills?.technicalSkills.map((skill, index) => (
+                                        <li key={index}>{skill}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        {skills?.softSkills?.length > 0 && (
+                            <div>
+                                <h4 className="font-semibold">Soft Skills</h4>
+                                <ul className="list-decimal list-inside">
+                                    {skills?.softSkills.map((skill, index) => (
+                                        <li key={index}>{skill}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
-                ))}
+                </div>
+            )}
 
-                <h2 className="text-xl font-semibold mt-6">Skills :</h2>
-                <p>
-                    <strong>Technical:</strong>{" "}
-                    <span>{user?.skills?.technicalSkills?.join(", ")}</span>
-                </p>
-                <p>
-                    <strong>Soft Skills:</strong>{" "}
-                    {user?.skills?.softSkills?.join(", ")}
-                </p>
+            {/* Education */}
+            {education && education.length > 0 && (
+                <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                    <h3 className="text-xl font-semibold mb-2">Education</h3>
+                    {education.map((edu, index) => (
+                        <p key={index} className='flex items-center gap-1'>
+                            <CgMoveRight className='text-xl md:text-2xl hidden md:block' />
+                            <strong>{edu?.degreeName}:</strong> {edu?.instituteName} (CGPA:{" "}
+                            {edu?.cgpa}) - Passing Year: {edu?.passingYear}
+                        </p>
+                    ))}
+                </div>
+            )}
 
-                <h2 className="text-xl font-semibold mt-6">Education</h2>
-                {user?.education?.map((edu, index) => (
-                    <p key={index}>
-                        {edu?.degreeName} from {edu?.instituteName} ({edu?.passingYear}, CGPA: {edu?.cgpa})
-                    </p>
-                ))}
+            {/* Work Experience */}
+            {workExperience && workExperience.length > 0 && (
+                <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                    <h3 className="text-xl font-semibold mb-2">Work Experience</h3>
+                    {workExperience.map((experience, index) => (
+                        <div key={index}>
+                            <p>
+                                <strong>{experience?.jobTitle}:</strong> {experience?.companyName} (
+                                {experience?.startDate} to {experience?.endDate})
+                            </p>
+                            <p className="text-gray-700">Responsibilities: {experience?.responsibilities}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
 
-                <h2 className="text-xl font-semibold mt-6">Work Experience</h2>
-                {user?.workExperience?.map((work, index) => (
-                    <p key={index}>
-                        {work?.jobTitle} at {work?.companyName} ({work?.startDate} - {work?.endDate})
-                    </p>
-                ))}
+            {/* Certifications */}
+            {certifications && certifications.length > 0 && (
+                <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                    <h3 className="text-xl font-semibold mb-2">Certifications</h3>
+                    {certifications.map((certification, index) => (
+                        <p key={index} className='flex items-center gap-1'>
+                            <CgMoveRight className='text-xl md:text-2xl' />
+                            <strong>{certification?.certificationName}:</strong>{" "}
+                            {certification?.issuingOrganization} ({certification?.year})
+                        </p>
+                    ))}
+                </div>
+            )}
 
-                <h2 className="text-xl font-semibold mt-6">Certifications</h2>
-                {user?.certifications?.map((cert, index) => (
-                    <p key={index}>
-                        {cert?.certificationName} issued by {cert?.issuingOrganization} in {cert?.year}
-                    </p>
-                ))}
-
-                <h2 className="text-xl font-semibold mt-6">Extra Curricular Activities</h2>
-                {user?.extraCurricularActivities?.map((activity, index) => (
-                    <p key={index}>
-                        {activity?.activityName}: {activity?.description}
-                    </p>
-                ))}
-            </div>
+            {/* Extra-Curricular Activities */}
+            {user?.extraCurricularActivities && user?.extraCurricularActivities.length > 0 && (
+                <div className="bg-white shadow-md rounded-lg p-4 mb-6 border">
+                    <h3 className="text-xl font-semibold mb-2">Extra-Curricular Activities</h3>
+                    <div>
+                        {user.extraCurricularActivities.map((activity, index) => (
+                            <p key={index} className='flex items-center gap-1'>
+                                <CgMoveRight className='text-xl md:text-2xl' />
+                                <strong>{activity?.activityName}</strong>: {activity?.description}
+                            </p>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
-
-
     );
 };
 
-export default SeekerDetails;
+export default ProfilePage;
