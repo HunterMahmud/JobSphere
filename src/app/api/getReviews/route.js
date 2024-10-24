@@ -6,10 +6,12 @@ export const GET = async () => {
     const reviewsCollection = db.collection("reviews");
 
     try {
+     
         const reviews = await reviewsCollection
-            .find().toArray();
-               // Limit the result to 6 documents
-           
+            .find()
+            .sort({ reviewDateTime: -1 }) 
+            .limit(10)
+            .toArray();
 
         return NextResponse.json({ reviews });
     } catch (error) {

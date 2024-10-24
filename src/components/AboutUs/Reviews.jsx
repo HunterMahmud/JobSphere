@@ -22,18 +22,11 @@ const Reviews = () => {
   const router = useRouter();
    const User =seasons?.data?.user
   
+console.log(seasons);
 
   // Handle form submission and save to database
   const onSubmit = async (data) => {
     setLoading(true);
-
-    const reviewData = {
-      ...data,
-      rating: parseInt(data?.rating),
-      photoURL:User?.image,
-      reviewDateTime: new Date(),
-      
-    };
     if (!User) {
       Swal.fire({
         position: "top",
@@ -45,6 +38,15 @@ const Reviews = () => {
      router.push('/login');
      return
     }
+
+    const reviewData = {
+      ...data,
+      rating: parseInt(data?.rating),
+      photoURL:User?.image,
+      reviewDateTime: new Date(),
+      
+    };
+   
     try {
       const response = await axios.post("/api/reviews", reviewData);
       if (response?.status === 200) {
