@@ -1,80 +1,132 @@
-import React from 'react';
-import ReviewsCard from '../AboutUs/ReviewsCard';
-import Link from 'next/link';
+"use client";
+import React, { useEffect, useState } from 'react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+// import required modules
+import { Pagination, Autoplay } from 'swiper/modules';
+import axios from 'axios';
 
 const Reviews = () => {
+  const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState([]);
 
+  useEffect(() => {
+    const fetchReviews = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/getReviews`
+        );
+        setReviews(data.reviews);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        setLoading(false);
+      }
+    };
 
-  const userReviews = [
-    {
-      "name": "Hasan Al Mahmud",
-      "role": "Software Developer",
-      "image": "https://i.ibb.co.com/54M49Z0/Hasan.jpg",
-      "rating": 5,
-      "date": "10 October 2024",
-      "review": "JobSphere made my job search so much easier! I was able to filter jobs based on my skills, and I found a perfect fit within a week. The user interface is intuitive, and I love how I can track my applications seamlessly."
-    },
-    {
-      "name": "Tanvir Ahamed",
-      "role": "Marketing Manager",
-      "image": "https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg",
-      "rating": 5,
-      "date": "10 October 2024",
-      "review": "I’ve tried a lot of job search platforms, but JobSphere stands out. The tailored recommendations were spot on, and I appreciated the variety of job listings from top companies. The blog section is also a great resource for upgrading my skills."
-    },
-    {
-      "name": "Rafizul Islam.",
-      "role": "Data Scientist",
-      "image": "https://i.ibb.co.com/FH7Yhb6/Rafizul.jpg",
-      "rating": 4,
-      "date": "11 October 2024",
-      "review": "JobSphere’s dynamic search filters helped me land my dream role. The platform's clean design and easy navigation made the entire process smooth. My only suggestion would be to add more insights on the hiring trends."
-    },
-    {
-      "name": "Shohidul Islam",
-      "role": "UX Designer",
-      "image": "https://i.ibb.co.com/Ct6mM6L/Sahidul.jpg",
-      "rating": 5,
-      "date": "11 October 2024",
-      "review": "I found the user experience on JobSphere exceptional. As a designer myself, I appreciate how visually appealing and easy to navigate the platform is. I highly recommend it to anyone looking for new job opportunities."
-    },
-    {
-      "name": "Shamim Hossain",
-      "role": "Marketing Manager",
-      "image": "https://i.ibb.co.com/gz7jjtF/Shamim.jpg",
-      "rating": 5,
-      "date": "12 October 2024",
-      "review": "I’ve tried a lot of job search platforms, but JobSphere stands out. The tailored recommendations were spot on, and I appreciated the variety of job listings from top companies. The blog section is also a great resource for upgrading my skills."
-    },
-    {
-      "name": "Tanvir Jubayer",
-      "role": "Product Manager",
-      "image": "https://i.ibb.co.com/WFk4dJ0/Tanvir.jpg",
-      "rating": 4,
-      "date": "12 October 2024",
-      "review": "JobSphere offers a great range of job listings from top companies. The platform is quite user-friendly, but I think adding more real-time job alerts would be beneficial for staying updated."
+    fetchReviews();
+  }, []);
+
+  // Calculate time ago
+  const timeAgo = (reviewDateTime) => {
+    const now = new Date();
+    const past = new Date(reviewDateTime);
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    const intervals = {
+      year: 31536000,
+      month: 2592000,
+      week: 604800,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+      second: 1,
+    };
+
+    for (const [key, value] of Object.entries(intervals)) {
+      const time = Math.floor(diffInSeconds / value);
+      if (time >= 1) {
+        return `${time} ${key}${time > 1 ? 's' : ''} ago`;
+      }
     }
-  ]
+    return 'just now';
+  };
 
-
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
-    <div className='mx-4 my-10 md:m-16'>
-      <h1 className='text-3xl font-bold text-center mb-8 md:mt-20 underline'>Users Reviews</h1>
-      {/* Reviews Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 justify-center md:gap-8 mx-auto items-center">
-        {Array.isArray(userReviews) && userReviews.length > 0 ? (
-          userReviews.slice(0, 4).map((reviews, index) => <ReviewsCard key={index} reviews={reviews} />)
-        ) : (
-          <p>No Data found</p>
-        )}
+    <section className="py-12 bg-accent">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-extrabold text-center text-primary">Reviews</h2>
+        <p className="text-center text-secondary mt-2 mb-8">What Clients Say</p>
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={20}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          breakpoints={{
+            640: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 40,
+            },
+          }}
+          modules={[Pagination, Autoplay]}
+          className="mySwiper"
+        >
+          {reviews?.map((review) => (
+            <SwiperSlide key={review.id}>
+              <div className="max-w-sm p-6 bg-white border border-accent rounded-lg shadow-md min-h-72">
+                {/* User Logo and Date */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <img
+                      src={review?.PhotoURL}
+                      alt={review.name}
+                      className="w-12 h-12 rounded-full"
+                    />
+                    <div className="ml-3">
+                      <p className="text-lg font-medium text-primary">{review.name}</p>
+                      <p className="text-sm text-secondary">
+                        {timeAgo(review.reviewDateTime)} {/* Use timeAgo function */}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Rating */}
+                  <div className="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8 text-yellow-500">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                    <p className="ml-2 font-bold text-2xl text-hover">{review.rating}</p>
+                  </div>
+                </div>
+                {/* Review Description */}
+                <div className="mt-4">
+                  <p className="text-gray-700">{review.review}</p>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-      <div className="flex justify-center mt-4">
-        <button className="bg-sky-500 btn hover:bg-sky-700 text-white font-semibold py-2 px-6 rounded-lg w-auto">
-          <Link href={`/usersReview`}>View All Reviews</Link>
-        </button>
-      </div>
-    </div>
+    </section>
   );
 };
 
