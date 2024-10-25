@@ -78,7 +78,7 @@ const Navbar = () => {
               alt="Logo"
               width={250}
               height={100}
-              className="w-[150px] md:w-[200px] lg:w-[250px]" />
+              className="w-[150px] md:w-[200px]" />
           </Link>
 
           {/* Centered Navigation Links for larger screens */}
