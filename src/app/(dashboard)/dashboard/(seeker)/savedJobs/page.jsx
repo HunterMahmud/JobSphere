@@ -91,12 +91,12 @@ const JobListTable = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto py-8 px-4">
+        <div className="max-w-7xl mx-auto pb-5 md:py-8 md:px-4">
             {/* Page Title */}
-            <h1 className="text-2xl font-bold text-center mb-8">Saved Jobs</h1>
+            <h1 className="text-2xl font-bold text-center mb-5 md:mb-8">Saved Jobs</h1>
 
             {/* Filter Section */}
-            <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
+            <div className="mb-6 md:p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
                 <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
                     <select
                         value={selectedStatus}
@@ -203,7 +203,7 @@ const JobListTable = () => {
 
 
                 {/* Pagination  */}
-                <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
+                <div className="flex items-center justify-between bg-gray-50 md:px-6 py-4 border-t">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-700">View</span>
                         <select

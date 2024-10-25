@@ -163,10 +163,11 @@ const Navbar = () => {
                               </MenuItem>
                             </>
                           )}
-                          {loggedInUser?.role === "recruiter" && (
-                            <>
+
+                          {/* {loggedInUser?.role === "recruiter" && ( */}
+                            {/* <> */}
                               {/* Divider */}
-                              <div className="border-t border-gray-200"></div>
+                              {/* <div className="border-t border-gray-200"></div>
                               <MenuItem>
                                 <a
                                   href="/profile/premiumMembership"
@@ -174,9 +175,10 @@ const Navbar = () => {
                                 >
                                   Premium Membership
                                 </a>
-                              </MenuItem>
-                            </>
-                          )}
+                              </MenuItem> */}
+                            {/* </> */}
+                          {/* )} */}
+                          
                           {loggedInUser?.role === "seeker" && (
                             <>
                               {/* Divider */}
