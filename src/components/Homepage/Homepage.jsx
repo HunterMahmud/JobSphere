@@ -11,9 +11,10 @@ const Homepage = () => {
      <Banner/>
      <SearchJobs/>
      <RecentJobs/>
-     <Companies/>
      <Reviews />
      <HighlightedBlogs/>
+     <Companies/>
+
     </div>
   );
 };

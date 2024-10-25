@@ -6,7 +6,7 @@ export const GET = async () => {
     const companiesCollection = db.collection("companyInfo");
     try {
         const companiesName = await companiesCollection
-            .find({}, { projection: { "companyInfo.companyName": 1 } })
+            .find({}, { projection: { "companyInfo.companyName": 1 ,"companyInfo.logo": 1 } })
             .toArray()
 
         return NextResponse.json({ companiesName });
