@@ -370,11 +370,16 @@ const JobDetails = ({ params }) => {
                   {skill}
                 </span>
               ))}
-              <button onClick={() => {
-                setShowModal(!showModal);
-                setShowSkill(true)
-                setApply(false);
-              }} className="hover:underline">{similarSkillsCount?.length} skills match on your profile</button>
+              {
+                seekerInfo?.skills?.technicalSkills &&
+                  <button onClick={() => {
+                    setShowModal(!showModal);
+                    setShowSkill(true)
+                    setApply(false);
+                  }} className="hover:underline">
+                    {similarSkillsCount?.length} skills match on your profile
+                  </button>
+              }
             </p>
           </div>
 
