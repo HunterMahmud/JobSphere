@@ -31,7 +31,6 @@ export const GET = async (request) => {
       };
     }
 
-
     // Handle skills filter: check if skills is a string or an array
     if (skills) {
       let skillsArray;
@@ -75,6 +74,28 @@ export const GET = async (request) => {
 
     console.log(jobs.length, totalJobsCount);
 
+    // Fetch distinct job title
+    const distinctJobTitles = await jobsCollection
+      .aggregate([
+        {
+          $match: {
+            jobTitle: { $exists: true, $ne: "" },
+          },
+        },
+        {
+          $group: {
+            _id: "$jobTitle",
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            jobTitle: "$_id",
+          },
+        },
+      ])
+      .toArray();
+
     // Fetch distinct cities
     const distinctCities = await jobsCollection
       .aggregate([
@@ -87,7 +108,6 @@ export const GET = async (request) => {
         { $project: { _id: 0, city: "$_id" } },
       ])
       .toArray();
-
 
     // Fetch distinct skills (case insensitive)
     const distinctSkills = await jobsCollection
@@ -108,6 +128,7 @@ export const GET = async (request) => {
       jobs: jobs,
       currentPage: page,
       totalPages: Math.ceil(totalJobsCount / limit), // Total pages based on filtered count
+      jobTitles: distinctJobTitles,
       cities: distinctCities,
       skills: distinctSkills, // Add skills to the response
     });
@@ -116,4 +137,3 @@ export const GET = async (request) => {
     return NextResponse.json({ message: "No Data Found", error });
   }
 };
-
