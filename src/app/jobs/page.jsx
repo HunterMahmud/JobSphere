@@ -5,22 +5,28 @@ import axios from "axios";
 import JobCard from "@/components/Jobs/JobCard";
 import { FaSearch } from "react-icons/fa";
 import Loader from "../loading";
-import { Range } from "react-range"; // Import Range component
-import FilterDrawer from "@/components/Jobs/FilterDrawer"; // Import the FilterDrawer component
+import { Range } from "react-range";
+import FilterDrawer from "@/components/Jobs/FilterDrawer";
 import { IoFilter } from "react-icons/io5";
 import { GrNext, GrPrevious } from "react-icons/gr";
+import { useSearchParams } from "next/navigation"; // Import useSearchParams hook
+
 const JobPage = () => {
+  const searchParams = useSearchParams(); // Get the search parameters from the URL
+  const querySearch = searchParams.get("search") || ""; // Get search parameter
+  const queryCity = searchParams.get("city") || ""; // Get city parameter
+
   const [jobs, setJobs] = useState([]);
-  const [search, setSearch] = useState("");
-  const [city, setCity] = useState("");
-  const [skill, setSkill] = useState(""); // Add skill state
+  const [search, setSearch] = useState(querySearch); // Initialize with query param
+  const [city, setCity] = useState(queryCity); // Initialize with query param
+  const [skill, setSkill] = useState("");
   const [cities, setCities] = useState([]);
-  const [skills, setSkills] = useState([]); // Add skills state
+  const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [experienceRange, setExperienceRange] = useState([0, 10]); // For experience range slider
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State to manage drawer open/close
+  const [experienceRange, setExperienceRange] = useState([0, 10]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     const fetchJobsCitiesSkills = async (page = 1) => {
@@ -67,11 +73,15 @@ const JobPage = () => {
   const handleSearch = (e) => {
     setCurrentPage(1);
     setSearch(e.target.value);
+    // Update the search parameter in the URL
+    window.history.pushState(null, "", `/jobs?search=${e.target.value}&city=${city}`);
   };
 
   const handleCityChange = (e) => {
     setCurrentPage(1);
     setCity(e.target.value);
+    // Update the city parameter in the URL
+    window.history.pushState(null, "", `/jobs?search=${search}&city=${e.target.value}`);
   };
 
   const handleSkillChange = (e) => {
@@ -193,7 +203,7 @@ const JobPage = () => {
 
         <div className="flex-1">
           {/* Search Input */}
-          <div className="flex items-center bg-white w-full mb-6 rounded-lg border-2 border-accent p-2">
+          <div className="flex items-center bg-white w-full md:mb-10 mb-5 rounded-lg border-2 border-accent p-2">
             <FaSearch className="ml-3 text-gray-400" />
             <input
               type="text"

@@ -53,6 +53,9 @@ const handleSubmit = () => {
 
   return (
     <div className="p-4 md:w-4/5 mx-auto">
+      <div className="md:text-2xl text-xl font-bold">
+      Find the right job
+      </div>
       <div className="flex flex-col md:flex-row items-center py-4 rounded-lg shadow-md space-y-2 md:space-y-0 w-full md:w-full"> 
 
         {/* Job Title Input */}
@@ -60,7 +63,7 @@ const handleSubmit = () => {
         <FaSearch className="ml-3 text-gray-400" />
           <input
             type="text"
-            className="w-full text-slate-800 p-2 border-none focus:outline-none bg-white"
+            className="w-full text-slate-800 p-[14px] border-none focus:outline-none bg-white"
             placeholder="Search by Job Title"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -89,7 +92,7 @@ const handleSubmit = () => {
             onChange={setCity} // Update state when city is selected
             placeholder="Search Location"
             isClearable // Allow the user to clear the selection
-            className="w-full text-slate-800 p-1 border-none focus:outline-none bg-white"
+            className="w-full text-slate-800 p-2 border-none focus:outline-none bg-white"
           />
         </div>
 
