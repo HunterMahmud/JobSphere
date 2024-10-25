@@ -1,16 +1,31 @@
 // components/FilterDrawer.jsx
 
 import React from "react";
-import { Range } from 'react-range';
+import { Range } from "react-range";
 
-const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handleCityChange, skills, skill, handleSkillChange, isOpen, closeDrawer }) => {
+const FilterDrawer = ({
+  experienceRange,
+  setExperienceRange,
+  cities,
+  city,
+  handleCityChange,
+  skills,
+  skill,
+  handleSkillChange,
+  isOpen,
+  closeDrawer,
+}) => {
   return (
     <div
       className={`fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity ${
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      <div className={`fixed bg-[#f2f2f2]  left-0 top-0 w-3/4 md:w-1/4 h-full p-6 transition-transform ${isOpen ? "transform-none" : "-translate-x-full"}`}>
+      <div
+        className={`fixed bg-[#f2f2f2]  left-0 top-0 w-3/4 md:w-1/4 h-full p-6 transition-transform ${
+          isOpen ? "transform-none" : "-translate-x-full"
+        }`}
+      >
         <h2 className="text-xl md:text-xl font-bold my-4">Filters</h2>
 
         {/* Experience Range Slider */}
@@ -41,7 +56,10 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
               min="0"
               max="10"
               onChange={(e) =>
-                setExperienceRange([parseInt(e.target.value), experienceRange[1]])
+                setExperienceRange([
+                  parseInt(e.target.value),
+                  experienceRange[1],
+                ])
               }
               className="w-16 text-center bg-white border-2 border-accent rounded-md"
             />
@@ -51,7 +69,10 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
               min="0"
               max="10"
               onChange={(e) =>
-                setExperienceRange([experienceRange[0], parseInt(e.target.value)])
+                setExperienceRange([
+                  experienceRange[0],
+                  parseInt(e.target.value),
+                ])
               }
               className="w-16 text-center bg-white border-2 border-accent rounded-md"
             />
@@ -90,7 +111,10 @@ const FilterDrawer = ({ experienceRange, setExperienceRange, cities, city, handl
           </select>
         </div>
 
-        <button onClick={closeDrawer} className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md">
+        <button
+          onClick={closeDrawer}
+          className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md"
+        >
           Close
         </button>
       </div>

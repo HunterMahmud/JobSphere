@@ -4,7 +4,7 @@ import axios from "axios"; // Assuming you have a Loader component for loading s
 import Loader from "@/app/loading";
 import Image from "next/image";
 import { CgMoveRight } from "react-icons/cg";
-import { MdOutlineBrowserUpdated, MdOutlineMail } from "react-icons/md";
+import { MdOutlineBrowserUpdated, MdOutlineMail, MdStarBorderPurple500 } from "react-icons/md";
 import { FaLinkedinIn, FaPhoneAlt } from "react-icons/fa";
 import { IoLogoGithub } from "react-icons/io5";
 
@@ -36,7 +36,7 @@ const ProfilePage = ({ params }) => {
 
     return (
         <div className="min-h-screen mt-5 custom-container">
-            <div className="flex flex-col md:flex-row w-full">
+            <div className="flex flex-col md:flex-row w-full md:gap-5">
                 {/* Profile Header */}
                 {profileOverview && (
                     <div className="bg-white shadow-md rounded-lg p-4 mb-6 border w-full">
@@ -62,6 +62,8 @@ const ProfilePage = ({ params }) => {
                         </div>
                     </div>
                 )}
+
+
 
                 {/* Contact Information */}
                 {(contactInformation?.email || contactInformation?.phoneNumber || socialLinks) && (

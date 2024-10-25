@@ -1,55 +1,111 @@
-"use client"
+"use client";
 
-import React from 'react';
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import Select from "react-select"; // Import react-select
 
 const SearchJobs = () => {
-    const [location, setLocation] = useState("");
-    const [jobTitle, setJobTitle] = useState("");
-    const router = useRouter();
+  const [jobTitles, setJobTitles]=useState([]);
+  const [search, setSearch] = useState("");
+  const [city, setCity] = useState("");
+  const [cities, setCities] = useState([]);
+  const router = useRouter();
 
-    const handleSubmit = ()=>{
-        router.push(`/jobs?search=${jobTitle}&city=${location}`)
-    }
+  useEffect(() => {
+    const fetchJobsCities = async (page = 1) => {
+      try {
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}&city=${city}`
+        );
 
-    return (
-        <div>
-            <div className="flex flex-col md:flex-row items-center py-4 rounded-lg shadow-md w-full md:w-4/5 space-y-2 md:space-y-0"> 
-          {/* Job Title Input  */}
-          <div className="flex items-center bg-white rounded-l-lg border border-gray-300 w-full ">
-              <FaSearch className="ml-3 text-gray-400" />
-              <input
-                type="text"
-                className="w-full p-2 text-slate-800 border-none focus:outline-none"
-                placeholder="Job title or keyword"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
-              />
-            </div> 
+                // Set jobTitles from the response
+                setJobTitles(data.jobTitles || []);
+                console.log(data);
+        // Map cities to match react-select option format
+        const cityOptions = data.cities.map((city) => ({
+          value: city.city, // The value selected
+          label: city.city, // The text displayed
+        }));
+        setCities(cityOptions); // Store city options
 
-          {/* Location Selector  */}
-          <div className="flex items-center bg-white border-t border-b border-gray-300 w-full ">
-              <FaMapMarkerAlt className="ml-3 text-gray-400" />
-              <select
-                className="w-full text-slate-800 p-2 border-none focus:outline-none bg-white"
-                onChange={(e) => setLocation(e.target.value)}
-              >
-                <option disabled value="">Select Location</option>
-                <option value="Rajshahi">Rajshahi</option>
-                <option value="London, UK">London, UK</option>
-                <option value="Tokyo, Japan">Tokyo, Japan</option>
-              </select>
-            </div> 
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        setLoading(false);
+      }
+    };
 
-          {/* Search Button  */}
-          <button onClick={handleSubmit} className="bg-primary hover:bg-hover text-white font-semibold py-2 px-6 rounded-r-lg w-auto md:w-1/2">
-              Search
-            </button> 
-          </div> 
+    fetchJobsCities();
+  }, [search, city]);
+
+  // Handle job search
+const handleSubmit = () => {
+  // Extract the value of city if it's an object, otherwise use an empty string
+  const selectedCity = city ? city.value : "";
+
+  // Redirect with the search term and selected city
+  router.push(
+    `/jobs?search=${search}&city=${selectedCity}`
+  );
+};
+
+
+  return (
+    <div className="p-4 md:w-4/5 mx-auto">
+      <div className="md:text-2xl mb-2 text-xl font-bold">
+      Find the right job
+      </div>
+      <div className="flex flex-col md:mb-12 mb-6 md:flex-row items-center py-4 rounded-lg shadow-md space-y-2 md:space-y-0 w-full md:w-full"> 
+
+        {/* Job Title Input */}
+        <div className="flex items-center mx-4 bg-white border border-accent w-full">
+        <FaSearch className="ml-3 text-gray-400" />
+          <input
+            type="text"
+            className="w-full text-slate-800 p-[14px] border-none focus:outline-none bg-white"
+            placeholder="Search by Job Title"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            list="jobTitles" // Use datalist for search suggestions
+          />
+          <datalist id="jobTitles">
+            {/* Dynamically populate jobTitles */}
+            {jobTitles.length > 0 ? (
+              jobTitles.map((Obj, index) => (
+                <option key={index} value={Obj.jobTitle}>
+                  {Obj.jobTitle}
+                </option>
+              ))
+            ) : (
+              <option disabled>No jobTitles available</option>
+            )}
+          </datalist>
         </div>
-    );
+
+        {/* Location Selector with react-select */}
+        <div className="flex items-center mx-4 bg-white border border-accent w-full">
+          <FaMapMarkerAlt className="ml-3 text-gray-400" />
+          <Select
+            options={cities} // Provide cities as options
+            value={city} // Controlled state for selected city
+            onChange={setCity} // Update state when city is selected
+            placeholder="Search Location"
+            isClearable // Allow the user to clear the selection
+            className="w-full text-slate-800 p-2 border-none focus:outline-none bg-white"
+          />
+        </div>
+
+        {/* Search Button */}
+        <button
+          onClick={handleSubmit}
+          className="bg-primary hover:bg-hover text-white font-semibold py-2 px-6 rounded-lg w-full md:w-auto mt-4 md:mt-0"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default SearchJobs;

@@ -34,8 +34,11 @@ import useSeekerInfo from "@/components/Hooks/useSeekerInfo";
 import toast from "react-hot-toast";
 import useRole from "@/components/Hooks/useRole";
 import Link from "next/link";
+import { BiChevronsRight } from "react-icons/bi";
 
 const JobDetails = ({ params }) => {
+  const [showSkill, setShowSkill] = useState(false);
+  const [apply, setApply] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [job, setJob] = useState(null); // State to store job details
@@ -54,6 +57,14 @@ const JobDetails = ({ params }) => {
   const deadline = new Date(job?.deadline);
   // const { saveUsers } = job;
   const email = session?.user?.email
+
+  const similarSkillsCount = job?.skills?.filter(skill =>
+    seekerInfo?.skills?.technicalSkills?.map(js => js.toLowerCase()).includes(skill.toLowerCase())
+  );
+
+  let unmatchedSkills = job?.skills?.filter(skill =>
+    !seekerInfo?.skills?.technicalSkills?.map(js => js.toLowerCase()).includes(skill.toLowerCase())
+  );
 
   const getServicesDetails = async (id) => {
     try {
@@ -118,6 +129,8 @@ const JobDetails = ({ params }) => {
       return toast.error("Action not permitted!");
     } else {
       setShowModal(!showModal);
+      setApply(true);
+      setShowSkill(false);
     }
   };
 
@@ -346,6 +359,31 @@ const JobDetails = ({ params }) => {
           </div>
 
           <div className="mb-6">
+            <h3 className="font-semibold text-lg">Skills</h3>
+            <p className="text-gray-700 whitespace-pre-line mt-2">
+              {console.log(job?.skills)}
+              {job?.skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="bg-accent text-primary px-4 py-1 rounded-full text-sm font-medium shadow-sm hover:bg-blue-200 transition-all duration-300 mr-3"
+                >
+                  {skill}
+                </span>
+              ))}
+              {
+                seekerInfo?.skills?.technicalSkills &&
+                  <button onClick={() => {
+                    setShowModal(!showModal);
+                    setShowSkill(true)
+                    setApply(false);
+                  }} className="hover:underline">
+                    {similarSkillsCount?.length} skills match on your profile
+                  </button>
+              }
+            </p>
+          </div>
+
+          <div className="mb-6">
             <h3 className="font-semibold text-lg">Responsibilities</h3>
             <p className="text-gray-700 whitespace-pre-line">
               {job?.responsibility}
@@ -434,8 +472,7 @@ const JobDetails = ({ params }) => {
 
             </div>
             {/* Share Icon */}
-            <button onClick={toggleModal} className=" flex items-center text-primary justify-center gap-3  hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
-
+            <button onClick={toggleModal} className=" flex items-center text-primary justify-center gap-3 hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
               <FaShareFromSquare size={24} />
             </button>
           </div>
@@ -500,69 +537,109 @@ const JobDetails = ({ params }) => {
         )}
       </div>
       {/* Modal */}
-      <Modal
-        isVisible={showModal}
-        showModal={showModal}
-        setShowModal={setShowModal}
-      >
-        <div>
-          <form onSubmit={handleApplyJob}>
-            <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
-              <div>
-                <label className="" htmlFor="emailAddress">
-                  Name
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  defaultValue={seekerInfo?.profileOverview?.fullName}
-                  disabled
-                  className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-                />
-              </div>
+      {
+        apply && <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+          <div>
+            <form onSubmit={handleApplyJob}>
+              <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
+                <div>
+                  <label className="" htmlFor="emailAddress">
+                    Name
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    defaultValue={seekerInfo?.profileOverview?.fullName}
+                    disabled
+                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                  />
+                </div>
 
-              <div>
-                <label className="" htmlFor="emailAddress">
-                  Email Address
-                </label>
-                <input
-                  id="emailAddress"
-                  type="email"
-                  name="email"
-                  defaultValue={seekerInfo?.contactInformation?.email}
-                  disabled
-                  className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-                />
-              </div>
+                <div>
+                  <label className="" htmlFor="emailAddress">
+                    Email Address
+                  </label>
+                  <input
+                    id="emailAddress"
+                    type="email"
+                    name="email"
+                    defaultValue={seekerInfo?.contactInformation?.email}
+                    disabled
+                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                  />
+                </div>
 
-              <div className="md:col-span-2">
-                <label className="" htmlFor="job_title">
-                  Resume Link
-                </label>
-                <input
-                  placeholder="Submit your resume link"
-                  id="jobTitle"
-                  name="resume"
-                  type="text"
-                  required
-                  className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-                />
-              </div>
+                <div className="md:col-span-2">
+                  <label className="" htmlFor="job_title">
+                    Resume Link
+                  </label>
+                  <input
+                    placeholder="Submit your resume link"
+                    id="jobTitle"
+                    name="resume"
+                    type="text"
+                    required
+                    className="block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
+                  />
+                </div>
 
-              <div className="flex justify-end md:col-span-2">
-                <button className="py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]">
-                  {isLoading ? (
-                    <TbFidgetSpinner className="animate-spin m-auto" />
-                  ) : (
-                    "Apply"
-                  )}
-                </button>
+                <div className="flex justify-end md:col-span-2">
+                  <button className="py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]">
+                    {isLoading ? (
+                      <TbFidgetSpinner className="animate-spin m-auto" />
+                    ) : (
+                      "Apply"
+                    )}
+                  </button>
+                </div>
               </div>
+            </form>
+          </div>
+        </Modal>
+      }
+
+      {showSkill && <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+        <h1 className="text-center mb-3 font-medium mt-3 md:mt-0">Skills associated with the job</h1>
+        <div className="flex flex-col justify-around gap-5 ml-3 md:ml-0">
+          <div>
+            <h1>Matched Skills : </h1>
+            <div className="flex flex-col gap-3 mt-3">
+              {
+                similarSkillsCount?.map((skill, index) => (
+                  <p
+                    key={index}
+                    className="flex gap-1 items-center text-sm"
+                  >
+                    <BiChevronsRight className="text-xl" />
+                    {skill}
+                  </p>
+                ))
+              }
             </div>
-          </form>
+          </div>
+
+          <div className="mt-t">
+            <h1>Unmatched Skills : </h1>
+            <div className="flex flex-col gap-3 mt-3">
+              {
+                unmatchedSkills?.map((skill, index) => (
+                  <p
+                    key={index}
+                    className="flex gap-1 items-center text-sm"
+                  >
+                    <BiChevronsRight className="text-xl" />
+                    {skill}
+                  </p>
+                ))
+              }
+            </div>
+          </div>
+
         </div>
       </Modal>
+      }
+
     </Fragment>
   );
 };
