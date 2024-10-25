@@ -13,7 +13,7 @@ import useSeekerInfo from '@/components/Hooks/useSeekerInfo';
 
 const Certifications = () => {
     const { data: session } = useSession();
-    const {seekerInfo} = useSeekerInfo();
+    const { seekerInfo } = useSeekerInfo();
     const [edit, setEdit] = useState(false);
     const [certifications, setCertifications] = useState(seekerInfo?.certifications);
 
@@ -60,15 +60,15 @@ const Certifications = () => {
 
     return (
         <div className='relative'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!certifications && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!certifications && 'hidden'} `} /></>}
             </button>
             <div>
-                <h3 className="text-xl text-center font-semibold mb-2">Certifications</h3>
+                <h3 className="text-xl md:text-center font-semibold mb-5">Certifications</h3>
                 {
                     edit ?
                         <form onSubmit={handleSave}>
-                            <div className="w-full max-w-3xl rounded-lg mb-6">
+                            <div className="w-full max-w-3xl rounded-lg">
                                 {certifications?.map((cert, index) => (
                                     <div key={index}>
                                         <div className="mb-6 flex items-center">
@@ -127,7 +127,7 @@ const Certifications = () => {
                                 <button
                                     type="button"
                                     onClick={handleAddCertification}
-                                    className="bg-hoverColor flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
+                                    className="bg-primary flex items-center gap-1 text-white py-2 px-4 rounded-lg"
                                 >
                                     <IoMdAdd /> <span>Add Certification</span>
                                 </button>
@@ -136,7 +136,7 @@ const Certifications = () => {
                                 <div className=' flex justify-end items-end'>
                                     <button
                                         type="submit"
-                                        className="bg-primary hover:bg-hoverColor px-5 rounded-md py-3 text-white"
+                                        className="bg-hover hover:bg-hoverColor px-5 rounded-md py-3 text-white"
                                     >
                                         Save
                                     </button>
@@ -144,10 +144,10 @@ const Certifications = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                        <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                             {
                                 certifications ? <>
-                                    <div className='flex flex-col w-full max-w-2xl mx-auto border bg-white p-4'>
+                                    <div className='flex flex-col w-full max-w-2xl mx-auto'>
                                         <ul>
                                             {certifications?.map((cert, index) => (
                                                 <div key={index} className='flex items-center gap-1 mb-2'>

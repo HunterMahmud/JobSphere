@@ -22,7 +22,7 @@ const BlogsCard = ({ blog }) => {
           </time>
 
           <Link href={`blogs/${_id}`}>
-            <h3 className="mt-0.5 text-xl lg:text-2xl text-gray-900 font-bold hover:underline">
+            <h3 className="mt-0.5 text-xl line-clamp-1 lg:text-2xl text-gray-900 font-bold hover:underline">
               {title}
             </h3>
           </Link>

@@ -49,11 +49,11 @@ const EmploymentInformation = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!employmentInfo && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!employmentInfo && 'hidden'}`} /></>}
             </button>
             <div>
-                <h3 className="text-xl text-center font-semibold">Employment Information</h3>
+                <h3 className="text-start md:text-center text-xl font-semibold mb-5">Employment Info<span className='hidden'>rmation</span></h3>
                 {
                     edit ?
                         <form onSubmit={handleSubmit(handleSave)}>
@@ -99,15 +99,19 @@ const EmploymentInformation = () => {
                             </div>
                         </form>
                         :
-                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
+                        <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-2 md:p-4'>
+
                             {
                                 employmentInfo ? <>
-                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
-                                        {employmentInfo?.companySize && <p><strong>Company Size:</strong> {employmentInfo?.companySize}</p>}
-                                        {employmentInfo?.typesOfJobs && <p><strong>Types of Jobs:</strong> {employmentInfo?.typesOfJobs}</p>}
+                                    <div className='flex flex-col justify-center items-center w-full max-w-2xl mx-auto'>
+                                        <div>
+                                            {employmentInfo?.companySize && <p><strong>Company Size:</strong> {employmentInfo?.companySize}</p>}
+                                            {employmentInfo?.typesOfJobs && <p><strong>Types of Jobs:</strong> {employmentInfo?.typesOfJobs}</p>}
+                                        </div>
                                     </div>
                                 </> : <NoInformation setEdit={setEdit} edit={edit} />
                             }
+
                         </div>
                 }
             </div>

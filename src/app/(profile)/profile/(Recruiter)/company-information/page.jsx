@@ -275,11 +275,11 @@ const CompanyInformation = () => {
 
     return (
         <div className='relative'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!companyInfo && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!companyInfo && 'hidden'}`} /></>}
             </button>
             <div>
-                <h2 className='text-center text-xl font-semibold mb-5'>Profile Overview</h2>
+                <h2 className='text-start md:text-center text-xl font-semibold mb-5'>Profile Overview</h2>
                 {
                     edit ?
                         <form onSubmit={handleSave} className="mt-10 grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-5">
@@ -415,10 +415,10 @@ const CompanyInformation = () => {
                                         }
                                     </div>
                                     <div>
-                                        {companyInfo?.companyName && <h3 className="text-2xl font-bold">{companyInfo?.companyName}</h3>}
+                                        {companyInfo?.companyName && <h3 className="text-2xl font-bold text-center">{companyInfo?.companyName}</h3>}
                                         {companyInfo?.companyMission && <p className='text-center'>{companyInfo?.companyMission}</p>}
                                     </div>
-                                    <div className="mb-2">
+                                    <div className="my-2">
                                         {companyInfo?.companyType && <p><strong>Company Type:</strong> {companyInfo?.companyType}</p>}
                                         {companyInfo?.address && <p><strong>Address:</strong> {companyInfo?.address}, {companyInfo?.city}, {companyInfo?.country}</p>}
                                         {companyInfo?.foundedYear && <p><strong>Founded Year:</strong> {companyInfo?.foundedYear}</p>}

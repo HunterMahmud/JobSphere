@@ -57,11 +57,11 @@ const WorkExperience = () => {
 
     return (
         <div className='relative border'>
-            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-3 top-0 text-2xl">
-                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!workExperience && 'hidden'} cursor-pointer absolute right-3 top-0 text-2xl`} /></>}
+            <button onClick={() => setEdit(!edit)} className="cursor-pointer absolute right-0 md:right-3 top-[3px] text-2xl">
+                {edit ? <><IoCloseSharp /></> : <><FaRegEdit className={`${!workExperience && 'hidden'}`} /></>}
             </button>
             <div>
-                <h3 className="text-xl text-center font-semibold">Work Experience</h3>
+                <h3 className="text-xl md:text-center font-semibold mb-5">Work Experience</h3>
                 {
                     edit ?
                         <form onSubmit={handleSave}>
@@ -151,7 +151,7 @@ const WorkExperience = () => {
                                 <button
                                     type="button"
                                     onClick={handleAddWorkExperience}
-                                    className="bg-hoverColor flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
+                                    className="bg-primary flex items-center gap-1 text-white py-2 px-4 rounded-lg mt-4"
                                 >
                                     <IoMdAdd /> <span>Add Experience</span>
                                 </button>
@@ -160,7 +160,7 @@ const WorkExperience = () => {
                                 <div className=' flex justify-end items-end'>
                                     <button
                                         type="submit"
-                                        className="bg-primary hover:bg-hoverColor px-5 rounded-md py-3 text-white"
+                                        className="bg-hover hover:bg-hoverColor px-5 rounded-md py-3 text-white"
                                     >
                                         Save
                                     </button>
@@ -171,7 +171,7 @@ const WorkExperience = () => {
                         <div className='mt-5 flex flex-col justify-center items-center w-full max-w-2xl mx-auto border bg-white p-4'>
                             {
                                 workExperience ? <>
-                                    <div className='flex flex-col w-full max-w-2xl mx-auto border bg-white p-4'>
+                                    <div className='flex flex-col w-full max-w-2xl mx-auto'>
                                         {workExperience?.map((experience, index) => (
                                             <div key={index} className="mb-4">
                                                 <h4 className="font-semibold">
