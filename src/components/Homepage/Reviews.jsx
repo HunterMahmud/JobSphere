@@ -66,8 +66,8 @@ const Reviews = () => {
   return (
     <section className="py-12 bg-accent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-center text-primary">Reviews</h2>
-        <p className="text-center text-secondary mt-2 mb-8">What Clients Say</p>
+        <h2 className="text-3xl font-extrabold text-center text-black">Reviews</h2>
+        <p className="text-center text-secondary mt-2 mb-8">What people Say</p>
         <Swiper
           slidesPerView={1}
           spaceBetween={20}
@@ -98,7 +98,7 @@ const Reviews = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <img
-                      src={review?.PhotoURL}
+                      src={review?.PhotoURL || "https://i.ibb.co/3BY9Fks/profile.png"}
                       alt={review.name}
                       className="w-12 h-12 rounded-full"
                     />

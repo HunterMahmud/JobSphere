@@ -299,9 +299,9 @@ const JobDetails = ({ params }) => {
 
   return (
     <Fragment>
-      <div className="custom-container mx-auto px-4 py-8 ">
+      <div className="custom-container mx-auto md:px-4 py-8 ">
         {/* Job Details Section */}
-        <div className="bg-white shadow-md p-6 rounded-lg mb-8">
+        <div className="bg-white shadow-md p-3 md:p-6 rounded-lg mb-8">
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-start space-x-4">
               <Image
@@ -334,7 +334,7 @@ const JobDetails = ({ params }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
             <div className="flex items-center">
               <FaMapMarkerAlt className="w-5 h-5 mr-2 text-gray-500" />
-              <span>{job?.locationType || "Not specified"}</span>
+              <span className="text-gray-800 line-clamp-1">{job?.compnayInforamtion?.companyInfo?.country},{job?.compnayInforamtion?.companyInfo?.city}</span>
             </div>
             <div className="flex items-center">
               <FaBriefcase className="w-5 h-5 mr-2 text-gray-500" />
@@ -361,25 +361,28 @@ const JobDetails = ({ params }) => {
           <div className="mb-6">
             <h3 className="font-semibold text-lg">Skills</h3>
             <p className="text-gray-700 whitespace-pre-line mt-2">
-              {console.log(job?.skills)}
-              {job?.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="bg-accent text-primary px-4 py-1 rounded-full text-sm font-medium shadow-sm hover:bg-blue-200 transition-all duration-300 mr-3"
-                >
-                  {skill}
-                </span>
-              ))}
-              {
-                seekerInfo?.skills?.technicalSkills &&
+              <div className="flex flex-col items-start md:flex-row">
+                <div className="flex flex-wrap">
+                  {job?.skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="bg-accent text-primary px-4 py-1 rounded-full text-sm font-medium shadow-sm hover:bg-blue-200 transition-all duration-300 mr-3"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+                {
+                  seekerInfo?.skills?.technicalSkills &&
                   <button onClick={() => {
                     setShowModal(!showModal);
                     setShowSkill(true)
                     setApply(false);
-                  }} className="hover:underline">
+                  }} className="hover:underline mt-2 md:mt-0">
                     {similarSkillsCount?.length} skills match on your profile
                   </button>
-              }
+                }
+              </div>
             </p>
           </div>
 
@@ -411,7 +414,7 @@ const JobDetails = ({ params }) => {
         </div>
 
         {/* Company Details Section */}
-        <div className="bg-white shadow-md p-6 rounded-lg">
+        <div className="bg-white shadow-md p-3 md:p-6 rounded-lg">
           <div className="flex items-start space-x-4 mb-4">
             <FaBuilding className="w-8 h-8 text-gray-500" />
             <div>

@@ -73,9 +73,12 @@ const Navbar = () => {
             href="/"
             className="ml-[60px] md:ml-0  flex flex-shrink-0 items-center"
           >
-            <button className="text-2xl font-bold text-white">
-              Job<span className="text-sky-600">Sphere</span>
-            </button>
+            <Image
+              src={"https://i.ibb.co.com/Ph872yP/logoName.png"}
+              alt="Logo"
+              width={250}
+              height={100}
+              className="w-[150px] md:w-[200px]" />
           </Link>
 
           {/* Centered Navigation Links for larger screens */}
@@ -126,7 +129,7 @@ const Navbar = () => {
                       <>
                         <MenuItem>
                           <div className="p-5 flex flex-col justify-center items-center">
-                            <Image className='border rounded-full w-20 h-20 object-cover' src={loggedInUser?.userIMG ||  "https://i.ibb.co/3BY9Fks/profile.png"} width={60} height={50} />
+                            <Image className='border rounded-full w-20 h-20 object-cover' alt="Image" src={loggedInUser?.userIMG || "https://i.ibb.co/3BY9Fks/profile.png"} width={60} height={50} />
                             <p className="block font-semibold text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-20">
                               {loggedInUser?.userName} {loggedInUser?.name}{" "} {loggedInUser?.fullName}
                             </p>
@@ -160,10 +163,11 @@ const Navbar = () => {
                               </MenuItem>
                             </>
                           )}
-                          {loggedInUser?.role === "recruiter" && (
-                            <>
+
+                          {/* {loggedInUser?.role === "recruiter" && ( */}
+                            {/* <> */}
                               {/* Divider */}
-                              <div className="border-t border-gray-200"></div>
+                              {/* <div className="border-t border-gray-200"></div>
                               <MenuItem>
                                 <a
                                   href="/profile/premiumMembership"
@@ -171,9 +175,10 @@ const Navbar = () => {
                                 >
                                   Premium Membership
                                 </a>
-                              </MenuItem>
-                            </>
-                          )}
+                              </MenuItem> */}
+                            {/* </> */}
+                          {/* )} */}
+                          
                           {loggedInUser?.role === "seeker" && (
                             <>
                               {/* Divider */}

@@ -83,11 +83,11 @@ const JobCard = ({ job }) => {
                         <Image className='border rounded-full' alt={compnayInforamtion?.companyInfo?.companyName || 'Company Logo'} src={compnayInforamtion?.companyInfo?.logo} width={60} height={50} />
                     </div>
                     <div className='flex-1 flex flex-col gap-1'>
-                        <h1 className='text-xl font-semibold '>
-                            {jobTitle?.slice(0, 20)}{jobTitle?.length > 20 && '...'}
+                        <h1 className='text-lg md:text-xl font-semibold line-clamp-1'>
+                            {jobTitle}
                         </h1>
-                        <p className='text-start'>
-                            {compnayInforamtion?.companyInfo?.companyName?.slice(0, 30)}{compnayInforamtion?.companyInfo?.companyName?.length > 20 && '...'}
+                        <p className='text-start line-clamp-1'>
+                            {compnayInforamtion?.companyInfo?.companyName}
                         </p>
                     </div>
                 </div>
@@ -102,20 +102,20 @@ const JobCard = ({ job }) => {
                 </button>
             </div>
 
-            <div className='flex items-center gap-1'>
-                <span><AiOutlineDollarCircle /></span>
-                {salaryScale}
+            <div className="flex justify-betwee gap-2 items-center">
+                <span className="font-medium text-gray-600"><FaLocationDot /></span>
+                <span className="text-gray-800 line-clamp-1">{job?.compnayInforamtion?.companyInfo?.country},{job?.compnayInforamtion?.companyInfo?.city}</span>
             </div>
 
             <div className='flex justify-between'>
-                <div className="flex justify-betwee gap-2 items-center">
-                    <span className="font-medium text-gray-600"><PiBagSimpleFill /></span>
-                    <span className="text-gray-800">{jobType}</span>
+                <div className='flex items-center gap-2'>
+                    <span><AiOutlineDollarCircle /></span>
+                    {salaryScale}
                 </div>
 
                 <div className="flex justify-betwee gap-2 items-center">
-                    <span className="font-medium text-gray-600"><FaLocationDot /></span>
-                    <span className="text-gray-800">{job?.locationType}</span>
+                    <span className="font-medium text-gray-600"><PiBagSimpleFill /></span>
+                    <span className="text-gray-800">{jobType}</span>
                 </div>
             </div>
 

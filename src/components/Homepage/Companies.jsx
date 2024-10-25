@@ -1,5 +1,7 @@
 "use client"
 import axios from 'axios';
+import Image from 'next/image';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
 
@@ -26,10 +28,22 @@ const Companies = () => {
             <h1 className="text-3xl font-extrabold text-center mb-8">Connected Companies</h1>
 
             <Marquee>
-                <div className='grid grid-rows-3 grid-flow-col gap-4'>
+                <div className="flex justify-center space-x-8">
                     {
-                        companiesName?.map(Name => <div className='min-w-72' key={Name._id}><h1 className='bg-blue-100 px-2 ml-5 py-3 rounded-2xl border-2 border-blue-800 text-center text-xl font-semibold text-slate-800 ' >{Name?.companyInfo?.companyName}</h1></div>)
-                    }  </div>
+                        companiesName?.map(Name => <Link href={`/companies/${Name._id}`} key={Name._id} className="group flex flex-col justify-between  items-center transition-transform duration-300 hover:scale-110 rounded-lg my-4 mx-2">
+                                <Image
+                                    src={Name?.companyInfo?.logo}
+                                    alt={Name?.companyInfo?.companyName}
+                                    width={100}
+                                    height={100}
+                                    className="rounded-lg"
+                                />
+                                <p className='text-xs text-primary '>{Name?.companyInfo?.companyName}</p>
+                        </Link>)
+                    }
+                </div>
+
+
             </Marquee>
         </div>
 
