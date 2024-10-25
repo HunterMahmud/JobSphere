@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Countdown from "react-countdown";
 import Loader from "@/app/loading";
+import Link from "next/link";
 
 const JobTable = () => {
   const [jobDetails, setJobDetails] = useState([]);
@@ -127,8 +128,8 @@ const JobTable = () => {
                 className="border-b hover:bg-gray-50 text-xs md:text-sm"
               >
                 <td className="px-6 py-4">{index + 1}</td>
-                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                  {job.jobTitle}
+                <td className="py-4 px-6 border-b hover:underline border-gray-200 text-gray-800">
+                  <Link href={`/jobs/${job?._id}`}>{job?.jobTitle}</Link>
                 </td>
                 <td className="px-1 md:px-3 lg:px-6 py-4">
                   <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
