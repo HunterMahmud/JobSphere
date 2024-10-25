@@ -53,10 +53,10 @@ const handleSubmit = () => {
 
   return (
     <div className="p-4 md:w-4/5 mx-auto">
-      <div className="md:text-2xl text-xl font-bold">
+      <div className="md:text-2xl mb-2 text-xl font-bold">
       Find the right job
       </div>
-      <div className="flex flex-col md:flex-row items-center py-4 rounded-lg shadow-md space-y-2 md:space-y-0 w-full md:w-full"> 
+      <div className="flex flex-col md:mb-12 mb-6 md:flex-row items-center py-4 rounded-lg shadow-md space-y-2 md:space-y-0 w-full md:w-full"> 
 
         {/* Job Title Input */}
         <div className="flex items-center mx-4 bg-white border border-accent w-full">

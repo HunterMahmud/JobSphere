@@ -229,35 +229,40 @@ const JobPage = () => {
       </div>
 
       {/* Pagination */}
-      <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
+{(Array.isArray(jobs) && jobs.length > 0) && (
+  <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
+    <button
+      onClick={handlePreviousPage}
+      disabled={currentPage === 1}
+      className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
+    >
+      <GrPrevious />
+    </button>
+    <div className="space-x-2">
+      {Array.from({ length: totalPages }, (_, index) => (
         <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
+          key={index + 1}
+          onClick={() => setCurrentPage(index + 1)}
+          className={`btn px-3 py-2 border-2 text-xs lg:text-lg font-semibold hover:bg-hover rounded-lg ${
+            currentPage === index + 1
+              ? "text-primary bg-white border hover:text-white border-accent"
+              : "bg-primary text-white"
+          }`}
         >
-          <GrPrevious/>
+          {index + 1}
         </button>
-        <div className="space-x-2">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              className={`btn px-3 py-2 border-2 text-xs lg:text-lg font-semibold hover:bg-hover  rounded-lg  ${
-                currentPage === index + 1 ? "text-primary bg-white border hover:text-white border-accent" : "bg-primary text-white"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold   bg-primary hover:bg-hover rounded-lg text-white"
-        >
-          <GrNext/>
-        </button>
-      </div>
+      ))}
+    </div>
+    <button
+      onClick={handleNextPage}
+      disabled={currentPage === totalPages}
+      className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
+    >
+      <GrNext />
+    </button>
+  </div>
+)}
+
     </div>
   );
 };
