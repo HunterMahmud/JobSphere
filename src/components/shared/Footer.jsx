@@ -1,17 +1,24 @@
 'use client'
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const Footer = () => {
     const pathName = usePathname();
-    if(pathName.includes('dashboard')) return;
+    if (pathName.includes('dashboard')) return;
 
     return (
         <footer className="px-2 md:px-0 divide-y custom-container pt-10">
             <div className="flex flex-col justify-between mx-auto space-y-8 lg:flex-row lg:space-y-0 pb-4">
                 <div className="lg:w-3/5">
                     <Link href="/" className="flex justify-center space-x-3 lg:justify-start">
-                        <span className="self-center text-2xl md:text-3xl font-bold">Job<span className="text-sky-600">Sphere</span></span>
+                        {/* <span className="self-center text-2xl md:text-3xl font-bold">Job<span className="text-sky-600">Sphere</span></span> */}
+                        <Image
+                            src={"https://i.ibb.co.com/k0YQWJD/Footer-Logo.png"}
+                            alt="Logo"
+                            width={150}
+                            height={100}
+                            className="w-[100px] md:w-[150px]" />
                     </Link>
                 </div>
                 <div className="flex flex-col md:flex-row text-sm md:text-left text-center justify-center md:gap-x-20 gap-y-8">
