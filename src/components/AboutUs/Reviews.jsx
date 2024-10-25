@@ -42,7 +42,7 @@ console.log(seasons);
     const reviewData = {
       ...data,
       rating: parseInt(data?.rating),
-      photoURL:User?.image,
+      photoURL:User?.image || 'https://i.ibb.co/3BY9Fks/profile.png',
       reviewDateTime: new Date(),
       
     };
