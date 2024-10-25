@@ -84,14 +84,17 @@ const BlogPage = () => {
             <Loader />
           </div>
         ) : Array.isArray(blogs) && blogs.length > 0 ? (
-          blogs?.map((blog, i) => <BlogsCard key={i} blog={blog} />)
+          blogs?.map((blog, i) => <BlogsCard key={i} blog={blog} />
+          
+         )
         ) : (
           <p className="text-center md:grid-cols-2 lg:col-span-3">No blogs found</p>
         )}
       </div>
 
       {/* Pagination */}
-      <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
+
+      {Array.isArray(blogs) && blogs.length > 0 && <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
@@ -119,7 +122,8 @@ const BlogPage = () => {
         >
           <GrNext/>
         </button>
-      </div>
+      </div>}
+      
     </div>
   );
 };
