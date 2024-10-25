@@ -98,7 +98,7 @@ const Reviews = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <img
-                      src={review?.PhotoURL}
+                      src={review?.PhotoURL || "https://i.ibb.co/3BY9Fks/profile.png"}
                       alt={review.name}
                       className="w-12 h-12 rounded-full"
                     />
