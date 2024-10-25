@@ -8,15 +8,13 @@ import { IoHomeOutline } from "react-icons/io5";
 import { RiSave3Line } from "react-icons/ri";
 import { MdAssignmentAdd, MdOutlineWorkOutline, MdOutlineManageSearch } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
-import { ImProfile } from "react-icons/im";
-import { GoCodeReview } from "react-icons/go";
 import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
 import { TfiWrite } from "react-icons/tfi";
 import { signOut } from "next-auth/react";
 
 const Sidebar = () => {
-  const [isActive, setActive] = useState(false);
+  const [isActive, setActive] = useState(true);
   const { loggedInUser } = useRole();
 
   // Sidebar Responsive Handler
