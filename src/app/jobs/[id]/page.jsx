@@ -34,6 +34,7 @@ import useSeekerInfo from "@/components/Hooks/useSeekerInfo";
 import toast from "react-hot-toast";
 import useRole from "@/components/Hooks/useRole";
 import Link from "next/link";
+import { BiChevronsRight } from "react-icons/bi";
 
 const JobDetails = ({ params }) => {
   const [showSkill, setShowSkill] = useState(false);
@@ -57,8 +58,12 @@ const JobDetails = ({ params }) => {
   // const { saveUsers } = job;
   const email = session?.user?.email
 
-  const similarSkillsCount = seekerInfo?.skills?.technicalSkills?.filter(skill =>
-    job?.skills.map(js => js.toLowerCase()).includes(skill.toLowerCase())
+  const similarSkillsCount = job?.skills?.filter(skill =>
+    seekerInfo?.skills?.technicalSkills?.map(js => js.toLowerCase()).includes(skill.toLowerCase())
+  );
+
+  let unmatchedSkills = job?.skills?.filter(skill =>
+    !seekerInfo?.skills?.technicalSkills?.map(js => js.toLowerCase()).includes(skill.toLowerCase())
   );
 
   const getServicesDetails = async (id) => {
@@ -590,18 +595,41 @@ const JobDetails = ({ params }) => {
       }
 
       {showSkill && <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-        <div>
-          <h1 className="text-center mb-3">Skills associated with the job</h1>
-          {
-            similarSkillsCount?.map((skill, index) => (
-              <span
-                key={index}
-                className="bg-accent text-primary px-4 py-1 rounded-full text-sm font-medium shadow-sm hover:bg-blue-200 transition-all duration-300 mr-3"
-              >
-                {skill}
-              </span>
-            ))
-          }
+        <h1 className="text-center mb-3 font-medium mt-3 md:mt-0">Skills associated with the job</h1>
+        <div className="flex flex-col justify-around gap-5 ml-3 md:ml-0">
+          <div>
+            <h1>Matched Skills : </h1>
+            <div className="flex flex-col gap-3 mt-3">
+              {
+                similarSkillsCount?.map((skill, index) => (
+                  <p
+                    key={index}
+                    className="flex gap-1 items-center text-sm"
+                  >
+                    <BiChevronsRight className="text-xl" />
+                    {skill}
+                  </p>
+                ))
+              }
+            </div>
+          </div>
+
+          <div className="mt-t">
+            <h1>Unmatched Skills : </h1>
+            <div className="flex flex-col gap-3 mt-3">
+              {
+                unmatchedSkills?.map((skill, index) => (
+                  <p
+                    key={index}
+                    className="flex gap-1 items-center text-sm"
+                  >
+                    <BiChevronsRight className="text-xl" />
+                    {skill}
+                  </p>
+                ))
+              }
+            </div>
+          </div>
 
         </div>
       </Modal>
