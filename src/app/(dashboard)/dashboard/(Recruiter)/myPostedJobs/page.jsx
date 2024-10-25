@@ -238,7 +238,7 @@ const PostedJobs = () => {
                     <td className="pl-6 py-4 gap-2 px-6 text-center flex justify-center">
                       <Link
                         href={`/dashboard/myPostedJobs/api/update/${job?._id}`}
-                        className="flex items-center justify-center gap-1 bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 transition"
+                        className="flex items-center justify-center gap-1 bg-primary text-white py-1 px-3 rounded-md hover:bg-blue-600 transition"
                       >
                         <AiFillEdit className="text-lg flex items-center justify-center" />
                       </Link>
