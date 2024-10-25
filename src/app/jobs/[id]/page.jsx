@@ -360,7 +360,7 @@ const JobDetails = ({ params }) => {
               {job?.skills.map((skill, index) => (
                 <span
                   key={index}
-                  className="bg-blue-100 text-primary px-4 py-1 rounded-full text-sm font-medium shadow-sm hover:bg-blue-200 cursor-pointer transition-all duration-300 mr-3"
+                  className="bg-accent text-primary px-4 py-1 rounded-full text-sm font-medium shadow-sm hover:bg-blue-200 transition-all duration-300 mr-3"
                 >
                   {skill}
                 </span>
@@ -462,8 +462,7 @@ const JobDetails = ({ params }) => {
 
             </div>
             {/* Share Icon */}
-            <button onClick={toggleModal} className=" flex items-center text-primary justify-center gap-3  hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
-
+            <button onClick={toggleModal} className=" flex items-center text-primary justify-center gap-3 hover:text-white bg-accent hover:bg-primary opacity-95 duration-300 px-4 rounded-lg py-2">
               <FaShareFromSquare size={24} />
             </button>
           </div>
@@ -591,7 +590,20 @@ const JobDetails = ({ params }) => {
       }
 
       {showSkill && <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-       
+        <div>
+          <h1 className="text-center mb-3">Skills associated with the job</h1>
+          {
+            similarSkillsCount?.map((skill, index) => (
+              <span
+                key={index}
+                className="bg-accent text-primary px-4 py-1 rounded-full text-sm font-medium shadow-sm hover:bg-blue-200 transition-all duration-300 mr-3"
+              >
+                {skill}
+              </span>
+            ))
+          }
+
+        </div>
       </Modal>
       }
 
