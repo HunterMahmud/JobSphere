@@ -383,7 +383,7 @@ const ApplyedAJob = ({ params }) => {
                                         <td className="px-6 py-4">{new Date(job?.applicationDate).toLocaleDateString()}</td>
 
                                         <td className="px-1 md:px-3 lg:px-6 py-4">
-                                            <span className={`${job?.jobStatus === 'Pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'Rejected' ? 'bg-red-100 text-red-600' : ''} inline-block px-2 py-1 font-medium rounded-full `}>
+                                            <span className={`inline-block px-2 py-1 font-medium rounded-full `}>
                                                 {job?.jobStatus}
                                             </span>
                                         </td>

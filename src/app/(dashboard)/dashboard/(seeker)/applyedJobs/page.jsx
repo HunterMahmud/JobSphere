@@ -270,7 +270,7 @@ const ApplyedJobs = () => {
                             setTask(job?.task)
                           }
                         }}
-                        className={`${job?.jobStatus === 'Pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'Rejected ' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'} cursor-pointer inline-block px-2 py-1 font-medium rounded-full `}>
+                        className={`${job?.jobStatus === 'Pending' ? 'bg-blue-100 text-blue-600' : job?.jobStatus === 'Rejected ' ? 'bg-red-100 text-red-600' : 'bg-gradient-to-r from-[#6ec49a]  via-[#71d097]  text-green-700'} cursor-pointer px-2 py-1 font-medium rounded-full `}>
                         {job?.jobStatus}
                       </span>
                     </td>
