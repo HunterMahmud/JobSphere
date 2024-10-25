@@ -228,12 +228,18 @@ const PostedJobs = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <Link
+                      {job?.applicantsNumber == 0 ? <p
+                       
+                        className="inline-block px-4 py-1 font-medium rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200"
+                      >
+                        {job?.applicantsNumber}
+                      </p>:<Link
                         href={`/dashboard/myPostedJobs/${job?._id}`}
                         className="inline-block px-4 py-1 font-medium rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200"
                       >
                         {job?.applicantsNumber}
-                      </Link>
+                      </Link>}
+                      
                     </td>
                     <td className="pl-6 py-4 gap-2 px-6 text-center flex justify-center">
                       <Link
@@ -335,22 +341,3 @@ const PostedJobs = () => {
 
 export default PostedJobs;
 
-/*
-
-
-{Array.from(
-                  { length: Math.ceil(total / limit) },
-                  (_, index) => (
-                    <button
-                      key={index + 1}
-                      onClick={() => setPage(index + 1)}
-                      className={`btn px-3 py-2 border-2 text-xs  font-semibold  bg-primary hover:bg-hover rounded-lg ${
-                        page === index + 1 ? "bg-primary text-white" : ""
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  )
-                )}
-
-*/
