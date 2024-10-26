@@ -86,7 +86,7 @@ const UserManagement = () => {
     if (userRole === "admin") {
       Swal.fire({
         title: "Error!",
-        text: " you cannot block an admin.",
+        text: " You cannot block an admin.",
         icon: "error",
       });
       return;
@@ -107,7 +107,7 @@ const UserManagement = () => {
           console.log(response);
           
           if (response.data?.message) {
-            toast.success("User Role Successfully changed")
+            toast.success("User status Successfully changed")
 
             fetchUsers()
           };

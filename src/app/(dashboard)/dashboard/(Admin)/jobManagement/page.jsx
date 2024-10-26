@@ -74,7 +74,7 @@ const JobTable = () => {
          
 
           if (response.data?.message) {
-            toast.success("User Role Successfully changed")
+            toast.success("Job Status Successfully changed")
 
             fetchJobs()
           };
