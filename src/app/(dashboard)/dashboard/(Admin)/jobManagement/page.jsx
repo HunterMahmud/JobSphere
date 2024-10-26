@@ -70,8 +70,8 @@ const JobTable = () => {
       if (result.isConfirmed) {
         try {
 
-          const response = await axios.patch('/dashboard/userManagement/api/manageStatus', { data });
-         
+          const response = await axios.patch('/dashboard/jobManagement/api/jobStatus', { data });
+
 
           if (response.data?.message) {
             toast.success("Job Status Successfully changed")
@@ -158,6 +158,9 @@ const JobTable = () => {
                 Deadline
               </th>
               <th className="px-6 py-4 text-left font-medium text-gray-700">
+                Status
+              </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
                 Action
               </th>
             </tr>
@@ -193,6 +196,19 @@ const JobTable = () => {
                     "closed"
                   )}
                 </td>
+                <td className="py-6 px-4">
+
+                  <span
+                    className={`${job?.status === "blocked"
+                      ? " bg-red-100 text-red-600"
+                      : "bg-green-100 text-green-600"
+                      } inline-block px-2 py-1 font-medium rounded-full`}
+                  >
+                    {job?.status === "blocked" ? "blocked" : "active"}
+                  </span>
+
+                </td>
+
                 <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
                   {
                     job?.status === "blocked" ?
