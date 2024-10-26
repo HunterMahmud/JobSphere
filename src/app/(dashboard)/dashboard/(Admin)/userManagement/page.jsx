@@ -78,6 +78,14 @@ const UserManagement = () => {
       }
     });
   };
+  const handleStatus = async (data) => {
+    try {
+      const response = await axios.patch('/dashboard/userManagement/api/manageRole', { data });
+      console.log('Profile updated:', response.data);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
 
   const totalPages = Math.ceil(totalUsers / limit);
 
