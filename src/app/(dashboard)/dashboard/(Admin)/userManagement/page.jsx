@@ -128,7 +128,7 @@ const UserManagement = () => {
                 <th className="px-6 py-4 text-left font-medium text-gray-700">Role</th>
                 <th className="px-6 py-4 text-left font-medium text-gray-700">Email</th>
                 <th className="px-6 py-4 text-left font-medium text-gray-700">Status</th>
-                <th className="px-6 py-4 text-left font-medium text-gray-700">Action</th>
+                <th className="pl-16 py-4 text-left font-medium text-gray-700">Action</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -138,7 +138,7 @@ const UserManagement = () => {
                   <td className="py-4 px-6 text-gray-800">
                     {user.name || user.fullName || user.userName}
                   </td>
-                  <td className="px-6 py-2">
+                  <td className="px-4 py-2">
                     <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
                       {user.role}
                     </span>
@@ -146,18 +146,18 @@ const UserManagement = () => {
                   <td className="py-4 px-6 text-gray-800 sm:text-xs">{user.email}</td>
                   <td className="py-4 px-4 text-gray-800 ">
                     <div className="flex items-center gap-1">
-                    <span class={`h-1.5 w-1.5 rounded-full ${user?.status ==="blocked"? "text-red-500 " : "bg-secondary"}`}></span>
-                    <span
-                    className={`${user?.status === "blocked"
-                      ? "text-red-500 "  
-                      : "text-primary" 
-                      } py-1 bg-opacity-60 rounded-full font-semibold`}
-                  >
-                    {user?.status === "block" ? "Blocked" : "active"}
-                  </span>
+                      <span class={`h-1.5 w-1.5 rounded-full ${user?.status === "blocked" ? "text-red-500 " : "bg-secondary"}`}></span>
+                      <span
+                        className={`${user?.status === "blocked"
+                          ? "text-red-500 "
+                          : "text-primary"
+                          } py-1 bg-opacity-60 rounded-full font-semibold`}
+                      >
+                        {user?.status === "block" ? "Blocked" : "active"}
+                      </span>
                     </div>
                   </td>
-                  <td className="py-4 px-6">
+                  <td className="py-4 px-5 flex justify-center items-center gap-2">
                     <button
                       className={`bg-red-500 text-white py-1 px-3 rounded-md transition ${user.role === "admin" ? "cursor-not-allowed opacity-50" : "hover:bg-red-600"
                         }`}
@@ -167,7 +167,13 @@ const UserManagement = () => {
                       <AiFillDelete />
                     </button>
                     {
-                      <Button variant="destructive">Destructive</Button>
+                      user?.status === "blocked" ?
+                        <button class="border-2 border-primary text-sm text-primary font-bold py-2 px-3 rounded-md hover:text-white transition duration-300 hover:bg-hover">
+                          Unblock
+                        </button> :
+                        <button class="border-2 border-red-500 text-sm text-red-500 font-bold py-2 px-3 rounded-md hover:border-primary hover:text-white transition duration-300 hover:bg-hover">
+                          Block
+                        </button>
                     }
                   </td>
                 </tr>
