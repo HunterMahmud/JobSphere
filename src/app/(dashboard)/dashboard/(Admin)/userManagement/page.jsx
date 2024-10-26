@@ -5,6 +5,9 @@ import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
 import Swal from "sweetalert2";
 import Loader from "@/app/loading";
+import toast from "react-hot-toast";
+import { MdBlock } from "react-icons/md";
+import { CgUnblock } from "react-icons/cg";
 
 // User Management Component
 const UserManagement = () => {
@@ -78,13 +81,44 @@ const UserManagement = () => {
       }
     });
   };
-  const handleStatus = async (data) => {
-    try {
-      const response = await axios.patch('/dashboard/userManagement/api/manageRole', { data });
-      console.log('Profile updated:', response.data);
-    } catch (error) {
-      console.error('Error updating profile:', error);
+  const handleStatus = async (email, userRole , status) => {
+    const data ={email ,status}
+    if (userRole === "admin") {
+      Swal.fire({
+        title: "Error!",
+        text: " you cannot block an admin.",
+        icon: "error",
+      });
+      return;
     }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are blocking the User!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#60A5FA",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Yes, ${data?.status} it !`
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+
+          const response = await axios.patch('/dashboard/userManagement/api/manageStatus', { data });
+          console.log(response);
+          
+          if (response.data?.message) {
+            toast.success("User Role Successfully changed")
+
+            fetchUsers()
+          };
+        } catch (error) {
+          toast.error(error.message)
+
+
+        }
+      }
+    });
+
   };
 
   const totalPages = Math.ceil(totalUsers / limit);
@@ -152,20 +186,19 @@ const UserManagement = () => {
                     </span>
                   </td>
                   <td className="py-4 px-6 text-gray-800 sm:text-xs">{user.email}</td>
-                  <td className="py-4 px-4 text-gray-800 ">
-                    <div className="flex items-center gap-1">
-                      <span class={`h-1.5 w-1.5 rounded-full ${user?.status === "blocked" ? "text-red-500 " : "bg-secondary"}`}></span>
+                  <td className="py-4 px-4">
+                  
                       <span
                         className={`${user?.status === "blocked"
-                          ? "text-red-500 "
-                          : "text-primary"
-                          } py-1 bg-opacity-60 rounded-full font-semibold`}
+                          ? " bg-red-100 text-red-600"
+                          : "bg-green-100 text-green-600"
+                          } inline-block px-2 py-1 font-medium rounded-full`}
                       >
-                        {user?.status === "block" ? "Blocked" : "active"}
+                        {user?.status === "blocked" ? "blocked" : "active"}
                       </span>
-                    </div>
+                   
                   </td>
-                  <td className="py-4 px-5 flex justify-center items-center gap-2">
+                  <td className="py-4 px-5 flex items-center gap-2">
                     <button
                       className={`bg-red-500 text-white py-1 px-3 rounded-md transition ${user.role === "admin" ? "cursor-not-allowed opacity-50" : "hover:bg-red-600"
                         }`}
@@ -176,11 +209,15 @@ const UserManagement = () => {
                     </button>
                     {
                       user?.status === "blocked" ?
-                        <button class="border-2 border-primary text-sm text-primary font-bold py-2 px-3 rounded-md hover:text-white transition duration-300 hover:bg-hover">
-                          Unblock
+                        <button
+                          onClick={() => handleStatus(user.email, user.role, "active")}
+                          className={`bg-green-500 text-white py-1 px-3 rounded-md transition hover:bg-green-600 `}>
+                          <CgUnblock/>
                         </button> :
-                        <button class="border-2 border-red-500 text-sm text-red-500 font-bold py-2 px-3 rounded-md hover:border-primary hover:text-white transition duration-300 hover:bg-hover">
-                          Block
+                        <button
+                        onClick={()=>handleStatus(user.email , user.role , "blocked")}
+                        className={`bg-red-500 text-white py-1 px-3 rounded-md transition hover:bg-red-600`}>
+                           <MdBlock/>
                         </button>
                     }
                   </td>

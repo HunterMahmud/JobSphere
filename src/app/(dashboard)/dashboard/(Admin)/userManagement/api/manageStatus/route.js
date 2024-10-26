@@ -1,4 +1,5 @@
-import connectDB from 'path-to-db-connection'; // Import your database connection
+
+import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from 'next/server';
 
 export const PATCH = async (request) => {
