@@ -5,6 +5,10 @@ import axios from "axios";
 import Countdown from "react-countdown";
 import Loader from "@/app/loading";
 import Link from "next/link";
+import { CgUnblock } from "react-icons/cg";
+import { MdBlock } from "react-icons/md";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const JobTable = () => {
   const [jobDetails, setJobDetails] = useState([]);
@@ -50,6 +54,40 @@ const JobTable = () => {
   // if (loading) {
   //   return <p>Loading...</p>;
   // }
+
+  const handleStatus = async (id, status) => {
+    const data = { id, status }
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are blocking the User!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#60A5FA",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Yes, ${data?.status} it !`
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+
+          const response = await axios.patch('/dashboard/userManagement/api/manageStatus', { data });
+         
+
+          if (response.data?.message) {
+            toast.success("User Role Successfully changed")
+
+            fetchJobs()
+          };
+        } catch (error) {
+          toast.error(error.message)
+
+
+        }
+      }
+    });
+
+  };
+
 
   if (error) {
     return <p>{error}</p>;
@@ -119,6 +157,9 @@ const JobTable = () => {
               <th className="px-6 py-4 text-left font-medium text-gray-700">
                 Deadline
               </th>
+              <th className="px-6 py-4 text-left font-medium text-gray-700">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -152,6 +193,21 @@ const JobTable = () => {
                     "closed"
                   )}
                 </td>
+                <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
+                  {
+                    job?.status === "blocked" ?
+                      <button
+                        onClick={() => handleStatus(job._id, "active")}
+                        className={`bg-green-500 text-white py-1 px-3 rounded-md transition hover:bg-green-600 `}>
+                        <CgUnblock />
+                      </button> :
+                      <button
+                        onClick={() => handleStatus(job._id, "blocked")}
+                        className={`bg-red-500 text-white py-1 px-3 rounded-md transition hover:bg-red-600`}>
+                        <MdBlock />
+                      </button>
+                  }
+                </td>
               </tr>
             ))}
           </tbody>
@@ -160,76 +216,74 @@ const JobTable = () => {
 
       {/* Pagination  */}
       <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-700">View</span>
-              <select
-                value={limit}
-                onChange={(e) => {
-                  setLimit(parseInt(e.target.value)), setPage(1);
-                }}
-                className="border border-gray-300 rounded-md py-1 px-3"
-              >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-              </select>
-              <span className="text-gray-700 block w-full pr-6">
-                Applicants per page
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button
-                disabled={page === 1}
-                onClick={() => setPage(page - 1)}
-                className={`${
-                  page === 1 ? "cursor-not-allowed text-gray-400": "text-gray-700"
-                }`}
-              >
-                <span className="sr-only">Prev Page</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="size-6"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-              <div className="space-x-2 flex">
-                <p className="text-base text-gray-900">
-                  {page}
-                  <span className="mx-0.25">/</span>
-                  {Math.ceil(total / limit)}
-                </p>
-              </div>
-
-              <button
-                disabled={page === Math.ceil(total / limit)}
-                onClick={() => setPage(page + 1)}
-                className={`${
-                  page === Math.ceil(total / limit) ? "cursor-not-allowed text-gray-400": "text-gray-700 "
-                }`}
-              >
-                <span className="sr-only">Next Page</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="size-6"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-700">View</span>
+          <select
+            value={limit}
+            onChange={(e) => {
+              setLimit(parseInt(e.target.value)), setPage(1);
+            }}
+            className="border border-gray-300 rounded-md py-1 px-3"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+          </select>
+          <span className="text-gray-700 block w-full pr-6">
+            Applicants per page
+          </span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className={`${page === 1 ? "cursor-not-allowed text-gray-400" : "text-gray-700"
+              }`}
+          >
+            <span className="sr-only">Prev Page</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="size-6"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+          <div className="space-x-2 flex">
+            <p className="text-base text-gray-900">
+              {page}
+              <span className="mx-0.25">/</span>
+              {Math.ceil(total / limit)}
+            </p>
           </div>
+
+          <button
+            disabled={page === Math.ceil(total / limit)}
+            onClick={() => setPage(page + 1)}
+            className={`${page === Math.ceil(total / limit) ? "cursor-not-allowed text-gray-400" : "text-gray-700 "
+              }`}
+          >
+            <span className="sr-only">Next Page</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="size-6"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
