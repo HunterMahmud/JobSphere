@@ -130,7 +130,7 @@ const UserManagement = () => {
     return <p>{error}</p>;
   }
   if (users.length<1 && !loading) {
-    return <h1 className="text-center text-2xl font-bold mt-5">No Data found</h1>
+    return <h1 className="text-center text-2xl font-bold mt-5">No User found</h1>
   }
 
   return (
