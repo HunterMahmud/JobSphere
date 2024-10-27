@@ -116,7 +116,7 @@ const JobTable = () => {
           {/* filter by Status */}
           <select
             onChange={(e) => setJobStatusFilter(e.target.value)}
-            value={filterByStatus}
+            value={jobStatusFilter}
             className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none"
           >
             <option value="">Filter by Status</option>
