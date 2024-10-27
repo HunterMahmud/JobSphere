@@ -22,6 +22,7 @@ const UserManagement = () => {
   const [filterByStatus, setFilterByStatus] = useState("");
 
   const fetchUsers = async () => {
+    setLoading(true)
     try {
       setLoading(true);
       const response = await axios.get(
@@ -128,6 +129,9 @@ const UserManagement = () => {
   if (error) {
     return <p>{error}</p>;
   }
+  if (users.length<1 && !loading) {
+    return <h1 className="text-center text-2xl font-bold mt-5">No Data found</h1>
+  }
 
   return (
     <section className="container mx-auto px-4 py-8">
@@ -187,7 +191,7 @@ const UserManagement = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {users.map((user, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50">
-                  <td className="px-6 py-4">{index + 1}</td>
+                  <td className="px-6 py-4">{(page-1)*limit + index + 1}</td>
                   <td className="py-4 px-6 text-gray-800">
                     {user.name || user.fullName || user.userName}
                   </td>
