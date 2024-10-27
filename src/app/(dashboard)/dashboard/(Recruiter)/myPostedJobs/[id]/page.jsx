@@ -28,9 +28,10 @@ const ApplyedAJob = ({ params }) => {
     const [id, setId] = useState('');
     const [task, setTask] = useState('');
     const [interView, setInterView] = useState(false);
+    const [taskManage, setTaskManage] = useState(false)
+    const [jobOffer, setJobOffer] = useState(false);
     const email = session?.data?.user?.email;
     const [to, setTo] = useState('');
-    const [jobOffer, setJobOffer] = useState(false);
     const [jobTitle, setJobTitle] = useState('');
 
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
@@ -350,7 +351,7 @@ const ApplyedAJob = ({ params }) => {
 
     return (
         <Fragment>
-            <div className="max-w-7xl mx-auto py-8 px-4">
+            <div className="max-w-7xl mx-auto py-8 md:px-4">
                 {/* Page Title */}
                 <h1 className="text-2xl font-bold text-center mb-8">{jobs?.[1]?.jobTitle}</h1>
 
@@ -398,6 +399,7 @@ const ApplyedAJob = ({ params }) => {
                                         </td>
 
                                         <td className="pl-6 py-4 text-right flex gap-2">
+                                            {/* Task */}
                                             <button
                                                 data-tooltip-id="my-tooltip" data-tooltip-content="Task"
                                                 onClick={() => {
@@ -408,12 +410,16 @@ const ApplyedAJob = ({ params }) => {
                                                     } else {
                                                         handleTask(job?._id)
                                                         setTask(job?.task)
+                                                        setTaskManage(true)
+                                                        setJobOffer(false)
+                                                        setInterView(false)
                                                     }
                                                 }}
                                                 className="flex items-center justify-center gap-1 bg-gray-500 text-white py-1 px-3 rounded-md hover:bg-gray-600 transition"
                                             >
                                                 <GiNotebook className="text-lg flex items-center justify-center" />
                                             </button>
+                                            {/* Interview */}
                                             <button
                                                 data-tooltip-id="my-tooltip" data-tooltip-content="InterView"
                                                 onClick={() => {
@@ -427,13 +433,15 @@ const ApplyedAJob = ({ params }) => {
                                                         setId(job?._id)
                                                         setTo(job?.applicantInfo?.contactInformation?.email)
                                                         setInterView(true)
+                                                        setTaskManage(false)
+                                                        setJobOffer(false)
                                                     }
                                                 }}
                                                 className="flex items-center justify-center gap-1 bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 transition"
                                             >
                                                 <MdInterpreterMode className="text-lg flex items-center justify-center" />
                                             </button>
-
+                                            {/* Select */}
                                             <button
                                                 data-tooltip-id="my-tooltip" data-tooltip-content="Select Applicant"
                                                 onClick={() => {
@@ -445,13 +453,15 @@ const ApplyedAJob = ({ params }) => {
                                                         setJobTitle(job?.jobTitle)
                                                         setTo(job?.applicantInfo?.contactInformation?.email)
                                                         setJobOffer(true)
+                                                        setInterView(false)
+                                                        setTaskManage(false)
                                                     }
                                                 }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-primary text-white py-2 px-3 rounded-md`}
                                             >
                                                 <GrCheckboxSelected className="text-lg flex items-center justify-center" />
                                             </button>
-
+                                            {/* Reject */}
                                             <button
                                                 data-tooltip-id="my-tooltip" data-tooltip-content="Rejected"
                                                 disabled={job?.jobStatus === 'Rejected'}
@@ -468,7 +478,7 @@ const ApplyedAJob = ({ params }) => {
                                         </td>
                                         {/* Modal */}
                                         {
-                                            interView ? <>
+                                            interView && <>
                                                 <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
                                                     <div>
                                                         <Tabs>
@@ -487,7 +497,7 @@ const ApplyedAJob = ({ params }) => {
                                                                     <form onSubmit={handleOfflineInterView} className="md:grid grid-cols-1 md:grid-cols-2 gap-5 bg-white rounded">
 
                                                                         {/* Date and Time */}
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Interview Date</label>
                                                                             <input
                                                                                 type="date"
@@ -497,7 +507,7 @@ const ApplyedAJob = ({ params }) => {
                                                                             />
                                                                         </div>
 
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Interview Time</label>
                                                                             <input
                                                                                 type="time"
@@ -508,7 +518,7 @@ const ApplyedAJob = ({ params }) => {
                                                                         </div>
 
                                                                         {/* Location */}
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Interview Location</label>
                                                                             <input
                                                                                 type="text"
@@ -520,7 +530,7 @@ const ApplyedAJob = ({ params }) => {
                                                                         </div>
 
                                                                         {/* Contact Information */}
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Contact Person</label>
                                                                             <input
                                                                                 type="text"
@@ -531,7 +541,7 @@ const ApplyedAJob = ({ params }) => {
                                                                             />
                                                                         </div>
 
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Contact Email</label>
                                                                             <input
                                                                                 type="email"
@@ -542,7 +552,7 @@ const ApplyedAJob = ({ params }) => {
                                                                             />
                                                                         </div>
 
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Contact Phone</label>
                                                                             <input
                                                                                 type="tel"
@@ -554,7 +564,7 @@ const ApplyedAJob = ({ params }) => {
                                                                         </div>
 
                                                                         {/* Interview Format */}
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Interview Format</label>
                                                                             <input
                                                                                 type="text"
@@ -566,7 +576,7 @@ const ApplyedAJob = ({ params }) => {
                                                                         </div>
 
                                                                         {/* Documents to Bring */}
-                                                                        <div className="mb-4">
+                                                                        <div className="mb-3">
                                                                             <label className="block text-gray-700 font-bold mb-2">Documents to Bring</label>
                                                                             <input
                                                                                 type="text"
@@ -579,7 +589,7 @@ const ApplyedAJob = ({ params }) => {
 
                                                                         {/* Submit Button */}
                                                                         <div className='flex justify-end md:col-span-2'>
-                                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                            <button className='py-2 px-6 md:text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
                                                                                 {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
                                                                             </button>
                                                                         </div>
@@ -676,7 +686,7 @@ const ApplyedAJob = ({ params }) => {
 
                                                                         {/* Submit Button */}
                                                                         <div className='flex justify-end md:col-span-2'>
-                                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                            <button className='py-2 px-6 md:text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
                                                                                 {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
                                                                             </button>
                                                                         </div>
@@ -686,57 +696,58 @@ const ApplyedAJob = ({ params }) => {
                                                         </Tabs>
                                                     </div>
                                                 </Modal>
-                                            </> : <>
-                                                {task &&
-                                                    <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                                                        {task?.taskSubmissionLink ? <>
-                                                            <div>
-                                                                <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
-                                                            </div>
-                                                        </>
-                                                            :
-                                                            <>
-                                                                <form onSubmit={handleSubmitTask}>
-                                                                    <div className='flex flex-col gap-3'>
-                                                                        <div className="">
-                                                                            <label className='font-medium' htmlFor='job_title'>
-                                                                                Last date for task submission
-                                                                            </label>
-                                                                            <input
-                                                                                defaultValue={job?.task?.submissionDate}
-                                                                                name='submissionDate'
-                                                                                type='date'
-                                                                                required
-                                                                                className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                            />
-                                                                        </div>
-
-                                                                        <div className="">
-                                                                            <label className='font-medium' htmlFor='job_title'>
-                                                                                Task Link
-                                                                            </label>
-                                                                            <input
-                                                                                placeholder="Submit job task link"
-                                                                                defaultValue={job?.task?.taskLink} name='taskLink'
-                                                                                type='text'
-                                                                                required
-                                                                                className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
-                                                                            />
-                                                                        </div>
-
-                                                                        <div className='flex justify-end md:col-span-2'>
-                                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
-                                                                                {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </>
-                                                        }
-                                                    </Modal>
-                                                }
                                             </>
                                         }
+                                        {/* task */}
+                                        {taskManage &&
+                                            <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
+                                                {task?.taskSubmissionLink ? <>
+                                                    <div>
+                                                        <h1 className='text-center text-lg'>This job seeker already submit his task || <a href={task?.taskSubmissionLink} target='_blank' className='text-blue-600 font-semibold'>Submission Link</a></h1>
+                                                    </div>
+                                                </>
+                                                    :
+                                                    <>
+                                                        <form onSubmit={handleSubmitTask}>
+                                                            <div className='flex p-2 flex-col gap-3'>
+                                                                <div className="">
+                                                                    <label className='font-medium' htmlFor='job_title'>
+                                                                        Last date for task submission
+                                                                    </label>
+                                                                    <input
+                                                                        defaultValue={job?.task?.submissionDate}
+                                                                        name='submissionDate'
+                                                                        type='date'
+                                                                        required
+                                                                        className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                    />
+                                                                </div>
+
+                                                                <div className="">
+                                                                    <label className='font-medium' htmlFor='job_title'>
+                                                                        Task Link
+                                                                    </label>
+                                                                    <input
+                                                                        placeholder="Submit job task link"
+                                                                        defaultValue={job?.task?.taskLink} name='taskLink'
+                                                                        type='text'
+                                                                        required
+                                                                        className='block w-full px-4 py-2 mt-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
+                                                                    />
+                                                                </div>
+
+                                                                <div className='flex justify-end md:col-span-2'>
+                                                                    <button className='py-2 px-6 md:text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                                        {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </>
+                                                }
+                                            </Modal>
+                                        }
+
                                         {
                                             jobOffer && <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
                                                 <h2 className="text-xl text-center font-semibold mb-4">Send Job Offer</h2>
@@ -765,7 +776,7 @@ const ApplyedAJob = ({ params }) => {
                                                         </div>
 
                                                         <div className='flex justify-end md:col-span-2'>
-                                                            <button className='py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
+                                                            <button className='py-2 px-6 md:text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]'>
                                                                 {isLoading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Submit'}
                                                             </button>
                                                         </div>
@@ -780,7 +791,7 @@ const ApplyedAJob = ({ params }) => {
                     }
 
                     {/* Pagination  */}
-                    <div className="flex items-center justify-between bg-gray-50 px-6 py-4 border-t">
+                    <div className="flex items-center justify-between bg-gray-50 md:px-6 py-4 border-t">
                         <div className="flex items-center space-x-2">
                             <span className="text-gray-700">View</span>
                             <select
