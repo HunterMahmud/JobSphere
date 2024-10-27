@@ -105,7 +105,7 @@ const JobTable = () => {
         <div className="flex flex-col md:flex-row justify-between gap-4 w-full">
           {/* Sort by Deadline */}
           <select
-            onChange={(e) => setSortOrder(e.target.value)}
+            onChange={(e) => {setSortOrder(e.target.value); setPage(1) }}
             value={sortOrder}
             className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
           >
@@ -116,7 +116,7 @@ const JobTable = () => {
 
           {/* filter by Status */}
           <select
-            onChange={(e) => setJobStatusFilter(e.target.value)}
+            onChange={(e) =>{setJobStatusFilter(e.target.value); setPage(1) }}
             value={jobStatusFilter}
             className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none"
           >
@@ -127,7 +127,7 @@ const JobTable = () => {
 
           {/* Filter by Job Type */}
           <select
-            onChange={(e) => setJobTypeFilter(e.target.value)}
+            onChange={(e) => {setJobTypeFilter(e.target.value); setPage(1) }}
             className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring focus:border-blue-300"
           >
             <option value="">Filter by Job Type</option>
@@ -140,7 +140,7 @@ const JobTable = () => {
           <input
             type="text"
             placeholder="Search by Job Title..."
-            onChange={(e) => { setSearchTerm(e.target.value); setPage() }}
+            onChange={(e) => { setSearchTerm(e.target.value); setPage(1) }}
             className="border w-full border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
@@ -315,7 +315,7 @@ const JobTable = () => {
             </button>
           </div>
         </div>
-      </>:<h1 className="text-center text-2xl font-bold mt-5">No job found</h1>
+      </>:<h1 className="text-center text-2xl font-bold mt-5">{error? error :"No job found"}</h1>
       )}
 
 
