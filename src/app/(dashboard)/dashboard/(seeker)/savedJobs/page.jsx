@@ -50,7 +50,11 @@ const JobListTable = () => {
 
         fetchJobs();
     }, [session?.data?.user?.email, selectedStatus, selectedType, searchQuery, page, limit, reFetch]);
-
+    
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value)
+        setPage(1)
+    }
 
     const handleDelete = async (jobId, id, job) => {
         Swal.fire({

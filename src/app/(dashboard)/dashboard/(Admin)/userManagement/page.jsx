@@ -86,7 +86,7 @@ const UserManagement = () => {
     if (userRole === "admin") {
       Swal.fire({
         title: "Error!",
-        text: " you cannot block an admin.",
+        text: " You cannot block an admin.",
         icon: "error",
       });
       return;
@@ -107,7 +107,7 @@ const UserManagement = () => {
           console.log(response);
           
           if (response.data?.message) {
-            toast.success("User Role Successfully changed")
+            toast.success("User status Successfully changed")
 
             fetchUsers()
           };
@@ -198,7 +198,7 @@ const UserManagement = () => {
                       </span>
                    
                   </td>
-                  <td className="py-4 px-5 flex items-center gap-2">
+                  <td className="py-4 px-5 flex items-center gap-2 justify-center">
                     <button
                       className={`bg-red-500 text-white py-1 px-3 rounded-md transition ${user.role === "admin" ? "cursor-not-allowed opacity-50" : "hover:bg-red-600"
                         }`}
