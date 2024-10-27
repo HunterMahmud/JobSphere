@@ -7,7 +7,7 @@ const secret = process.env.NEXT_PUBLIC_AUTH_SECRET; // Use your NextAuth secret
 const roleBasedRoutes = {
   "/dashboard": ["admin", "recruiter", "seeker"],
   "/profile": ["recruiter", "seeker"],
-  // "/dashboard/statistics": ["admin"],
+  "/dashboard/statistics": ["admin"],
   "/dashboard/userManagement": ["admin"],
   "/dashboard/jobManagement": ["admin"],
   // "/dashboard/interview": ["admin"],

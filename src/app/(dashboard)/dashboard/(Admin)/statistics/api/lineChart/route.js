@@ -35,7 +35,7 @@ export const GET = async (request) => {
       ])
       .toArray();
 
-    console.log("Aggregation result:", result); // Log the aggregation result
+    // console.log("Aggregation result:", result); // Log the aggregation result
 
     // Transform the result for line chart
     const data = result.map((item) => ({
