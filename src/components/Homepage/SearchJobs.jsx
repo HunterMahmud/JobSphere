@@ -11,10 +11,12 @@ const SearchJobs = () => {
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
   const [cities, setCities] = useState([]);
+  const [loading ,setLoading]=useState(false)
   const router = useRouter();
 
   useEffect(() => {
     const fetchJobsCities = async (page = 1) => {
+      setLoading(true)
       try {
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/api/?search=${search}&city=${city}`
@@ -25,10 +27,11 @@ const SearchJobs = () => {
                 console.log(data);
         // Map cities to match react-select option format
         const cityOptions = data.cities.map((city) => ({
-          value: city.city, // The value selected
+          name: city.city, // The value selected
           label: city.city, // The text displayed
         }));
         setCities(cityOptions); // Store city options
+        setLoading(false);
 
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -42,7 +45,7 @@ const SearchJobs = () => {
   // Handle job search
 const handleSubmit = () => {
   // Extract the value of city if it's an object, otherwise use an empty string
-  const selectedCity = city ? city.value : "";
+  const selectedCity = city ? city?.name : "";
 
   // Redirect with the search term and selected city
   router.push(
