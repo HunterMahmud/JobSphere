@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GrLogout } from "react-icons/gr";
-import { FcStatistics } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
@@ -12,6 +11,7 @@ import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
 import { TfiWrite } from "react-icons/tfi";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(true);
@@ -28,9 +28,16 @@ const Sidebar = () => {
       <div className="bg-[#1f2937]  text-gray-800 flex justify-between md:hidden">
         <div>
           <div className="block cursor-pointer p-4 font-bold">
-            <button className="text-2xl font-bold text-white">
-              Job<span className="text-sky-600">Sphere</span>
-            </button>
+            <Link
+              href="/"
+            >
+              <Image
+                src={"https://i.ibb.co.com/Ph872yP/logoName.png"}
+                alt="Logo"
+                width={250}
+                height={100}
+                className="w-[150px] md:w-[200px]" />
+            </Link>
           </div>
         </div>
 
@@ -48,9 +55,17 @@ const Sidebar = () => {
           } md:translate-x-0 transition duration-200 ease-in-out`}
       >
         <div>
-          <div className="bg-[#4a5666] p-3 rounded-md text-center">
-            <Link href={"/"} className="text-2xl font-bold text-white">
-              Job<span className="text-sky-600">Sphere</span>
+          <div className="bg-accent p-3 rounded-md text-center">
+            <Link
+              href="/"
+              className="ml-[30px] md:ml-0  flex flex-shrink-0 items-center"
+            >
+              <Image
+                src={"https://i.ibb.co.com/Ph872yP/logoName.png"}
+                alt="Logo"
+                width={250}
+                height={100}
+                className="w-[150px] md:w-[200px]" />
             </Link>
           </div>
 
