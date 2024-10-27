@@ -19,6 +19,7 @@ const UserManagement = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterByRole, setFilterByRole] = useState("");
+  const [filterByStatus, setFilterByStatus] = useState("");
 
   const fetchUsers = async () => {
     try {
@@ -31,6 +32,7 @@ const UserManagement = () => {
             email: searchTerm,
             page,
             limit,
+            status :filterByStatus
           },
         }
       );
@@ -46,7 +48,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [page, limit, filterByRole, searchTerm]);
+  }, [page, limit, filterByRole, searchTerm ,filterByStatus]);
 
   const handleDelete = async (userEmail, userRole) => {
     if (userRole === "admin") {
@@ -147,6 +149,15 @@ const UserManagement = () => {
             <option value="seeker">seeker</option>
             <option value="recruiter">recruiter</option>
             <option value="admin">admin</option>
+          </select>
+          <select
+            onChange={(e) => setFilterByStatus(e.target.value)}
+            value={filterByStatus}
+            className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none"
+          >
+            <option value="">Filter by Status</option>
+            <option value="active">Active</option>
+            <option value="blocked">Blocked</option>
           </select>
 
           <input
