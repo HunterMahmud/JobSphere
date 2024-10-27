@@ -16,6 +16,7 @@ const JobTable = () => {
   const [error, setError] = useState("");
   const [sortOrder, setSortOrder] = useState(""); // for sorting
   const [jobTypeFilter, setJobTypeFilter] = useState(""); // for filtering by job type
+  const [jobStatusFilter, setJobStatusFilter] = useState(""); // for filtering by job type
   const [searchTerm, setSearchTerm] = useState(""); // for searching by job title
   const [page, setPage] = useState(1); // current page
   const [limit, setLimit] = useState(10); // items per page
@@ -35,6 +36,7 @@ const JobTable = () => {
             jobTitle: searchTerm,
             page, // current page
             limit, // items per page
+            status: jobStatusFilter
           },
         }
       );
@@ -49,7 +51,7 @@ const JobTable = () => {
 
   useEffect(() => {
     fetchJobs();
-  }, [sortOrder, jobTypeFilter, searchTerm, page, limit]);
+  }, [sortOrder, jobTypeFilter, searchTerm, page, limit, jobStatusFilter]);
 
   // if (loading) {
   //   return <p>Loading...</p>;
@@ -109,6 +111,17 @@ const JobTable = () => {
             <option value="">Sort by Deadline</option>
             <option value="asc">Ascending</option>
             <option value="dsc">Descending</option>
+          </select>
+
+          {/* filter by Status */}
+          <select
+            onChange={(e) => setJobStatusFilter(e.target.value)}
+            value={filterByStatus}
+            className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none"
+          >
+            <option value="">Filter by Status</option>
+            <option value="active">Active</option>
+            <option value="blocked">Blocked</option>
           </select>
 
           {/* Filter by Job Type */}
