@@ -136,7 +136,7 @@ const JobTable = () => {
       {loading ? (
         <Loader />
       ) : (
-        <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden">
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg overflow-x-auto">
           <thead className="bg-gray-50 border-b">
             <tr>
               <th className="px-6 py-4 text-left font-medium text-gray-700">
