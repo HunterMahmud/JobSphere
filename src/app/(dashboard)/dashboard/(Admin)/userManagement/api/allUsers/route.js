@@ -9,9 +9,8 @@ export const GET = async (request) => {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page")) || 1;
   const limit = parseInt(searchParams.get("limit")) || 10;
-  const skip = (page - 1) * limit;
   const role = searchParams.get("role") || "";
-  const email = searchParams.get("email") || "";
+  const email = searchParams.get("email");
   const status = searchParams.get("status") || "";
 
   try {
@@ -33,19 +32,27 @@ export const GET = async (request) => {
       query.email = { $regex: email, $options: "i" };
     }
 
-    // Fetch and count seekers with pagination
+    // Divide limit for balanced results from each collection
+    const seekersLimit = Math.ceil(limit / 2);
+    const recruitersLimit = Math.floor(limit / 2);
+
+    // Calculate the number of documents to skip for each collection based on page
+    const seekersSkip = (page - 1) * seekersLimit;
+    const recruitersSkip = (page - 1) * recruitersLimit;
+
+    // Fetch and count seekers with adjusted pagination
     const seekersPromise = seekersCollection
       .find(query)
-      .skip(skip)
-      .limit(limit)
+      .skip(seekersSkip)
+      .limit(seekersLimit)
       .toArray();
     const seekersCountPromise = seekersCollection.countDocuments(query);
 
-    // Fetch and count recruiters with pagination
+    // Fetch and count recruiters with adjusted pagination
     const recruitersPromise = recruitersCollection
       .find(query)
-      .skip(skip)
-      .limit(limit)
+      .skip(recruitersSkip)
+      .limit(recruitersLimit)
       .toArray();
     const recruitersCountPromise = recruitersCollection.countDocuments(query);
 

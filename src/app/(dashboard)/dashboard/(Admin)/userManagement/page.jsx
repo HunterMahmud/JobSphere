@@ -312,7 +312,7 @@ const UserManagement = () => {
               </div>
             </div>
           </>
-          : <h1 className="text-center text-2xl font-bold mt-5">{error? error: "No User found"}</h1>
+          : <h1 className="text-center font-semibold mt-10">{error? error: "No User found"}</h1>
         )}
       </div>
 
