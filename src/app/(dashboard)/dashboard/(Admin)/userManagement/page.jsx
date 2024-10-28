@@ -175,7 +175,7 @@ const UserManagement = () => {
         {loading ? (
           <Loader />
         ) : (
-          users?.length > 1 ?
+          users?.length > 0 ?
           <>
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 border-b">

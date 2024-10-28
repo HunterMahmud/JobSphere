@@ -150,7 +150,7 @@ const JobTable = () => {
       {loading ? (
         <Loader />
       ) : (
-        jobDetails.length>1?
+        jobDetails.length>0?
         <>
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg overflow-x-auto">
           <thead className="bg-gray-50 border-b">
