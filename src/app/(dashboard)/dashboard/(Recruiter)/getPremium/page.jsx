@@ -45,7 +45,7 @@ const GetPremium = () => {
         <div>
             <h1 className="text-2xl font-bold text-center mb-8">Get Premium</h1>
 
-            <div className='space-y-4 flex flex-col md:flex-row md:justify-around'>
+            <div className='space-y-4 flex flex-col lg:flex-row md:justify-around'>
                 <div className="border max-w-[350px] min-h-[400px] px-4 py-6 bg-[url('https://i.ibb.co/hch8Kbm/ix-GTl1715763309.png')] rounded-md shadow-md hover:shadow-xl hover:scale-[1.01] transition-all space-y-2 text-black">
                     <h3 className='text-xl font-semibold text-center my-3'>Get Premium for 1 month</h3>
 
@@ -55,7 +55,7 @@ const GetPremium = () => {
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>50 Interview in 1 Month</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Job Posts for 1 Month</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Companies for 1 Month</p>
-                        <h2 className='text-xl font-semibold text-center'>Price: 2000 Taka</h2>
+                        <h2 className='text-xl font-semibold text-center'>Price: 2,000 Taka</h2>
                     </div>
                     <div>
                         <button
@@ -90,12 +90,13 @@ const GetPremium = () => {
             {/* Modal */}
             {
                 <Modal isVisible={showModal} showModal={showModal} setShowModal={setShowModal}>
-                    <div className='grid grid-cols-3 h-3/4'>
+                    <p className='text-lg  text-center font-semibold mb-2'>Select Payment Method</p>
+                    <div className='grid grid-cols-4 md:grid-cols-6 h-3/4'>
                         {
                             method.map((item, i) => {
                                 return (
-                                    <div key={i} className="col-md-2 col-lg-2 col-6 p-1">
-                                        <div className="card  h-100 bg-white shadow-sm">
+                                    <div key={i} className="p-1">
+                                        <div className="card h-100 bg-white hover:bg-slate-200 hover:border-2 hover:border-blue-200 hover:shadow-md shadow-sm">
                                             <a onClick={() => { PayNow(item['redirectGatewayURL']) }}>
                                                 <Image alt='logo' className="w-100 pay-img" width={100} height={100} src={item['logo']} />
                                             </a>
