@@ -85,7 +85,7 @@ const UserManagement = () => {
     });
   };
   const handleStatus = async (email, userRole, status) => {
-    const data = { email, status }
+    const data = { email, status ,userRole }
     if (userRole === "admin") {
       Swal.fire({
         title: "Error!",
