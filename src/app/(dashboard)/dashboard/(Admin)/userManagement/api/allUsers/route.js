@@ -9,9 +9,8 @@ export const GET = async (request) => {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page")) || 1;
   const limit = parseInt(searchParams.get("limit")) || 10;
-  const skip = (page - 1) * limit;
   const role = searchParams.get("role") || "";
-  const email = searchParams.get("email") || "";
+  const email = searchParams.get("email");
   const status = searchParams.get("status") || "";
 
   try {
@@ -19,7 +18,8 @@ export const GET = async (request) => {
 
     if (status === "blocked") {
       query.status = "blocked";
-    } else if (status === "active") {
+    } 
+    if (status === "active") {
       query.$or = [{ status: "active" }, { status: { $exists: false } }];
       query.status = { $ne: "blocked" };
     }
@@ -32,19 +32,47 @@ export const GET = async (request) => {
       query.email = { $regex: email, $options: "i" };
     }
 
-    const seekers = await seekersCollection.find(query).toArray();
-    const recruiters = await recruitersCollection.find(query).toArray();
+    // Divide limit for balanced results from each collection
+    const seekersLimit = Math.ceil(limit / 2);
+    const recruitersLimit = Math.floor(limit / 2);
+
+    // Calculate the number of documents to skip for each collection based on page
+    const seekersSkip = (page - 1) * seekersLimit;
+    const recruitersSkip = (page - 1) * recruitersLimit;
+
+    // Fetch and count seekers with adjusted pagination
+    const seekersPromise = seekersCollection
+      .find(query)
+      .skip(seekersSkip)
+      .limit(seekersLimit)
+      .toArray();
+    const seekersCountPromise = seekersCollection.countDocuments(query);
+
+    // Fetch and count recruiters with adjusted pagination
+    const recruitersPromise = recruitersCollection
+      .find(query)
+      .skip(recruitersSkip)
+      .limit(recruitersLimit)
+      .toArray();
+    const recruitersCountPromise = recruitersCollection.countDocuments(query);
+
+    const [seekers, seekersCount, recruiters, recruitersCount] = await Promise.all([
+      seekersPromise,
+      seekersCountPromise,
+      recruitersPromise,
+      recruitersCountPromise,
+    ]);
 
     const allUsers = [...seekers, ...recruiters];
-    const totalUsers = allUsers.length;
-    const paginatedUsers = allUsers.slice(skip, skip + limit);
+    const totalUsers = seekersCount + recruitersCount;
+    const totalPages = Math.ceil(totalUsers / limit);
 
     return NextResponse.json({
-      users: paginatedUsers,
+      users: allUsers,
       pagination: {
         currentPage: page,
         totalItems: totalUsers,
-        totalPages: Math.ceil(totalUsers / limit),
+        totalPages,
       },
     });
   } catch (error) {

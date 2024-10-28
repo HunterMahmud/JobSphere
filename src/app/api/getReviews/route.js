@@ -9,7 +9,7 @@ export const GET = async () => {
      
         const reviews = await reviewsCollection
             .find()
-            .sort({ reviewDateTime: -1 }) 
+            .sort({ "reviewDateTime": -1 }) 
             .limit(10)
             .toArray();
 
