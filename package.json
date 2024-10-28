@@ -18,8 +18,11 @@
     "@shadcn/ui": "^0.0.4",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+<<<<<<< HEAD
     "chart.js": "^4.4.5",
     "firebase": "^11.0.1",
+=======
+>>>>>>> a812cde41313ff3cfc6d73fa1a29e7f30a35efd1
     "gapi-script": "^1.2.0",
     "i": "^0.3.7",
     "mongodb": "^6.9.0",
@@ -30,7 +33,6 @@
     "npm": "^10.8.3",
     "react": "^18",
     "react-awesome-slider": "^4.1.0",
-    "react-chartjs-2": "^5.2.0",
     "react-countdown": "^2.3.6",
     "react-countup": "^6.5.3",
     "react-datepicker": "^7.4.0",

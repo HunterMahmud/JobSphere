@@ -9,6 +9,7 @@ export const GET = async (request) => {
   // Get query parameters from the request URL
   const { searchParams } = new URL(request.url);
   const jobType = searchParams.get("jobType") || "";
+  const status = searchParams.get("status") || "";
   const sort = searchParams.get("sort") || "asc"; // Default to ascending
   const jobTitle = searchParams.get("jobTitle") || "";
   const page = parseInt(searchParams.get("page")) || 1;
@@ -19,6 +20,12 @@ export const GET = async (request) => {
   try {
     // Create a query for filtering by jobType and jobTitle (if provided)
     const query = {};
+    if (status === "blocked") {
+      query.status = "blocked";
+    } else if (status === "active") {
+      query.$or = [{ status: "active" }, { status: { $exists: false } }];
+      query.status = { $ne: "blocked" };
+    }
     if (jobType) {
       query.jobType = jobType;
     }

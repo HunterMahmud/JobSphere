@@ -12,7 +12,7 @@ import useRole from "@/components/Hooks/useRole";
 import { TfiWrite } from "react-icons/tfi";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-
+import { FcStatistics } from 'react-icons/fc';
 const Sidebar = () => {
   const [isActive, setActive] = useState(true);
   const { loggedInUser } = useRole();
@@ -96,6 +96,8 @@ const Sidebar = () => {
                 <MenuItem icon={FaHandsHelping} label="Support" address="/dashboard/supportAllUsers" />
                 {/* <MenuItem icon={GoCodeReview} label="Interview" address="/dashboard/interview" />
                 <MenuItem icon={FcStatistics} label="Statistics" address="/dashboard/statistics" /> */}
+                {/* <MenuItem icon={GoCodeReview} label="Interview" address="/dashboard/interview" /> */}
+                <MenuItem icon={FcStatistics} label="Statistics" address="/dashboard/statistics" />
               </nav>
             }
           </div>
