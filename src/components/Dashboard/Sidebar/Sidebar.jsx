@@ -5,7 +5,7 @@ import { AiOutlineBars } from "react-icons/ai";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
 import { RiSave3Line } from "react-icons/ri";
-import { MdAssignmentAdd, MdOutlineWorkOutline, MdOutlineManageSearch } from "react-icons/md";
+import { MdAssignmentAdd, MdOutlineWorkOutline, MdOutlineWorkspacePremium, MdOutlineManageSearch } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
 import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
@@ -85,6 +85,7 @@ const Sidebar = () => {
                 <MenuItem icon={MdAssignmentAdd} label="Post A Job" address="/dashboard/postAJob" />
                 <MenuItem icon={TfiWrite} label="Write A Blog" address="/dashboard/writeABlog" />
                 <MenuItem icon={MdOutlineWorkOutline} label="My Posted Jobs" address="/dashboard/myPostedJobs" />
+                <MenuItem icon={MdOutlineWorkspacePremium} label="Get Premium" address="/dashboard/getPremium" />
               </nav>
             }
             {
