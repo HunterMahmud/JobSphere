@@ -55,6 +55,7 @@ const GetPremium = () => {
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>50 Interview in 1 Month</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Job Posts for 1 Month</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Companies for 1 Month</p>
+                        <h2 className='text-xl font-semibold text-center'>Price: 2000 Taka</h2>
                     </div>
                     <div>
                         <button
@@ -75,6 +76,7 @@ const GetPremium = () => {
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Unlimited Interview in 1 Year</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Job Posts for 1 Year</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Companies for 1 Year</p>
+                        <h2 className='text-xl font-semibold text-center'>Price: 20,000 Taka</h2>
                     </div>
                     <button
                         onClick={PaymentOption}

@@ -9,7 +9,7 @@ export async function POST() {
         const formData = new FormData();
         formData.append("store_id", "jobsp6717792cd3a81");
         formData.append("store_passwd", "jobsp6717792cd3a81@ssl");
-        formData.append("total_amount", "1000");
+        formData.append("total_amount", "2000");
         formData.append("currency", "BDT");
         formData.append("tran_id", `${tran_id}`);
         formData.append("success_url",`http://localhost:3000/api/success?id=${tran_id}`);
