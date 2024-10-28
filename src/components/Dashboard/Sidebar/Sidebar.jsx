@@ -7,7 +7,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { RiSave3Line } from "react-icons/ri";
 import { MdAssignmentAdd, MdOutlineWorkOutline, MdOutlineManageSearch } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
-import { FaLaptopHouse, FaUserCog } from "react-icons/fa";
+import { FaHandsHelping, FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
 import { TfiWrite } from "react-icons/tfi";
 import { signOut } from "next-auth/react";
@@ -77,6 +77,7 @@ const Sidebar = () => {
               <nav>
                 <MenuItem icon={FaLaptopHouse} label="Applyed Jobs" address="/dashboard/applyedJobs" />
                 <MenuItem icon={RiSave3Line} label="Saved Jobs" address="/dashboard/savedJobs" />
+                <MenuItem icon={FaHandsHelping} label="Support" address="/dashboard/support" />
               </nav>
             }
             {
@@ -92,6 +93,7 @@ const Sidebar = () => {
               <nav>
                 <MenuItem icon={FaUserCog} label="User Management" address="/dashboard/userManagement" />
                 <MenuItem icon={MdOutlineManageSearch} label="Job Management" address="/dashboard/jobManagement" />
+                <MenuItem icon={FaHandsHelping} label="Support" address="/dashboard/supportAllUsers" />
                 {/* <MenuItem icon={GoCodeReview} label="Interview" address="/dashboard/interview" />
                 <MenuItem icon={FcStatistics} label="Statistics" address="/dashboard/statistics" /> */}
               </nav>
