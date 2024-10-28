@@ -19,7 +19,8 @@ export const GET = async (request) => {
 
     if (status === "blocked") {
       query.status = "blocked";
-    } else if (status === "active") {
+    } 
+    if (status === "active") {
       query.$or = [{ status: "active" }, { status: { $exists: false } }];
       query.status = { $ne: "blocked" };
     }
@@ -32,19 +33,39 @@ export const GET = async (request) => {
       query.email = { $regex: email, $options: "i" };
     }
 
-    const seekers = await seekersCollection.find(query).toArray();
-    const recruiters = await recruitersCollection.find(query).toArray();
+    // Fetch and count seekers with pagination
+    const seekersPromise = seekersCollection
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+    const seekersCountPromise = seekersCollection.countDocuments(query);
+
+    // Fetch and count recruiters with pagination
+    const recruitersPromise = recruitersCollection
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+    const recruitersCountPromise = recruitersCollection.countDocuments(query);
+
+    const [seekers, seekersCount, recruiters, recruitersCount] = await Promise.all([
+      seekersPromise,
+      seekersCountPromise,
+      recruitersPromise,
+      recruitersCountPromise,
+    ]);
 
     const allUsers = [...seekers, ...recruiters];
-    const totalUsers = allUsers.length;
-    const paginatedUsers = allUsers.slice(skip, skip + limit);
+    const totalUsers = seekersCount + recruitersCount;
+    const totalPages = Math.ceil(totalUsers / limit);
 
     return NextResponse.json({
-      users: paginatedUsers,
+      users: allUsers,
       pagination: {
         currentPage: page,
         totalItems: totalUsers,
-        totalPages: Math.ceil(totalUsers / limit),
+        totalPages,
       },
     });
   } catch (error) {
