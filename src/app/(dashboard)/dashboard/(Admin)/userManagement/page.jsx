@@ -85,7 +85,7 @@ const UserManagement = () => {
     });
   };
   const handleStatus = async (email, userRole, status) => {
-    const data = { email, status }
+    const data = { email, status ,userRole }
     if (userRole === "admin") {
       Swal.fire({
         title: "Error!",
@@ -175,7 +175,7 @@ const UserManagement = () => {
         {loading ? (
           <Loader />
         ) : (
-          users?.length > 1 ?
+          users?.length > 0 ?
           <>
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 border-b">
@@ -312,7 +312,7 @@ const UserManagement = () => {
               </div>
             </div>
           </>
-          : <h1 className="text-center text-2xl font-bold mt-5">{error? error: "No User found"}</h1>
+          : <h1 className="text-center font-semibold mt-10">{error? error: "No User found"}</h1>
         )}
       </div>
 
