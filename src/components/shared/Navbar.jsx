@@ -129,10 +129,45 @@ const Navbar = () => {
 
           {/* Right Section ( Profile ) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div className="md:mt-[5px] flex">
-              <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
-              <p className="text-white bg-red-500 p-1 rounded-full text-[10px]">{unreadCount}</p>
-            </div>
+            {/* Notifications dropdown */}
+            <Menu as="div" className="relative ml-3 mt-2">
+              {session?.status === "authenticated" &&
+                <>
+                  <div>
+                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm">
+                      <span className="sr-only">Open user menu</span>
+                      <div className="md:mt-[5px] flex">
+                        <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
+                        {unreadCount > 0 && <p className="text-white bg-red-500 p-1 rounded-full text-[10px]">{unreadCount}</p>}
+                      </div>
+                    </MenuButton>
+                  </div>
+                  <MenuItems className="absolute bg-accent right-0 z-50 mt-[14px] w-[300px] h-[300px] overflow-y-auto origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <MenuItem>
+                      <div className="p-4">
+                        {notifications?.map((notification) => (
+                          <div
+                            key={notification.id}
+                            className={notification.isRead ? "text-gray-400" : "text-black"}
+                          >
+                            <div className="mb-3">
+                              <div className="flex justify-between">
+                                <Link href={notification.link} className="text-base font-medium">{notification.title}</Link>
+                                <p>{notification?.timestamp.toDate().toLocaleDateString()}</p>
+                              </div>
+                              <p className="text-pretty">
+                                {notification.message}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </MenuItem>
+                  </MenuItems>
+                </>
+              }
+            </Menu>
+
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
               {session?.status === "authenticated" ? (

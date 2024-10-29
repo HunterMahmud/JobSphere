@@ -33,8 +33,7 @@ const ApplyedAJob = ({ params }) => {
     const email = session?.data?.user?.email;
     const [to, setTo] = useState('');
     const [jobTitle, setJobTitle] = useState('');
-    const [userId, setUserId] = useState('');
-    console.log(userId)
+    const [job, setJob] = useState([]);
 
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
     const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -142,11 +141,10 @@ const ApplyedAJob = ({ params }) => {
             taskLink,
             submissionDate
         }
-
         const notification = {
-            userId,
-            title: 'For Task',
-            message: 'Your have get a task.',
+            userId: job?.userId,
+            title: 'Task Alert! 🚨',
+            message: `You have received a new task from ${job?.companyName}. Task: ${taskLink} for your role as ${job?.jobTitle}. Deadline: ${submissionDate}. Let’s get to it!`,
             link: `/dashboard/applyedJobs`
         }
 
@@ -159,8 +157,8 @@ const ApplyedAJob = ({ params }) => {
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'Task' });
 
-                const res = await axios.post("/api/notification", { ...notification });
-                console.log(res)
+            const res = await axios.post("/api/notification", { ...notification });
+            console.log(res)
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
                 toast.success('Successful')
@@ -419,7 +417,7 @@ const ApplyedAJob = ({ params }) => {
                                                     } if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     } else {
-                                                        setUserId(job?.userId)
+                                                        setJob(job)
                                                         handleTask(job?._id)
                                                         setTask(job?.task)
                                                         setTaskManage(true)
@@ -441,8 +439,8 @@ const ApplyedAJob = ({ params }) => {
                                                     else if (job?.offlineInterView || job?.onlineInterView) {
                                                         return toast.error('Already Added')
                                                     } else {
+                                                        setJob(job)
                                                         setShowModal(!showModal)
-                                                        setUserId(job?.userId)
                                                         setId(job?._id)
                                                         setTo(job?.applicantInfo?.contactInformation?.email)
                                                         setInterView(true)
@@ -461,8 +459,8 @@ const ApplyedAJob = ({ params }) => {
                                                     if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     } else {
+                                                        setJob(job)
                                                         setShowModal(!showModal)
-                                                        setUserId(job?.userId)
                                                         setId(job?._id)
                                                         setJobTitle(job?.jobTitle)
                                                         setTo(job?.applicantInfo?.contactInformation?.email)
@@ -483,7 +481,7 @@ const ApplyedAJob = ({ params }) => {
                                                     if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     }
-                                                    setUserId(job?.userId)
+                                                    setJob(job)
                                                     handleRemove(job?._id)
                                                 }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
