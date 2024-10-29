@@ -75,7 +75,7 @@ const Companies = () => {
         <div>
           {" "}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-around gap-11">
-            {Array.isArray(companies) && companies.length > 0 ? (
+            {Array.isArray(companies) && companies?.length > 0 ? (
               companies.map((company, index) => (
                 <CompanyCard key={index} company={company} />
               ))
@@ -86,7 +86,7 @@ const Companies = () => {
           {/* Pagination */}
           
           {
-           companies.length > 0 &&   <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
+           companies?.length > 0 &&   <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
            <button
              onClick={() => handlePageChange(page - 1)}
              disabled={page === 1}
