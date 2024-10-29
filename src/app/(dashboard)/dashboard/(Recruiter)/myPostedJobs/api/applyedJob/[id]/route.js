@@ -23,3 +23,4 @@ export const GET = async (request, { params }) => {
     }
 }
 
+export const dynamic = 'force-dynamic';

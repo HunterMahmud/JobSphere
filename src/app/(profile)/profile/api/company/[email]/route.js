@@ -34,3 +34,6 @@ export const PUT = async (request, { params }) => {
         return Response.json({ message: "Something Went Wrong" });
     }
 };
+
+
+export const dynamic = 'force-dynamic';
