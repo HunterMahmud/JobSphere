@@ -1,3 +1,8 @@
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+
+const secret = process.env.NEXT_PUBLIC_AUTH_SECRET; // Use your NextAuth secret
+
 // Extend route-role mapping to include API routes
 const roleBasedRoutes = {
   "/dashboard": ["admin", "recruiter", "seeker"],
@@ -68,7 +73,6 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/profile/:path*",
-    "/api/:path*",
     "/api/recruiter/:path*",
     "/api/blog/[id]/:path*",
     "/api/role/[id]/:path*",
