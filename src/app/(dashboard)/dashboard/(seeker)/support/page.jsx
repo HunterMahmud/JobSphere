@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import useRole from "@/components/Hooks/useRole";
 import { AiOutlineSend } from "react-icons/ai";
+import Image from "next/image";
 
 export default function UserChat() {
     const { loggedInUser } = useRole();
@@ -64,17 +65,21 @@ export default function UserChat() {
         <div>
             <div className="mb-4 p-4 border bg-white rounded shadow-md">
                 <div className="text-xl font-semibold mb-2">Messages</div>
-                <div className="h-[calc(100vh-200px)] border rounded-md overflow-y-auto">
-                    {messages.map((msg) => (
-                        <div key={msg.id}
-                            className={`p-2 my-2 text-sm md:text-base rounded ${msg.isAdminReply ? "text-left" : "text-right"}`}
-                            style={{ overflowWrap: 'break-word', wordBreak: 'break-word', maxWidth: '100%' }} // Added styles
-                        >
-                            <span className={`inline-block px-2 py-1 rounded ${msg.isAdminReply ? "bg-accent rounded-bl-2xl pl-3" : "bg-blue-50 rounded-br-2xl pr-3"}`}>
-                                {msg.content}
-                            </span>
-                        </div>
-                    ))}
+                <div className="h-[calc(100vh-235px)] md:h-[calc(100vh-200px)] border rounded-md overflow-y-auto">
+                    {messages.length === 0 ? <div className="flex justify-center items-center w-full h-full">
+                        <Image src={'https://i.ibb.co.com/XpZKQPb/rb-2148751262.png'} width={740} height={700} />
+                    </div>
+                        :
+                        messages.map((msg) => (
+                            <div key={msg.id}
+                                className={`p-2 my-2 text-sm md:text-base rounded ${msg.isAdminReply ? "text-left" : "text-right"}`}
+                                style={{ overflowWrap: 'break-word', wordBreak: 'break-word', maxWidth: '100%' }} // Added styles
+                            >
+                                <span className={`inline-block px-2 py-1 rounded ${msg.isAdminReply ? "bg-accent rounded-bl-2xl pl-3" : "bg-blue-50 rounded-br-2xl pr-3"}`}>
+                                    {msg.content}
+                                </span>
+                            </div>
+                        ))}
                 </div>
             </div>
             <div className="flex gap-2">
