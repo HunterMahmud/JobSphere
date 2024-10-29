@@ -15,11 +15,13 @@ const roleBasedRoutes = {
   "/dashboard/myPostedJobs": ["recruiter"],
   "/dashboard/myPostedJobs/:id": ["recruiter"],
   "/dashboard/writeABlog": ["recruiter"],
+  "/dashboard/": ["recruiter"],
   "/profile/company-information": ["recruiter"],
   "/profile/contact-information": ["recruiter"],
   "/profile/employment-information": ["recruiter"],
   "/dashboard/appliedJobs": ["seeker"],
   "/dashboard/savedJobs": ["seeker"],  
+  "/dashboard/support": ["seeker", "recruiter"],  
   // api
   "/dashboard/userManagement/api/allUsers": ["admin"],
   "/dashboard/userManagement/api/deleteUser/:email": ["admin"],
@@ -35,6 +37,9 @@ const roleBasedRoutes = {
   "/dashboard/myPostedJobs/api/sendEmail/jobOffer": ["recruiter"],
   "/dashboard/myPostedJobs/api/sendEmail/offlineInterView": ["recruiter"],
   "/dashboard/myPostedJobs/api/sendEmail/onlineInterView": ["recruiter"],
+  "/dashboard/postAJob/api": ["recruiter"],
+  "/dashboard/writeABlog/api": ["recruiter"],
+
    
 
 
@@ -108,6 +113,7 @@ export const config = {
     "/dashboard/userManagement/api:path*",
     "/dashboard/statistics/api:path*",
     "/dashboard/jobManagement/api:path*",
-    "/dashboard/myPostedJobs/api:path*",
+    "/dashboard/writeABlog:path*",
+    "/dashboard/postAJob:path*",
   ],
 };
