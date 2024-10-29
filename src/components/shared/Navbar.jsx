@@ -25,6 +25,7 @@ import useRole from "../Hooks/useRole"
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { db } from "@/app/firebase/firebase.config";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
+import axios from "axios";
 
 const links = [
   {
@@ -74,7 +75,23 @@ const Navbar = () => {
     }
   }, [loggedInUser?._id]);
 
-  console.log(notifications, unreadCount)
+  const markAllNotificationsAsRead = async () => {
+    if (unreadCount !== 0) {
+      try {
+        await axios.post('/api/notification/markAllRead', { userId: loggedInUser?._id });
+        // Update the local notifications state
+        setNotifications((notifications) =>
+          notifications.map(notification => ({
+            ...notification,
+            isRead: true
+          }))
+        );
+        setUnreadCount(0);
+      } catch (error) {
+        console.error("Error marking notifications as read:", error);
+      }
+    }
+  };
 
   if (pathName.includes("dashboard")) return;
 
@@ -134,7 +151,7 @@ const Navbar = () => {
               {session?.status === "authenticated" &&
                 <>
                   <div>
-                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm">
+                    <MenuButton onClick={markAllNotificationsAsRead} className="relative flex rounded-full bg-gray-800 text-sm">
                       <span className="sr-only">Open user menu</span>
                       <div className="md:mt-[5px] flex">
                         <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
@@ -142,13 +159,13 @@ const Navbar = () => {
                       </div>
                     </MenuButton>
                   </div>
-                  <MenuItems className="absolute text-sm bg-accent -right-[42px] md:right-0 z-50 mt-[20px] md:mt-[14px] w-[280px] md:w-[350px] h-[300px] overflow-y-auto origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems className="absolute text-sm bg-accent -right-[42px] md:right-0 z-50 mt-[20px] md:mt-[15px] w-[280px] md:w-[350px] h-[300px] overflow-y-auto origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <MenuItem>
                       <div className="p-4">
                         {notifications?.map((notification) => (
                           <div
                             key={notification.id}
-                            className={notification.isRead ? "text-gray-400" : "text-black"}
+                            className={notification.isRead ? "text-gray-800" : "text-black"}
                           >
                             <div className="mb-3">
                               <div className="flex flex-col md:flex-row justify-between">
