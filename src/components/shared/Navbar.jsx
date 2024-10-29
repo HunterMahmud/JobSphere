@@ -153,9 +153,9 @@ const Navbar = () => {
                   <div>
                     <MenuButton onClick={markAllNotificationsAsRead} className="relative flex rounded-full bg-gray-800 text-sm">
                       <span className="sr-only">Open user menu</span>
-                      <div className="md:mt-[5px] flex">
+                      <div className="md:mt-[5px] relative">
                         <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
-                        {unreadCount > 0 && <p className="text-white bg-red-500 p-1 rounded-full text-[10px]">{unreadCount}</p>}
+                        {unreadCount > 0 && <p className="text-white bg-red-500 px-[6px] -top-2 absolute rounded-full text-[10px]">{unreadCount}</p>}
                       </div>
                     </MenuButton>
                   </div>
