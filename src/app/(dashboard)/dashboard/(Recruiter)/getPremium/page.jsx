@@ -100,6 +100,7 @@ const GetPremium = () => {
                                             <a onClick={() => { PayNow(item['redirectGatewayURL']) }}>
                                                 <Image alt='logo' className="w-100 pay-img" width={100} height={100} src={item['logo']} />
                                             </a>
+                                            <p className='text-center items-end'>{item.name.slice(0, 6)}</p>
                                         </div>
                                     </div>
                                 )
