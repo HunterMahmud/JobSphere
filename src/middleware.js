@@ -1,16 +1,13 @@
-import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
-
-const secret = process.env.NEXT_PUBLIC_AUTH_SECRET; // Use your NextAuth secret
-
-// Define route-role mapping
+// Extend route-role mapping to include API routes
 const roleBasedRoutes = {
   "/dashboard": ["admin", "recruiter", "seeker"],
+  "/blogs/[id]": ["admin", "recruiter", "seeker"],
+  "/jobs/[id]": ["admin", "recruiter", "seeker"],
+  "/companies/[id]": ["admin", "recruiter", "seeker"],
   "/profile": ["recruiter", "seeker"],
   "/dashboard/statistics": ["admin"],
   "/dashboard/userManagement": ["admin"],
   "/dashboard/jobManagement": ["admin"],
-  // "/dashboard/interview": ["admin"],
   "/dashboard/postAJob": ["recruiter"],
   "/dashboard/myPostedJobs": ["recruiter"],
   "/dashboard/writeABlog": ["recruiter"],
@@ -19,16 +16,21 @@ const roleBasedRoutes = {
   "/profile/employment-information": ["recruiter"],
   "/dashboard/appliedJobs": ["seeker"],
   "/dashboard/savedJobs": ["seeker"],
-  // Add more routes and their respective allowed roles here
+  // Define role-based access for API routes
+  "/api/admin/data": ["admin"],
+  "/api/blog/[id]": ["admin", "recruiter", "seeker"],
+  "/api/dashBoardOverview": ["admin", "recruiter", "seeker"],
+  "/api/deleteSavedJobs/[id]": ["seeker"],
+  "/api/getSaveJobs/[email]": ["seeker"],
+  "/api/saveJob/": ["seeker"],
+  "/blogs/api/[id]":["admin", "recruiter", "seeker"],
+  "/companies/api/[id]":["admin", "recruiter", "seeker"],
+  "/jobs/api/[id]":["admin", "recruiter", "seeker"],
 };
 
+// Modify the middleware to check API routes with roles
 export const middleware = async (request) => {
   const pathname = request.nextUrl.pathname;
-
-  // Allow API routes without role checks
-  if (pathname.includes("api")) {
-    return NextResponse.next();
-  }
 
   // Get the token using NextAuth's getToken method
   const token = await getToken({ req: request, secret });
@@ -41,7 +43,7 @@ export const middleware = async (request) => {
   }
 
   try {
-    const userRole = token.role; // Extract role from the token
+    const userRole = token.role;
 
     // Check if the route exists in the mapping
     const allowedRoles = roleBasedRoutes[pathname];
@@ -55,38 +57,20 @@ export const middleware = async (request) => {
     return NextResponse.next();
   } catch (error) {
     console.error("Error decoding token:", error);
-    // Redirect to login if token is invalid or malformed
     return NextResponse.redirect(
       new URL(`/login?redirect=${pathname}`, request.url)
     );
   }
 };
 
-// Define the matcher for the middleware
+// Matcher for middleware to include API routes
 export const config = {
   matcher: [
     "/dashboard/:path*",
     "/profile/:path*",
-    "/profile/company-information",
-    "/profile/contact-information",
-    "/profile/employment-information",
-  ], // Match all routes under /dashboard
+    "/api/:path*",
+    "/api/recruiter/:path*",
+    "/api/blog/[id]/:path*",
+    "/api/role/[id]/:path*",
+  ],
 };
-
-// // Define the matcher for the middleware
-// export const config = {
-//   matcher: [
-//     "/dashboard",
-//     "/dashboard/statistics",
-//     "/dashboard/userManagement",
-//     "/dashboard/jobManagement",
-//     "/dashboard/interview",
-//     "/dashboard/postAJob",
-//     "/dashboard/myPostedJobs",
-//     "/dashboard/jobSeekers",
-//     "/dashboard/writeABlog",
-//     "/dashboard/savedJobs",
-//     "/dashboard/appliedJobs",
-//     // Add more routes here if needed
-//   ],
-// };
