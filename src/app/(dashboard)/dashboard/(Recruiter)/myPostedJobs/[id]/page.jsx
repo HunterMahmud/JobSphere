@@ -141,6 +141,7 @@ const ApplyedAJob = ({ params }) => {
             taskLink,
             submissionDate
         }
+
         const notification = {
             userId: job?.userId,
             title: 'Task Alert! 🚨',
@@ -157,8 +158,8 @@ const ApplyedAJob = ({ params }) => {
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'Task' });
 
-            const res = await axios.post("/api/notification", { ...notification });
-            console.log(res)
+            await axios.post("/api/notification", { ...notification });
+
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
                 toast.success('Successful')
@@ -206,6 +207,13 @@ const ApplyedAJob = ({ params }) => {
             documents
         }
 
+        const notification = {
+            userId: job?.userId,
+            title: 'Interview Scheduled! 🗓️',
+            message: `You have got an in-person interview for ${job?.jobTitle} at ${job?.companyName}. Date: ${date}. Location: ${location}. Best of luck!`,
+            link: `/dashboard/applyedJobs`
+        }
+
         if (!id) {
             return toast.error('Something os Wrong')
         }
@@ -214,6 +222,8 @@ const ApplyedAJob = ({ params }) => {
             setIsLoading(true)
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
+
+            const res = await axios.post("/api/notification", { ...notification });
 
             if (data.modifiedCount > 0) {
                 await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
