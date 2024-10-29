@@ -129,8 +129,9 @@ const Navbar = () => {
 
           {/* Right Section ( Profile ) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div className="md:mt-[5px]">
+            <div className="md:mt-[5px] flex">
               <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
+              <p className="text-white bg-red-500 p-1 rounded-full text-[10px]">{unreadCount}</p>
             </div>
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
