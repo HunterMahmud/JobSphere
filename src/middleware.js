@@ -3,12 +3,9 @@ import { NextResponse } from "next/server";
 
 const secret = process.env.NEXT_PUBLIC_AUTH_SECRET; // Use your NextAuth secret
 
-// Define route-role mapping including dynamic API routes
+// Define route-role mapping
 const roleBasedRoutes = {
   "/dashboard": ["admin", "recruiter", "seeker"],
-  "/blogs/[id]": ["admin", "recruiter", "seeker"],
-  "/jobs/[id]": ["admin", "recruiter", "seeker"], // Role-based access for dynamic job details
-  "/companies/[id]": ["admin", "recruiter", "seeker"],
   "/profile": ["recruiter", "seeker"],
   "/dashboard/statistics": ["admin"],
   "/dashboard/userManagement": ["admin"],
@@ -21,6 +18,13 @@ const roleBasedRoutes = {
   "/profile/employment-information": ["recruiter"],
   "/dashboard/appliedJobs": ["seeker"],
   "/dashboard/savedJobs": ["seeker"],
+  // Add more routes and their respective allowed roles here
+  "/blogs/[id]": ["admin", "recruiter", "seeker"],
+  "/jobs/[id]": ["admin", "recruiter", "seeker"], // Role-based access for dynamic job details
+  "/companies/[id]": ["admin", "recruiter", "seeker"],
+  "/profile": ["recruiter", "seeker"],
+  "/dashboard/userManagement/api/allUsers": ["admin"],
+  "/dashboard/jobManagement/api": ["admin"],
   "/api/blog/[id]": ["admin", "recruiter", "seeker"],
   "/api/dashBoardOverview": ["admin", "recruiter", "seeker"],
   "/api/deleteSavedJobs/[id]": ["seeker"],
@@ -31,32 +35,41 @@ const roleBasedRoutes = {
   "/jobs/api/[id]": ["admin", "recruiter", "seeker"],
 };
 
-// Define public routes that anyone can access, including the main /jobs page
+// Define public routes that anyone can access
 const publicRoutes = [
-  "/home",           // Public home page
+  "/home",
   "/about",
-  "/jobs/api",          // Public about page
-  "/blogs/api",          // Public about page
-  "/blogs/highlightedBlogs/api",          // Public about page
-  "/jobs/api",          // Public about page
+  "/jobs/api",
+  "/blogs/api",
+  "/blogs/highlightedBlogs/api",
   "/companies/api",
   "/api/companiesName",
-  "/api/getReviews"          
-  // Example public API route
+  "/api/getReviews",
+  "/api/auth/session",
+  "/authentication/login",
+  "/authentication/register",
+  "/authentication/register-recruiter",
+  "/authentication/api/auth/[...nextauth]",
+  "/login"
 ];
 
 export const middleware = async (request) => {
   const pathname = request.nextUrl.pathname;
 
-  // Check if the route is in publicRoutes, if so allow access
+  // Check if the route is in publicRoutes
   if (publicRoutes.some((route) => pathname.startsWith(route))) {
+    return NextResponse.next();
+  }
+
+  // Allow all API routes without role checks
+  if (pathname.includes("api")) {
     return NextResponse.next();
   }
 
   // Get the token for logged-in users
   const token = await getToken({ req: request, secret });
 
-  // Redirect to login if no token is found for non-public routes
+  // If no token is found, redirect to login page
   if (!token) {
     return NextResponse.redirect(
       new URL(`/login?redirect=${pathname}`, request.url)
@@ -64,38 +77,39 @@ export const middleware = async (request) => {
   }
 
   try {
-    const userRole = token.role;
+    const userRole = token.role; // Extract role from the token
 
-    // Find role-based route using regex for dynamic segments
-    const matchedRoute = Object.keys(roleBasedRoutes).find((route) => {
-      const regex = new RegExp(`^${route.replace(/\[.*?\]/g, '[^/]+')}$`);
-      return regex.test(pathname);
-    });
-
-    // Check if user has a role allowed for the matched route
-    const allowedRoles = matchedRoute ? roleBasedRoutes[matchedRoute] : null;
+    // Check if the route requires a specific role and the user doesn't have it, redirect
+    const allowedRoles = roleBasedRoutes[pathname];
     if (allowedRoles && !allowedRoles.includes(userRole)) {
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
 
+    // If no restrictions are violated, proceed
     return NextResponse.next();
   } catch (error) {
     console.error("Error decoding token:", error);
+    // Redirect to login if token is invalid or malformed
     return NextResponse.redirect(
       new URL(`/login?redirect=${pathname}`, request.url)
     );
   }
 };
 
-// Matcher configuration for middleware to include dynamic and API routes
+// Define the matcher for the middleware
 export const config = {
   matcher: [
     "/dashboard/:path*",
     "/profile/:path*",
+    "/profile/company-information",
+    "/profile/contact-information",
+    "/profile/employment-information",
     "/blogs/:id/:path*",
     "/jobs/:id/:path*", 
     "/jobs/api/:id/:path*", 
     "/companies/:id/:path*",
+    "/companies/api/:id/:path*",
     "/api/:path*",
+    "/dashboard/userManagement/api:path*",
   ],
 };
