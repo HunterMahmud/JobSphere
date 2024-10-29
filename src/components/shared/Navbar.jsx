@@ -162,22 +162,27 @@ const Navbar = () => {
                   <MenuItems className="absolute text-sm bg-accent -right-[42px] md:right-0 z-50 mt-[20px] md:mt-[15px] w-[280px] md:w-[350px] h-[300px] overflow-y-auto origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <MenuItem>
                       <div className="p-4">
-                        {notifications?.map((notification) => (
-                          <div
-                            key={notification.id}
-                            className={notification.isRead ? "text-gray-800" : "text-black"}
-                          >
-                            <div className="mb-3">
-                              <div className="flex flex-col md:flex-row justify-between">
-                                <Link href={notification.link} className="font-medium">{notification.title}</Link>
-                                <p className="text-xs my-1 md:my-0 md:text-sm">{notification?.timestamp.toDate().toLocaleDateString()}</p>
+                        {
+                          notifications.length === 0 ? <div>
+                            <h1 className="text-xl text-black font-medium text-center mt-5">Notifications is empty</h1>
+                          </div> :
+                            notifications?.map((notification) => (
+                              <div
+                                key={notification.id}
+                                className={notification.isRead ? "text-gray-800" : "text-black"}
+                              >
+                                <div className="mb-3">
+                                  <div className="flex flex-col md:flex-row justify-between">
+                                    <Link href={notification.link} className="font-medium">{notification.title}</Link>
+                                    <p className="text-xs my-1 md:my-0 md:text-sm">{notification?.timestamp.toDate().toLocaleDateString()}</p>
+                                  </div>
+                                  <p className="text-pretty">
+                                    {notification.message}
+                                  </p>
+                                </div>
                               </div>
-                              <p className="text-pretty">
-                                {notification.message}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
+                            ))
+                        }
                       </div>
                     </MenuItem>
                   </MenuItems>
