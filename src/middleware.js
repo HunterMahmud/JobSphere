@@ -19,6 +19,16 @@ const roleBasedRoutes = {
   "/profile/company-information": ["recruiter"],
   "/profile/contact-information": ["recruiter"],
   "/profile/employment-information": ["recruiter"],
+  "/profile/career-objective": ["seeker"],
+  "/profile/certifications": ["seeker"],
+  "/profile/education": ["seeker"],
+  "/profile/extra-curricular-activity": ["seeker"],
+  "/profile/personal-information": ["seeker"],
+  "/profile/profile-overview": ["seeker"],
+  "/profile/projects": ["seeker"],
+  "/profile/skills": ["seeker"],
+  "/profile/viewResume": ["seeker"],
+  "/profile/work-experience": ["seeker"],
   "/dashboard/appliedJobs": ["seeker"],
   "/dashboard/savedJobs": ["seeker"],  
   "/dashboard/support": ["seeker", "recruiter"],  
@@ -39,6 +49,8 @@ const roleBasedRoutes = {
   "/dashboard/myPostedJobs/api/sendEmail/onlineInterView": ["recruiter"],
   "/dashboard/postAJob/api": ["recruiter"],
   "/dashboard/writeABlog/api": ["recruiter"],
+  "/profile/api/:email": ["seeker"],
+  "/profile/api/company/:email": ["recruiter"],
 
    
 
@@ -109,6 +121,7 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/profile/:path*",
+    "/profile/api/:path*",
     "/api/:path*",
     "/dashboard/userManagement/api:path*",
     "/dashboard/statistics/api:path*",
