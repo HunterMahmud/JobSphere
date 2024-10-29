@@ -34,7 +34,7 @@ const ApplyedAJob = ({ params }) => {
     const [to, setTo] = useState('');
     const [jobTitle, setJobTitle] = useState('');
     const [job, setJob] = useState([]);
-
+    console.log(job)
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
     const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
     const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
@@ -92,7 +92,15 @@ const ApplyedAJob = ({ params }) => {
     }, [params.id, page, limit]);
 
     // handle Remove Applyed job
-    const handleRemove = async (id) => {
+    const handleRemove = async (id, job) => {
+
+        const RejectedNotification = {
+            userId: job?.userId,
+            title: 'Application Update! 🛑',
+            message: `We regret to inform you that your application for ${job?.jobTitle} at ${job?.companyName} was not successful this time. Keep striving—another opportunity is just around the corner.`,
+            link: `/dashboard/applyedJobs`
+        }
+
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to reject the applicant?",
@@ -102,11 +110,15 @@ const ApplyedAJob = ({ params }) => {
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, it!",
         }).then(async (result) => {
+
             if (result.isConfirmed) {
                 try {
+                    const res = await axios.post("/api/notification", { ...RejectedNotification });
+                    console.log(res)
+
                     const { data } = await axios.put(
                         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Rejected" });
-
+                    // for natifications
                     if (data.modifiedCount > 0) {
                         toast.success('Successful')
                         // Re-fetch the jobs after deletion
@@ -510,7 +522,7 @@ const ApplyedAJob = ({ params }) => {
                                                         return toast.error('This applicant has already been selected')
                                                     }
                                                     setJob(job)
-                                                    handleRemove(job?._id)
+                                                    handleRemove(job?._id, job)
                                                 }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
                                             >
