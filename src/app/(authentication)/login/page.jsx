@@ -24,18 +24,14 @@ const LoginPage = () => {
 
     const handleLogIn = async (data) => {
         const { email, password } = data;
-        console.log("okay 0");
         try {
-            console.log("okay 1");
             
             const resp = await signIn("credentials", {
                 email,
                 password,
                 redirect: false,
             });
-            console.log("okay 2");
             if (resp?.ok) {
-                console.log("okay 3");
                 toast.success('SignIn Successful');
                 router.push(redirectPath);  // Redirect to the target path or home
             } else if (resp?.error) {
