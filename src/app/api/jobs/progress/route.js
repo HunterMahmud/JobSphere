@@ -1,37 +1,45 @@
-// api/jobs/applications/route.js
-
 import { connectDB } from "@/lib/connectDB";
-import { ObjectId } from "mongodb";
+import { NextResponse } from "next/server";
 
-export async function GET(request, { query }) {
-  const db = await connectDB();
-  const applyedJobsCollection = db.collection("applyedJobs");
+export const GET = async (request, { params })=> {
+  try {
+    const db = await connectDB();
+    const applyedJobsCollection = db.collection("applyedJobs");
 
-  const { email, range } = query;
-  
-  const filter = {
-    "applicantInfo.contactInformation.email": email,
-  };
+    // Validate and parse the request URL
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get("email") || "";
+    const range = searchParams.get("range") || "";
 
-  // Date filtering logic based on range (daily, weekly, monthly)
-  if (range === "daily") {
-    filter.applicationDate = { $gte: new Date(new Date().setDate(new Date().getDate() - 1)) };
-  } else if (range === "weekly") {
-    filter.applicationDate = { $gte: new Date(new Date().setDate(new Date().getDate() - 7)) };
-  } else if (range === "monthly") {
-    filter.applicationDate = { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) };
-  }
-  const calculateProgress = (statuses) => {
-    const weights = { pending: 1, tasked: 2, interviewed: 3, selected: 5, rejected: -2 };
+    // Set up the filter
+    const filter = { "applicantInfo.contactInformation.email": email };
+
+    // Date filtering logic based on range (daily, weekly, monthly)
+    if (range === "daily") {
+      filter.applicationDate = {
+        $gte: new Date(new Date().setDate(new Date().getDate() - 1))
+      };
+    } else if (range === "weekly") {
+      filter.applicationDate = {
+        $gte: new Date(new Date().setDate(new Date().getDate() - 7))
+      };
+    } else if (range === "monthly") {
+      filter.applicationDate = {
+        $gte: new Date(new Date().setMonth(new Date().getMonth() - 1))
+      };
+    }
     
-    const progressScore = statuses.reduce((total, status) => {
-      return total + (weights[status] || 0);
-    }, 0);
-  
-    const maxPossibleScore = statuses.length * Math.max(...Object.values(weights));
-    return (progressScore / maxPossibleScore) * 100; // Return as percentage
-  };
-  
-  const applications = await applyedJobsCollection.find(filter).toArray();
-  return new Response.json({applications}, { status: 200 });
+    console.log("Filter applied:", filter);
+
+    // Query the database
+    const applications = await applyedJobsCollection.find(filter).toArray();
+    // console.log(applications)
+    // Return the response
+    return NextResponse.json({ applications }, { status: 200 });
+  } catch (error) {
+    console.error("Error in GET handler:", error);
+    return NextResponse.json({ message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }

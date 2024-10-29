@@ -16,9 +16,10 @@ const ProgressDashboard = () => {
 //   console.log(session)
 
   const fetchApplicationsData = async (range) => {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/jobs/applications?email=${session?.data?.user?.email}&range=${range}`);
-    console.log("the result: ",res)
-    setApplicationsData(res.data);
+    const {data} = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/jobs/applications?email=${session?.data?.user?.email}&range=${range}`);
+    // console.log("the result: ",res)
+    console.log(data.applications)
+    // setApplicationsData(res.data);
   };
 
   const fetchStatusData = async () => {
@@ -33,10 +34,10 @@ const ProgressDashboard = () => {
   };
 
   useEffect(() => {
-    if(session?.status==='authenticated'){
+    if(session.data?.user?.email){
         fetchApplicationsData(selectedRange);
-    fetchStatusData();
-    fetchComparisonData(compareRange);
+        // fetchStatusData();
+        // fetchComparisonData(compareRange);
     }
   }, [selectedRange, compareRange, session?.status]);
 
