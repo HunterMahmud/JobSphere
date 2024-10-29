@@ -70,7 +70,6 @@ const publicRoutes = [
   "/register-recruiter",
   "/register-user",
   "/aboutus",
-  "/profile",
   "/blogs",
   "/jobs/api",
   "/companies",
