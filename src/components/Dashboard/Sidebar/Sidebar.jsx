@@ -137,11 +137,11 @@ const Sidebar = () => {
                   label="Support"
                   address="/dashboard/supportAllUsers"
                 />
-                <MenuItem
+                {/* <MenuItem
                   icon={FcStatistics}
                   label="Statistics"
                   address="/dashboard/statistics"
-                />
+                /> */}
               </nav>
             )}
           </div>

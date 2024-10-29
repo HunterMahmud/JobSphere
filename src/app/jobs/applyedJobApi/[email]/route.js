@@ -44,3 +44,6 @@ export const GET = async (request, { params }) => {
         return Response.json(err);
     }
 }
+
+
+export const dynamic = 'force-dynamic';
