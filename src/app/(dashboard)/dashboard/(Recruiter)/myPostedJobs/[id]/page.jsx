@@ -223,7 +223,7 @@ const ApplyedAJob = ({ params }) => {
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
 
-            const res = await axios.post("/api/notification", { ...notification });
+            await axios.post("/api/notification", { ...notification });
 
             if (data.modifiedCount > 0) {
                 await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
@@ -304,11 +304,20 @@ const ApplyedAJob = ({ params }) => {
                     meetingLink: meetLink, // Directly use the link here
                 };
 
+                const notification = {
+                    userId: job?.userId,
+                    title: 'Online Interview Scheduled! 💻',
+                    message: `You have a Online interview for ${job?.jobTitle} at ${job?.companyName}. Date: ${formData.interviewDate}. Join via: ${meetLink}. Good luck!`,
+                    link: `/dashboard/applyedJobs`
+                }
+
                 // Proceed to update the job status with the created meeting link
                 const { data } = await axios.put(
                     `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
                     { onlineInterView, jobStatus: 'Interview' }
                 );
+
+                await axios.post("/api/notification", { ...notification });
 
                 if (data.modifiedCount > 0) {
                     await axios.post('/dashboard/myPostedJobs/api/sendEmail/onlineInterView', { onlineInterView, from: email, to });
