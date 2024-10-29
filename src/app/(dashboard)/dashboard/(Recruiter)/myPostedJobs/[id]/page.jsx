@@ -157,7 +157,7 @@ const ApplyedAJob = ({ params }) => {
             setIsLoading(true)
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'Task' });
-
+            // for notification
             await axios.post("/api/notification", { ...notification });
 
             if (data.modifiedCount > 0) {
@@ -222,7 +222,7 @@ const ApplyedAJob = ({ params }) => {
             setIsLoading(true)
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
-
+            // for notification
             await axios.post("/api/notification", { ...notification });
 
             if (data.modifiedCount > 0) {
@@ -316,7 +316,7 @@ const ApplyedAJob = ({ params }) => {
                     `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
                     { onlineInterView, jobStatus: 'Interview' }
                 );
-
+                // for notification
                 await axios.post("/api/notification", { ...notification });
 
                 if (data.modifiedCount > 0) {
@@ -343,7 +343,6 @@ const ApplyedAJob = ({ params }) => {
     };
 
     // handleSelected
-
     const handleSelected = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -351,9 +350,19 @@ const ApplyedAJob = ({ params }) => {
         const offerLetterLink = form.offerLetterLink.value;
         const offerLetter = `Congratulations! You have been selected for the position ${jobTitle}.Kindly confirm your acceptance by ${responseDate}.Please review the offer letter and other details using the link below. Offer Letter:`
 
+        const notification = {
+            userId: job?.userId,
+            title: 'Offer Alert! 🥳',
+            message: `${job?.companyName} has offered you a position as ${job?.jobTitle}. Check your email or go to dashboard for details.`,
+            link: `/dashboard/applyedJobs`
+        }
+
         try {
             setIsLoading(true)
             const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected", offerLetter, offerLetterLink });
+            // for notification
+            await axios.post("/api/notification", { ...notification });
+
             if (data.modifiedCount > 0) {
                 await axios.post('/dashboard/myPostedJobs/api/sendEmail/jobOffer', { jobTitle, responseDate, offerLetterLink, from: email, to });
 
