@@ -33,6 +33,8 @@ const ApplyedAJob = ({ params }) => {
     const email = session?.data?.user?.email;
     const [to, setTo] = useState('');
     const [jobTitle, setJobTitle] = useState('');
+    const [userId, setUserId] = useState('');
+    console.log(userId)
 
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
     const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -141,6 +143,13 @@ const ApplyedAJob = ({ params }) => {
             submissionDate
         }
 
+        const notification = {
+            userId,
+            title: 'For Task',
+            message: 'Your have get a task.',
+            link: `/dashboard/applyedJobs`
+        }
+
         if (!id) {
             return toast.error('Something os Wrong')
         }
@@ -150,6 +159,8 @@ const ApplyedAJob = ({ params }) => {
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'Task' });
 
+                const res = await axios.post("/api/notification", { ...notification });
+                console.log(res)
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
                 toast.success('Successful')
@@ -165,7 +176,7 @@ const ApplyedAJob = ({ params }) => {
             console.log(error.message);
             Swal.fire({
                 title: "Error!",
-                text: "Failed to delete the job.",
+                text: error?.message,
                 icon: "error",
             });
         }
@@ -408,6 +419,7 @@ const ApplyedAJob = ({ params }) => {
                                                     } if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     } else {
+                                                        setUserId(job?.userId)
                                                         handleTask(job?._id)
                                                         setTask(job?.task)
                                                         setTaskManage(true)
@@ -430,6 +442,7 @@ const ApplyedAJob = ({ params }) => {
                                                         return toast.error('Already Added')
                                                     } else {
                                                         setShowModal(!showModal)
+                                                        setUserId(job?.userId)
                                                         setId(job?._id)
                                                         setTo(job?.applicantInfo?.contactInformation?.email)
                                                         setInterView(true)
@@ -449,6 +462,7 @@ const ApplyedAJob = ({ params }) => {
                                                         return toast.error('This applicant has already been selected')
                                                     } else {
                                                         setShowModal(!showModal)
+                                                        setUserId(job?.userId)
                                                         setId(job?._id)
                                                         setJobTitle(job?.jobTitle)
                                                         setTo(job?.applicantInfo?.contactInformation?.email)
@@ -469,6 +483,7 @@ const ApplyedAJob = ({ params }) => {
                                                     if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     }
+                                                    setUserId(job?.userId)
                                                     handleRemove(job?._id)
                                                 }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}

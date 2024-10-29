@@ -18,11 +18,13 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import useRole from "../Hooks/useRole"
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { db } from "@/app/firebase/firebase.config";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 const links = [
   {
@@ -47,7 +49,32 @@ const links = [
 const Navbar = () => {
   const pathName = usePathname();
   const session = useSession();
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { loggedInUser } = useRole();
+
+  useEffect(() => {
+    if (loggedInUser?._id) {
+      const notificationsRef = collection(db, "notifications");
+      const q = query(
+        notificationsRef,
+        where("userId", "==", loggedInUser?._id)
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const fetchedNotifications = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNotifications(fetchedNotifications);
+        setUnreadCount(fetchedNotifications.filter((n) => !n.isRead).length);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [loggedInUser?._id]);
+
+  console.log(notifications, unreadCount)
 
   if (pathName.includes("dashboard")) return;
 

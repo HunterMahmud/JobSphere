@@ -185,6 +185,7 @@ const JobDetails = ({ params }) => {
       applicationDate: today,
       jobStatus: "Pending",
       jobType: job?.jobType,
+      userId: loggedInUser?._id
     };
 
     try {
