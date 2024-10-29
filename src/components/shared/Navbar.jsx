@@ -142,7 +142,7 @@ const Navbar = () => {
                       </div>
                     </MenuButton>
                   </div>
-                  <MenuItems className="absolute bg-accent right-0 z-50 mt-[14px] w-[300px] h-[300px] overflow-y-auto origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems className="absolute text-sm md:text-base bg-accent -right-[42px] md:right-0 z-50 mt-[20px] md:mt-[14px] w-[280px] md:w-[350px] h-[300px] overflow-y-auto origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <MenuItem>
                       <div className="p-4">
                         {notifications?.map((notification) => (
@@ -151,9 +151,9 @@ const Navbar = () => {
                             className={notification.isRead ? "text-gray-400" : "text-black"}
                           >
                             <div className="mb-3">
-                              <div className="flex justify-between">
+                              <div className="flex flex-col md:flex-row justify-between">
                                 <Link href={notification.link} className="text-base font-medium">{notification.title}</Link>
-                                <p>{notification?.timestamp.toDate().toLocaleDateString()}</p>
+                                <p className="text-xs my-1 md:my-0 md:text-sm">{notification?.timestamp.toDate().toLocaleDateString()}</p>
                               </div>
                               <p className="text-pretty">
                                 {notification.message}
