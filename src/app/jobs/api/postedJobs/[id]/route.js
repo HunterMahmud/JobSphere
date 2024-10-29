@@ -18,3 +18,7 @@ export const GET = async (request, {params}) => {
     return NextResponse.json({ message: "No comapny found", error });
   }
 };
+
+
+
+export const dynamic = 'force-dynamic';

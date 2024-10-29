@@ -56,3 +56,4 @@ if (jobStatus === "Live") {
     }
 }
 
+export const dynamic = 'force-dynamic';
