@@ -22,6 +22,7 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import useRole from "../Hooks/useRole"
+import { IoMdNotificationsOutline } from "react-icons/io";
 
 const links = [
   {
@@ -56,7 +57,7 @@ const Navbar = () => {
         <div className="relative flex h-[70px] items-center justify-between">
           {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 md:p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="sr-only">Open main menu</span>
               <Bars3Icon
                 aria-hidden="true"
@@ -71,14 +72,14 @@ const Navbar = () => {
           {/* Logo for all screens */}
           <Link
             href="/"
-            className="ml-[60px] md:ml-0  flex flex-shrink-0 items-center"
+            className="ml-[50px] md:ml-0  flex flex-shrink-0 items-center"
           >
             <Image
               src={"https://i.ibb.co.com/Ph872yP/logoName.png"}
               alt="Logo"
               width={250}
               height={100}
-              className="w-[150px] md:w-[200px]" />
+              className="w-[140px] md:w-[200px]" />
           </Link>
 
           {/* Centered Navigation Links for larger screens */}
@@ -101,7 +102,9 @@ const Navbar = () => {
 
           {/* Right Section ( Profile ) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-
+            <div className="md:mt-[5px]">
+              <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
+            </div>
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
               {session?.status === "authenticated" ? (
@@ -117,7 +120,7 @@ const Navbar = () => {
                             ? loggedInUser?.userIMG
                             : "https://i.ibb.co/3BY9Fks/profile.png"
                         }
-                        className="rounded-full w-10 h-10 object-cover"
+                        className="rounded-full mb-1 md:mb-0 w-10 h-10 object-cover"
                         height={40}
                         width={40}
                       />
@@ -165,9 +168,9 @@ const Navbar = () => {
                           )}
 
                           {/* {loggedInUser?.role === "recruiter" && ( */}
-                            {/* <> */}
-                              {/* Divider */}
-                              {/* <div className="border-t border-gray-200"></div>
+                          {/* <> */}
+                          {/* Divider */}
+                          {/* <div className="border-t border-gray-200"></div>
                               <MenuItem>
                                 <a
                                   href="/profile/premiumMembership"
@@ -176,9 +179,9 @@ const Navbar = () => {
                                   Premium Membership
                                 </a>
                               </MenuItem> */}
-                            {/* </> */}
+                          {/* </> */}
                           {/* )} */}
-                          
+
                           {loggedInUser?.role === "seeker" && (
                             <>
                               {/* Divider */}
