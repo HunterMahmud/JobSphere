@@ -12,3 +12,6 @@ export const GET = async (request, { params }) => {
     return NextResponse.json({ message: "No Data Found" });
   }
 };
+
+
+export const dynamic = 'force-dynamic';

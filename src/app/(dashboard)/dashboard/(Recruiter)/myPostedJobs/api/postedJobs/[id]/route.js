@@ -52,3 +52,6 @@ export const GET = async (request, { params }) => {
     return NextResponse.json({ message: "Something Went Wrong" });
   }
 };
+
+
+export const dynamic = 'force-dynamic';
