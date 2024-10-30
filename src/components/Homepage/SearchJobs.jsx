@@ -1,11 +1,11 @@
 "use client";
-
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Select from "react-select"; // Import react-select
-
+import useRole from "../Hooks/useRole"
 const SearchJobs = () => {
   const [jobTitles, setJobTitles]=useState([]);
   const [search, setSearch] = useState("");
@@ -13,7 +13,7 @@ const SearchJobs = () => {
   const [cities, setCities] = useState([]);
   const [loading ,setLoading]=useState(false)
   const router = useRouter();
-
+  const { loggedInUser } = useRole();
   useEffect(() => {
     const fetchJobsCities = async (page = 1) => {
       setLoading(true)
@@ -44,6 +44,10 @@ const SearchJobs = () => {
 
   // Handle job search
 const handleSubmit = () => {
+  // if (loggedInUser?.status === "blocked") {
+  //   toast.error("You are blocked by the authority. Please contact support for assistance.");
+  //   return;
+  // }
   // Extract the value of city if it's an object, otherwise use an empty string
   const selectedCity = city ? city?.name : "";
 

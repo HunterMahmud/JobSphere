@@ -22,7 +22,7 @@ import {
 import { AiOutlineClose } from "react-icons/ai"; // Close icon for modal
 import { FaLink } from "react-icons/fa";
 import { FaShareFromSquare } from "react-icons/fa6";
-
+import useRole from "@/components/Hooks/useRole";
 const BlogDetails = ({ params }) => {
   const session = useSession(); // Access session data
   const [blog, setBlog] = useState(null);
@@ -31,7 +31,7 @@ const BlogDetails = ({ params }) => {
   const [hasVoted, setHasVoted] = useState(null); // Track user's vote status
   const [showModal, setShowModal] = useState(false); // Track modal visibility
   const modalRef = useRef(); // Ref for modal
-
+  const { loggedInUser } = useRole();
   // Fetch blog details
   const getBlogDetails = async (id) => {
     try {
@@ -64,6 +64,10 @@ const BlogDetails = ({ params }) => {
 
   // Handle Upvote
   const handleUpvote = async () => {
+    if (loggedInUser?.status === "blocked") {
+      toast.error("You are blocked by the authority. Please contact support for assistance.");
+      return;
+    }
     if (session?.status !== "authenticated") {
       return toast.error("Login to vote");
     }
@@ -94,6 +98,10 @@ const BlogDetails = ({ params }) => {
 
   // Handle Downvote
   const handleDownvote = async () => {
+    if (loggedInUser?.status === "blocked") {
+      toast.error("You are blocked by the authority. Please contact support for assistance.");
+      return;
+    }
     if (session?.status !== "authenticated") {
       return toast.error("Login to vote");
     }
