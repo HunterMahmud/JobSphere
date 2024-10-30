@@ -33,7 +33,8 @@ const ApplyedAJob = ({ params }) => {
     const email = session?.data?.user?.email;
     const [to, setTo] = useState('');
     const [jobTitle, setJobTitle] = useState('');
-
+    const [job, setJob] = useState([]);
+    console.log(job)
     const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
     const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
     const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
@@ -91,7 +92,15 @@ const ApplyedAJob = ({ params }) => {
     }, [params.id, page, limit]);
 
     // handle Remove Applyed job
-    const handleRemove = async (id) => {
+    const handleRemove = async (id, job) => {
+
+        const RejectedNotification = {
+            userId: job?.userId,
+            title: 'Application Update! 🛑',
+            message: `We regret to inform you that your application for ${job?.jobTitle} at ${job?.companyName} was not successful this time. Keep striving—another opportunity is just around the corner.`,
+            link: `/dashboard/applyedJobs`
+        }
+
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to reject the applicant?",
@@ -101,11 +110,15 @@ const ApplyedAJob = ({ params }) => {
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, it!",
         }).then(async (result) => {
+
             if (result.isConfirmed) {
                 try {
+                    const res = await axios.post("/api/notification", { ...RejectedNotification });
+                    console.log(res)
+
                     const { data } = await axios.put(
                         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Rejected" });
-
+                    // for natifications
                     if (data.modifiedCount > 0) {
                         toast.success('Successful')
                         // Re-fetch the jobs after deletion
@@ -141,6 +154,13 @@ const ApplyedAJob = ({ params }) => {
             submissionDate
         }
 
+        const notification = {
+            userId: job?.userId,
+            title: 'Task Alert! 🚨',
+            message: `You have received a new task from ${job?.companyName}. Task: ${taskLink} for your role as ${job?.jobTitle}. Deadline: ${submissionDate}. Let’s get to it!`,
+            link: `/dashboard/applyedJobs`
+        }
+
         if (!id) {
             return toast.error('Something os Wrong')
         }
@@ -149,6 +169,8 @@ const ApplyedAJob = ({ params }) => {
             setIsLoading(true)
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { task, jobStatus: 'Task' });
+            // for notification
+            await axios.post("/api/notification", { ...notification });
 
             if (data.modifiedCount > 0) {
                 setShowModal(!showModal)
@@ -165,7 +187,7 @@ const ApplyedAJob = ({ params }) => {
             console.log(error.message);
             Swal.fire({
                 title: "Error!",
-                text: "Failed to delete the job.",
+                text: error?.message,
                 icon: "error",
             });
         }
@@ -197,6 +219,13 @@ const ApplyedAJob = ({ params }) => {
             documents
         }
 
+        const notification = {
+            userId: job?.userId,
+            title: 'Interview Scheduled! 🗓️',
+            message: `You have got an in-person interview for ${job?.jobTitle} at ${job?.companyName}. Date: ${date}. Location: ${location}. Best of luck!`,
+            link: `/dashboard/applyedJobs`
+        }
+
         if (!id) {
             return toast.error('Something os Wrong')
         }
@@ -205,6 +234,8 @@ const ApplyedAJob = ({ params }) => {
             setIsLoading(true)
             const { data } = await axios.put(
                 `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { offlineInterView, jobStatus: 'Interview' });
+            // for notification
+            await axios.post("/api/notification", { ...notification });
 
             if (data.modifiedCount > 0) {
                 await axios.post('/dashboard/myPostedJobs/api/sendEmail/offlineInterView', { offlineInterView, from: email, to });
@@ -285,11 +316,20 @@ const ApplyedAJob = ({ params }) => {
                     meetingLink: meetLink, // Directly use the link here
                 };
 
+                const notification = {
+                    userId: job?.userId,
+                    title: 'Online Interview Scheduled! 💻',
+                    message: `You have a Online interview for ${job?.jobTitle} at ${job?.companyName}. Date: ${formData.interviewDate}. Join via: ${meetLink}. Good luck!`,
+                    link: `/dashboard/applyedJobs`
+                }
+
                 // Proceed to update the job status with the created meeting link
                 const { data } = await axios.put(
                     `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`,
                     { onlineInterView, jobStatus: 'Interview' }
                 );
+                // for notification
+                await axios.post("/api/notification", { ...notification });
 
                 if (data.modifiedCount > 0) {
                     await axios.post('/dashboard/myPostedJobs/api/sendEmail/onlineInterView', { onlineInterView, from: email, to });
@@ -315,7 +355,6 @@ const ApplyedAJob = ({ params }) => {
     };
 
     // handleSelected
-
     const handleSelected = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -323,9 +362,19 @@ const ApplyedAJob = ({ params }) => {
         const offerLetterLink = form.offerLetterLink.value;
         const offerLetter = `Congratulations! You have been selected for the position ${jobTitle}.Kindly confirm your acceptance by ${responseDate}.Please review the offer letter and other details using the link below. Offer Letter:`
 
+        const notification = {
+            userId: job?.userId,
+            title: 'Offer Alert! 🥳',
+            message: `${job?.companyName} has offered you a position as ${job?.jobTitle}. Check your email or go to dashboard for details.`,
+            link: `/dashboard/applyedJobs`
+        }
+
         try {
             setIsLoading(true)
             const { data } = await axios.put(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/jobs/applyedJobApi/deleteApplyedJob/${id}`, { jobStatus: "Selected", offerLetter, offerLetterLink });
+            // for notification
+            await axios.post("/api/notification", { ...notification });
+
             if (data.modifiedCount > 0) {
                 await axios.post('/dashboard/myPostedJobs/api/sendEmail/jobOffer', { jobTitle, responseDate, offerLetterLink, from: email, to });
 
@@ -408,6 +457,7 @@ const ApplyedAJob = ({ params }) => {
                                                     } if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     } else {
+                                                        setJob(job)
                                                         handleTask(job?._id)
                                                         setTask(job?.task)
                                                         setTaskManage(true)
@@ -429,6 +479,7 @@ const ApplyedAJob = ({ params }) => {
                                                     else if (job?.offlineInterView || job?.onlineInterView) {
                                                         return toast.error('Already Added')
                                                     } else {
+                                                        setJob(job)
                                                         setShowModal(!showModal)
                                                         setId(job?._id)
                                                         setTo(job?.applicantInfo?.contactInformation?.email)
@@ -448,6 +499,7 @@ const ApplyedAJob = ({ params }) => {
                                                     if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     } else {
+                                                        setJob(job)
                                                         setShowModal(!showModal)
                                                         setId(job?._id)
                                                         setJobTitle(job?.jobTitle)
@@ -469,7 +521,8 @@ const ApplyedAJob = ({ params }) => {
                                                     if (job?.jobStatus === 'Selected') {
                                                         return toast.error('This applicant has already been selected')
                                                     }
-                                                    handleRemove(job?._id)
+                                                    setJob(job)
+                                                    handleRemove(job?._id, job)
                                                 }}
                                                 className={`${job?.jobStatus === 'Rejected' && 'cursor-not-allowed'} flex items-center justify-center gap-1 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition mr-2`}
                                             >
