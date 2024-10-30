@@ -36,7 +36,7 @@ export const GET = async (request) => {
         const weight = weights[job.jobStatus] || 0;
         progress += weight;
       });
-      return progress > 0.5 ? 'growth' : progress < 0 ? 'decline' : 'neutral';
+      return progress > 0.75 ? 'growth' : progress < 0.5 ? 'decline' : 'neutral';
     };
 
     // Prepare response data
