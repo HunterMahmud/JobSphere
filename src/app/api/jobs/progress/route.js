@@ -1,7 +1,7 @@
 import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from "next/server";
 
-export const GET = async (request, { params })=> {
+export const GET = async (request, { params }) => {
   try {
     const db = await connectDB();
     const applyedJobsCollection = db.collection("applyedJobs");
@@ -14,32 +14,30 @@ export const GET = async (request, { params })=> {
     // Set up the filter
     const filter = { "applicantInfo.contactInformation.email": email };
 
-    // Date filtering logic based on range (daily, weekly, monthly)
-    if (range === "daily") {
-      filter.applicationDate = {
-        $gte: new Date(new Date().setDate(new Date().getDate() - 1))
-      };
-    } else if (range === "weekly") {
-      filter.applicationDate = {
-        $gte: new Date(new Date().setDate(new Date().getDate() - 7))
-      };
-    } else if (range === "monthly") {
-      filter.applicationDate = {
-        $gte: new Date(new Date().setMonth(new Date().getMonth() - 1))
-      };
-    }
-    
-    console.log("Filter applied:", filter);
-
-    // Query the database
+    // Query the database with email filter only
     const applications = await applyedJobsCollection.find(filter).toArray();
-    // console.log(applications)
+
+    // Determine date range for filtering
+    let dateRange;
+    if (range === "daily") {
+      dateRange = new Date(new Date().setDate(new Date().getDate() - 1));
+    } else if (range === "weekly") {
+      dateRange = new Date(new Date().setDate(new Date().getDate() - 7));
+    } else if (range === "monthly") {
+      dateRange = new Date(new Date().setMonth(new Date().getMonth() - 1));
+    }
+
+    // Apply date filtering in JavaScript
+    const filteredApplications = applications.filter((app) => {
+      // Parse applicationDate as a Date object
+      const applicationDate = new Date(app.applicationDate);
+      return !isNaN(applicationDate) && applicationDate >= dateRange;
+    });
+
     // Return the response
-    return NextResponse.json({ applications }, { status: 200 });
+    return NextResponse.json({ applications: filteredApplications }, { status: 200 });
   } catch (error) {
     console.error("Error in GET handler:", error);
-    return NextResponse.json({ message: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
-}
+};
