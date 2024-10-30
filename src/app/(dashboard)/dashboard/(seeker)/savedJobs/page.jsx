@@ -97,7 +97,10 @@ const JobListTable = () => {
     return (
         <div className="max-w-7xl mx-auto pb-5 md:py-8 md:px-4">
             {/* Page Title */}
-            <h1 className="text-2xl font-bold text-center mb-5 md:mb-8">Saved Jobs</h1>
+            <h1 className="text-2xl font-bold text-center mb-5 md:mb-8">Saved Jobs
+                <span className='
+        bg-accent text-primary px-2 rounded-lg ml-1'>{total}</span>
+            </h1>
 
             {/* Filter Section */}
             <div className="mb-6 md:p-4 bg-white rounded-lg shadow-md flex items-center justify-between">

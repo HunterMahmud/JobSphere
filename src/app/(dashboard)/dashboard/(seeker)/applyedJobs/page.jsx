@@ -24,7 +24,7 @@ const ApplyedJobs = () => {
   // for pagination
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [total, setTotal] = useState(1);
+  const [total, setTotal] = useState(0);
   const [task, setTask] = useState('');
   const [onlineInterView, setOnlineInterView] = useState([]);
   const [offlineInterView, setOfflineInterView] = useState([]);
@@ -139,7 +139,8 @@ const ApplyedJobs = () => {
     <Fragment>
       <div className="max-w-7xl mx-auto pb-5 md:py-8 md:px-4">
         {/* Page Title */}
-        <h1 className="text-2xl font-bold text-center mb-5 md:mb-8">Applyed Jobs</h1>
+        <h1 className="text-2xl font-bold text-center mb-5 md:mb-8">Applyed Jobs <span className='
+        bg-accent text-primary px-2 rounded-lg'>{total}</span></h1>
 
         {/* Filter Section */}
         <div className="mb-6 md:p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
@@ -198,7 +199,7 @@ const ApplyedJobs = () => {
           {
             loading ? <Loader /> : <>
                {
-                jobs.length>0?<>
+                jobs?.length>0?<>
                 
                 <table className="min-w-full bg-white">
               {/* Table Header */}
