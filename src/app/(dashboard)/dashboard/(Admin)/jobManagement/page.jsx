@@ -169,9 +169,7 @@ const JobTable = () => {
                   <th className="px-6 py-4 text-left font-medium text-gray-700">
                     Job Type
                   </th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-700">
-                    Deadline
-                  </th>
+                 
                   <th className="px-6 py-4 text-left font-medium text-gray-700">
                     Status
                   </th>
@@ -198,7 +196,7 @@ const JobTable = () => {
                     <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
                       {/* Conditionally render countdown if the deadline is greater than 1 second from now */}
                     {
-                      new Date(job.deadline)
+                      new Date(job?.deadline).toLocaleDateString()
                     }
                     </td>
                     <td className="py-6 px-4">
