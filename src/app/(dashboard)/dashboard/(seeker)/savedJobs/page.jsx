@@ -3,7 +3,6 @@ import Loader from '@/app/loading';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { FaReact } from 'react-icons/fa';
 import { MdBookmarkRemove, MdOutlineRemoveRedEye } from 'react-icons/md';
 import Link from 'next/link';
 import Swal from 'sweetalert2';

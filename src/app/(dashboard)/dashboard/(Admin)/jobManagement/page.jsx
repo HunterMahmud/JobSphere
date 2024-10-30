@@ -194,22 +194,12 @@ const JobTable = () => {
                       <span className="inline-block px-2 py-1 font-medium rounded-full bg-blue-100 text-blue-600">
                         {job?.jobType}
                       </span>
-                    </td>
-                    <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
-                      {job.salaryScale}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="inline-block px-2 py-1 font-medium rounded-full bg-green-100 text-green-600">
-                        {job?.experience}
-                      </span>
-                    </td>
+                    </td>             
                     <td className="py-4 px-6 border-b border-gray-200 text-gray-800">
                       {/* Conditionally render countdown if the deadline is greater than 1 second from now */}
-                      {new Date(job.deadline).getTime() - currentTime > 1000 ? (
-                        <Countdown date={new Date(job.deadline)} />
-                      ) : (
-                        "closed"
-                      )}
+                    {
+                      new Date(job.deadline)
+                    }
                     </td>
                     <td className="py-6 px-4">
 
