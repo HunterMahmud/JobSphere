@@ -11,9 +11,7 @@ import {
 } from "@headlessui/react";
 import {
   Bars3Icon,
-  BellIcon,
   XMarkIcon,
-  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,7 +57,7 @@ const Navbar = () => {
       const notificationsRef = collection(db, "notifications");
       const q = query(
         notificationsRef,
-        where("userId", "==", loggedInUser?._id)
+        where("userId", "==", loggedInUser?._id),
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -67,6 +65,9 @@ const Navbar = () => {
           id: doc.id,
           ...doc.data(),
         }));
+        // Sort the fetched notifications by `timestamp` in descending order
+        fetchedNotifications.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+
         setNotifications(fetchedNotifications);
         setUnreadCount(fetchedNotifications.filter((n) => !n.isRead).length);
       });
@@ -74,6 +75,7 @@ const Navbar = () => {
       return () => unsubscribe();
     }
   }, [loggedInUser?._id]);
+
 
   const markAllNotificationsAsRead = async () => {
     if (unreadCount !== 0) {
