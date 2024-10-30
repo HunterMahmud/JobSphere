@@ -123,7 +123,11 @@ const JobDetails = ({ params }) => {
   }
 
   const handleApplyNow = () => {
-    if (loggedInUser?.role === "recruiter") {
+    if (loggedInUser?.status === "blocked") {
+      toast.error("You are blocked by the authority. Please contact support for assistance.");
+      return;
+    }
+    else if (loggedInUser?.role === "recruiter") {
       return toast.error("Action not permitted!");
     } else if (loggedInUser?.role === "admin") {
       return toast.error("Action not permitted!");
@@ -217,6 +221,10 @@ const JobDetails = ({ params }) => {
   };
 
   const handleSaveJob = async () => {
+    if (loggedInUser?.status === "blocked") {
+      toast.error("You are blocked by the authority. Please contact support for assistance.");
+      return;
+    }
     const saveInfo = [
       ...job?.saveUsers || [],
       email
@@ -373,7 +381,7 @@ const JobDetails = ({ params }) => {
                   ))}
                 </div>
                 {
-                  seekerInfo?.skills?.technicalSkills &&
+                  loggedInUser?.status!=="blocked" && seekerInfo?.skills?.technicalSkills &&
                   <button onClick={() => {
                     setShowModal(!showModal);
                     setShowSkill(true)

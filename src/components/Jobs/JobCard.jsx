@@ -10,7 +10,7 @@ import { FaLocationDot } from 'react-icons/fa6';
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import axios from "axios";
-
+import useRole from "../Hooks/useRole"
 export const getPostedTimeAgo = (date) => {
     if (!date || isNaN(new Date(date).getTime())) {
         return "Invalid date";  // Return a fallback or default value
@@ -25,6 +25,7 @@ const JobCard = ({ job }) => {
     const { data } = useSession();
     const { _id, jobTitle, jobType, postedDate, salaryScale, applicantsNumber, compnayInforamtion, saveUsers } = job;
     const email = data?.user?.email
+    const { loggedInUser } = useRole();
 
     useEffect(() => {
         if (Array.isArray(saveUsers) && saveUsers.includes(email)) {
@@ -92,14 +93,25 @@ const JobCard = ({ job }) => {
                     </div>
                 </div>
 
-                <button disabled={isLoading} onClick={handleSave} className={`${isLoading && 'cursor-not-allowed'} text-[22px] cursor-pointer mb-4`}>
-                    {
-                        isLoading ? <AiOutlineLoading3Quarters className="animate-spin m-auto" /> :
-                            save ?
-                                <FaBookmark /> :
-                                <FaRegBookmark />
-                    }
-                </button>
+                <button
+  disabled={isLoading}
+  onClick={() => {
+    if (loggedInUser?.status === "blocked") {
+      toast.error("You are blocked by the authority. Please contact support for assistance.");
+    } else {
+      handleSave();
+    }
+  }}
+  className={`text-[22px] cursor-pointer mb-4 ${isLoading ? 'cursor-not-allowed' : ''}`}
+>
+  {isLoading ? (
+    <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+  ) : save ? (
+    <FaBookmark />
+  ) : (
+    <FaRegBookmark />
+  )}
+</button>
             </div>
 
             <div className="flex justify-betwee gap-2 items-center">
