@@ -11,17 +11,19 @@ import {
 } from "@headlessui/react";
 import {
   Bars3Icon,
-  BellIcon,
   XMarkIcon,
-  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import useRole from "../Hooks/useRole"
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { db } from "@/app/firebase/firebase.config";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import axios from "axios";
 
 const links = [
   {
@@ -46,7 +48,52 @@ const links = [
 const Navbar = () => {
   const pathName = usePathname();
   const session = useSession();
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { loggedInUser } = useRole();
+
+  useEffect(() => {
+    if (loggedInUser?._id) {
+      const notificationsRef = collection(db, "notifications");
+      const q = query(
+        notificationsRef,
+        where("userId", "==", loggedInUser?._id),
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const fetchedNotifications = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        // Sort the fetched notifications by `timestamp` in descending order
+        fetchedNotifications.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+
+        setNotifications(fetchedNotifications);
+        setUnreadCount(fetchedNotifications.filter((n) => !n.isRead).length);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [loggedInUser?._id]);
+
+
+  const markAllNotificationsAsRead = async () => {
+    if (unreadCount !== 0) {
+      try {
+        await axios.post('/api/notification/markAllRead', { userId: loggedInUser?._id });
+        // Update the local notifications state
+        setNotifications((notifications) =>
+          notifications.map(notification => ({
+            ...notification,
+            isRead: true
+          }))
+        );
+        setUnreadCount(0);
+      } catch (error) {
+        console.error("Error marking notifications as read:", error);
+      }
+    }
+  };
 
   if (pathName.includes("dashboard")) return;
 
@@ -56,7 +103,7 @@ const Navbar = () => {
         <div className="relative flex h-[70px] items-center justify-between">
           {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 md:p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="sr-only">Open main menu</span>
               <Bars3Icon
                 aria-hidden="true"
@@ -71,14 +118,14 @@ const Navbar = () => {
           {/* Logo for all screens */}
           <Link
             href="/"
-            className="ml-[60px] md:ml-0  flex flex-shrink-0 items-center"
+            className="ml-[50px] md:ml-0  flex flex-shrink-0 items-center"
           >
             <Image
               src={"https://i.ibb.co.com/Ph872yP/logoName.png"}
               alt="Logo"
               width={250}
               height={100}
-              className="w-[150px] md:w-[200px]" />
+              className="w-[140px] md:w-[200px]" />
           </Link>
 
           {/* Centered Navigation Links for larger screens */}
@@ -101,6 +148,49 @@ const Navbar = () => {
 
           {/* Right Section ( Profile ) */}
           <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            {/* Notifications dropdown */}
+            <Menu as="div" className="relative ml-3 mt-2">
+              {session?.status === "authenticated" &&
+                <>
+                  <div>
+                    <MenuButton onClick={markAllNotificationsAsRead} className="relative flex rounded-full bg-gray-800 text-sm">
+                      <span className="sr-only">Open user menu</span>
+                      <div className="md:mt-[5px] relative">
+                        <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
+                        {unreadCount > 0 && <p className="text-white bg-red-500 px-[6px] -top-2 absolute rounded-full text-[10px]">{unreadCount}</p>}
+                      </div>
+                    </MenuButton>
+                  </div>
+                  <MenuItems className="absolute text-sm bg-accent -right-[42px] md:right-0 z-50 mt-[20px] md:mt-[15px] w-[280px] md:w-[350px] h-[300px] overflow-y-auto origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <MenuItem>
+                      <div className="p-4">
+                        {
+                          notifications.length === 0 ? <div>
+                            <h1 className="text-xl text-black font-medium text-center mt-5">Notifications is empty</h1>
+                          </div> :
+                            notifications?.map((notification) => (
+                              <div
+                                key={notification.id}
+                                className={notification.isRead ? "text-gray-800" : "text-black"}
+                              >
+                                <div className="mb-3">
+                                  <div className="flex flex-col md:flex-row justify-between">
+                                    <Link href={notification.link} className="font-medium">{notification.title}</Link>
+                                    <p className="text-xs my-1 md:my-0 md:text-sm">{notification?.timestamp.toDate().toLocaleDateString()}</p>
+                                  </div>
+                                  <p className="text-pretty">
+                                    {notification.message}
+                                  </p>
+                                </div>
+                              </div>
+                            ))
+                        }
+                      </div>
+                    </MenuItem>
+                  </MenuItems>
+                </>
+              }
+            </Menu>
 
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3 mt-2">
@@ -117,7 +207,7 @@ const Navbar = () => {
                             ? loggedInUser?.userIMG
                             : "https://i.ibb.co/3BY9Fks/profile.png"
                         }
-                        className="rounded-full w-10 h-10 object-cover"
+                        className="rounded-full mb-1 md:mb-0 w-10 h-10 object-cover"
                         height={40}
                         width={40}
                       />
@@ -165,9 +255,9 @@ const Navbar = () => {
                           )}
 
                           {/* {loggedInUser?.role === "recruiter" && ( */}
-                            {/* <> */}
-                              {/* Divider */}
-                              {/* <div className="border-t border-gray-200"></div>
+                          {/* <> */}
+                          {/* Divider */}
+                          {/* <div className="border-t border-gray-200"></div>
                               <MenuItem>
                                 <a
                                   href="/profile/premiumMembership"
@@ -176,9 +266,9 @@ const Navbar = () => {
                                   Premium Membership
                                 </a>
                               </MenuItem> */}
-                            {/* </> */}
+                          {/* </> */}
                           {/* )} */}
-                          
+
                           {loggedInUser?.role === "seeker" && (
                             <>
                               {/* Divider */}
