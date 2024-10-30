@@ -9,12 +9,11 @@ export const GET = async (request) => {
 
   try {
     // Fetch user-specific data from multiple collections
-    const [applyedJobsCollection, seekerInfoCollection, jobsCollection] = await Promise.all([
+    const [applyedJobsCollection, seekerInfoCollection] = await Promise.all([
       db.collection("applyedJobs").find({ "applicantInfo.contactInformation.email": email }).toArray(),
-      db.collection("seekerInfo").findOne({ "contactInformation.email": email }),
-      db.collection("jobs").find({}).toArray()
+      db.collection("seekerInfo").findOne({ "contactInformation.email": email })
     ]);
-    console.log("applied jobs col: ",applyedJobsCollection)
+    // console.log("applied jobs col: ",applyedJobsCollection)
     // Logic for calculating profile completion (assuming fields weights)
     const profileFields = ['contactInformation', 'profileOverview', 'careerObjective', 'projects', 'skills', 'education', 'workExperience'];
     const completedFields = profileFields.filter(field => seekerInfoCollection && seekerInfoCollection[field]);
@@ -36,9 +35,11 @@ export const GET = async (request) => {
         const weight = weights[job.jobStatus] || 0;
         progress += weight;
       });
-      return progress > 0.75 ? 'growth' : progress < 0.5 ? 'decline' : 'neutral';
+      const progressPosition = progress > 0.75 ? 'growth' : progress < 0.5 ? 'decline' : 'neutral';
+      return {progress, progressPosition};
     };
 
+    console.log(calculateProgress())
     // Prepare response data
     return NextResponse.json({
       profileCompletion,

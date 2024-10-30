@@ -75,6 +75,7 @@ const RegisterRecruiter = () => {
         contactNumber,
         userIMG: data?.data?.display_url,
         websiteURL,
+        creationDate:new Date(),
         businessDescription,
         role: "recruiter",
       };
