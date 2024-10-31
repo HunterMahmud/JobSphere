@@ -4,7 +4,6 @@ import axios from "axios";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { useSession } from "next-auth/react";
 import Select from "react-select";
-import { BsArrowUpRight, BsArrowDownRight, BsDash } from "react-icons/bs";
 import { MdOutlineTrendingDown, MdOutlineTrendingUp, MdTrendingFlat   } from "react-icons/md";
 
 
@@ -17,32 +16,7 @@ export default function UserProgress() {
   const session = useSession();
 
   
-  const renderProgressIcon = (progress) => {
-    if (progress === 'Progressing') return <BsArrowUpRight className="text-green-500" />;
-    if (progress === 'Downfalling') return <BsArrowDownRight className="text-red-500" />;
-    return <BsDash className="text-yellow-500" />;
-  };
 
-  const progress = (progressData) => {
-    if (progressData.length >= 2) {    
-      // Calculate the difference of the last two
-      const difference = progressData[progressData.length - 1]?.points - progressData[progressData.length - 2]?.points;
-    
-      // Determine the result based on the difference
-      let result;
-      if (difference > 0) {
-          result = "Progressing";
-      } else if (difference < 0) {
-          result = "Downfalling";
-      } else {
-          result = "Not Progressing";
-      }
-    return result;
-      
-    }else {
-      return "No data available.";
-    }
-  }
 
   const options = [
     { value: "daily", label: "Daily" },
@@ -68,6 +42,39 @@ export default function UserProgress() {
     }
   }, [session?.status, progressView, applicationsView]);
 
+  const calculateProgress = (progressData) => {
+    if (progressData.length >= 2) {
+        const difference = progressData[progressData.length - 1].points - progressData[progressData.length - 2].points;
+        if (difference > 0) return "Progressing";
+        if (difference < 0) return "Downfalling";
+        return "Not Progressing";
+    } else {
+        return "No data available";
+    }
+};
+
+// Function to render progress icon and apply appropriate color
+const renderProgressIcon = (progress) => {
+    if (progress === "Progressing") return <MdOutlineTrendingUp className="text-green-400 text-6xl" />;
+    if (progress === "Downfalling") return <MdOutlineTrendingDown className="text-red-500 text-6xl" />;
+    return <MdTrendingFlat className="text-yellow-500 text-6xl" />;
+};
+
+console.log(userData?.progressData)
+const progressStatus = calculateProgress(userData?.progressData);
+
+// Determine card colors based on progress status
+const cardColor =
+    progressStatus === "Progressing"
+        ? "bg-gradient-to-r from-teal-900 to-teal-800"
+        : progressStatus === "Downfalling"
+        ? "bg-gradient-to-r from-red-900 to-red-800"
+        : "bg-gradient-to-r from-yellow-900 to-yellow-800";
+
+const buttonColor =
+    progressStatus === "Progressing" ? "bg-green-400 hover:bg-green-500" : progressStatus === "Downfalling" ? "bg-red-500 hover:bg-red-600" : "bg-yellow-500 hover:bg-yellow-600";
+
+
   if (loading) return <p className="text-center">Loading...</p>;
 
   return (
@@ -79,22 +86,23 @@ export default function UserProgress() {
           {userData?.profileCompletion}%
         </p>
       </div>
-      {/* motivational speech */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-teal-900 to-teal-800 rounded-lg p-8  w-full text-white shadow-lg">
+      {/* progress track */}
+      <div className={`flex items-center justify-between ${cardColor} rounded-lg p-8 w-full text-white shadow-lg`}>
             <div className="flex-1 pr-6">
                 <h2 className="text-2xl font-bold">
-                    You're doing <span className="text-green-400">Excellent!</span> Don't lose this track!
+                    {progressStatus === "Progressing" && "You're doing Excellent! Keep it up!"}
+                    {progressStatus === "Downfalling" && "Things aren't going well, let's improve!"}
+                    {progressStatus === "Not Progressing" && "You're stable, but let's aim higher!"}
                 </h2>
                 <p className="mt-2 text-sm">
-                    If you're facing any difficulties contact our student care team!
+                    If you're facing any difficulties contact our support team!
                 </p>
-                <button className="mt-4 bg-green-400 text-white px-6 py-2 rounded-md font-medium hover:bg-green-500 transition duration-300">
+                <button className={`mt-4 ${buttonColor} text-white px-6 py-2 rounded-md font-medium transition duration-300`}>
                     Continue ➔
                 </button>
             </div>
-            <div className="w-40">
-                {/* Replace with actual image URL */}
-                <img src="path/to/your-image.png" alt="Motivational Illustration" className="rounded-lg" />
+            <div className="w-16 h-16 flex items-center justify-center">
+                {renderProgressIcon(progressStatus)}
             </div>
         </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
