@@ -1,3 +1,101 @@
+"use client";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { useSession } from "next-auth/react";
+import Select from "react-select";
+
+export default function UserProgress() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [progressView, setProgressView] = useState("daily"); // Daily or weekly view for progress chart
+  const [applicationsView, setApplicationsView] = useState("daily"); // Daily or weekly view for applications chart
+  const session = useSession();
+
+  const options = [
+    { value: "daily", label: "Daily" },
+    { value: "weekly", label: "Weekly" },
+  ];
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/user-progress?email=${session?.data?.user?.email}&progressView=${progressView}&applicationsView=${applicationsView}`
+      );
+      setUserData(response?.data);
+    } catch (error) {
+      console.error("Failed to load user data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      fetchUserData();
+    }
+  }, [session?.status, progressView, applicationsView]);
+
+  if (loading) return <p className="text-center">Loading...</p>;
+
+  return (
+    <div className="p-6 space-y-6">
+      {/* Profile Completion Card */}
+      <div className="bg-white shadow rounded-lg p-4 text-center">
+        <h3 className="text-lg font-semibold">Profile Completion</h3>
+        <p className={`text-4xl font-bold ${userData?.profileCompletion > 75 ? "text-green-500" : "text-red-500"}`}>
+          {userData?.profileCompletion}%
+        </p>
+      </div>
+
+      {/* Progress Over Time */}
+      <div className="bg-white shadow rounded-lg p-6">
+        <div className="flex justify-between mb-4">
+          <h3 className="text-lg font-semibold">Progress Over Time</h3>
+          <Select
+            options={options}
+            value={options.find(option => option.value === progressView)}
+            onChange={(selected) => setProgressView(selected.value)}
+            placeholder="Select View"
+          />
+        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart data={userData?.progressData}>
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Area type="monotone" dataKey="points" stroke="#4A90E2" fill="#4A90E2" />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Applications Over Time */}
+      <div className="bg-white shadow rounded-lg p-6">
+        <div className="flex justify-between mb-4">
+          <h3 className="text-lg font-semibold">Applications Over Time</h3>
+          <Select
+            options={options}
+            value={options.find(option => option.value === applicationsView)}
+            onChange={(selected) => setApplicationsView(selected.value)}
+            placeholder="Select View"
+          />
+        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={userData?.applicationsData}>
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="applications" fill="#FF7043" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+/*
+
+
+
 "use client"
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -56,8 +154,10 @@ export default function UserProgress() {
         <h3 className="text-lg font-semibold">Progress</h3>
         <div className="text-2xl">{renderProgressIcon(userData?.progressTrend)}</div>
       </div>
-
+*/
       {/* Progress Chart */}
+
+      /*
       <div className="bg-white shadow rounded-lg p-6">
         <h3 className="text-lg font-semibold mb-4">Progress Over Time</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -69,8 +169,10 @@ export default function UserProgress() {
           </BarChart>
         </ResponsiveContainer>
       </div>
-
+*/
       {/* Applications Over Time */}
+
+      /*
       <div className="bg-white shadow rounded-lg p-6">
         <h3 className="text-lg font-semibold mb-4">Applications Over Time</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -86,7 +188,7 @@ export default function UserProgress() {
   );
 }
 
-
+*/
 
 
 
