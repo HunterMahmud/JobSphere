@@ -36,9 +36,9 @@ const AboutUsPage = () => {
             {/* Our team */}
             <OurTeam />
 
-            <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
-                <h2 className="text-4xl font-bold text-center text-gray-800">Our Impact</h2>
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+            <div className="md:mt-16 mt-8 bg-white p-10 rounded-lg shadow-md">
+                <h2 className="text-4xl font-bold text-center text-gray-800">Our Impacts</h2>
+                <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
                     <div>
                         <h3 className="text-4xl font-semibold text-primary">10,000+</h3>
                         <p className="text-gray-600 mt-2">Job Listings</p>

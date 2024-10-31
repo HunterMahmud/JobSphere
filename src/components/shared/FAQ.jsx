@@ -4,7 +4,7 @@ import Link from "next/link";
 const FAQ = () => {
   return (
     <div data-aos="fade-right" data-aos-duration="2000" className="mx-1 md:mx-4 my-6 md:my-10">
-      <section className="border border-accent rounded-lg dark:text-gray-800">
+      <section className="border md:mt-16 mt-8 border-accent rounded-lg dark:text-gray-800">
         <div className="container flex flex-col justify-center px-4 py-8 mx-auto md:p-8">
           <h2 className="text-2xl font-semibold sm:text-4xl text-center">
             Frequently Asked Questions
