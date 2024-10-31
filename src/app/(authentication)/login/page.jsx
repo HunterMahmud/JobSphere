@@ -111,7 +111,7 @@ const LoginPage = () => {
 
                     <div className='flex items-center mt-4'>
                     <span className='text-gray-600 text-sm'>Don&apos;t have an account?</span>
-                        <Link href="/register-user" className='text-primary ml-2 hover:underline'>
+                        <Link href="/register-user" className='text-primary font-semibold ml-2 hover:underline'>
                             Register
                         </Link>
                     </div>
