@@ -3,20 +3,17 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { BsArrowUpRight, BsArrowDownRight, BsDash } from "react-icons/bs";
-import Select from "react-select";
 import { useSession } from 'next-auth/react';
 
 export default function UserProgress() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const session = useSession();
-  // console.log(session)
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/user-progress?email=${session?.data?.user?.email}`);
-        console.log(response.data);
         setUserData(response?.data);
       } catch (error) {
         console.error("Failed to load user data", error);
@@ -24,7 +21,7 @@ export default function UserProgress() {
         setLoading(false);
       }
     };
-    if(session?.status === 'authenticated'){
+    if (session?.status === 'authenticated') {
       fetchUserData();
     }
   }, [session?.status]);
@@ -39,17 +36,15 @@ export default function UserProgress() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Profile Completion Card */}
       <div className="bg-white shadow rounded-lg p-4 text-center">
         <h3 className="text-lg font-semibold">Profile Completion</h3>
-        <p className={`text-4xl font-bold ${userData.profileCompletion > 75 ? "text-green-500" : "text-red-500"}`}>
-          {userData.profileCompletion}%
+        <p className={`text-4xl font-bold ${userData?.profileCompletion > 75 ? "text-green-500" : "text-red-500"}`}>
+          {userData?.profileCompletion}%
         </p>
       </div>
 
-      {/* Job Statistics Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {Object.entries(userData.jobStatusCounts).map(([status, count]) => (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+        {Object.entries(userData?.jobStatusCounts).map(([status, count]) => (
           <div key={status} className="bg-white shadow rounded-lg p-4 text-center">
             <h3 className="text-lg font-semibold">{status}</h3>
             <p className="text-2xl font-bold">{count}</p>
@@ -57,17 +52,16 @@ export default function UserProgress() {
         ))}
       </div>
 
-      {/* Progress Card */}
       <div className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
         <h3 className="text-lg font-semibold">Progress</h3>
-        <div className="text-2xl">{renderProgressIcon(userData.progressTrend)}</div>
+        <div className="text-2xl">{renderProgressIcon(userData?.progressTrend)}</div>
       </div>
 
       {/* Progress Chart */}
       <div className="bg-white shadow rounded-lg p-6">
         <h3 className="text-lg font-semibold mb-4">Progress Over Time</h3>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={userData.progressData}>
+          <BarChart data={userData?.progressData}>
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
@@ -80,7 +74,7 @@ export default function UserProgress() {
       <div className="bg-white shadow rounded-lg p-6">
         <h3 className="text-lg font-semibold mb-4">Applications Over Time</h3>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={userData.applicationsData}>
+          <BarChart data={userData?.applicationsData}>
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
@@ -91,8 +85,6 @@ export default function UserProgress() {
     </div>
   );
 }
-
-
 
 
 
