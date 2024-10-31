@@ -5,6 +5,7 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 import { useSession } from "next-auth/react";
 import Select from "react-select";
 import { BsArrowUpRight, BsArrowDownRight, BsDash } from "react-icons/bs";
+import { MdOutlineTrendingDown, MdOutlineTrendingUp, MdTrendingFlat   } from "react-icons/md";
 
 
 
@@ -17,10 +18,31 @@ export default function UserProgress() {
 
   
   const renderProgressIcon = (progress) => {
-    if (progress === 'growth') return <BsArrowUpRight className="text-green-500" />;
-    if (progress === 'decline') return <BsArrowDownRight className="text-red-500" />;
+    if (progress === 'Progressing') return <BsArrowUpRight className="text-green-500" />;
+    if (progress === 'Downfalling') return <BsArrowDownRight className="text-red-500" />;
     return <BsDash className="text-yellow-500" />;
   };
+
+  const progress = (progressData) => {
+    if (progressData.length >= 2) {    
+      // Calculate the difference of the last two
+      const difference = progressData[progressData.length - 1]?.points - progressData[progressData.length - 2]?.points;
+    
+      // Determine the result based on the difference
+      let result;
+      if (difference > 0) {
+          result = "Progressing";
+      } else if (difference < 0) {
+          result = "Downfalling";
+      } else {
+          result = "Not Progressing";
+      }
+    return result;
+      
+    }else {
+      return "No data available.";
+    }
+  }
 
   const options = [
     { value: "daily", label: "Daily" },
@@ -57,6 +79,24 @@ export default function UserProgress() {
           {userData?.profileCompletion}%
         </p>
       </div>
+      {/* motivational speech */}
+      <div className="flex items-center justify-between bg-gradient-to-r from-teal-900 to-teal-800 rounded-lg p-8  w-full text-white shadow-lg">
+            <div className="flex-1 pr-6">
+                <h2 className="text-2xl font-bold">
+                    You're doing <span className="text-green-400">Excellent!</span> Don't lose this track!
+                </h2>
+                <p className="mt-2 text-sm">
+                    If you're facing any difficulties contact our student care team!
+                </p>
+                <button className="mt-4 bg-green-400 text-white px-6 py-2 rounded-md font-medium hover:bg-green-500 transition duration-300">
+                    Continue ➔
+                </button>
+            </div>
+            <div className="w-40">
+                {/* Replace with actual image URL */}
+                <img src="path/to/your-image.png" alt="Motivational Illustration" className="rounded-lg" />
+            </div>
+        </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
         {Object.entries(userData?.jobStatusCounts).map(([status, count]) => (
           <div key={status} className="bg-white shadow rounded-lg p-4 text-center">
@@ -66,7 +106,7 @@ export default function UserProgress() {
         ))}
         <div className="bg-white shadow rounded-lg p-4 text-center">
             <h3 className="text-lg font-semibold">Total Points</h3>
-            <p className="text-2xl font-bold">{10}</p>
+            <p className="text-2xl font-bold">{(userData?.totalPoints * 100 ).toFixed(1)}</p>
           </div>
       </div>
 
@@ -74,7 +114,7 @@ export default function UserProgress() {
         <h3 className="text-lg font-semibold">Progress</h3>
         <div className="text-2xl">{renderProgressIcon(userData?.progressTrend)}</div>
       </div>
-
+     
       {/* Progress Over Time */}
       <div className="bg-white shadow rounded-lg p-6">
         <div className="flex justify-between mb-4">
