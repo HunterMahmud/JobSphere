@@ -5,7 +5,7 @@ const OurTeam = () => {
     return (
         <div>
             <div className="md:mt-16 mt-8 pb-4 bg-white md:p-10 rounded-lg shadow-md">
-                <h2 className="text-4xl md:mb-12 mb-6 pb-4 font-bold text-center text-gray-800">Our Team</h2>
+                <h2 className="lg:text-4xl md:text-3xl text-2xl md:mb-12 mb-6 pb-4 font-bold text-center text-gray-800">Our Team</h2>
                 <div className=" lg:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-auto md:justify-center md:items-center">
                     
                     <div className="text-center">
@@ -15,7 +15,7 @@ const OurTeam = () => {
                             height={400}
                             alt="Tanvir Ahamed"
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
-                        <h3 className="text-2xl font-semibold">Tanvir Ahamed</h3>
+                        <h3 className="lg:text-3xl md:text-2xl text-xl font-semibold">Tanvir Ahamed</h3>
                         <p className="text-gray-600">Design & Analysis</p>
                         <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
@@ -27,7 +27,7 @@ const OurTeam = () => {
                             height={400}
                             alt="Hasan Al Mahmud"
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
-                        <h3 className="text-2xl font-semibold">Hasan Al Mahmud</h3>
+                        <h3 className="lg:text-3xl md:text-2xl text-xl font-semibold">Hasan Al Mahmud</h3>
                         <p className="text-gray-600">Backend Developer</p>
                         <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
@@ -39,7 +39,7 @@ const OurTeam = () => {
                             width={600}
                             height={400}
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
-                        <h3 className="text-2xl font-semibold">Rafizul Islam</h3>
+                        <h3 className="lg:text-3xl md:text-2xl text-xl font-semibold">Rafizul Islam</h3>
                         <p className="text-gray-600">Frontend Developer</p>
                         <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
@@ -51,7 +51,7 @@ const OurTeam = () => {
                             width={600}
                             height={400}
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
-                        <h3 className="text-2xl font-semibold">Md Shamim</h3>
+                        <h3 className="lg:text-3xl md:text-2xl text-xl font-semibold">Md Shamim</h3>
                         <p className="text-gray-600">Backend Developer</p>
                         <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
@@ -64,7 +64,7 @@ const OurTeam = () => {
                             height={400}
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
 
-                        <h3 className="text-2xl font-semibold">MD Sahidul Islam</h3>
+                        <h3 className="lg:text-3xl md:text-2xl text-xl font-semibold">MD Sahidul Islam</h3>
                         <p className="text-gray-600">Frontend Developer</p>
                         <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>

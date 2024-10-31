@@ -71,7 +71,7 @@ console.log(seasons);
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:mt-16 mt-8">
-      <h2 className="text-3xl font-bold text-center mb-4">
+      <h2 className="lg:text-4xl md:text-3xl text-2xl font-bold text-gray-800 text-center mb-4">
         Submit Your Review
       </h2>
 
