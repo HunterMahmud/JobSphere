@@ -5,6 +5,7 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 import { useSession } from "next-auth/react";
 import Select from "react-select";
 import { MdOutlineTrendingDown, MdOutlineTrendingUp, MdTrendingFlat   } from "react-icons/md";
+import  Link  from 'next/link';
 
 
 
@@ -61,7 +62,7 @@ export default function UserProgress() {
 const renderProgressIcon = (progress) => {
     if (progress === "Progressing") return <MdOutlineTrendingUp className="text-green-400 text-6xl" />;
     if (progress === "Downfalling") return <MdOutlineTrendingDown className="text-red-500 text-6xl" />;
-    return <MdTrendingFlat className="text-yellow-500 text-6xl" />;
+    return <MdTrendingFlat className="text-orange-500 text-6xl" />;
 };
 
 // console.log(userData?.progressData);
@@ -82,9 +83,9 @@ const buttonColor =
   return (
     <div className="custom-container space-y-6">
       {/* Profile Completion Card */}
-      <div className="bg-white shadow rounded-lg p-4 text-center">
-        <h3 className="text-lg font-semibold">Profile Completion</h3>
-        <p className={`text-4xl font-bold ${userData?.profileCompletion > 75 ? "text-green-500" : "text-red-500"}`}>
+      <div className={` ${userData?.profileCompletion > 75 ? "bg-gradient-to-r from-[#00bf8f]  to-[#005741]" : "bg-gradient-to-r from-orange-900 to-orange-800"}  shadow rounded-lg p-4 text-center`}>
+        <h3 className="text-lg font-semibold text-white">Profile Completion</h3>
+        <p className={`text-4xl font-bold text-white`}>
           {userData?.profileCompletion}%
         </p>
       </div>
@@ -98,17 +99,23 @@ const buttonColor =
                     {progressStatus === "Not Progressing" && "You're stable, but let's aim higher!"}
                 </h2>
                 <p className="mt-2 text-sm">
-                    If you're facing any difficulties contact our support team!
+                    Keep engaged and do hard work for your goal. To apply jobs.
                 </p>
-                <button className={`mt-4 ${buttonColor} text-white px-6 py-2 rounded-md font-medium transition duration-300`}>
+                <div className='mt-4'>
+                <Link href={`/jobs`} className={`mt-4 ${buttonColor} text-white px-6 py-2 rounded-md font-medium transition duration-300`}>
                     Continue ➔
-                </button>
+                </Link>
+                </div>
             </div>
             <div className="w-16 h-16 flex items-center justify-center">
                 {renderProgressIcon(progressStatus)}
             </div>
         </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+      <div className="bg-white shadow rounded-lg p-4 text-center">
+            <h3 className="text-lg font-semibold">Saved Jobs</h3>
+            <p className="text-2xl font-bold">{userData?.savedJobsCount }</p>
+          </div>
         {Object.entries(userData?.jobStatusCounts).map(([status, count]) => (
           <div key={status} className="bg-white shadow rounded-lg p-4 text-center">
             <h3 className="text-lg font-semibold">{status}</h3>
@@ -120,16 +127,12 @@ const buttonColor =
             <p className="text-2xl font-bold">{(userData?.totalPoints * 10 ).toFixed(1)}</p>
           </div>
       </div>
-{/* 
-      <div className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Progress</h3>
-        <div className="text-2xl">{renderProgressIcon(userData?.progressTrend)}</div>
-      </div> */}
+
      
       {/* Progress Over Time */}
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-white shadow rounded-lg p-6 pl-0">
         <div className="flex justify-between mb-4">
-          <h3 className="text-lg font-semibold">Progress Over Time</h3>
+          <h3 className="text-lg font-semibold pl-2 md:pl-6">Progress Over Time</h3>
           <Select
             options={options}
             value={options.find(option => option.value === progressView)}
@@ -142,15 +145,15 @@ const buttonColor =
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
-            <Area type="monotone" dataKey="points" stroke="#4A90E2" fill="#4A90E2" />
+            <Area type="monotone" dataKey="points" stroke="#4A90E2" fill="#004585" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
 
       {/* Applications Over Time */}
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-white shadow rounded-lg p-6 pl-0">
         <div className="flex justify-between mb-4">
-          <h3 className="text-lg font-semibold">Applications Over Time</h3>
+          <h3 className="text-lg font-semibold pl-2 md:pl-6">Applications Over Time</h3>
           <Select
             options={options}
             value={options.find(option => option.value === applicationsView)}
