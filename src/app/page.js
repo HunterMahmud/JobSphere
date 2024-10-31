@@ -3,7 +3,7 @@
 export const dynamic = "force-dynamic";
 
 // Metadata for the homepage
-export const metadata = {
+export const Metadata = {
   title: 'Job Sphere - Streamline Your Job Search & Hiring Process',
   description: 'Job Sphere is a cutting-edge hiring and job-seeking platform designed to connect job seekers with top companies. Explore job opportunities, connect with recruiters, and access valuable resources for career growth.',
   keywords: 'Job Sphere, hiring platform, job search, job seekers, recruiters, skill assessments, career growth, resume builder, job alerts, job notifications',
