@@ -4,6 +4,9 @@ import axios from "axios";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { useSession } from "next-auth/react";
 import Select from "react-select";
+import { BsArrowUpRight, BsArrowDownRight, BsDash } from "react-icons/bs";
+
+
 
 export default function UserProgress() {
   const [userData, setUserData] = useState(null);
@@ -11,6 +14,13 @@ export default function UserProgress() {
   const [progressView, setProgressView] = useState("daily"); // Daily or weekly view for progress chart
   const [applicationsView, setApplicationsView] = useState("daily"); // Daily or weekly view for applications chart
   const session = useSession();
+
+  
+  const renderProgressIcon = (progress) => {
+    if (progress === 'growth') return <BsArrowUpRight className="text-green-500" />;
+    if (progress === 'decline') return <BsArrowDownRight className="text-red-500" />;
+    return <BsDash className="text-yellow-500" />;
+  };
 
   const options = [
     { value: "daily", label: "Daily" },
@@ -46,6 +56,23 @@ export default function UserProgress() {
         <p className={`text-4xl font-bold ${userData?.profileCompletion > 75 ? "text-green-500" : "text-red-500"}`}>
           {userData?.profileCompletion}%
         </p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+        {Object.entries(userData?.jobStatusCounts).map(([status, count]) => (
+          <div key={status} className="bg-white shadow rounded-lg p-4 text-center">
+            <h3 className="text-lg font-semibold">{status}</h3>
+            <p className="text-2xl font-bold">{count}</p>
+          </div>
+        ))}
+        <div className="bg-white shadow rounded-lg p-4 text-center">
+            <h3 className="text-lg font-semibold">Total Points</h3>
+            <p className="text-2xl font-bold">{10}</p>
+          </div>
+      </div>
+
+      <div className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
+        <h3 className="text-lg font-semibold">Progress</h3>
+        <div className="text-2xl">{renderProgressIcon(userData?.progressTrend)}</div>
       </div>
 
       {/* Progress Over Time */}
