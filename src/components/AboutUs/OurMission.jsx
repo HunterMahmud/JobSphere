@@ -4,7 +4,7 @@ import React from 'react';
 const OurMission = () => {
     return (
         <div>
-            <div className="flex flex-col lg:flex-row px-6 lg:pb-16 py-8 bg-white shadow-md rounded-lg">
+            <div className="flex flex-col lg:flex-row md:px-6  py-8 bg-white shadow-md rounded-lg">
                 {/* Image Section */}
                 <div className="lg:w-1/2 relative">
                     {/* First Image */}
@@ -13,7 +13,7 @@ const OurMission = () => {
                         alt="Our Mission"
                         width={600}
                         height={400}
-                        className="w-3/4 rounded-lg shadow-xl"
+                        className="md:w-3/4 w-full rounded-lg shadow-xl"
                     />
                     {/* Second Image */}
                     <Image
@@ -21,12 +21,12 @@ const OurMission = () => {
                         alt="Our Vision"
                         width={600}
                         height={400}
-                        className="w-1/2 absolute right-5 lg:top-1/4 top-1/3 rounded-lg border-8 border-white shadow-xl"
+                        className="w-1/2 absolute md:block hidden right-5 lg:top-1/4 top-1/3 rounded-lg border-8 border-white shadow-xl"
                     />
                 </div>
 
                 {/* Text Section */}
-                <div className="lg:w-1/2 px-4 lg:pb-32 mt-12 md:mt-28 lg:mt-0">
+                <div className="lg:w-1/2 px-4 mt-6 md:mt-48 lg:mt-0">
                     <h2 className="lg:text-5xl text-2xl text-black lg:text-left font-bold pt-5">
                         Our Mission <span className="text-primary">and Vision</span>
                     </h2>

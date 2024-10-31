@@ -10,7 +10,7 @@ import Reviews from '@/components/AboutUs/Reviews';
 const AboutUsPage = () => {
     return (
         <div className="custom-container">
-                <h1 className='text-4xl my-6 underline font-bold text-center text-gray-800'>About Us</h1>
+                <h1 className='text-4xl my-8  font-bold text-center text-gray-800'>About Us</h1>
             <OurMission/>
 
             {/* Core Values Section */}
