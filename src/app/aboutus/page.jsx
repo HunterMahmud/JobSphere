@@ -14,18 +14,18 @@ const AboutUsPage = () => {
             <OurMission/>
 
             {/* Core Values Section */}
-            <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
+            <div className="md:mt-12 md:mb-8 bg-white md:p-10 mt-8 rounded-lg shadow-md">
                 <h2 className="text-4xl font-bold text-center text-gray-800">Core Values</h2>
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <div className="p-6 bg-accent rounded-lg text-center shadow-sm hover:shadow-lg transition-colors">
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="md:p-6 py-4 bg-accent rounded-lg text-center shadow-sm hover:shadow-lg transition-colors">
                         <h3 className="text-2xl font-semibold text-primary">Innovation</h3>
                         <p className="mt-4 text-gray-700">We constantly innovate to provide the best tools and features that enhance the hiring process, ensuring seamless communication and efficient workflows.</p>
                     </div>
-                    <div className="p-6 bg-accent rounded-lg text-center shadow-sm hover:shadow-lg transition-shadow">
+                    <div className="md:p-6 py-4 bg-accent rounded-lg text-center shadow-sm hover:shadow-lg transition-shadow">
                         <h3 className="text-2xl font-semibold text-primary">Trust</h3>
                         <p className="mt-4 text-gray-700">Trust is the foundation of our platform. We are committed to data security, transparency, and delivering on our promises.</p>
                     </div>
-                    <div className="p-6 bg-accent rounded-lg text-center shadow-sm hover:shadow-lg transition-shadow">
+                    <div className="md:p-6 py-4 bg-accent rounded-lg text-center shadow-sm hover:shadow-lg transition-shadow">
                         <h3 className="text-2xl font-semibold text-primary">User Experience</h3>
                         <p className="mt-4 text-gray-700">We prioritize creating an intuitive, easy-to-use platform that works for businesses and candidates alike.</p>
                     </div>
