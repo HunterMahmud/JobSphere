@@ -27,7 +27,7 @@ const OurMission = () => {
 
                 {/* Text Section */}
                 <div className="lg:w-1/2 px-4 mt-6 md:mt-48 lg:mt-0">
-                    <h2 className="lg:text-5xl text-2xl text-black lg:text-left font-bold pt-5">
+                    <h2 className="text-4xl text-black lg:text-left font-bold pt-5">
                         Our Mission <span className="text-primary">and Vision</span>
                     </h2>
                     <p className="py-6 text-lg text-gray-700 leading-relaxed">
