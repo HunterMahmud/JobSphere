@@ -39,20 +39,22 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex flex-col items-center md:flex-row md:p-10 shadow-md rounded-lg">
-      <div className='md:w-1/2 rounded-lg'>
+    <div className="max-w-7xl mx-auto px-4  md:mt-16 mt-8 md:mb-12 mb-6">
+      <h2 className="text-3xl font-bold text-center mb-4 p-0">
+        Contact With Us
+      </h2>
+      <div className="grid md:grid-cols-2 gap-8 md:py-8">
+      <div className='hidden md:flex justify-center items-center'>
         <Image
           src="/images/img10.jpg" // Ensure the image exists at this path
           alt="Team Member 1"
-          width={600} 
+          width={400} 
           height={400} 
-          className="md:w-10/12 mb-4 shadow-lg rounded-lg"
+          className="rounded-lg w-full h-full object-cover"
         />
       </div>
       <div>
-        <div className="flex flex-col items-center justify-center border border-secondary shadow-md rounded-xl p-6">
-          <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-          <p className="text-lg text-gray-600 mb-8">We had love to hear from you! Please fill out the form below.</p>
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-lg">
           <form 
             onSubmit={handleSubmit}  // Adding submit handler
             className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-lg w-full"
@@ -114,6 +116,7 @@ const ContactUs = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -57,7 +57,7 @@ const AboutUsPage = () => {
             <FAQ></FAQ>
             <Reviews/>
 
-            <div className="mt-16 bg-white p-10 rounded-lg shadow-md">
+            <div className="">
                 <ContactUs />
             </div>
         </div>
