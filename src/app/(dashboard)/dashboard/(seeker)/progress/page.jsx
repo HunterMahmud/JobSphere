@@ -117,14 +117,14 @@ const buttonColor =
         ))}
         <div className="bg-white shadow rounded-lg p-4 text-center">
             <h3 className="text-lg font-semibold">Total Points</h3>
-            <p className="text-2xl font-bold">{(userData?.totalPoints * 100 ).toFixed(1)}</p>
+            <p className="text-2xl font-bold">{(userData?.totalPoints * 10 ).toFixed(1)}</p>
           </div>
       </div>
-
+{/* 
       <div className="bg-white shadow rounded-lg p-4 flex justify-between items-center">
         <h3 className="text-lg font-semibold">Progress</h3>
         <div className="text-2xl">{renderProgressIcon(userData?.progressTrend)}</div>
-      </div>
+      </div> */}
      
       {/* Progress Over Time */}
       <div className="bg-white shadow rounded-lg p-6">
@@ -163,7 +163,7 @@ const buttonColor =
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="applications" fill="#FF7043" />
+            <Bar dataKey="applications" fill="#2557a7" />
           </BarChart>
         </ResponsiveContainer>
       </div>
