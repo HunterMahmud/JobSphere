@@ -14,7 +14,7 @@ const AboutUsPage = () => {
             <OurMission/>
 
             {/* Core Values Section */}
-            <div className="md:mt-12 md:mb-8 bg-white md:p-10 mt-8 rounded-lg shadow-md">
+            <div className="md:mt-12 xl:mt-48 md:mb-8 bg-white md:p-10 mt-8 rounded-lg shadow-md">
                 <h2 className="text-4xl font-bold text-center text-gray-800">Core Values</h2>
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="md:p-6 py-4 bg-accent rounded-lg text-center shadow-sm hover:shadow-lg transition-colors">

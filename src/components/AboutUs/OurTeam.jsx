@@ -4,8 +4,8 @@ import React from 'react';
 const OurTeam = () => {
     return (
         <div>
-            <div className="mt-16 bg-white md:p-10 rounded-lg shadow-md">
-                <h2 className="text-4xl pb-4 font-bold text-center text-gray-800">Our Team</h2>
+            <div className="md:mt-16 mt-8 pb-4 bg-white md:p-10 rounded-lg shadow-md">
+                <h2 className="text-4xl md:mb-12 mb-6 pb-4 font-bold text-center text-gray-800">Our Team</h2>
                 <div className=" lg:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-auto md:justify-center md:items-center">
                     
                     <div className="text-center">
@@ -17,7 +17,7 @@ const OurTeam = () => {
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
                         <h3 className="text-2xl font-semibold">Tanvir Ahamed</h3>
                         <p className="text-gray-600">Design & Analysis</p>
-                        <a href="https://linkedin.com" className="text-primary mt-2 block">LinkedIn</a>
+                        <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
 
                     <div className="text-center">
@@ -29,7 +29,7 @@ const OurTeam = () => {
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
                         <h3 className="text-2xl font-semibold">Hasan Al Mahmud</h3>
                         <p className="text-gray-600">Backend Developer</p>
-                        <a href="https://linkedin.com" className="text-primary mt-2 block">LinkedIn</a>
+                        <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
 
                     <div className="text-center">
@@ -41,7 +41,7 @@ const OurTeam = () => {
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
                         <h3 className="text-2xl font-semibold">Rafizul Islam</h3>
                         <p className="text-gray-600">Frontend Developer</p>
-                        <a href="https://linkedin.com" className="text-primary mt-2 block">LinkedIn</a>
+                        <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
 
                     <div className="text-center lg:col-span-2 lg:col-start-1">
@@ -53,7 +53,7 @@ const OurTeam = () => {
                             className="md:w-32 w-28 h-32 rounded-full mx-auto mb-4 shadow-lg" />
                         <h3 className="text-2xl font-semibold">Md Shamim</h3>
                         <p className="text-gray-600">Backend Developer</p>
-                        <a href="https://linkedin.com" className="text-primary mt-2 block">LinkedIn</a>
+                        <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
 
                     <div className="text-center lg:relative lg:right-2/4">
@@ -66,7 +66,7 @@ const OurTeam = () => {
 
                         <h3 className="text-2xl font-semibold">MD Sahidul Islam</h3>
                         <p className="text-gray-600">Frontend Developer</p>
-                        <a href="https://linkedin.com" className="text-primary mt-2 block">LinkedIn</a>
+                        <a href="https://linkedin.com" className="text-primary  block">LinkedIn</a>
                     </div>
                 </div>
 
