@@ -52,9 +52,6 @@ const GetPremium = () => {
                     <div className='space-y-3'>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>10 Jobs Post in 1 Month</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Unlimited Blogs in 1 Month</p>
-                        <p className='text-lg flex items-center gap-2'><span><FcOk /></span>50 Interview in 1 Month</p>
-                        <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Job Posts for 1 Month</p>
-                        <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Companies for 1 Month</p>
                         <h2 className='text-xl font-semibold text-center'>Price: 2,000 Taka</h2>
                     </div>
                     <div>
@@ -73,9 +70,6 @@ const GetPremium = () => {
                     <div className='space-y-3'>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Unlimited Jobs Post in 1 Year</p>
                         <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Unlimited Blogs in 1 Year</p>
-                        <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Unlimited Interview in 1 Year</p>
-                        <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Job Posts for 1 Year</p>
-                        <p className='text-lg flex items-center gap-2'><span><FcOk /></span>Priority Listing for Companies for 1 Year</p>
                         <h2 className='text-xl font-semibold text-center'>Price: 20,000 Taka</h2>
                     </div>
                     <button
