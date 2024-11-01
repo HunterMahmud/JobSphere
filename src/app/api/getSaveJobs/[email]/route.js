@@ -50,3 +50,6 @@ export const GET = async (request, { params }) => {
     return NextResponse.json({ message: "No Data Found", error });
   }
 };
+
+
+export const dynamic = 'force-dynamic';

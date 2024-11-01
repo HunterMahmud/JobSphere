@@ -59,3 +59,7 @@ export const GET = async (request) => {
     return NextResponse.json({ message: "Error fetching job listings", error });
   }
 };
+
+
+
+export const dynamic = 'force-dynamic';
