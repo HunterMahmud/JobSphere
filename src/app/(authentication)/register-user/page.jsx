@@ -71,6 +71,7 @@ const RegisterUser = () => {
           mobileNumber,
           userIMG: data?.data?.display_url,
           password,
+          creationDate:new Date(),
           role: "seeker",
         } || {};
 

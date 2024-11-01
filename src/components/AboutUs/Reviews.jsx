@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-
+import useRole from "../Hooks/useRole"
 const Reviews = () => {
   const {
     register,
@@ -21,11 +21,17 @@ const Reviews = () => {
   const seasons =useSession()
   const router = useRouter();
    const User =seasons?.data?.user
+   const { loggedInUser } = useRole();
+
   
 console.log(seasons);
 
   // Handle form submission and save to database
   const onSubmit = async (data) => {
+    if (loggedInUser?.status === "blocked") {
+      toast.error("You are blocked by the authority. Please contact support for assistance.");
+      return;
+    }
     setLoading(true);
     if (!User) {
       Swal.fire({
