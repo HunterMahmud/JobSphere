@@ -16,7 +16,11 @@ export const GET = async (request) => {
   const skip = (page - 1) * limit;
 
   try {
-    const query = {};
+    // const query = {};
+
+    const query = {
+      status: { $ne: "blocked" }, // Exclude jobs with status "blocked"
+    };
 
     // Add job title filter if provided
     if (search) {
@@ -138,5 +142,4 @@ export const GET = async (request) => {
   }
 };
 
-
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
