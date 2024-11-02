@@ -7,13 +7,9 @@ import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
 import { useSession } from "next-auth/react";
-// import TermsConditions from "@/components/termsAndConditions/TermsConditions";
-// import Terms from "@/app/termsCondition/page";
-// import Terms from "../termsCondition/page";
-// import TermsConditions from "@/components/Modal/ModalOfTerms";
-// import ModalOfTerms from '../../components/Modal/ModalOfTerms';
 import ModalOfTerms from "../../../components/Modal/ModalOfTerms";
 import ModalOfSecurity from "../../../components/Modal/ModalOfSecurity";
 
@@ -403,7 +399,7 @@ const RegisterUser = () => {
               type="submit"
               className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
             >
-              {loading === true ? "Loading..." : "Register"}
+              {loading === true ? <TbFidgetSpinner className="animate-spin m-auto" /> : "Register"}
             </button>
           </div>
         </form>
