@@ -8,14 +8,11 @@ import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
 import { useSession } from "next-auth/react";
-// import TermsConditions from "@/components/termsAndConditions/TermsConditions";
-// import Terms from "@/app/termsCondition/page";
-// import Terms from "../termsCondition/page";
+import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
 import ModalOfTerms from "../../../components/Modal/ModalOfTerms";
 import ModalOfSecurity from "../../../components/Modal/ModalOfSecurity";
+
 
 const RegisterRecruiter = () => {
   const pathName = usePathname();
@@ -387,7 +384,7 @@ const RegisterRecruiter = () => {
               type="submit"
               className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
             >
-              {loading === true ? "Loading..." : " Register"}
+              {loading === true ? <TbFidgetSpinner className="animate-spin m-auto" /> : " Register"}
             </button>
           </div>
         </form>
