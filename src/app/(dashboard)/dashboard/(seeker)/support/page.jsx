@@ -43,7 +43,6 @@ export default function UserChat() {
     const handleSend = async (e) => {
         e.preventDefault();
         const newMessage = e.target.message.value;
-        console.log(newMessage)
 
         try {
             e.target.reset();
