@@ -46,8 +46,6 @@ const RegisterRecruiter = () => {
       fullName,
       email,
       password,
-      cityName,
-      companyName,
       mobileNumber,
       image,
     } = data;
@@ -65,8 +63,6 @@ const RegisterRecruiter = () => {
         fullName,
         email,
         password,
-        cityName,
-        companyName,
         mobileNumber,
         userIMG: data?.data?.display_url,
         creationDate: new Date(),
@@ -378,7 +374,7 @@ const RegisterRecruiter = () => {
             <button
               disabled={loading}
               type="submit"
-              className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
+              className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 font-medium text-white"
             >
               {loading === true ? <TbFidgetSpinner className="animate-spin m-auto" /> : " Register"}
             </button>
@@ -388,7 +384,7 @@ const RegisterRecruiter = () => {
           Already have an account?{" "}
           <Link
             href={"/login"}
-            className="text-primary font-semibold ml-2 text-base hover:underline"
+            className="text-primary font-medium ml-2 text-base hover:underline"
           >
             Login
           </Link>
