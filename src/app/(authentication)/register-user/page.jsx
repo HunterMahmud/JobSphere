@@ -7,13 +7,9 @@ import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
 import { useRouter } from "next/navigation"; // use 'next/navigation' instead of 'next/router'
 import { useSession } from "next-auth/react";
-// import TermsConditions from "@/components/termsAndConditions/TermsConditions";
-// import Terms from "@/app/termsCondition/page";
-// import Terms from "../termsCondition/page";
-// import TermsConditions from "@/components/Modal/ModalOfTerms";
-// import ModalOfTerms from '../../components/Modal/ModalOfTerms';
 import ModalOfTerms from "../../../components/Modal/ModalOfTerms";
 import ModalOfSecurity from "../../../components/Modal/ModalOfSecurity";
 
@@ -51,8 +47,7 @@ const RegisterUser = () => {
       cityName,
       mobileNumber,
       image,
-      password,
-      acceptTerms,
+      password
     } = data;
     const formData = new FormData();
     formData.append("image", image[0]);
@@ -71,7 +66,7 @@ const RegisterUser = () => {
           mobileNumber,
           userIMG: data?.data?.display_url,
           password,
-          creationDate:new Date(),
+          creationDate: new Date(),
           role: "seeker",
         } || {};
 
@@ -138,7 +133,7 @@ const RegisterUser = () => {
   const openModalSecurity = () => setIsOpenSecurity(true);
 
   return (
-    <div className="flex justify-center items-center custom-container min-h-screen">
+    <div className="flex justify-center items-center custom-container my-10">
       <div className="flex flex-col p-3 rounded-md sm:p-10 bg-white text-black shadow-lg border my-5 w-full lg:w-[90%]">
         <div className="mb-8 flex justify-center items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap">
           <a
@@ -225,14 +220,14 @@ const RegisterUser = () => {
                 placeholder="Enter Your Number"
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
-              {errors?.email?.message && (
+              {errors?.mobileNumber?.message && (
                 <span className="text-red-500 text-sm">
-                  {errors.email.message}
+                  {errors.mobileNumber.message}
                 </span>
               )}
             </div>
             {/* Image */}
-            {/* <div>
+            <div>
               <label
                 htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-600"
@@ -252,41 +247,12 @@ const RegisterUser = () => {
                 accept="image/*"
                 className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 "
               />
-              {errors?.name?.message && (
+              {errors?.image?.message && (
                 <span className="block text-red-500 text-sm">
-                  {errors.name.message}
+                  {errors.image.message}
                 </span>
               )}
-            </div> */}
-
-            {/* Image */}
-<div>
-  <label
-    htmlFor="image"
-    className="block mb-2 text-sm font-medium text-gray-600"
-  >
-    Profile Photo:
-  </label>
-  <input
-    {...register("image", {
-      required: {
-        value: true,
-        message: "This field is required.",
-      },
-    })}
-    type="file"
-    id="image"
-    name="image"
-    accept="image/*"
-    className="block w-full px-4 py-1 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
-  />
-  {errors?.image?.message && (
-    <span className="block text-red-500 text-sm">
-      {errors.image.message}
-    </span>
-  )}
-</div>
-
+            </div>
 
             {/* Password */}
             <div className="mt-4">
@@ -370,66 +336,70 @@ const RegisterUser = () => {
           </div>
 
           <div className="flex flex-col items-center space-y-2">
-  <div className="flex items-start space-x-2 justify-center">
+            <div className="flex items-start space-x-2 justify-center">
+              <div className="text-center">
+                <div className="flex w-full justify-center gap-2 items-center">
+                  <input
+                    id="acceptTerms"
+                    type="checkbox"
+                    {...register("acceptTerms", {
+                      required: {
+                        value: true,
+                        message: "This field is required.",
+                      },
+                    })}
+                  />
+                  <span className="text-sm block">
+                    By clicking &apos;Continue&apos;, you acknowledge that
+                  </span>
+                </div>
+                <span className="text-sm block">
+                  you have read and accept the{" "}
+                  <span
+                    className="font-medium text-blue-600 cursor-pointer"
+                    onClick={openModalTerms}
+                  >
+                    Terms and Conditions
+                  </span>{" "}
+                  and{" "}
+                  <span
+                    className="font-medium text-blue-600 cursor-pointer"
+                    onClick={openModalSecurity}
+                  >
+                    Security & Privacy
+                  </span>
+                  .
+                </span>
+              </div>
+            </div>
 
-    <div className="text-center">
-    <div className="flex w-full justify-center gap-2 items-center">
-    <input
-      id="acceptTerms"
-      type="checkbox"
-      {...register("acceptTerms", {
-        required: {
-          value: true,
-          message: "This field is required.",
-        },
-      })}
-    />
-      <span className="text-sm block">
-        By clicking &apos;Continue&apos;, you acknowledge that
-      </span>
-    </div>
-      <span className="text-sm block">
-        you have read and accept the{" "}
-        <span
-          className="font-medium text-blue-600 cursor-pointer"
-          onClick={openModalTerms}
-        >
-          Terms and Conditions
-        </span>{" "}
-        and{" "}
-        <span
-          className="font-medium text-blue-600 cursor-pointer"
-          onClick={openModalSecurity}
-        >
-          Security & Privacy
-        </span>
-        .
-      </span>
-    </div>
-  </div>
+            {/* Error Message */}
+            {errors?.acceptTerms?.message && (
+              <span className="text-red-500 text-sm mt-2 text-center">
+                {errors?.acceptTerms?.message}
+              </span>
+            )}
 
-  {/* Error Message */}
-  {errors?.acceptTerms?.message && (
-    <span className="text-red-500 text-sm mt-2 text-center">
-      {errors?.acceptTerms?.message}
-    </span>
-  )}
+            {/* Modal for Terms of Service */}
+            <ModalOfTerms
+              isOpenTerms={isOpenTerms}
+              closeModalTerms={closeModalTerms}
+            />
 
-  {/* Modal for Terms of Service */}
-  <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
-
-  {/* Modal for Terms of Privacy */}
-  <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
-</div>
-
+            {/* Modal for Terms of Privacy */}
+            <ModalOfSecurity
+              isOpenSecurity={isOpenSecurity}
+              closeModalSecurity={closeModalSecurity}
+            />
+          </div>
 
           <div>
             <button
               disabled={loading}
               type="submit"
-              className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
+              className="bg-primary hover:bg-hover w-full rounded-md py-3 font-medium text-white"
             >
-              {loading === true ? "Loading..." : "Register"}
+              {loading === true ? <TbFidgetSpinner className="animate-spin m-auto" /> : "Register"}
             </button>
           </div>
         </form>
@@ -438,7 +408,7 @@ const RegisterUser = () => {
           Already have an account?{" "}
           <Link
             href={"/login"}
-            className="text-primary font-semibold ml-2 text-base hover:underline"
+            className="text-primary font-medium ml-2 text-base hover:underline"
           >
             Login
           </Link>
