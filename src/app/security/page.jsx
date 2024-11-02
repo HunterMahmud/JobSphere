@@ -1,5 +1,31 @@
 import React from "react";
 
+export const metadata = {
+  title: "Security",
+  description: "Learn about Job Sphere's security and privacy policies, including data encryption, authentication, and user privacy controls. We prioritize your safety with robust measures.",
+  keywords: [
+    "Job Sphere",
+    "security",
+    "privacy",
+    "data protection",
+    "encryption",
+    "authentication",
+    "user privacy",
+    "data retention",
+    "anonymization",
+    "OAuth",
+    "JWT"
+  ],
+  openGraph: {
+    title: {
+      absolute: "Security & Privacy - Job Sphere"
+    },
+    description: "Understand Job Sphere's commitment to security and privacy with industry-standard encryption, role-based access control, and data retention policies.",
+    url: `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/security`,
+    type: "website"
+  }
+};
+
 const Security = () => {
   return (
     <div className="mx-2 md:my-6 my-8 space-y-3 md:w-[80%] md:mx-auto">
@@ -53,27 +79,27 @@ const Security = () => {
 
       {/* Data Encryption */}
       {/* <section className='space-y-2'>
-                <h3 className='text-xl font-bold'>3. Data Encryption</h3>
-                <p>
-                    All data is transmitted securely using SSL/TLS encryption. Sensitive information, such as passwords and payment details, is encrypted with AES encryption for maximum protection.
-                </p>
-            </section> */}
+                    <h3 className='text-xl font-bold'>3. Data Encryption</h3>
+                    <p>
+                        All data is transmitted securely using SSL/TLS encryption. Sensitive information, such as passwords and payment details, is encrypted with AES encryption for maximum protection.
+                    </p>
+                </section> */}
 
       {/* Cross-Site Scripting */}
       {/* <section className='space-y-2'>
-                <h3 className='text-xl font-bold'>4. Cross-Site Scripting (XSS) Protection</h3>
-                <p>
-                    We sanitize user inputs and use libraries like DOMPurify to prevent malicious code injection and safeguard our users against XSS attacks.
-                </p>
-            </section> */}
+                    <h3 className='text-xl font-bold'>4. Cross-Site Scripting (XSS) Protection</h3>
+                    <p>
+                        We sanitize user inputs and use libraries like DOMPurify to prevent malicious code injection and safeguard our users against XSS attacks.
+                    </p>
+                </section> */}
 
       {/* Rate Limiting */}
       {/* <section className='space-y-2'>
-                <h3 className='text-xl font-bold'>5. Rate Limiting</h3>
-                <p>
-                    To protect against brute-force attacks, rate limiting is applied to login, sign-up, and key API actions such as job applications and posts.
-                </p>
-            </section> */}
+                    <h3 className='text-xl font-bold'>5. Rate Limiting</h3>
+                    <p>
+                        To protect against brute-force attacks, rate limiting is applied to login, sign-up, and key API actions such as job applications and posts.
+                    </p>
+                </section> */}
 
       {/* Privacy Policy */}
       <h2 className="text-2xl font-semibold underline pt-10">
@@ -102,19 +128,19 @@ const Security = () => {
 
       {/* Consent for Email Notifications */}
       {/* <section className='space-y-2'>
-                <h3 className='text-xl font-bold'>3. Consent for Email Notifications</h3>
-                <p>
-                    Users must provide consent before receiving email notifications. Options to opt-out or customize email preferences are provided to ensure control over communications.
-                </p>
-            </section> */}
+                    <h3 className='text-xl font-bold'>3. Consent for Email Notifications</h3>
+                    <p>
+                        Users must provide consent before receiving email notifications. Options to opt-out or customize email preferences are provided to ensure control over communications.
+                    </p>
+                </section> */}
 
       {/* Secure File Storage */}
       {/* <section className='space-y-2'>
-                <h3 className='text-xl font-bold'>4. Secure File Storage</h3>
-                <p>
-                    Resumes and other files are stored securely using encrypted cloud storage, and access is limited to authorized users such as recruiters with premium access.
-                </p>
-            </section> */}
+                    <h3 className='text-xl font-bold'>4. Secure File Storage</h3>
+                    <p>
+                        Resumes and other files are stored securely using encrypted cloud storage, and access is limited to authorized users such as recruiters with premium access.
+                    </p>
+                </section> */}
     </div>
   );
 };
