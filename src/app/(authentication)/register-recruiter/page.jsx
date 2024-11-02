@@ -118,7 +118,7 @@ const RegisterRecruiter = () => {
   const openModalSecurity = () => setIsOpenSecurity(true);
 
   return (
-    <div className="flex justify-center items-center custom-container min-h-screen">
+    <div className="flex justify-center items-center custom-container my-10">
       <div className="flex flex-col p-3 rounded-md sm:p-10 bg-white  text-black shadow-lg border my-5 w-full lg:w-[90%]">
         <div className="mb-8 flex justify-center items-center -mx-4 space-x-2 overflow-x-auto overflow-y-hidden sm:justify-center flex-nowrap">
           <a
