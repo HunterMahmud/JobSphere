@@ -1,7 +1,6 @@
 
 import FAQ from '@/components/shared/FAQ';
 import ContactUs from '@/components/AboutUs/ContactUs';
-import Image from 'next/image';
 import React from 'react';
 import OurTeam from '@/components/AboutUs/OurTeam';
 import OurMission from '@/components/AboutUs/OurMission';

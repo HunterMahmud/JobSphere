@@ -1,5 +1,27 @@
 import React from 'react';
 
+export const metadata = {
+    title: "Terms & Conditions",
+    description: "Review the terms and conditions of Job Sphere to understand your responsibilities, prohibited activities, and privacy commitments when using our hiring platform.",
+    keywords: [
+        "Job Sphere",
+        "terms and conditions",
+        "user responsibilities",
+        "privacy policy",
+        "prohibited activities",
+        "hiring platform",
+        "job seekers",
+        "recruiters",
+        "employment"
+    ],
+    openGraph: {
+        title:"Terms & Conditions",
+        description: "Understand the terms, responsibilities, and privacy policies that apply to all users on the Job Sphere hiring platform.",
+        url: `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/termsCondition`,
+        type: "website"
+    }
+};
+
 const Terms = () => {
     return (
         <div className='mx-2 md:my-6 my-8 md:w-[80%] md:mx-auto'>
@@ -49,17 +71,16 @@ const Terms = () => {
                 </div>
 
                 {/* 6. Prohibited Activities */}
-<div>
-    <h2 className='font-semibold text-2xl mb-2'>6. Prohibited Activities</h2>
-    <p>Users agree not to:</p>
-    <ul className='list-disc pl-6 space-y-2'>
-        <li>Use the Platform for any fraudulent activities or purposes.</li>
-        <li>Post any content that is false, misleading, or harmful.</li>
-        <li>Engage in spamming, phishing, or scraping of data from the Platform.</li>
-        <li>Attempt to access unauthorized parts of the Platform or breach its security measures.</li>
-    </ul>
-</div>
-
+                <div>
+                    <h2 className='font-semibold text-2xl mb-2'>6. Prohibited Activities</h2>
+                    <p>Users agree not to:</p>
+                    <ul className='list-disc pl-6 space-y-2'>
+                        <li>Use the Platform for any fraudulent activities or purposes.</li>
+                        <li>Post any content that is false, misleading, or harmful.</li>
+                        <li>Engage in spamming, phishing, or scraping of data from the Platform.</li>
+                        <li>Attempt to access unauthorized parts of the Platform or breach its security measures.</li>
+                    </ul>
+                </div>
 
                 {/* 7. JobSphere's Role */}
                 <div>
