@@ -75,7 +75,7 @@ const RegisterRecruiter = () => {
         contactNumber,
         userIMG: data?.data?.display_url,
         websiteURL,
-        creationDate:new Date(),
+        creationDate: new Date(),
         businessDescription,
         role: "recruiter",
       };
@@ -270,6 +270,7 @@ const RegisterRecruiter = () => {
               </div>
             </div>
             {/* Image */}
+
             <div>
               <label
                 htmlFor="image"
@@ -288,67 +289,72 @@ const RegisterRecruiter = () => {
                 id="image"
                 name="image"
                 accept="image/*"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+                className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 "
               />
               {errors?.image?.message && (
-                <span className="block text-red-500">
+                <span className="block text-red-500 text-sm">
                   {errors?.image?.message}
                 </span>
               )}
             </div>
           </div>
           <div className="flex flex-col items-center space-y-2">
-  <div className="flex items-start space-x-2 justify-center">
+            <div className="flex items-start space-x-2 justify-center">
+              <div className="text-center">
+                <div className="flex w-full justify-center gap-2 items-center">
+                  <input
+                    id="acceptTerms"
+                    type="checkbox"
+                    {...register("acceptTerms", {
+                      required: {
+                        value: true,
+                        message: "This field is required.",
+                      },
+                    })}
+                  />
+                  <span className="text-sm block">
+                    By clicking &apos;Continue&apos;, you acknowledge that
+                  </span>
+                </div>
+                <span className="text-sm block">
+                  you have read and accept the{" "}
+                  <span
+                    className="font-medium text-blue-600 cursor-pointer"
+                    onClick={openModalTerms}
+                  >
+                    Terms and Conditions
+                  </span>{" "}
+                  and{" "}
+                  <span
+                    className="font-medium text-blue-600 cursor-pointer"
+                    onClick={openModalSecurity}
+                  >
+                    Security & Privacy
+                  </span>
+                  .
+                </span>
+              </div>
+            </div>
 
-    <div className="text-center">
-    <div className="flex w-full justify-center gap-2 items-center">
-    <input
-      id="acceptTerms"
-      type="checkbox"
-      {...register("acceptTerms", {
-        required: {
-          value: true,
-          message: "This field is required.",
-        },
-      })}
-    />
-      <span className="text-sm block">
-        By clicking &apos;Continue&apos;, you acknowledge that
-      </span>
-    </div>
-      <span className="text-sm block">
-        you have read and accept the{" "}
-        <span
-          className="font-medium text-blue-600 cursor-pointer"
-          onClick={openModalTerms}
-        >
-          Terms and Conditions
-        </span>{" "}
-        and{" "}
-        <span
-          className="font-medium text-blue-600 cursor-pointer"
-          onClick={openModalSecurity}
-        >
-          Security & Privacy
-        </span>
-        .
-      </span>
-    </div>
-  </div>
+            {/* Error Message */}
+            {errors?.acceptTerms?.message && (
+              <span className="text-red-500 text-sm mt-2 text-center">
+                {errors?.acceptTerms?.message}
+              </span>
+            )}
 
-  {/* Error Message */}
-  {errors?.acceptTerms?.message && (
-    <span className="text-red-500 text-sm mt-2 text-center">
-      {errors?.acceptTerms?.message}
-    </span>
-  )}
+            {/* Modal for Terms of Service */}
+            <ModalOfTerms
+              isOpenTerms={isOpenTerms}
+              closeModalTerms={closeModalTerms}
+            />
 
-  {/* Modal for Terms of Service */}
-  <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
-
-  {/* Modal for Terms of Privacy */}
-  <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
-</div>
+            {/* Modal for Terms of Privacy */}
+            <ModalOfSecurity
+              isOpenSecurity={isOpenSecurity}
+              closeModalSecurity={closeModalSecurity}
+            />
+          </div>
 
           {/* Submit button */}
           <div>

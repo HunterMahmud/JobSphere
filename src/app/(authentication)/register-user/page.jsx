@@ -232,7 +232,7 @@ const RegisterUser = () => {
               )}
             </div>
             {/* Image */}
-            {/* <div>
+            <div>
               <label
                 htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-600"
@@ -257,36 +257,7 @@ const RegisterUser = () => {
                   {errors.name.message}
                 </span>
               )}
-            </div> */}
-
-            {/* Image */}
-<div>
-  <label
-    htmlFor="image"
-    className="block mb-2 text-sm font-medium text-gray-600"
-  >
-    Profile Photo:
-  </label>
-  <input
-    {...register("image", {
-      required: {
-        value: true,
-        message: "This field is required.",
-      },
-    })}
-    type="file"
-    id="image"
-    name="image"
-    accept="image/*"
-    className="block w-full px-4 py-1 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
-  />
-  {errors?.image?.message && (
-    <span className="block text-red-500 text-sm">
-      {errors.image.message}
-    </span>
-  )}
-</div>
-
+            </div>
 
             {/* Password */}
             <div className="mt-4">
