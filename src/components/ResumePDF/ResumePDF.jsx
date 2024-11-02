@@ -3,12 +3,9 @@ import Image from "next/image";
 
 const ResumePDF = ({ user }) => {
     return (
-        <div className="overflow-x-scroll">
-            <div id="resume" className="p-4 md:p-10 lg:p-16 border rounded shadow-md bg-white">
-                <h1 className="text-3xl font-bold mb-4 text-center">
-                    {user?.profileOverview?.fullName || " "} Resume
-                </h1>
-
+        <div className="">
+            <div id="resume" className="">
+                
                 <div className="flex items-center mb-4">
                     <Image height={500} width={500}
                         src={user?.profileOverview?.profilePicture || "https://i1.sndcdn.com/artworks-000189080723-ez2uad-t500x500.jpg"}
@@ -16,7 +13,7 @@ const ResumePDF = ({ user }) => {
                         className="w-28 h-28 rounded-full mr-4"
                     />
                     <div>
-                        <h2 className="text-2xl">
+                        <h2 className="text-3xl font-bold">
                             {user?.profileOverview?.fullName || "N/A"}
                         </h2>
                         <p className="text-gray-600">

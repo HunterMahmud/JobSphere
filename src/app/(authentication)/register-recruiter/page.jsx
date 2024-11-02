@@ -297,56 +297,58 @@ const RegisterRecruiter = () => {
               )}
             </div>
           </div>
-          {/* Business Description */}
-          <div className="flex items-start md:justify-center">
-            <input
-              id="acceptTerms"
-              type="checkbox"
-              {...register("acceptTerms", {
-                required: {
-                  value: true,
-                  message: "This field is required.",
-                },
-              })}
-              className="mt-1 mr-1"
-            />
+          <div className="flex flex-col items-center space-y-2">
+  <div className="flex items-start space-x-2 justify-center">
 
-            <label htmlFor="acceptTerms" className="text-sm">
-              By clicking &apos;Continue&apos;, you acknowledge that you have
-              read and accept the{" "}
-              <span
-                className="font-medium text-blue-600 cursor-pointer"
-                onClick={openModalTerms}
-              >
-                Terms and Conditions
-              </span>{" "}
-              and{" "}
-              <span
-                className="font-medium text-blue-600 cursor-pointer"
-                onClick={openModalSecurity}
-              >
-                Security & Privacy
-              </span>
-              .
-            </label>
-          </div>
-          {errors?.acceptTerms?.message && (
-            <span className="text-red-500 flex items-start md:justify-center">
-              {errors?.acceptTerms?.message}
-            </span>
-          )}
+    <div className="text-center">
+    <div className="flex w-full justify-center gap-2 items-center">
+    <input
+      id="acceptTerms"
+      type="checkbox"
+      {...register("acceptTerms", {
+        required: {
+          value: true,
+          message: "This field is required.",
+        },
+      })}
+    />
+      <span className="text-sm block">
+        By clicking &apos;Continue&apos;, you acknowledge that
+      </span>
+    </div>
+      <span className="text-sm block">
+        you have read and accept the{" "}
+        <span
+          className="font-medium text-blue-600 cursor-pointer"
+          onClick={openModalTerms}
+        >
+          Terms and Conditions
+        </span>{" "}
+        and{" "}
+        <span
+          className="font-medium text-blue-600 cursor-pointer"
+          onClick={openModalSecurity}
+        >
+          Security & Privacy
+        </span>
+        .
+      </span>
+    </div>
+  </div>
 
-          {/* Modal for Terms of Service */}
-          <ModalOfTerms
-            isOpenTerms={isOpenTerms}
-            closeModalTerms={closeModalTerms}
-          />
+  {/* Error Message */}
+  {errors?.acceptTerms?.message && (
+    <span className="text-red-500 text-sm mt-2 text-center">
+      {errors?.acceptTerms?.message}
+    </span>
+  )}
 
-          {/* Modal for Terms of Privacy */}
-          <ModalOfSecurity
-            isOpenSecurity={isOpenSecurity}
-            closeModalSecurity={closeModalSecurity}
-          />
+  {/* Modal for Terms of Service */}
+  <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
+
+  {/* Modal for Terms of Privacy */}
+  <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
+</div>
 
           {/* Submit button */}
           <div>
@@ -359,11 +361,11 @@ const RegisterRecruiter = () => {
             </button>
           </div>
         </form>
-        <p className="px-6 mt-3  text-sm text-center text-black">
+        <p className="px-6 mt-3 text-center  text-gray-600 text-sm">
           Already have an account?{" "}
           <Link
             href={"/login"}
-            className="hover:underline text-gray-600 font-medium"
+            className="text-primary font-semibold ml-2 text-base hover:underline"
           >
             Login
           </Link>
