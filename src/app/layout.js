@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "../components/shared/Footer";
 import AuthProvider from "@/services/AuthProvider";
 import { Toaster } from "react-hot-toast";
+import { HiOutlineTemplate } from "react-icons/hi";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
