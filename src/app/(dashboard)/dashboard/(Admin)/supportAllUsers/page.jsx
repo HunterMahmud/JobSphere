@@ -118,7 +118,7 @@ export default function AdminChat() {
                                     className={`p-2 text-sm md:text-base my-2 rounded ${msg.isAdminReply ? " text-black text-right" : ""}`}
                                     style={{ overflowWrap: 'break-word', wordBreak: 'break-word', maxWidth: '100%' }} // Added styles
                                 >
-                                    <span className={`inline-block px-2 py-1 rounded  ${msg.isAdminReply ? "bg-accent rounded-br-2xl pr-3" : "bg-blue-50 rounded-bl-2xl pl-3"}`}>
+                                    <span className={`inline-block px-4 py-1 rounded  ${msg.isAdminReply ? "bg-accent rounded-br-2xl pr-3" : "bg-blue-50 rounded-bl-2xl pl-3"}`}>
                                         {msg.content.length > 1000 ? `${msg.content.substring(0, 1000)}...` : msg.content} {/* Optional truncation */}
                                     </span>
                                 </div>

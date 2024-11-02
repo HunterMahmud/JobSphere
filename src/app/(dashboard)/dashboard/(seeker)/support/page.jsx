@@ -84,7 +84,7 @@ export default function UserChat() {
                                 className={`p-2 my-2 text-sm md:text-base rounded ${msg.isAdminReply ? "text-left" : "text-right"}`}
                                 style={{ overflowWrap: 'break-word', wordBreak: 'break-word', maxWidth: '100%' }} // Added styles
                             >
-                                <span className={`inline-block px-2 py-1 rounded ${msg.isAdminReply ? "bg-accent rounded-bl-2xl pl-3" : "bg-blue-50 rounded-br-2xl pr-3"}`}>
+                                <span className={`inline-block px-4 py-1 rounded ${msg.isAdminReply ? "bg-accent rounded-bl-2xl pl-3" : "bg-blue-50 rounded-br-2xl pr-3"}`}>
                                     {msg.content}
                                 </span>
                             </div>
