@@ -10,6 +10,7 @@ import {
   MdOutlineWorkOutline,
   MdOutlineManageSearch,
 } from "react-icons/md";
+import { MdOutlineTrendingUp   } from "react-icons/md";
 import MenuItem from "./MenuItem/MenuItem";
 import { FaHandsHelping, FaLaptopHouse, FaUserCog } from "react-icons/fa";
 import useRole from "@/components/Hooks/useRole";
@@ -84,6 +85,11 @@ const Sidebar = () => {
                   address="/dashboard/applyedJobs"
                 />
                 <MenuItem
+                  icon={FaLaptopHouse}
+                  label="Progress"
+                  address="/dashboard/progress"
+                />
+                <MenuItem
                   icon={RiSave3Line}
                   label="Saved Jobs"
                   address="/dashboard/savedJobs"
@@ -141,11 +147,6 @@ const Sidebar = () => {
                   label="Support"
                   address="/dashboard/supportAllUsers"
                 />
-                {/* <MenuItem
-                  icon={FcStatistics}
-                  label="Statistics"
-                  address="/dashboard/statistics"
-                /> */}
               </nav>
             )}
           </div>
