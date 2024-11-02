@@ -7,6 +7,8 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
+
 const LoginPage = () => {
   const {
     register,
@@ -30,6 +32,7 @@ const LoginPage = () => {
   const handleLogIn = async (data) => {
     const { email, password } = data;
     try {
+        setLoading(true);
       const resp = await signIn("credentials", {
         email,
         password,
@@ -44,6 +47,10 @@ const LoginPage = () => {
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
     }
+    finally{
+        setLoading(false);
+    }
+    setLoading(false);
   };
 
   return (
@@ -112,17 +119,20 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="w-full px-5 py-3 text-lg font-medium text-white bg-primary rounded-md hover:bg-hoverColor"
-              >
-                Login
-              </button>
-            </div>
+            
+            {/* Submit button */}
+          <div className="mt-5">
+            <button
+              disabled={loading}
+              type="submit"
+              className="bg-primary hover:bg-hover w-full rounded-md py-3 font-medium text-white"
+            >
+              {loading === true ? <TbFidgetSpinner className="animate-spin m-auto" /> : "Login"}
+            </button>
+          </div>
           </form>
 
-          <div className="flex items-center mt-4">
+          <div className="flex items-center mt-4 justify-center">
             <span className="text-gray-600 text-sm">
               Don&apos;t have an account?
             </span>

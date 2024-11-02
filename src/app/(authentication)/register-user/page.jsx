@@ -397,7 +397,7 @@ const RegisterUser = () => {
             <button
               disabled={loading}
               type="submit"
-              className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 font-medium text-white"
+              className="bg-primary hover:bg-hover w-full rounded-md py-3 font-medium text-white"
             >
               {loading === true ? <TbFidgetSpinner className="animate-spin m-auto" /> : "Register"}
             </button>
