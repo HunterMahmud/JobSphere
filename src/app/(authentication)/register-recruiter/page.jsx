@@ -50,8 +50,6 @@ const RegisterRecruiter = () => {
       companyName,
       mobileNumber,
       image,
-      websiteURL,
-      businessDescription,
     } = data;
 
     const formData = new FormData();
@@ -71,9 +69,7 @@ const RegisterRecruiter = () => {
         companyName,
         mobileNumber,
         userIMG: data?.data?.display_url,
-        websiteURL,
         creationDate: new Date(),
-        businessDescription,
         role: "recruiter",
       };
 
