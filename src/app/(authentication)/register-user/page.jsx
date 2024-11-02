@@ -232,7 +232,7 @@ const RegisterUser = () => {
               )}
             </div>
             {/* Image */}
-            <div>
+            {/* <div>
               <label
                 htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-600"
@@ -257,7 +257,37 @@ const RegisterUser = () => {
                   {errors.name.message}
                 </span>
               )}
-            </div>
+            </div> */}
+
+            {/* Image */}
+<div>
+  <label
+    htmlFor="image"
+    className="block mb-2 text-sm font-medium text-gray-600"
+  >
+    Profile Photo:
+  </label>
+  <input
+    {...register("image", {
+      required: {
+        value: true,
+        message: "This field is required.",
+      },
+    })}
+    type="file"
+    id="image"
+    name="image"
+    accept="image/*"
+    className="block w-full px-4 py-1 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
+  />
+  {errors?.image?.message && (
+    <span className="block text-red-500 text-sm">
+      {errors.image.message}
+    </span>
+  )}
+</div>
+
+
             {/* Password */}
             <div className="mt-4">
               <div className="flex justify-between">
@@ -339,59 +369,59 @@ const RegisterUser = () => {
             </div>
           </div>
 
-          <div>
-            <div className="flex items-start md:justify-center">
-              <input
-                id="acceptTerms"
-                type="checkbox"
-                {...register("acceptTerms", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                className="mt-1 mr-1"
-              />
+          <div className="flex flex-col items-center space-y-2">
+  <div className="flex items-start space-x-2 justify-center">
 
-              <label htmlFor="acceptTerms" className="text-sm">
-                By clicking &apos;Continue&apos;, you acknowledge that you have
-                read and accept the{" "}
-                <span
-                  className="font-medium text-blue-600 cursor-pointer"
-                  onClick={openModalTerms}
-                >
-                  Terms and Conditions
-                </span>{" "}
-                and{" "}
-                <span
-                  className="font-medium text-blue-600 cursor-pointer"
-                  onClick={openModalSecurity}
-                >
-                  Security & Privacy
-                </span>
-                .
-              </label>
-            </div>
+    <div className="text-center">
+    <div className="flex w-full justify-center gap-2 items-center">
+    <input
+      id="acceptTerms"
+      type="checkbox"
+      {...register("acceptTerms", {
+        required: {
+          value: true,
+          message: "This field is required.",
+        },
+      })}
+    />
+      <span className="text-sm block">
+        By clicking &apos;Continue&apos;, you acknowledge that
+      </span>
+    </div>
+      <span className="text-sm block">
+        you have read and accept the{" "}
+        <span
+          className="font-medium text-blue-600 cursor-pointer"
+          onClick={openModalTerms}
+        >
+          Terms and Conditions
+        </span>{" "}
+        and{" "}
+        <span
+          className="font-medium text-blue-600 cursor-pointer"
+          onClick={openModalSecurity}
+        >
+          Security & Privacy
+        </span>
+        .
+      </span>
+    </div>
+  </div>
 
-            {/* Error Message */}
-            {errors?.acceptTerms?.message && (
-              <span className="text-red-500 flex items-start md:justify-center">
-                {errors?.acceptTerms?.message}
-              </span>
-            )}
+  {/* Error Message */}
+  {errors?.acceptTerms?.message && (
+    <span className="text-red-500 text-sm mt-2 text-center">
+      {errors?.acceptTerms?.message}
+    </span>
+  )}
 
-            {/* Modal for Terms of Service */}
-            <ModalOfTerms
-              isOpenTerms={isOpenTerms}
-              closeModalTerms={closeModalTerms}
-            />
+  {/* Modal for Terms of Service */}
+  <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
 
-            {/* Modal for Terms of Privacy */}
-            <ModalOfSecurity
-              isOpenSecurity={isOpenSecurity}
-              closeModalSecurity={closeModalSecurity}
-            />
-          </div>
+  {/* Modal for Terms of Privacy */}
+  <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
+</div>
+
 
           <div>
             <button
@@ -404,11 +434,11 @@ const RegisterUser = () => {
           </div>
         </form>
 
-        <p className="px-6 mt-3 text-sm text-center text-black">
+        <p className="px-6 mt-3 text-center  text-gray-600 text-sm">
           Already have an account?{" "}
           <Link
             href={"/login"}
-            className="hover:underline text-gray-600 font-medium"
+            className="text-primary font-semibold ml-2 text-base hover:underline"
           >
             Login
           </Link>
