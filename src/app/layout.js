@@ -4,7 +4,6 @@ import "./globals.css";
 import Footer from "../components/shared/Footer";
 import AuthProvider from "@/services/AuthProvider";
 import { Toaster } from "react-hot-toast";
-import { HiOutlineTemplate } from "react-icons/hi";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,7 +40,10 @@ export const metadata = {
     "career development",
   ],
   openGraph: {
-    title: "Job Sphere - Find Your Dream Job",
+    title: {
+      default :"Job Sphere - Find Your Dream Job",
+      template : "%s | Job Sphere - Find Your Dream Job"
+    },
     description:
       "Your go-to platform for job seekers and recruiters alike. Find jobs, connect with companies, and take skill assessments. Job Sphere is here to support your career growth.",
     url: "https://your-website.com", // Replace with the actual website URL
