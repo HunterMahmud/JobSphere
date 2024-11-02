@@ -51,8 +51,7 @@ const RegisterUser = () => {
       cityName,
       mobileNumber,
       image,
-      password,
-      acceptTerms,
+      password
     } = data;
     const formData = new FormData();
     formData.append("image", image[0]);
@@ -225,9 +224,9 @@ const RegisterUser = () => {
                 placeholder="Enter Your Number"
                 className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
-              {errors?.email?.message && (
+              {errors?.mobileNumber?.message && (
                 <span className="text-red-500 text-sm">
-                  {errors.email.message}
+                  {errors.mobileNumber.message}
                 </span>
               )}
             </div>

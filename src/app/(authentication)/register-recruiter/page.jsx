@@ -51,7 +51,7 @@ const RegisterRecruiter = () => {
       password,
       cityName,
       companyName,
-      contactNumber,
+      mobileNumber,
       image,
       websiteURL,
       businessDescription,
@@ -72,7 +72,7 @@ const RegisterRecruiter = () => {
         password,
         cityName,
         companyName,
-        contactNumber,
+        mobileNumber,
         userIMG: data?.data?.display_url,
         websiteURL,
         creationDate: new Date(),
@@ -191,6 +191,58 @@ const RegisterRecruiter = () => {
                 <span className="text-red-500">{errors.email.message}</span>
               )}
             </div>
+
+            {/* Mobile Number */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-600">
+                Mobile Number
+              </label>
+              <input
+                {...register("mobileNumber", {
+                  required: {
+                    value: true,
+                    message: "This field is required.",
+                  },
+                })}
+                type="number"
+                placeholder="Enter Your Number"
+                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+              />
+              {errors?.mobileNumber?.message && (
+                <span className="text-red-500 text-sm">
+                  {errors.mobileNumber.message}
+                </span>
+              )}
+            </div>
+
+            {/* Image */}
+
+            <div>
+              <label
+                htmlFor="image"
+                className="block mb-2 text-sm font-medium text-gray-600"
+              >
+                Profile Photo:
+              </label>
+              <input
+                {...register("image", {
+                  required: {
+                    value: true,
+                    message: "This field is required.",
+                  },
+                })}
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 "
+              />
+              {errors?.image?.message && (
+                <span className="block text-red-500 text-sm">
+                  {errors?.image?.message}
+                </span>
+              )}
+            </div>
             {/* Password */}
             <div className="mt-4">
               <div className="flex justify-between">
@@ -250,7 +302,7 @@ const RegisterRecruiter = () => {
                   {...register("confirmPassword", {
                     required: "Please confirm your password",
                     validate: (value) =>
-                      value === password || "Passwords do not match",
+                      value === password || "Passwords doesnot matched",
                   })}
                   className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                   type={show ? "text" : "password"}
@@ -268,34 +320,6 @@ const RegisterRecruiter = () => {
                   {!show ? <IoEyeOffOutline /> : <IoEyeOutline />}
                 </div>
               </div>
-            </div>
-            {/* Image */}
-
-            <div>
-              <label
-                htmlFor="image"
-                className="block mb-2 text-sm font-medium text-gray-600"
-              >
-                Profile Photo:
-              </label>
-              <input
-                {...register("image", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 "
-              />
-              {errors?.image?.message && (
-                <span className="block text-red-500 text-sm">
-                  {errors?.image?.message}
-                </span>
-              )}
             </div>
           </div>
           <div className="flex flex-col items-center space-y-2">
