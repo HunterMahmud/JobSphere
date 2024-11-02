@@ -226,7 +226,7 @@ const JobDetails = ({ params }) => {
     if (loggedInUser?.role === "recruiter" || "admin") {
       return toast.error("Action not permitted!");
     }
-    
+
     if (loggedInUser?.status === "blocked") {
       toast.error("You are blocked by the authority. Please contact support for assistance.");
       return;
@@ -387,7 +387,7 @@ const JobDetails = ({ params }) => {
                   ))}
                 </div>
                 {
-                  loggedInUser?.status !== "blocked" && seekerInfo?.skills?.technicalSkills &&
+                  loggedInUser?.status !== "blocked" && seekerInfo?.skills?.technicalSkills && loggedInUser?.role === "seeker" &&
                   <button onClick={() => {
                     setShowModal(!showModal);
                     setShowSkill(true)
@@ -602,7 +602,7 @@ const JobDetails = ({ params }) => {
                 </div>
 
                 <div className="flex justify-end md:col-span-2">
-                  <button className="py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]">
+                  <button className="py-2 px-6 text-lg font-medium text-white bg-primary rounded-md hover:bg-hover">
                     {isLoading ? (
                       <TbFidgetSpinner className="animate-spin m-auto" />
                     ) : (
