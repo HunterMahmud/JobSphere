@@ -70,15 +70,15 @@ console.log(seasons);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold text-center mb-8">
+    <div className="max-w-7xl mx-auto px-4 md:mt-16 mt-8">
+      <h2 className="lg:text-4xl md:text-3xl text-2xl font-bold text-gray-800 text-center mb-4">
         Submit Your Review
       </h2>
 
       <div className="grid md:grid-cols-2 gap-8">
         {/* Left Side: Form */}
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-semibold mb-6">Submit Your Review</h3>
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-lg">
+          {/* <h3 className="text-2xl font-semibold mb-6">Submit Your Review</h3> */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name Input */}
             <div>
@@ -178,7 +178,7 @@ console.log(seasons);
         </div>
 
         {/* Right Side: Image */}
-        <div className="flex justify-center items-center">
+        <div className="hidden md:flex justify-center items-center">
           <Image
             src="https://i.ibb.co.com/1JxCwVX/2704881.jpg" // Replace with the actual image source later
             alt="Review Illustration"

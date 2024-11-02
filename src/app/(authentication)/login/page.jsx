@@ -43,7 +43,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className='flex justify-center items-center my-10 min-h-[550px]'>
+        <div className='flex justify-center items-center my-10 min-h-screen'>
             <div className='flex w-full mx-auto overflow-hidden bg-white rounded-lg shadow-lg border lg:max-w-4xl'>
                 <div
                     className='bg-cover bg-center md:block md:w-1/2'
@@ -109,12 +109,11 @@ const LoginPage = () => {
                         </div>
                     </form>
 
-                    <div className='flex items-center justify-between mt-4'>
-                        <span className='w-1/5 border-b md:w-1/4'></span>
-                        <Link href="/register-user" className='text-xs text-gray-500 uppercase'>
-                            or Register
+                    <div className='flex items-center mt-4'>
+                    <span className='text-gray-600 text-sm'>Don&apos;t have an account?</span>
+                        <Link href="/register-user" className='text-primary font-semibold ml-2 hover:underline'>
+                            Register
                         </Link>
-                        <span className='w-1/5 border-b md:w-1/4'></span>
                     </div>
                 </div>
             </div>
