@@ -602,7 +602,7 @@ const JobDetails = ({ params }) => {
                 </div>
 
                 <div className="flex justify-end md:col-span-2">
-                  <button className="py-2 px-6 text-lg font-medium text-white bg-[#2557a7] rounded-md hover:bg-[#0d2d5e]">
+                  <button className="py-2 px-6 text-lg font-medium text-white bg-primary rounded-md hover:bg-hover">
                     {isLoading ? (
                       <TbFidgetSpinner className="animate-spin m-auto" />
                     ) : (
