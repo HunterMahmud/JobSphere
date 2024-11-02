@@ -8,14 +8,11 @@ import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
 import { useSession } from "next-auth/react";
-// import TermsConditions from "@/components/termsAndConditions/TermsConditions";
-// import Terms from "@/app/termsCondition/page";
-// import Terms from "../termsCondition/page";
+import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
 import ModalOfTerms from "../../../components/Modal/ModalOfTerms";
 import ModalOfSecurity from "../../../components/Modal/ModalOfSecurity";
+
 
 const RegisterRecruiter = () => {
   const pathName = usePathname();
@@ -49,12 +46,8 @@ const RegisterRecruiter = () => {
       fullName,
       email,
       password,
-      cityName,
-      companyName,
-      contactNumber,
+      mobileNumber,
       image,
-      websiteURL,
-      businessDescription,
     } = data;
 
     const formData = new FormData();
@@ -70,13 +63,9 @@ const RegisterRecruiter = () => {
         fullName,
         email,
         password,
-        cityName,
-        companyName,
-        contactNumber,
+        mobileNumber,
         userIMG: data?.data?.display_url,
-        websiteURL,
-        creationDate:new Date(),
-        businessDescription,
+        creationDate: new Date(),
         role: "recruiter",
       };
 
@@ -191,6 +180,58 @@ const RegisterRecruiter = () => {
                 <span className="text-red-500">{errors.email.message}</span>
               )}
             </div>
+
+            {/* Mobile Number */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-600">
+                Mobile Number
+              </label>
+              <input
+                {...register("mobileNumber", {
+                  required: {
+                    value: true,
+                    message: "This field is required.",
+                  },
+                })}
+                type="number"
+                placeholder="Enter Your Number"
+                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
+              />
+              {errors?.mobileNumber?.message && (
+                <span className="text-red-500 text-sm">
+                  {errors.mobileNumber.message}
+                </span>
+              )}
+            </div>
+
+            {/* Image */}
+
+            <div>
+              <label
+                htmlFor="image"
+                className="block mb-2 text-sm font-medium text-gray-600"
+              >
+                Profile Photo:
+              </label>
+              <input
+                {...register("image", {
+                  required: {
+                    value: true,
+                    message: "This field is required.",
+                  },
+                })}
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 "
+              />
+              {errors?.image?.message && (
+                <span className="block text-red-500 text-sm">
+                  {errors?.image?.message}
+                </span>
+              )}
+            </div>
             {/* Password */}
             <div className="mt-4">
               <div className="flex justify-between">
@@ -250,7 +291,7 @@ const RegisterRecruiter = () => {
                   {...register("confirmPassword", {
                     required: "Please confirm your password",
                     validate: (value) =>
-                      value === password || "Passwords do not match",
+                      value === password || "Passwords doesnot matched",
                   })}
                   className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
                   type={show ? "text" : "password"}
@@ -269,95 +310,73 @@ const RegisterRecruiter = () => {
                 </div>
               </div>
             </div>
-            {/* Image */}
-            <div>
-              <label
-                htmlFor="image"
-                className="block mb-2 text-sm font-medium text-gray-600"
-              >
-                Profile Photo:
-              </label>
-              <input
-                {...register("image", {
-                  required: {
-                    value: true,
-                    message: "This field is required.",
-                  },
-                })}
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-              />
-              {errors?.image?.message && (
-                <span className="block text-red-500">
-                  {errors?.image?.message}
-                </span>
-              )}
-            </div>
           </div>
           <div className="flex flex-col items-center space-y-2">
-  <div className="flex items-start space-x-2 justify-center">
+            <div className="flex items-start space-x-2 justify-center">
+              <div className="text-center">
+                <div className="flex w-full justify-center gap-2 items-center">
+                  <input
+                    id="acceptTerms"
+                    type="checkbox"
+                    {...register("acceptTerms", {
+                      required: {
+                        value: true,
+                        message: "This field is required.",
+                      },
+                    })}
+                  />
+                  <span className="text-sm block">
+                    By clicking &apos;Continue&apos;, you acknowledge that
+                  </span>
+                </div>
+                <span className="text-sm block">
+                  you have read and accept the{" "}
+                  <span
+                    className="font-medium text-blue-600 cursor-pointer"
+                    onClick={openModalTerms}
+                  >
+                    Terms and Conditions
+                  </span>{" "}
+                  and{" "}
+                  <span
+                    className="font-medium text-blue-600 cursor-pointer"
+                    onClick={openModalSecurity}
+                  >
+                    Security & Privacy
+                  </span>
+                  .
+                </span>
+              </div>
+            </div>
 
-    <div className="text-center">
-    <div className="flex w-full justify-center gap-2 items-center">
-    <input
-      id="acceptTerms"
-      type="checkbox"
-      {...register("acceptTerms", {
-        required: {
-          value: true,
-          message: "This field is required.",
-        },
-      })}
-    />
-      <span className="text-sm block">
-        By clicking &apos;Continue&apos;, you acknowledge that
-      </span>
-    </div>
-      <span className="text-sm block">
-        you have read and accept the{" "}
-        <span
-          className="font-medium text-blue-600 cursor-pointer"
-          onClick={openModalTerms}
-        >
-          Terms and Conditions
-        </span>{" "}
-        and{" "}
-        <span
-          className="font-medium text-blue-600 cursor-pointer"
-          onClick={openModalSecurity}
-        >
-          Security & Privacy
-        </span>
-        .
-      </span>
-    </div>
-  </div>
+            {/* Error Message */}
+            {errors?.acceptTerms?.message && (
+              <span className="text-red-500 text-sm mt-2 text-center">
+                {errors?.acceptTerms?.message}
+              </span>
+            )}
 
-  {/* Error Message */}
-  {errors?.acceptTerms?.message && (
-    <span className="text-red-500 text-sm mt-2 text-center">
-      {errors?.acceptTerms?.message}
-    </span>
-  )}
+            {/* Modal for Terms of Service */}
+            <ModalOfTerms
+              isOpenTerms={isOpenTerms}
+              closeModalTerms={closeModalTerms}
+            />
 
-  {/* Modal for Terms of Service */}
-  <ModalOfTerms isOpenTerms={isOpenTerms} closeModalTerms={closeModalTerms} />
-
-  {/* Modal for Terms of Privacy */}
-  <ModalOfSecurity isOpenSecurity={isOpenSecurity} closeModalSecurity={closeModalSecurity} />
-</div>
+            {/* Modal for Terms of Privacy */}
+            <ModalOfSecurity
+              isOpenSecurity={isOpenSecurity}
+              closeModalSecurity={closeModalSecurity}
+            />
+          </div>
 
           {/* Submit button */}
           <div>
             <button
               disabled={loading}
               type="submit"
-              className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 text-white"
+              className="bg-primary hover:bg-hoverColor w-full rounded-md py-3 font-medium text-white"
             >
-              {loading === true ? "Loading..." : " Register"}
+              {loading === true ? <TbFidgetSpinner className="animate-spin m-auto" /> : " Register"}
             </button>
           </div>
         </form>
@@ -365,7 +384,7 @@ const RegisterRecruiter = () => {
           Already have an account?{" "}
           <Link
             href={"/login"}
-            className="text-primary font-semibold ml-2 text-base hover:underline"
+            className="text-primary font-medium ml-2 text-base hover:underline"
           >
             Login
           </Link>
