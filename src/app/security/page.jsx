@@ -1,30 +1,6 @@
 import React from "react";
 
-export const metadata = {
-  title: "Security",
-  description: "Learn about Job Sphere's security and privacy policies, including data encryption, authentication, and user privacy controls. We prioritize your safety with robust measures.",
-  keywords: [
-    "Job Sphere",
-    "security",
-    "privacy",
-    "data protection",
-    "encryption",
-    "authentication",
-    "user privacy",
-    "data retention",
-    "anonymization",
-    "OAuth",
-    "JWT"
-  ],
-  openGraph: {
-    title: {
-      absolute: "Security & Privacy - Job Sphere"
-    },
-    description: "Understand Job Sphere's commitment to security and privacy with industry-standard encryption, role-based access control, and data retention policies.",
-    url: `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/security`,
-    type: "website"
-  }
-};
+
 
 const Security = () => {
   return (
