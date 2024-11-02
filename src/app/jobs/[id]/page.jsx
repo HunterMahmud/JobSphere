@@ -226,7 +226,7 @@ const JobDetails = ({ params }) => {
     if (loggedInUser?.role === "recruiter" || "admin") {
       return toast.error("Action not permitted!");
     }
-    
+
     if (loggedInUser?.status === "blocked") {
       toast.error("You are blocked by the authority. Please contact support for assistance.");
       return;
@@ -387,7 +387,7 @@ const JobDetails = ({ params }) => {
                   ))}
                 </div>
                 {
-                  loggedInUser?.status !== "blocked" && seekerInfo?.skills?.technicalSkills &&
+                  loggedInUser?.status !== "blocked" && seekerInfo?.skills?.technicalSkills && loggedInUser?.role === "seeker" &&
                   <button onClick={() => {
                     setShowModal(!showModal);
                     setShowSkill(true)
