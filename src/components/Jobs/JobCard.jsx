@@ -47,6 +47,10 @@ const JobCard = ({ job }) => {
             });
         }
 
+        if (loggedInUser?.role === "recruiter" || 'admin') {
+            return toast.error("Action not permitted!");
+        }
+
         try {
             setIsLoading(true)
             const { data } = await axios.post(
@@ -94,24 +98,24 @@ const JobCard = ({ job }) => {
                 </div>
 
                 <button
-  disabled={isLoading}
-  onClick={() => {
-    if (loggedInUser?.status === "blocked") {
-      toast.error("You are blocked by the authority. Please contact support for assistance.");
-    } else {
-      handleSave();
-    }
-  }}
-  className={`text-[22px] cursor-pointer mb-4 ${isLoading ? 'cursor-not-allowed' : ''}`}
->
-  {isLoading ? (
-    <AiOutlineLoading3Quarters className="animate-spin m-auto" />
-  ) : save ? (
-    <FaBookmark />
-  ) : (
-    <FaRegBookmark />
-  )}
-</button>
+                    disabled={isLoading}
+                    onClick={() => {
+                        if (loggedInUser?.status === "blocked") {
+                            toast.error("You are blocked by the authority. Please contact support for assistance.");
+                        } else {
+                            handleSave();
+                        }
+                    }}
+                    className={`text-[22px] cursor-pointer mb-4 ${isLoading ? 'cursor-not-allowed' : ''}`}
+                >
+                    {isLoading ? (
+                        <AiOutlineLoading3Quarters className="animate-spin m-auto" />
+                    ) : save ? (
+                        <FaBookmark />
+                    ) : (
+                        <FaRegBookmark />
+                    )}
+                </button>
             </div>
 
             <div className="flex justify-betwee gap-2 items-center">
