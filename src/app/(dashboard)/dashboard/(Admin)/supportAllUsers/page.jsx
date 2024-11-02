@@ -12,13 +12,12 @@ import {
     updateDoc,
 } from "firebase/firestore";
 import { AiOutlineSend } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 export default function AdminChat() {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState("");
-    console.log(users)
 
     // Fetch all users who have conversations
     useEffect(() => {
@@ -55,29 +54,38 @@ export default function AdminChat() {
     }, [selectedUser]);
 
     // Send a message to the selected user
-    const handleSend = async () => {
-        if (newMessage.trim() && selectedUser) {
-            const newMsg = {
-                content: newMessage,
-                timestamp: serverTimestamp(),
-                isAdminReply: true,
-            };
+    const handleSend = async (e) => {
+        e.preventDefault();
+        const newMessage = e.target.message.value;
+        console.log(newMessage)
 
-            // Add the message to Firestore
-            await addDoc(collection(db, "conversations", selectedUser.id, "messages"), newMsg);
+        try {
+            e.target.reset();
+            if (newMessage.trim() && selectedUser) {
+                const newMsg = {
+                    content: newMessage,
+                    timestamp: serverTimestamp(),
+                    isAdminReply: true,
+                };
 
-            // Update the last message timestamp for the user
-            const userRef = doc(db, "users", selectedUser.id);
-            await updateDoc(userRef, {
-                lastMessageTimestamp: serverTimestamp(), // Update the last message timestamp
-            });
+                // Add the message to Firestore
+                await addDoc(collection(db, "conversations", selectedUser.id, "messages"), newMsg);
 
-            // Prepend the new message to the messages state
-            setMessages((prevMessages) => [newMsg, ...prevMessages]);
+                // Update the last message timestamp for the user
+                const userRef = doc(db, "users", selectedUser.id);
+                await updateDoc(userRef, {
+                    lastMessageTimestamp: serverTimestamp(), // Update the last message timestamp
+                });
 
-            // Clear the input field
-            setNewMessage("");
+                // Prepend the new message to the messages state
+                setMessages((prevMessages) => [newMsg, ...prevMessages]);
+            }
+        } catch (err) {
+            toast.error(err?.message)
+        } finally {
+            e.target.reset();
         }
+
     };
 
     return (
@@ -110,23 +118,23 @@ export default function AdminChat() {
                                     className={`p-2 text-sm md:text-base my-2 rounded ${msg.isAdminReply ? " text-black text-right" : ""}`}
                                     style={{ overflowWrap: 'break-word', wordBreak: 'break-word', maxWidth: '100%' }} // Added styles
                                 >
-                                    <span className={`inline-block px-2 py-1 rounded  ${msg.isAdminReply ? "bg-accent rounded-br-2xl pr-3" : "bg-blue-50 rounded-bl-2xl pl-3"}`}>
+                                    <span className={`inline-block px-4 py-1 rounded  ${msg.isAdminReply ? "bg-accent rounded-br-2xl pr-3" : "bg-blue-50 rounded-bl-2xl pl-3"}`}>
                                         {msg.content.length > 1000 ? `${msg.content.substring(0, 1000)}...` : msg.content} {/* Optional truncation */}
                                     </span>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="flex gap-2">
+                        <form onSubmit={handleSend} className="flex gap-2">
                             <input
                                 type="text"
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
+                                name="message"
+                                autoComplete="off"
                                 placeholder="Type your message"
                                 className="block w-full px-4 py-2 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
                             />
-                            <button onClick={handleSend} className="bg-primary hover:bg-hover text-white rounded p-2 text-xl"><AiOutlineSend /></button>
-                        </div>
+                            <button className="bg-primary hover:bg-hover text-white rounded p-2 text-xl"><AiOutlineSend /></button>
+                        </form>
                     </div>
                 }
             </div>

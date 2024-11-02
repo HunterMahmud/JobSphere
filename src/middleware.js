@@ -30,7 +30,8 @@ const roleBasedRoutes = {
   "/profile/viewResume": ["seeker"],
   "/profile/work-experience": ["seeker"],
   "/dashboard/appliedJobs": ["seeker"],
-  "/dashboard/savedJobs": ["seeker"],  
+  "/dashboard/savedJobs": ["seeker"], 
+  "/dashboard/progress": ["seeker"],
   "/dashboard/support": ["seeker", "recruiter"],  
   // api
   "/dashboard/userManagement/api/allUsers": ["admin"],
