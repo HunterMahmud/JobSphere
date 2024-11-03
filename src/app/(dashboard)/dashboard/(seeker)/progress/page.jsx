@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Select from "react-select";
 import { MdOutlineTrendingDown, MdOutlineTrendingUp, MdTrendingFlat } from "react-icons/md";
 import Link from 'next/link';
+import Loader from '@/app/loading';
 
 
 
@@ -14,8 +15,9 @@ export default function UserProgress() {
   const [loading, setLoading] = useState(true);
   const [progressView, setProgressView] = useState("daily"); // Daily or weekly view for progress chart
   const [applicationsView, setApplicationsView] = useState("daily"); // Daily or weekly view for applications chart
+
   const session = useSession();
-  console.log(session);
+
 
   const options = [
     { value: "daily", label: "Daily" },
@@ -28,10 +30,12 @@ export default function UserProgress() {
         `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/api/user-progress?email=${session?.data?.user?.email}&progressView=${progressView}&applicationsView=${applicationsView}`
       );
       setUserData(response?.data);
+
     } catch (error) {
       console.error("Failed to load user data", error);
     } finally {
       setLoading(false);
+
     }
   };
 
@@ -42,31 +46,33 @@ export default function UserProgress() {
   }, [session?.status, progressView, applicationsView]);
 
 
-  if (loading) return <p className="text-center">Loading...</p>;
+  if (loading) return <Loader />;
+  // <p className="text-center">Loading...</p>;
 
+  // setApplications(userData?.applicationsData.map(data => data.date.slice(-2)));
 
-  const calculateProgress = (progressData) => {
-    if (progressData.length >= 2) {
-      const last = progressData[progressData.length - 1].points;
-      const secondLast = progressData[progressData.length - 2].points;
-      const difference = last - secondLast;
-      if (difference > 0) return "Progressing";
-      if (difference < 0 || last === 0 || secondLast === 0) return "Downfalling";
-      return "Not Progressing";
-    } else {
-      return "No data available";
-    }
-  };
+  // const calculateProgress = (progressData) => {
+  //   if (progressData.length >= 2) {
+  //     const last = progressData[progressData.length - 1].points;
+  //     const secondLast = progressData[progressData.length - 2].points;
+  //     const difference = last - secondLast;
+  //     if (difference > 0) return "Progressing";
+  //     if (difference < 0 || last === 0 || secondLast === 0) return "Downfalling";
+  //     return "Not Progressing";
+  //   } else {
+  //     return "No data available";
+  //   }
+  // };
 
   // Function to render progress icon and apply appropriate color
-  const renderProgressIcon = (progress) => {
-    if (progress === "Progressing") return <MdOutlineTrendingUp className="text-green-400 text-6xl" />;
-    if (progress === "Downfalling") return <MdOutlineTrendingDown className="text-red-500 text-6xl" />;
-    return <MdTrendingFlat className="text-orange-500 text-6xl" />;
-  };
+  // const renderProgressIcon = (progress) => {
+  //   if (progress === "Progressing") return <MdOutlineTrendingUp className="text-green-400 text-6xl" />;
+  //   if (progress === "Downfalling") return <MdOutlineTrendingDown className="text-red-500 text-6xl" />;
+  //   return <MdTrendingFlat className="text-orange-500 text-6xl" />;
+  // };
 
   // console.log(userData?.progressData);
-  const progressStatus = calculateProgress(userData?.progressData);
+  // const progressStatus = calculateProgress(userData?.progressData);
 
   // // Determine card colors based on progress status
   // const cardColor =
@@ -112,14 +118,14 @@ export default function UserProgress() {
         </div>
       </div> */}
       <div className="flex-1 pr-6">
-          <h2 className="text-2xl font-bold">
-            Hi, {session?.data?.user?.name || "Job Seeker"}
-          </h2>
-          <p className="mt-2 text-sm">
-            Keep engaged and do hard work for your goal.
-          </p>
-          
-        </div>
+        <h2 className="text-2xl font-bold">
+          Hi, {session?.data?.user?.name || "Job Seeker"}
+        </h2>
+        <p className="mt-2 text-sm">
+          Keep engaged and do hard work for your goal.
+        </p>
+
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
         <div className="bg-white shadow rounded-lg p-4 text-center">
           <h3 className="text-lg font-semibold">Saved Jobs</h3>
@@ -151,7 +157,10 @@ export default function UserProgress() {
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={userData?.progressData}>
-            <XAxis dataKey="date" />
+            <XAxis
+              dataKey="date"
+              tickFormatter={(date) => date.slice(-2)} // Custom formatter to get last two characters
+            />
             <YAxis />
             <Tooltip />
             <Area type="monotone" dataKey="points" stroke="#4A90E2" fill="#004585" />
@@ -172,7 +181,10 @@ export default function UserProgress() {
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={userData?.applicationsData}>
-            <XAxis dataKey="date" />
+            <XAxis
+              dataKey="date"
+              tickFormatter={(date) => date.slice(-2)} // Custom formatter to get last two characters
+            />
             <YAxis />
             <Tooltip />
             <Bar dataKey="applications" fill="#2557a7" />
