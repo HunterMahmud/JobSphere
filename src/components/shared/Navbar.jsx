@@ -103,7 +103,7 @@ const Navbar = () => {
         <div className="relative flex h-[70px] items-center justify-between">
           {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 md:p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 md:p-2 text-white bg-primary  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="sr-only">Open main menu</span>
               <Bars3Icon
                 aria-hidden="true"
@@ -137,7 +137,7 @@ const Navbar = () => {
                   href={link.path}
                   className={`${pathName === link.path
                     ? "bg-primary text-white font-semibold shadow-lg"
-                    : "text-gray-300 hover:bg-hover hover:text-white"
+                    : "text-gray-800 hover:bg-hover hover:text-white"
                     } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
                 >
                   {link.title}
@@ -153,10 +153,10 @@ const Navbar = () => {
               {session?.status === "authenticated" &&
                 <>
                   <div>
-                    <MenuButton onClick={markAllNotificationsAsRead} className="relative flex rounded-full bg-gray-800 text-sm">
+                    <MenuButton onClick={markAllNotificationsAsRead} className="relative flex justify-center items-center rounded-full  text-sm">
                       <span className="sr-only">Open user menu</span>
                       <div className="md:mt-[5px] relative">
-                        <IoMdNotificationsOutline className="text-2xl text-white cursor-pointer" />
+                        <IoMdNotificationsOutline className="text-2xl text-gray-700 cursor-pointer" />
                         {unreadCount > 0 && <p className="text-white bg-red-500 px-[6px] -top-2 absolute rounded-full text-[10px]">{unreadCount}</p>}
                       </div>
                     </MenuButton>
@@ -197,7 +197,7 @@ const Navbar = () => {
               {session?.status === "authenticated" ? (
                 <>
                   <div>
-                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-[1px] focus:ring-offset-gray-800">
+                    <MenuButton className="relative flex rounded-full bg-sky-50 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-[1px] focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
                       <Image
                         alt="Profile"
@@ -323,8 +323,8 @@ const Navbar = () => {
               key={link.path}
               href={link.path}
               className={`${pathName === link.path
-                ? "bg-blue-600 text-white font-semibold shadow-lg"
-                : "text-gray-300 hover:bg-blue-500 hover:text-white"
+                ? "bg-primary text-white font-semibold shadow-lg"
+                : "text-gray-800 hover:bg-hover hover:text-white"
                 } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
             >
               {link.title}

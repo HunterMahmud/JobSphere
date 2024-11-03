@@ -8,7 +8,7 @@ const Footer = () => {
     if (pathName.includes('dashboard')) return;
 
     return (
-        <footer className="px-2 md:px-0 divide-y custom-container pt-10">
+        <footer className="px-2 md:px-0 divide-y custom-container pt-10 text-gray-700">
             <div className="flex flex-col justify-between mx-auto space-y-8 lg:flex-row lg:space-y-0 pb-4">
                 <div className="lg:w-3/5">
                     <Link href="/" className="flex justify-center space-x-3 lg:justify-start">
