@@ -47,7 +47,11 @@ const JobCard = ({ job }) => {
             });
         }
 
-        if (loggedInUser?.role === "recruiter" || 'admin') {
+        if (loggedInUser?.role === "recruiter") {
+            return toast.error("Action not permitted!");
+        }
+
+        if (loggedInUser?.role === 'admin') {
             return toast.error("Action not permitted!");
         }
 
