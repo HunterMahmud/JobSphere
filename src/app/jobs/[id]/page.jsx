@@ -223,9 +223,13 @@ const JobDetails = ({ params }) => {
   };
 
   const handleSaveJob = async () => {
-    if (loggedInUser?.role === "recruiter" || "admin") {
+    if (loggedInUser?.role === "recruiter") {
       return toast.error("Action not permitted!");
-    }
+  }
+
+  if (loggedInUser?.role === 'admin') {
+      return toast.error("Action not permitted!");
+  }
 
     if (loggedInUser?.status === "blocked") {
       toast.error("You are blocked by the authority. Please contact support for assistance.");
