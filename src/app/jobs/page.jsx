@@ -74,14 +74,22 @@ const JobPage = () => {
     setCurrentPage(1);
     setSearch(e.target.value);
     // Update the search parameter in the URL
-    window.history.pushState(null, "", `/jobs?search=${e.target.value}&city=${city}`);
+    window.history.pushState(
+      null,
+      "",
+      `/jobs?search=${e.target.value}&city=${city}`
+    );
   };
 
   const handleCityChange = (e) => {
     setCurrentPage(1);
     setCity(e.target.value);
     // Update the city parameter in the URL
-    window.history.pushState(null, "", `/jobs?search=${search}&city=${e.target.value}`);
+    window.history.pushState(
+      null,
+      "",
+      `/jobs?search=${search}&city=${e.target.value}`
+    );
   };
 
   const handleSkillChange = (e) => {
@@ -122,21 +130,23 @@ const JobPage = () => {
           <div className="flex flex-col items-center gap-4 w-full">
             <div className="text-lg md:text-xl font-bold">Experience Range</div>
             <Range
-  step={1}
-  min={0}
-  max={10}
-  values={experienceRange}
-  onChange={(values) => setExperienceRange(values)}
-  renderTrack={({ props, children }) => (
-    <div {...props} className="w-full h-2 bg-gray-300 rounded-lg">
-      {children}
-    </div>
-  )}
-  renderThumb={({ props }) => (
-    <div {...props} className="w-6 h-6 bg-primary rounded-full shadow-lg" />
-  )}
-/>
-
+              step={1}
+              min={0}
+              max={10}
+              values={experienceRange}
+              onChange={(values) => setExperienceRange(values)}
+              renderTrack={({ props, children }) => (
+                <div {...props} className="w-full h-2 bg-sky-300 rounded-lg">
+                  {children}
+                </div>
+              )}
+              renderThumb={({ props }) => (
+                <div
+                  {...props}
+                  className="w-4 h-4 bg-primary rounded-full shadow-lg"
+                />
+              )}
+            />
 
             <div className="flex justify-between w-full">
               <input
@@ -150,7 +160,7 @@ const JobPage = () => {
                     experienceRange[1],
                   ])
                 }
-                className="w-16 text-center bg-white border-2 border-accent rounded-md"
+                className="w-14 p-1 text-center bg-white border-2 border-accent rounded-md"
               />
               <input
                 type="number"
@@ -163,12 +173,12 @@ const JobPage = () => {
                     parseInt(e.target.value),
                   ])
                 }
-                className="w-16 text-center bg-white border-2 border-accent rounded-md"
+                className="w-14 p-1 text-center bg-white border-2 border-accent rounded-md"
               />
             </div>
 
             {/* City Filter Dropdown */}
-            <div className="bg-white w-full my-4 rounded-lg border-2 border-accent p-2">
+            <div className="bg-white w-full my-4 rounded-lg border-2 border-accent p-1">
               <select
                 value={city}
                 onChange={handleCityChange}
@@ -184,7 +194,7 @@ const JobPage = () => {
             </div>
 
             {/* Skills Filter Dropdown */}
-            <div className="bg-white w-full rounded-lg border-2 border-accent p-2">
+            <div className="bg-white w-full rounded-lg border-2 border-accent p-1">
               <select
                 value={skill}
                 onChange={handleSkillChange}
@@ -203,7 +213,7 @@ const JobPage = () => {
 
         <div className="flex-1">
           {/* Search Input */}
-          <div className="flex items-center bg-white w-full md:mb-10 mb-5 rounded-lg border-2 border-accent p-2">
+          <div className="flex items-center bg-white w-full md:mb-10 mb-5 rounded-lg border-2 border-accent ">
             <FaSearch className="ml-3 text-gray-400" />
             <input
               type="text"
@@ -229,43 +239,41 @@ const JobPage = () => {
       </div>
 
       {/* Pagination */}
-{(Array.isArray(jobs) && jobs.length > 0) && (
-  <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
-    <button
-      onClick={handlePreviousPage}
-      disabled={currentPage === 1}
-      className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
-    >
-      <GrPrevious />
-    </button>
-    <div className="space-x-2">
-      {Array.from({ length: totalPages }, (_, index) => (
-        <button
-          key={index + 1}
-          onClick={() => setCurrentPage(index + 1)}
-          className={`btn px-3 py-2 border-2 text-xs lg:text-lg font-semibold hover:bg-hover rounded-lg ${
-            currentPage === index + 1
-              ? "text-primary bg-white border hover:text-white border-accent"
-              : "bg-primary text-white"
-          }`}
-        >
-          {index + 1}
-        </button>
-      ))}
-    </div>
-    <button
-      onClick={handleNextPage}
-      disabled={currentPage === totalPages}
-      className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
-    >
-      <GrNext />
-    </button>
-  </div>
-)}
-
+      {Array.isArray(jobs) && jobs.length > 0 && (
+        <div className="mt-16 flex justify-center gap-1 md:gap-3 lg:gap-6">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
+          >
+            <GrPrevious />
+          </button>
+          <div className="space-x-2">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`btn px-3 py-2 border-2 text-xs lg:text-lg font-semibold hover:bg-hover rounded-lg ${
+                  currentPage === index + 1
+                    ? "text-primary bg-white border hover:text-white border-accent"
+                    : "bg-primary text-white"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="btn px-2 py-2 border-2 text-xs lg:text-lg font-semibold bg-primary hover:bg-hover rounded-lg text-white"
+          >
+            <GrNext />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default JobPage;
-

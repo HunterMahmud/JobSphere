@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <div>
-            <div className="bg-gray-800">
+            <div className="bg-sky-50">
               <div className="custom-container">
                 <Navbar />
               </div>
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
               {children}
             </div>
           </div>
-          <div className="bg-[#1f2937] text-white bg-cover bg-no-repeat">
+          <div className="bg-sky-50 text-white bg-cover bg-no-repeat">
             <Footer />
           </div>
         </AuthProvider>
