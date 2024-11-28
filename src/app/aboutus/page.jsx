@@ -1,17 +1,39 @@
-"use client";
+
 import FAQ from '@/components/shared/FAQ';
 import ContactUs from '@/components/AboutUs/ContactUs';
-import Image from 'next/image';
 import React from 'react';
 import OurTeam from '@/components/AboutUs/OurTeam';
 import OurMission from '@/components/AboutUs/OurMission';
 import Reviews from '@/components/AboutUs/Reviews';
+export const metadata = {
+    title:  "About Us",
+    description: "Learn more about Job Sphere, our mission, core values, and impact in helping connect businesses with top talent. Discover why we prioritize innovation, trust, and user experience.",
+    keywords: [
+        "Job Sphere",
+        "about us",
+        "mission",
+        "core values",
+        "hiring platform",
+        "innovation", "trust",
+        "user experience",
+        "job listings",
+        "candidates hired",
+        "business partners"],
+    openGraph: {
+        title: {
+            absolute: "About Us"
+        },
+        description: "Discover the mission, values, and impact of Job Sphere, a platform dedicated to connecting businesses and job seekers.",
+        url: `${process.env.NEXT_PUBLIC_SITE_ADDRESS}/aboutus`,
+        type: "website"
+    }
+};
 
 const AboutUsPage = () => {
     return (
         <div className="custom-container">
-                <h1 className='lg:text-5xl md:text-4xl text-3xl md:my-8 my-4  font-bold text-center text-gray-800'>About Us</h1>
-            <OurMission/>
+            <h1 className="lg:text-5xl md:text-4xl text-3xl md:my-8 my-4 font-bold text-center text-gray-800">About Us</h1>
+            <OurMission />
 
             {/* Core Values Section */}
             <div className="md:mt-12 xl:mt-48 md:mb-8 bg-white md:p-10 mt-8 rounded-lg shadow-md">
@@ -31,7 +53,6 @@ const AboutUsPage = () => {
                     </div>
                 </div>
             </div>
-
 
             {/* Our team */}
             <OurTeam />
@@ -54,10 +75,10 @@ const AboutUsPage = () => {
                 </div>
             </div>
 
-            <FAQ></FAQ>
-            <Reviews/>
+            <FAQ />
+            <Reviews />
 
-            <div className="">
+            <div>
                 <ContactUs />
             </div>
         </div>
